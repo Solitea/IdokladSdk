@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "apibatchresult",
+  "type": "object",
+  "title": "iDoklad API batch result schema",
+  "description": "API result of iDoklad APIv3.",
+  "required": [
+    "Results",
+    "Status"
+  ],
+  "properties": {
+    "Results": {
+      "$id": "#/properties/Results",
+      "type": "array",
+      "title": "Results",
+      "description": "Results of batch operation.",
+      "default": [],
+      "items": {
+        "$ref": "apiresult-schema.json"
+      }
+    },
+    "Status": {
+      "$id": "#/properties/Status",
+      "type": "integer",
+      "title": "Status",
+      "description": "Batch result type.",
+      "default": 0,
+      "examples": [
+        0
+      ]
+    }
+  }
+}

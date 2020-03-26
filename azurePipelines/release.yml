@@ -1,0 +1,65 @@
+name: Release_iDokladSDK_$(date:yyyyMMdd)
+
+trigger: none
+pr: none
+
+pool:
+  name: 'iDokladBuild'
+
+variables:
+  buildConfiguration: 'Release'
+  project: '**/iDokladSdk.csproj'
+
+steps:
+- task: FileTransform@2
+  displayName: 'Substitute settings'
+  inputs:
+    folderPath: '$(System.DefaultWorkingDirectory)'
+    jsonTargetFiles: 'IdokladSdk.IntegrationTests/testsettings.json'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build SDK'
+  inputs:
+    command: 'build'
+    projects: '$(project)'
+    arguments: '--configuration $(buildConfiguration)'
+    
+- task: DotNetCoreCLI@2
+  displayName: "Run Unit tests"
+  inputs:
+    command: 'test'
+    projects: '**/*UnitTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Integration tests'
+  inputs:
+    command: 'test'
+    projects: '**/*IntegrationTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Package SDK'
+  inputs:
+    command: 'pack'
+    packagesToPack: '$(project)'
+    nobuild: true
+    versioningScheme: 'off'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+- task: DotNetCoreCLI@2
+  displayName: 'Push package to NuGet.org'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/IdokladSdk*.nupkg;!$(Build.ArtifactStagingDirectory)/**/IdokladSdk*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'iDoklad Nuget.org'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  
+- task: DeleteFiles@1
+  displayName: 'Delete files'
+  inputs:
+    Contents: '**/*'
+  continueOnError: true
+  condition: always()

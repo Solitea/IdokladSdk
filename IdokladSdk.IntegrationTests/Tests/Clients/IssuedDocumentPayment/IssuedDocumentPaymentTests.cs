@@ -1,0 +1,67 @@
+﻿using System;
+using IdokladSdk.Clients;
+using IdokladSdk.IntegrationTests.Core;
+using IdokladSdk.IntegrationTests.Core.Extensions;
+using NUnit.Framework;
+
+namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
+{
+    [TestFixture]
+    public partial class IssuedDocumentPaymentTests : TestBase
+    {
+        private const int PaidInvoiceId = 913255;
+        private const int UnpaidInvoiceId = 913242;
+        private IssuedDocumentPaymentClient _client;
+
+        [OneTimeSetUp]
+        public void OneTimeSetup()
+        {
+            InitDokladApi();
+            _client = DokladApi.IssuedDocumentPaymentClient;
+        }
+
+        [Test]
+        public void List_SucessfullyGet()
+        {
+            // Act
+            var data = _client.List().Get().AssertResult();
+
+            // Assert
+            Assert.GreaterOrEqual(data.TotalItems, 1);
+        }
+
+        [Test]
+        [Order(1)]
+        public void Payment_Post_Sucessfully()
+        {
+            // Act
+            var defaultPayment = _client.Default(UnpaidInvoiceId).AssertResult();
+            var postedPayment = _client.Post(defaultPayment).AssertResult();
+            var retrievedPayment = _client.Detail(postedPayment.Id).Get().AssertResult();
+            var deleted = _client.Delete(retrievedPayment.Id).AssertResult();
+
+            // Assert
+            Assert.AreEqual(defaultPayment.InvoiceId, UnpaidInvoiceId);
+            Assert.AreEqual(postedPayment.InvoiceId, UnpaidInvoiceId);
+            Assert.AreEqual(retrievedPayment.InvoiceId, UnpaidInvoiceId);
+            Assert.AreEqual(postedPayment.Id, retrievedPayment.Id);
+            Assert.IsTrue(deleted);
+        }
+
+        [Test]
+        [Order(2)]
+        public void Payment_FullyUnpayAndFullyPay_Sucessfully()
+        {
+            // Act
+            var dateOfPayment = DateTime.UtcNow.AddDays(-3);
+            var unpaid = _client.FullyUnpay(PaidInvoiceId).AssertResult();
+            var paid = _client.FullyPay(PaidInvoiceId, dateOfPayment).AssertResult();
+            var paidInvoice = DokladApi.IssuedInvoiceClient.Detail(PaidInvoiceId).Get().AssertResult();
+
+            // Assert
+            Assert.IsTrue(unpaid);
+            Assert.IsTrue(paid);
+            Assert.AreEqual(dateOfPayment.Date, paidInvoice.DateOfPayment);
+        }
+    }
+}

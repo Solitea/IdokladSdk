@@ -1,0 +1,88 @@
+﻿using System.Linq;
+using System.Threading.Tasks;
+using IdokladSdk.Enums;
+using IdokladSdk.IntegrationTests.Core.Extensions;
+using NUnit.Framework;
+
+namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
+{
+    /// <summary>
+    /// StatisticsTests async.
+    /// </summary>
+    public partial class StatisticsTests
+    {
+        [Test]
+        public async Task InvoicingForPeriodAsync_ReturnsDataForGivenPeriod()
+        {
+            // Arrange
+            var periodType = PeriodType.Month;
+
+            // Act
+            var data = (await _statisticsClient.InvoicingForPeriodAsync(periodType)).AssertResult();
+
+            // Assert
+            Assert.Greater(data.IssuedInvoices.Count, 0);
+            Assert.Greater(data.IssuedInvoices.First().Period, periodType.ToString());
+            Assert.Greater(data.ReceivedInvoices.Count, 0);
+            Assert.Greater(data.ReceivedInvoices.First().Period, periodType.ToString());
+        }
+
+        [Test]
+        public async Task InvoicingForYearAsync_ReturnsDataForGivenYear()
+        {
+            // Arrange
+            var yearType = YearType.Actual;
+
+            // Act
+            var data = (await _statisticsClient.InvoicingForYearAsync(yearType)).AssertResult();
+
+            // Assert
+            Assert.Greater(data.IssuedInvoices.TotalWithVat, 0);
+            Assert.Greater(data.ReceivedInvoices.TotalWithVat, 0);
+        }
+
+        [Test]
+        public async Task QuarterSummaryAsync_ReturnsDataQuarters()
+        {
+            // Act
+            var data = (await _statisticsClient.QuarterSummaryAsync()).AssertResult();
+
+            // Assert
+            Assert.Greater(data.Count, 0);
+        }
+
+        [Test]
+        public async Task TopPartnersAsync_ReturnsTopPartners()
+        {
+            // Act
+            var data = (await _statisticsClient.TopPartnersAsync()).AssertResult();
+
+            // Assert
+            Assert.Greater(data.Count, 0);
+            Assert.Greater(data.First().TotalWithVatHc, 0);
+        }
+
+        [Test]
+        public async Task AgendaSummaryAsync_ReturnsTopPartners()
+        {
+            // Act
+            var data = (await _statisticsClient.AgendaSummaryAsync()).AssertResult();
+
+            // Assert
+            Assert.Greater(data.IssuedInvoices, 0);
+            Assert.Greater(data.ReceivedInvoices, 0);
+            Assert.Greater(data.SalesReceipts, 0);
+        }
+
+        [Test]
+        public async Task StatisticForContactAsync_ReturnsTopPartners()
+        {
+            // Act
+            var data = (await _statisticsClient.StatisticForContactAsync(323823)).AssertResult();
+
+            // Assert
+            Assert.Greater(data.IssuedInvoiceCount, 0);
+            Assert.Greater(data.IssuedInvoiceTotalWithVat, 0);
+        }
+    }
+}

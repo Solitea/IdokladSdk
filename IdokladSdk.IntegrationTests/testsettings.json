@@ -1,0 +1,16 @@
+{
+    "Urls": {
+        "ApiUrl": "testApiUrl",
+        "IdentityServerTokenUrl": "testIdentityServerTokenUrl"
+    },
+    "ClientCredentials": {
+        "ClientId": "testClientId",
+        "ClientSecret": "testClientSecret"
+    },
+    "PinFlow": {
+        "ClientId": "testClientId",
+        "ClientSecret": "testClientSecret",
+        "Pin": "testPin",
+        "RefreshToken": "testRefreshToken"
+    }
+}
