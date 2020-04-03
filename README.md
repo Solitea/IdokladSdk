@@ -1,4 +1,4 @@
-<img src="https://soliteacr.visualstudio.com/iDoklad/_apis/build/status/SDK/iDokladSdk?branchName=master">
+<img src="https://soliteacr.visualstudio.com/iDoklad/_apis/build/status/SDK/IdokladSdk?branchName=master">
 
 # SDK for iDoklad API
 
