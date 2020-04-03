@@ -6,6 +6,14 @@ pr:
      include:
        - master
 
+schedules:
+  - cron: "0 21 * * *"
+    displayName: Daily build
+    branches:
+      include:
+        - master
+    always: true
+
 pool:
   name: iDokladBuild
 workspace:
@@ -53,7 +61,7 @@ steps:
     nobuild: true
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'Build.BuildNumber'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), not(eq(variables['Build.Reason'], 'Schedule')), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
 - task: NuGetCommand@2
   displayName: "Publish NuGet package"
@@ -63,7 +71,7 @@ steps:
     nuGetFeedType: 'internal'
     publishVstsFeed: '4648ca4e-87a8-47c4-ab02-16dcea8269c2/ff881867-c73f-4290-beaa-f96019a33788'
     allowPackageConflicts: true
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), not(eq(variables['Build.Reason'], 'Schedule')), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   
 - task: DeleteFiles@1
   displayName: 'Delete files'
