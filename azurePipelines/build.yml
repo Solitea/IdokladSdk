@@ -19,6 +19,7 @@ steps:
   displayName: 'Substitute settings'
   inputs:
     folderPath: '$(System.DefaultWorkingDirectory)'
+    xmlTransformationRules: ''
     jsonTargetFiles: 'IdokladSdk.IntegrationTests/testsettings.json'
 
 - task: DotNetCoreCLI@2
