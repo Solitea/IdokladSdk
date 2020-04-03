@@ -159,6 +159,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             _priceListItemPostModel.PriceType = PriceType.OnlyBase;
             _priceListItemPostModel.Unit = "ks";
             _priceListItemPostModel.VatRateType = VatRateType.Basic;
+            _priceListItemPostModel.VatCodeId = 1;
         }
 
         private PriceListItemPatchModel CreatePatchModel()
@@ -175,7 +176,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
                 Price = 200,
                 PriceType = PriceType.WithVat,
                 Unit = "kg",
-                VatRateType = VatRateType.Reduced2
+                VatRateType = VatRateType.Reduced2,
+                VatCodeId = 2
             };
         }
 
@@ -191,6 +193,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             Assert.AreEqual(postModel.PriceType, getModel.PriceType);
             Assert.AreEqual(postModel.Unit, getModel.Unit);
             Assert.AreEqual(postModel.VatRateType, getModel.VatRateType);
+            Assert.AreEqual(postModel.VatCodeId, getModel.VatCodeId);
         }
 
         private void AssertModelsAreEqueal(PriceListItemGetModel data, PriceListItemPatchModel patchModel)
@@ -205,6 +208,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             Assert.AreEqual(patchModel.PriceType, data.PriceType);
             Assert.AreEqual(patchModel.Unit, data.Unit);
             Assert.AreEqual(patchModel.VatRateType, data.VatRateType);
+            Assert.AreEqual(patchModel.VatCodeId, data.VatCodeId);
         }
     }
 }
