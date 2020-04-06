@@ -263,7 +263,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(patchModel.PartnerAddress.AccountNumber, getModel.PartnerAddress.AccountNumber);
             Assert.AreEqual(patchModel.PartnerAddress.City, getModel.PartnerAddress.City);
             Assert.AreEqual(patchModel.PartnerAddress.CountryId, getModel.PartnerAddress.CountryId);
-            Assert.AreEqual(patchModel.PartnerAddress.Email, getModel.PartnerAddress.Email);
             Assert.AreEqual(patchModel.PartnerAddress.Fax, getModel.PartnerAddress.Fax);
             Assert.AreEqual(patchModel.PartnerAddress.Firstname, getModel.PartnerAddress.Firstname);
             Assert.AreEqual(patchModel.PartnerAddress.Iban, getModel.PartnerAddress.Iban);
@@ -491,7 +490,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
                     AccountNumber = "1234567890/1234",
                     City = "Bystrice nad Pernstejnem",
                     CountryId = 3,
-                    Email = "xxx@yyy.cz",
                     Fax = "1234567890",
                     Firstname = "Firstname",
                     Iban = "1234567890",
