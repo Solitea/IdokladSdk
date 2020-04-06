@@ -40,12 +40,6 @@ namespace IdokladSdk.Models.DocumentAddress
         public int? CountryId { get; set; }
 
         /// <summary>
-        /// Gets or sets e-mail address.
-        /// </summary>
-        [StringLength(50)]
-        public string Email { get; set; }
-
-        /// <summary>
         /// Gets or sets fax.
         /// </summary>
         [StringLength(20)]
