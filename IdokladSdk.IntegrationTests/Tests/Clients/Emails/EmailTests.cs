@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
+using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -11,16 +11,20 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
 {
     [TestFixture]
-    public class EmailTests : TestBase
+    public partial class EmailTests : TestBase
     {
         private const string MyEmail = "qquc@furusato.tokyo";
         private const string OtherEmail = "qquc@furusato.tok";
         private const string PartnerEmail = "qquc_test@furusato.tokyo";
+        private const int PaymentId = 1937322;
+
+        public MailClient MailClient { get; set; }
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
             InitDokladApi();
+            MailClient = DokladApi.MailClient;
         }
 
         [Test]
@@ -40,34 +44,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var result = DokladApi.MailClient.CreditNoteEmail.Send(settings).AssertResult();
+            var result = MailClient.CreditNoteEmail.Send(settings).AssertResult();
 
             // Assert
             AssertEmailResult(result);
         }
 
         [Test]
-        public async Task Send_IssuedInvoiceEmail_Successfully()
+        public void Send_IssuedDocumentPaymentEmail_Sucessfully()
         {
-            // Arrange
-            var settings = new IssuedInvoiceEmailSettings
-            {
-                DocumentId = 913242,
-                ReportLanguage = Language.En,
-                EmailBody = "Test IssuedInvoice email.",
-                EmailSubject = "IssuedInvoice",
-                InvoiceSendType = InvoiceSendType.AsPdf,
-                SendToSelf = true,
-                SendToPartner = true,
-                OtherRecipients = new List<string> { OtherEmail }
-            };
-
             // Act
-            var response = await DokladApi.MailClient.IssuedInvoiceEmail.SendAsync(settings);
+            var response = MailClient.IssuedDocumentPaymentConfirmationEmail.Send(PaymentId);
             var result = response.AssertResult();
 
             // Assert
-            AssertEmailResult(result);
+            Assert.IsTrue(result);
         }
 
         [Test]
@@ -87,33 +78,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var result = DokladApi.MailClient.ProformaInvoiceEmail.Send(settings).AssertResult();
+            var result = MailClient.ProformaInvoiceEmail.Send(settings).AssertResult();
 
             // Assert
             AssertEmailResult(result);
-        }
-
-        [Test]
-        public async Task Send_ReceivedInvoiceEmail_Successfully()
-        {
-            // Arrange
-            var settings = new ReceivedInvoiceEmailSettings
-            {
-                DocumentId = 165292,
-                ReportLanguage = Language.De,
-                EmailBody = "Test ReceivedInvoice email.",
-                EmailSubject = "ReceivedInvoice",
-                SendToSelf = true,
-                OtherRecipients = new List<string> { OtherEmail }
-            };
-
-            // Act
-            var response = await DokladApi.MailClient.ReceivedInvoiceEmail.SendAsync(settings);
-            var result = response.AssertResult();
-
-            // Assert
-            Assert.IsTrue(result.Sent.Contains(MyEmail));
-            Assert.IsTrue(!result.NotSent.Any());
         }
 
         [Test]
@@ -131,7 +99,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var result = DokladApi.MailClient.SalesOrderEmail.Send(settings).AssertResult();
+            var result = MailClient.SalesOrderEmail.Send(settings).AssertResult();
 
             // Assert
             Assert.IsTrue(result.Sent.Contains(PartnerEmail));
