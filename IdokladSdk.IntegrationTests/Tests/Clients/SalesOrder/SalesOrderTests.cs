@@ -5,6 +5,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.SalesOrder;
@@ -91,7 +92,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var patchModel = new SalesOrderPatchModel
             {
                 Id = result.Id,
-                Description = "updated description"
+                Description = "updated description",
+                MyAddress = new MyDocumentAddressPatchModel
+                {
+                    AccountNumber = "555777",
+                    Iban = "5453187522"
+                }
             };
 
             // Act
@@ -100,6 +106,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             // Assert
             Assert.AreEqual(patchModel.Description, data.Description);
             Assert.AreEqual(PartnerId, data.PartnerId);
+            Assert.AreEqual(patchModel.MyAddress.AccountNumber, data.MyAddress.AccountNumber);
+            Assert.AreEqual(patchModel.MyAddress.Iban, data.MyAddress.Iban);
             _client.Delete(result.Id).AssertResult();
         }
 

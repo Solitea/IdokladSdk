@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ProformaInvoice
@@ -106,6 +107,11 @@ namespace IdokladSdk.Models.ProformaInvoice
         public string ItemsTextSuffix { get; set; }
 
         /// <summary>
+        /// Gets or sets my company contact information.
+        /// </summary>
+        public MyDocumentAddressPatchModel MyAddress { get; set; }
+
+        /// <summary>
         /// Gets or sets note.
         /// </summary>
         public string Note { get; set; }
@@ -119,7 +125,7 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// <summary>
         /// Gets or sets contact information of the partner.
         /// </summary>
-        public DocumentAddress.DocumentAddressPatchModel PartnerAddress { get; set; }
+        public DocumentAddressPatchModel PartnerAddress { get; set; }
 
         /// <summary>
         /// Gets or sets payment option id.

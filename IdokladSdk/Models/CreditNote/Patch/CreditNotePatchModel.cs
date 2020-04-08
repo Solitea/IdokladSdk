@@ -119,6 +119,11 @@ namespace IdokladSdk.Models.CreditNote
         public string ItemsTextSuffix { get; set; }
 
         /// <summary>
+        /// Gets or sets my company contact information.
+        /// </summary>
+        public MyDocumentAddressPatchModel MyAddress { get; set; }
+
+        /// <summary>
         /// Gets or sets your note for the document.
         /// </summary>
         public string Note { get; set; }

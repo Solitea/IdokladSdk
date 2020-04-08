@@ -111,6 +111,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         public string ItemsTextSuffix { get; set; }
 
         /// <summary>
+        /// Gets or sets my company contact information.
+        /// </summary>
+        public MyDocumentAddressPatchModel MyAddress { get; set; }
+
+        /// <summary>
         /// Gets or sets note.
         /// </summary>
         public string Note { get; set; }
