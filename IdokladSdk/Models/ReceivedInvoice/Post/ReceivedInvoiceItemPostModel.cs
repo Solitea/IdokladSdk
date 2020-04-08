@@ -52,6 +52,11 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public decimal UnitPrice { get; set; }
 
         /// <summary>
+        /// Gets or sets vat code id.
+        /// </summary>
+        public int? VatCodeId { get; set; }
+
+        /// <summary>
         /// Gets or sets vAT rate type.
         /// </summary>
         [Required]
