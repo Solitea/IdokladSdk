@@ -20,9 +20,9 @@ namespace IdokladSdk.Requests.Mail
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> Send(int settings)
+        public ApiResult<bool> Send(int id)
         {
-            return Client.Post<bool>(GetResourceUrl(settings));
+            return Client.Post<bool>(GetResourceUrl(id));
         }
 
         private string GetResourceUrl(int id) => $"{Client.ResourceUrl}/{DocumentType}/SendConfirmation/{id}";
