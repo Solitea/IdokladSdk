@@ -1,6 +1,9 @@
-name: Release_iDokladSDK_$(date:yyyyMMdd)
+name: Release_$(date:yyyyMMdd)$(rev:.r)
 
-trigger: none
+trigger:
+  tags:
+    include:
+      - v*.*.*
 pr: none
 
 pool:
