@@ -8,7 +8,7 @@ namespace IdokladSdk.Requests.Mail
 {
     public abstract partial class Email
     {
-        /// <inheritdoc cref="IEmail{TSettings}.SendAsync"/>
+        /// <inheritdoc cref="IEmail{TResult, TSettings}.SendAsync"/>
         protected Task<ApiResult<EmailSendResult>> SendAsync<TSettings>(TSettings settings, CancellationToken cancellationToken)
             where TSettings : EmailSettings, new()
         {

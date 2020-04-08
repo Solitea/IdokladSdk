@@ -8,7 +8,7 @@ namespace IdokladSdk.Requests.Mail
     /// <summary>
     /// ReceivedInvoice email.
     /// </summary>
-    public partial class ReceivedInvoiceEmail : Email, IEmail<ReceivedInvoiceEmailSettings>
+    public partial class ReceivedInvoiceEmail : Email, IEmail<EmailSendResult, ReceivedInvoiceEmailSettings>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReceivedInvoiceEmail"/> class.

@@ -126,6 +126,13 @@ namespace IdokladSdk.Clients
             return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
+        internal async Task<ApiResult<TGetModel>> PostAsync<TGetModel>(string resource, CancellationToken cancellationToken)
+        {
+            var request = await CreateRequestAsync(resource, Method.POST, cancellationToken).ConfigureAwait(false);
+
+            return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
+        }
+
         internal Task<ApiBatchResult<TGetModel>> PostAsync<TPostModel, TGetModel>(IList<TPostModel> models, CancellationToken cancellationToken)
             where TPostModel : new()
             where TGetModel : new()
