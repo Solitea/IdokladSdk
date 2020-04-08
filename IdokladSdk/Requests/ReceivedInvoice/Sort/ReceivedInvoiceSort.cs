@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Models.ReceivedInvoice;
+using IdokladSdk.Requests.Core.Modifiers.Sort.BasicSorts;
 using IdokladSdk.Requests.Core.Modifiers.Sort.Common;
 
 namespace IdokladSdk.Requests.ReceivedInvoice.Sort
@@ -6,7 +7,7 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Sort
     /// <summary>
     /// ReceivedInvoiceSort.
     /// </summary>
-    public class ReceivedInvoiceSort
+    public class ReceivedInvoiceSort : IdSort
     {
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.DateOfIssue"/>
         public SortItem DateOfIssue { get; set; } = new SortItem(nameof(ReceivedInvoiceListGetModel.DateOfIssue));
@@ -16,8 +17,5 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Sort
 
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.DocumentNumber"/>
         public SortItem DocumentNumber { get; set; } = new SortItem(nameof(ReceivedInvoiceListGetModel.DocumentNumber));
-
-        /// <inheritdoc cref="ReceivedInvoiceListGetModel.Id"/>
-        public SortItem Id { get; set; } = new SortItem(nameof(ReceivedInvoiceListGetModel.Id));
     }
 }

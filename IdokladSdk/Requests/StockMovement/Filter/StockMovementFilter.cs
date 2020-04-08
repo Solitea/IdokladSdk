@@ -1,4 +1,5 @@
 ﻿using System;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.StockMovement.Filter
@@ -6,7 +7,7 @@ namespace IdokladSdk.Requests.StockMovement.Filter
     /// <summary>
     /// StockMovementFilter.
     /// </summary>
-    public class StockMovementFilter
+    public class StockMovementFilter : IdFilter
     {
         /// <summary>
         /// Gets or sets Amount.
@@ -18,11 +19,6 @@ namespace IdokladSdk.Requests.StockMovement.Filter
         /// </summary>
         public CompareFilterItem<DateTime> DateOfMovement { get; set; } =
             new CompareFilterItem<DateTime>("DateOfMovement");
-
-        /// <summary>
-        /// Gets or sets id.
-        /// </summary>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>("Id");
 
         /// <summary>
         /// Gets or sets PriceListItemId.

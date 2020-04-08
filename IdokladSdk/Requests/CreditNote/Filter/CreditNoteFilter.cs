@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.CreditNote.Filter
@@ -9,7 +10,7 @@ namespace IdokladSdk.Requests.CreditNote.Filter
     /// <summary>
     /// Filterable properties for <see cref="CreditNoteListGetModel"/>.
     /// </summary>
-    public class CreditNoteFilter
+    public class CreditNoteFilter : IdFilter
     {
         /// <inheritdoc cref="CreditNoteListGetModel.ConstantSymbolId"/>
         public FilterItem<int> ConstantSymbolId { get; set; } = new FilterItem<int>(nameof(CreditNoteListGetModel.ConstantSymbolId));
@@ -37,9 +38,6 @@ namespace IdokladSdk.Requests.CreditNote.Filter
 
         /// <inheritdoc cref="CreditNoteListGetModel.Exported"/>
         public FilterItem<ExportedState> Exported { get; set; } = new FilterItem<ExportedState>(nameof(CreditNoteListGetModel.Exported));
-
-        /// <inheritdoc cref="CreditNoteListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(CreditNoteListGetModel.Id));
 
         /// <summary>
         /// Gets or sets a value indicating whether invoice is paid.

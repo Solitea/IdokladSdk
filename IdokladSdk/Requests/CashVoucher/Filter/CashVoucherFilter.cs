@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.CashVoucher.Filter
@@ -9,11 +10,8 @@ namespace IdokladSdk.Requests.CashVoucher.Filter
     /// <summary>
     /// Filter for CashVoucher.
     /// </summary>
-    public class CashVoucherFilter
+    public class CashVoucherFilter : IdFilter
     {
-        /// <inheritdoc cref="CashVoucherListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(CashVoucherListGetModel.Id));
-
         /// <inheritdoc cref="CashVoucherListGetModel.CashRegisterId"/>
         public FilterItem<int> CashRegisterId { get; set; } = new FilterItem<int>(nameof(CashVoucherListGetModel.CashRegisterId));
 
