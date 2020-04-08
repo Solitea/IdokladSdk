@@ -7,6 +7,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
@@ -91,7 +92,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var model = new IssuedInvoicePatchModel
             {
                 Id = _issuedInvoiceId,
-                Description = "DescriptionUpdated"
+                Description = "DescriptionUpdated",
+                MyAddress = new MyDocumentAddressPatchModel
+                {
+                    AccountNumber = "555777",
+                    Iban = "5453187522"
+                }
             };
 
             // Act
@@ -99,6 +105,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
             // Assert
             Assert.AreEqual(model.Description, data.Description);
+            Assert.AreEqual(model.MyAddress.AccountNumber, data.MyAddress.AccountNumber);
+            Assert.AreEqual(model.MyAddress.Iban, data.MyAddress.Iban);
         }
 
         [Test]
