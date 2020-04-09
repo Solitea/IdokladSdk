@@ -32,5 +32,10 @@ namespace IdokladSdk.Requests.CashVoucher.Filter
 
         /// <inheritdoc cref="CashVoucherListGetModel.DocumentNumber"/>
         public CompareFilterItem<string> DocumentNumber { get; set; } = new CompareFilterItem<string>(nameof(CashVoucherListGetModel.DocumentNumber));
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }

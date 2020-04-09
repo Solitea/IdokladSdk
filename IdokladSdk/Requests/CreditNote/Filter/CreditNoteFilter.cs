@@ -51,5 +51,10 @@ namespace IdokladSdk.Requests.CreditNote.Filter
 
         /// <inheritdoc cref="CreditNoteListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>("PurchaserId");
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }

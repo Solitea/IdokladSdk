@@ -21,5 +21,10 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// Gets cash register.
         /// </summary>
         public CashRegisterExpand CashRegister { get; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public TagsExpand Tags { get; set; }
     }
 }

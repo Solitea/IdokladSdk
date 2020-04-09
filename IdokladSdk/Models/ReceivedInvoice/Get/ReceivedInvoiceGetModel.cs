@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.ReadOnly.Currency;
 using IdokladSdk.Models.ReadOnly.PaymentOption;
@@ -35,5 +36,10 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// Gets or sets vat reverse charge code.
         /// </summary>
         public VatReverseChargeCodeGetModel VatReverseChargeCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public new List<TagDocumentGetModel> Tags { get; set; }
     }
 }

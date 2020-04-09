@@ -165,7 +165,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual(3, data.TotalItems);
+            Assert.GreaterOrEqual(data.TotalItems, 3);
             Assert.AreEqual(data.TotalItems / pageSize, data.TotalPages);
         }
 

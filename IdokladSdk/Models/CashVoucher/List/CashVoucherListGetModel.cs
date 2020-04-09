@@ -142,6 +142,11 @@ namespace IdokladSdk.Models.CashVoucher
         public RegisteredSaleListGetModel RegisteredSale { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<TagDocumentListGetModel> Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
         public string VariableSymbol { get; set; }

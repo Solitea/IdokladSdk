@@ -19,5 +19,10 @@ namespace IdokladSdk.Requests.SalesReceipt.Filter
 
         /// <inheritdoc cref="SalesReceiptListGetModel.SalesPosEquipmentId"/>
         public FilterItem<ExportedState> SalesPosEquipmentId { get; set; } = new FilterItem<ExportedState>(nameof(SalesReceiptListGetModel.SalesPosEquipmentId));
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }

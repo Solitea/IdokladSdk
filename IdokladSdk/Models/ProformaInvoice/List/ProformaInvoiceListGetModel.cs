@@ -207,6 +207,11 @@ namespace IdokladSdk.Models.ProformaInvoice
         public int? SalesPosEquipmentId { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<TagDocumentListGetModel> Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
         [StringLength(10)]

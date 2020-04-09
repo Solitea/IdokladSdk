@@ -38,5 +38,10 @@ namespace IdokladSdk.Requests.SalesOrder.Filter
 
         /// <inheritdoc cref="SalesOrderListGetModel.State"/>
         public FilterItem<SalesOrderState> State { get; set; } = new FilterItem<SalesOrderState>(nameof(SalesOrderListGetModel.State));
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }
