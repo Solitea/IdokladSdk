@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Models.BankAccount;
+﻿using System.Collections.Generic;
+using IdokladSdk.Models.BankAccount;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.NumericSequence;
 
 namespace IdokladSdk.Models.BankStatement
@@ -17,5 +19,10 @@ namespace IdokladSdk.Models.BankStatement
         /// Gets or sets bank account.
         /// </summary>
         public BankAccountGetModel BankAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public new List<TagDocumentGetModel> Tags { get; set; }
     }
 }

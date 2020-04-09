@@ -145,6 +145,11 @@ namespace IdokladSdk.Models.ProformaInvoice
         public Language? ReportLanguage { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<int> Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
         [StringLength(10)]

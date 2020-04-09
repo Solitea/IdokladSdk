@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.BankStatement;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.BankStatement.Filter
@@ -7,11 +8,8 @@ namespace IdokladSdk.Requests.BankStatement.Filter
     /// <summary>
     /// BankStatementFilter.
     /// </summary>
-    public class BankStatementFilter
+    public class BankStatementFilter : IdFilter
     {
-        /// <inheritdoc cref="BankStatementListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(BankStatementListGetModel.Id));
-
         /// <inheritdoc cref="BankStatementListGetModel.BankAccountId"/>
         public FilterItem<int> BankAccountId { get; set; } = new FilterItem<int>(nameof(BankStatementListGetModel.BankAccountId));
 
@@ -26,5 +24,10 @@ namespace IdokladSdk.Requests.BankStatement.Filter
 
         /// <inheritdoc cref="BankStatementListGetModel.PeriodDateTo"/>
         public CompareFilterItem<DateTime> PeriodDateTo { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.PeriodDateTo));
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }

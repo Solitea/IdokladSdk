@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.SalesOrder;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.SalesOrder.Filter
@@ -9,11 +10,8 @@ namespace IdokladSdk.Requests.SalesOrder.Filter
     /// <summary>
     /// Filterable properties of <see cref="SalesOrderListGetModel"/>.
     /// </summary>
-    public class SalesOrderFilter
+    public class SalesOrderFilter : IdFilter
     {
-        /// <inheritdoc cref="SalesOrderListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(SalesOrderListGetModel.Id));
-
         /// <inheritdoc cref="SalesOrderListGetModel.DateOfIssue"/>
         public CompareFilterItem<DateTime> DateOfIssue { get; set; } = new CompareFilterItem<DateTime>(nameof(SalesOrderListGetModel.DateOfIssue));
 
@@ -40,5 +38,10 @@ namespace IdokladSdk.Requests.SalesOrder.Filter
 
         /// <inheritdoc cref="SalesOrderListGetModel.State"/>
         public FilterItem<SalesOrderState> State { get; set; } = new FilterItem<SalesOrderState>(nameof(SalesOrderListGetModel.State));
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }

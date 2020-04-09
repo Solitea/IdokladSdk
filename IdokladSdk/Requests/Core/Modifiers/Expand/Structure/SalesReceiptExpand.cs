@@ -31,5 +31,10 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// Gets Payments.
         /// </summary>
         public SalesReceiptPaymentExpand Payments { get; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public TagsExpand Tags { get; set; }
     }
 }

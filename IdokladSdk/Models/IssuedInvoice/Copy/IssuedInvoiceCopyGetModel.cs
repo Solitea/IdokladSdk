@@ -155,6 +155,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         public string Swift { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<int> Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
         public string VariableSymbol { get; set; }

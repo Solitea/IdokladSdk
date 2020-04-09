@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.ReadOnly.ConstantSymbol;
 using IdokladSdk.Models.ReadOnly.Currency;
@@ -36,6 +37,11 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// Gets or sets sales pos equipment.
         /// </summary>
         public SalesPosEquipmentGetModel SalesPosEquipment { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public new List<TagDocumentGetModel> Tags { get; set; }
 
         /// <summary>
         /// Gets or sets invoice items.

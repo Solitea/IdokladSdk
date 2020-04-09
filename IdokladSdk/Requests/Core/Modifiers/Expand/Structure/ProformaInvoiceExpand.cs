@@ -33,6 +33,11 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         public SalesPosEquipmentExpand SalesPosEquipment { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public TagsExpand Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets invoice items.
         /// </summary>
         public ProformaInvoiceItemExpand Items { get; set; }

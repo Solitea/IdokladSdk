@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ReadOnly.ConstantSymbol;
@@ -42,6 +43,11 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or sets payment option.
         /// </summary>
         public PaymentOptionGetModel PaymentOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public new List<TagDocumentGetModel> Tags { get; set; }
 
         /// <summary>
         /// Gets or sets VAT reverse charge code id.

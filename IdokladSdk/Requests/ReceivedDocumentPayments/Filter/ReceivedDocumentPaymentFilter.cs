@@ -1,6 +1,7 @@
 ﻿using System;
 using IdokladSdk.Models.ReceivedDocumentPayments;
 using IdokladSdk.Models.ReceivedInvoice;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReceivedDocumentPayments.Filter
@@ -8,13 +9,10 @@ namespace IdokladSdk.Requests.ReceivedDocumentPayments.Filter
     /// <summary>
     /// Filterable properties of <see cref="ReceivedDocumentPaymentListGetModel"/>.
     /// </summary>
-    public class ReceivedDocumentPaymentFilter
+    public class ReceivedDocumentPaymentFilter : IdFilter
     {
         /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.DateOfPayment"/>
         public CompareFilterItem<DateTime> DateOfPayment { get; set; } = new CompareFilterItem<DateTime>(nameof(ReceivedDocumentPaymentListGetModel.DateOfPayment));
-
-        /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.Id));
 
         /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.InvoiceId"/>
         public FilterItem<int> InvoiceId { get; set; } = new CompareFilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.InvoiceId));

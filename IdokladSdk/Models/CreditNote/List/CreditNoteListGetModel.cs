@@ -225,6 +225,11 @@ namespace IdokladSdk.Models.CreditNote
         public int? SalesPosEquipmentId { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<TagDocumentListGetModel> Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
         public string VariableSymbol { get; set; }

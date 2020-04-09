@@ -4,21 +4,17 @@
     /// Filter item.
     /// </summary>
     /// <typeparam name="T">Type of item.</typeparam>
-    public class FilterItem<T>
+    public class FilterItem<T> : FilterItemBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FilterItem{T}"/> class.
         /// </summary>
         /// <param name="name">Item name.</param>
         public FilterItem(string name)
+            : base(name)
         {
             Name = name;
         }
-
-        /// <summary>
-        /// Gets or sets item name.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// Determine equality.

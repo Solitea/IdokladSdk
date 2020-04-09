@@ -144,5 +144,10 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Only for Cz legislation.
         /// </summary>
         public int? SalesPosEquipmentId { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<TagDocumentListGetModel> Tags { get; set; }
     }
 }

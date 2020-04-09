@@ -202,6 +202,11 @@ namespace IdokladSdk.Models.CreditNote
         public string Swift { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<int> Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
         [StringLength(10)]

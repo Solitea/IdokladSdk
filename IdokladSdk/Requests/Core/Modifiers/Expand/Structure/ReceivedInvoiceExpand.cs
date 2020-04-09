@@ -31,5 +31,10 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// Gets or sets vat reverse charge code.
         /// </summary>
         public VatReverseChargeCodeExpand VatReverseChargeCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public TagsExpand Tags { get; set; }
     }
 }

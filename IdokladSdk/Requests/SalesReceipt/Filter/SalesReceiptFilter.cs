@@ -1,6 +1,7 @@
 ﻿using System;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.SalesReceipt;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.SalesReceipt.Filter
@@ -8,11 +9,8 @@ namespace IdokladSdk.Requests.SalesReceipt.Filter
     /// <summary>
     /// Filterable properties of <see cref="SalesReceiptListGetModel"/>.
     /// </summary>
-    public class SalesReceiptFilter
+    public class SalesReceiptFilter : IdFilter
     {
-        /// <inheritdoc cref="SalesReceiptListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(SalesReceiptListGetModel.Id));
-
         /// <inheritdoc cref="SalesReceiptListGetModel.DateOfIssue"/>
         public CompareFilterItem<DateTime> DateOfIssue { get; set; } = new CompareFilterItem<DateTime>(nameof(SalesReceiptListGetModel.DateOfIssue));
 
@@ -21,5 +19,10 @@ namespace IdokladSdk.Requests.SalesReceipt.Filter
 
         /// <inheritdoc cref="SalesReceiptListGetModel.SalesPosEquipmentId"/>
         public FilterItem<ExportedState> SalesPosEquipmentId { get; set; } = new FilterItem<ExportedState>(nameof(SalesReceiptListGetModel.SalesPosEquipmentId));
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }

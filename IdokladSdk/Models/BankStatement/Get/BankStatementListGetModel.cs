@@ -56,5 +56,10 @@ namespace IdokladSdk.Models.BankStatement
         /// Gets or sets end date of the statement.
         /// </summary>
         public DateTime PeriodDateTo { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<TagDocumentListGetModel> Tags { get; set; }
     }
 }

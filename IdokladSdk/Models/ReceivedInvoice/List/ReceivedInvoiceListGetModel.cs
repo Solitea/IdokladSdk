@@ -163,6 +163,11 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public string ReceivedDocumentNumber { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<TagDocumentListGetModel> Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
         [StringLength(10)]

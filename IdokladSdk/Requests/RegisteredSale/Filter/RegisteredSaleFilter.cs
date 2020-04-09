@@ -1,6 +1,7 @@
 ﻿using System;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.RegisteredSale;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.RegisteredSale.Filter
@@ -8,11 +9,8 @@ namespace IdokladSdk.Requests.RegisteredSale.Filter
     /// <summary>
     /// Filterable properties of <see cref=" RegisteredSaleListGetModel"/>.
     /// </summary>
-    public class RegisteredSaleFilter
+    public class RegisteredSaleFilter : IdFilter
     {
-        /// <inheritdoc cref="RegisteredSaleListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(RegisteredSaleListGetModel.Id));
-
         /// <inheritdoc cref="RegisteredSaleListGetModel.SalesReceiptId"/>
         public FilterItem<int> SalesReceiptId { get; set; } = new FilterItem<int>(nameof(RegisteredSaleListGetModel.SalesReceiptId));
 

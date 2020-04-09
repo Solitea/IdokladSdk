@@ -8,11 +8,8 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters
     /// <summary>
     /// Filterable properties of <see cref="ContactListGetModel"/>.
     /// </summary>
-    public class ContactFilter
+    public class ContactFilter : IdFilter
     {
-        /// <inheritdoc cref="ContactListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(ContactListGetModel.Id));
-
         /// <inheritdoc cref="Metadata.DateLastChange"/>
         public CompareFilterItem<DateTime> DateLastChange { get; set; } = new CompareFilterItem<DateTime>(nameof(Metadata.DateLastChange));
 

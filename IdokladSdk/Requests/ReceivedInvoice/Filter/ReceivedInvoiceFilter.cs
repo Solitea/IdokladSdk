@@ -1,16 +1,14 @@
 ﻿using System;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.ReceivedInvoice;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReceivedInvoice.Filter
 {
     /// <inheritdoc cref="ReceivedInvoiceGetModel"/>
-    public class ReceivedInvoiceFilter
+    public class ReceivedInvoiceFilter : IdFilter
     {
-        /// <inheritdoc cref="ReceivedInvoiceListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(ReceivedInvoiceGetModel.Id));
-
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.CurrencyId"/>
         public FilterItem<int> CurrencyId { get; set; } = new FilterItem<int>(nameof(ReceivedInvoiceGetModel.CurrencyId));
 
@@ -55,5 +53,10 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Filter
 
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(ReceivedInvoiceGetModel.PartnerId));
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }
