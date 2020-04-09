@@ -36,5 +36,10 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// Gets or sets salesPosEquipment.
         /// </summary>
         public SalesPosEquipmentExpand SalesPosEquipment { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public TagsExpand Tags { get; set; }
     }
 }

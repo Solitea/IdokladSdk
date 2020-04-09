@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.ReadOnly.Currency;
 using IdokladSdk.Models.SalesPosEquipment;
@@ -34,5 +35,10 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets payments.
         /// </summary>
         public new List<SalesReceiptPaymentGetModel> Payments { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public new List<TagDocumentGetModel> Tags { get; set; }
     }
 }

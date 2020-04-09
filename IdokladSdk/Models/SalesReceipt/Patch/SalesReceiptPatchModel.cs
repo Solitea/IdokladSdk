@@ -60,5 +60,10 @@ namespace IdokladSdk.Models.SalesReceipt
         /// </summary>
         [NullableForeignKey]
         public int? SalesPosEquipmentId { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<int> Tags { get; set; }
     }
 }

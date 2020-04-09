@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Models.CashRegister;
+﻿using System.Collections.Generic;
+using IdokladSdk.Models.CashRegister;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.ReadOnly.Currency;
 using IdokladSdk.Models.RegisteredSale;
@@ -29,5 +31,10 @@ namespace IdokladSdk.Models.CashVoucher
         /// Gets or sets registered sale.
         /// </summary>
         public new RegisteredSaleGetModel RegisteredSale { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public new List<TagDocumentGetModel> Tags { get; set; }
     }
 }

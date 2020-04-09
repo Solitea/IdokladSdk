@@ -16,5 +16,10 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// Gets or sets bank account.
         /// </summary>
         public BankAccountExpand BankAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public TagsExpand Tags { get; set; }
     }
 }

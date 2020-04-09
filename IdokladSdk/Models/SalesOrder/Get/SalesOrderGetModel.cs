@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.ReadOnly.Currency;
 using IdokladSdk.Models.ReadOnly.PaymentOption;
@@ -24,6 +25,11 @@ namespace IdokladSdk.Models.SalesOrder
         /// Gets or sets paymentOption.
         /// </summary>
         public PaymentOptionGetModel PaymentOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public new List<TagDocumentGetModel> Tags { get; set; }
 
         /// <summary>
         /// Gets or sets sales order items.

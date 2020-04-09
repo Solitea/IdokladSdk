@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.IssuedInvoice;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.IssuedInvoice.Filter
@@ -9,7 +10,7 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
     /// <summary>
     /// Filterable properties for <see cref="IssuedInvoiceListGetModel"/>.
     /// </summary>
-    public class IssuedInvoiceFilter
+    public class IssuedInvoiceFilter : IdFilter
     {
         /// <inheritdoc cref="IssuedInvoiceListGetModel.ConstantSymbolId"/>
         public FilterItem<int> ConstantSymbolId { get; set; } = new FilterItem<int>(nameof(IssuedInvoiceListGetModel.ConstantSymbolId));
@@ -38,9 +39,6 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
         /// <inheritdoc cref="IssuedInvoiceListGetModel.Exported"/>
         public FilterItem<ExportedState> Exported { get; set; } = new FilterItem<ExportedState>(nameof(IssuedInvoiceListGetModel.Exported));
 
-        /// <inheritdoc cref="IssuedInvoiceListGetModel.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(IssuedInvoiceListGetModel.Id));
-
         /// <summary>
         /// Gets or sets a value indicating whether invoice is paid.
         /// </summary>
@@ -53,5 +51,10 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
 
         /// <inheritdoc cref="IssuedInvoiceListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>("PurchaserId");
+
+        /// <summary>
+        /// Gets or sets numeric tag ids.
+        /// </summary>
+        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
     }
 }

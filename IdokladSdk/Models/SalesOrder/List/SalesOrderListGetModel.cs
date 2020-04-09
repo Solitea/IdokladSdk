@@ -118,5 +118,10 @@ namespace IdokladSdk.Models.SalesOrder
         /// Gets or sets state.
         /// </summary>
         public SalesOrderState State { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<TagDocumentListGetModel> Tags { get; set; }
     }
 }
