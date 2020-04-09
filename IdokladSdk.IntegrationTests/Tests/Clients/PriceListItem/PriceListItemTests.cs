@@ -6,6 +6,7 @@ using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.PriceListItem;
+using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
@@ -13,17 +14,30 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
     [TestFixture]
     public partial class PriceListItemTests : TestBase
     {
+        private readonly List<int> _newPriceListItems = new List<int>();
         private int _newPriceListItemId = 0;
         private PriceListItemPostModel _priceListItemPostModel;
         private DateTime _dateLastChange;
 
         public PriceListItemClient PriceListItemClient { get; set; }
 
+        public StockMovementClient StockMovementClient { get; set; }
+
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
             InitDokladApi();
             PriceListItemClient = DokladApi.PriceListItemClient;
+            StockMovementClient = DokladApi.StockMovementClient;
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            foreach (var id in _newPriceListItems)
+            {
+                PriceListItemClient.Delete(id);
+            }
         }
 
         [Test]
@@ -37,6 +51,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             // Act
             var data = PriceListItemClient.Post(_priceListItemPostModel).AssertResult();
             _newPriceListItemId = data.Id;
+            _newPriceListItems.Add(_newPriceListItemId);
 
             // Assert
             Assert.Greater(data.Id, 0);
@@ -76,6 +91,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         {
             // Act
             var data = PriceListItemClient.Delete(_newPriceListItemId, true).AssertResult();
+            _newPriceListItems.Remove(_newPriceListItemId);
 
             // Assert
             Assert.True(data);
@@ -94,6 +110,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             var data = PriceListItemClient.Post(batch).AssertResult();
             var priceListItemGetModel = data.First();
             _newPriceListItemId = priceListItemGetModel.Id;
+            _newPriceListItems.Add(_newPriceListItemId);
 
             // Assert
             Assert.Greater(priceListItemGetModel.Id, 0);
@@ -142,9 +159,34 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
             // Act
             var data = PriceListItemClient.Delete(idBatch, true).AssertResult();
+            _newPriceListItems.Remove(_newPriceListItemId);
 
             // Assert
             Assert.True(data.First());
+        }
+
+        [Test]
+        public void Post_AsStockItemWithInitialData_SuccessfullyPosted()
+        {
+            // Arrange
+            _priceListItemPostModel = PriceListItemClient.Default().AssertResult();
+            SetPostModel();
+            _priceListItemPostModel.InitialDateStockBalance = new DateTime(2020, 01, 01).SetKindUtc();
+            _priceListItemPostModel.InitialStockBalance = 100;
+
+            // Act
+            var data = PriceListItemClient.Post(_priceListItemPostModel).AssertResult();
+            _newPriceListItems.Add(data.Id);
+
+            // Assert
+            Assert.Greater(data.Id, 0);
+            var stockMovements = StockMovementClient.List()
+                .Filter(f => f.PriceListItemId.IsEqual(data.Id)).Get()
+                .AssertResult();
+            var initialStockMovement = stockMovements.Items.FirstOrDefault();
+            Assert.NotNull(initialStockMovement);
+            Assert.AreEqual(_priceListItemPostModel.InitialStockBalance, initialStockMovement.Amount);
+            Assert.AreEqual(_priceListItemPostModel.InitialDateStockBalance, initialStockMovement.DateOfMovement);
         }
 
         private void SetPostModel()

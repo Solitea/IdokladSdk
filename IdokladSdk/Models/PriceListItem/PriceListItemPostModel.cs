@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Validation.Attributes;
 
@@ -32,6 +33,17 @@ namespace IdokladSdk.Models.PriceListItem
         /// </summary>
         [RequiredNonDefault]
         public int CurrencyId { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of the initial stock movement.
+        /// </summary>
+        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, allowNull: true)]
+        public DateTime? InitialDateStockBalance { get; set; }
+
+        /// <summary>
+        /// Gets or sets initial stock balance.
+        /// </summary>
+        public decimal? InitialStockBalance { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether stock item indicator.
