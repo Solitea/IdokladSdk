@@ -22,6 +22,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         [Order(7)]
         public async Task PostAsync_SuccessfullyCreated()
         {
+            var vatCodeId = 24;
+
             // Arrange
             _receivedInvoicePostModelAsync = (await _receivedInvoiceClient.DefaultAsync()).AssertResult();
             _receivedInvoicePostModelAsync.PartnerId = PartnerId;
@@ -31,7 +33,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             {
                 Name = "Test",
                 UnitPrice = 100,
-                Amount = 1
+                Amount = 1,
+                VatCodeId = vatCodeId
             });
 
             // Act
@@ -43,6 +46,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             Assert.AreEqual(_receivedInvoicePostModelAsync.DateOfIssue, data.DateOfIssue);
             Assert.AreEqual(PartnerId, data.PartnerId);
             Assert.Greater(data.Items.Count, 0);
+            Assert.AreEqual(vatCodeId, data.Items.First(i => i.ItemType == IssuedInvoiceItemType.ItemTypeNormal).VatCodeId);
         }
 
         [Test]

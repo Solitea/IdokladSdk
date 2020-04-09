@@ -8,7 +8,7 @@ namespace IdokladSdk.Requests.Mail
     /// <summary>
     /// CreditNote email.
     /// </summary>
-    public partial class CreditNoteEmail : Email, IEmail<CreditNoteEmailSettings>
+    public partial class CreditNoteEmail : Email, IEmail<EmailSendResult, CreditNoteEmailSettings>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreditNoteEmail"/> class.
