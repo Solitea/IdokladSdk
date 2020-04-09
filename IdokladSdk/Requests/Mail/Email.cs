@@ -45,6 +45,17 @@ namespace IdokladSdk.Requests.Mail
             return Client.Post<TSettings, EmailSendResult>(url, settings);
         }
 
+        /// <summary>
+        /// Send mail.
+        /// </summary>
+        /// <typeparam name="TResult">Type of result.</typeparam>
+        /// <param name="url">URL.</param>
+        /// <returns>Result.</returns>
+        protected ApiResult<TResult> Send<TResult>(string url)
+        {
+            return Client.Post<TResult>(url);
+        }
+
         private void Validate(EmailSettings settings)
         {
             if (settings == null)

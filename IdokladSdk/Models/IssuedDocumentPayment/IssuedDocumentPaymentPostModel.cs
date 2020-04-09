@@ -52,5 +52,10 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
         /// </summary>
         [NullableForeignKey]
         public int? SalesPosEquipmentId { get; set; }
+
+        /// <summary>
+        /// Gets or sets send payment confirmation.
+        /// </summary>
+        public bool? SendPaymentConfirmation { get; set; }
     }
 }

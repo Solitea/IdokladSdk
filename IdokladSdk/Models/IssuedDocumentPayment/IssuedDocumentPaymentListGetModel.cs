@@ -67,6 +67,11 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
         public int InvoiceId { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the payment confirmation has been sent.
+        /// </summary>
+        public bool IsConfirmationSent { get; set; }
+
+        /// <summary>
         /// Gets or sets a value Indicating whether the document of payment is registered in electronics records of sales.
         /// Only for Cz Legislation.
         /// </summary>

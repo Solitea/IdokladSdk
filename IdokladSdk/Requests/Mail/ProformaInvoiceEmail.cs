@@ -8,7 +8,7 @@ namespace IdokladSdk.Requests.Mail
     /// <summary>
     /// ProformaInvoice email.
     /// </summary>
-    public partial class ProformaInvoiceEmail : Email, IEmail<ProformaInvoiceEmailSettings>
+    public partial class ProformaInvoiceEmail : Email, IEmail<EmailSendResult, ProformaInvoiceEmailSettings>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProformaInvoiceEmail"/> class.
