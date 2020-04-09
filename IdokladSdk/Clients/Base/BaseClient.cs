@@ -139,6 +139,13 @@ namespace IdokladSdk.Clients
             return Post<TPostModel, TGetModel>(ResourceUrl, model);
         }
 
+        internal ApiResult<TGetModel> Post<TGetModel>(string resource)
+        {
+            var request = CreateRequest(resource, Method.POST);
+
+            return Execute<TGetModel>(request);
+        }
+
         internal ApiBatchResult<TGetModel> Post<TPostModel, TGetModel>(string resource, IList<TPostModel> models)
             where TPostModel : new()
             where TGetModel : new()
@@ -196,6 +203,11 @@ namespace IdokladSdk.Clients
         /// <returns>New RestRequest instance.</returns>
         protected RestRequest CreateRequest(string resource, Method method)
         {
+            if (string.IsNullOrWhiteSpace(resource))
+            {
+                throw new ArgumentNullException("Resource URL cannot be null or empty.");
+            }
+
             var request = new RestRequest(resource, method);
             var token = _apiContext.GetToken();
 

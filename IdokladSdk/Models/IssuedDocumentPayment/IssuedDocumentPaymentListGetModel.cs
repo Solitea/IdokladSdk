@@ -57,9 +57,19 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets document number.
+        /// </summary>
+        public string InvoiceDocumentNumber { get; set; }
+
+        /// <summary>
         /// Gets or sets invoice Id.
         /// </summary>
         public int InvoiceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the payment confirmation has been sent.
+        /// </summary>
+        public bool IsConfirmationSent { get; set; }
 
         /// <summary>
         /// Gets or sets a value Indicating whether the document of payment is registered in electronics records of sales.
@@ -71,6 +81,11 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
         /// Gets or sets additional information about the entity.
         /// </summary>
         public Metadata Metadata { get; set; }
+
+        /// <summary>
+        /// Gets or sets partner name.
+        /// </summary>
+        public string Partner { get; set; }
 
         /// <summary>
         /// Gets or sets payment option id.

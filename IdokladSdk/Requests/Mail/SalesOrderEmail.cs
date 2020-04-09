@@ -8,7 +8,7 @@ namespace IdokladSdk.Requests.Mail
     /// <summary>
     /// SalesOrder email.
     /// </summary>
-    public partial class SalesOrderEmail : Email, IEmail<SalesOrderEmailSettings>
+    public partial class SalesOrderEmail : Email, IEmail<EmailSendResult, SalesOrderEmailSettings>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SalesOrderEmail"/> class.

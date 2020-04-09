@@ -64,6 +64,11 @@ namespace IdokladSdk.Models.PriceListItem
         public string Unit { get; set; }
 
         /// <summary>
+        /// Gets or sets VAT classification code.
+        /// </summary>
+        public int? VatCodeId { get; set; }
+
+        /// <summary>
         /// Gets or sets vAT rate type.
         /// </summary>
         public VatRateType? VatRateType { get; set; }

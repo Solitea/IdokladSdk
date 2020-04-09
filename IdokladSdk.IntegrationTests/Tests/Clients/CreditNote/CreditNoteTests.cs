@@ -276,6 +276,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(patchModel.PartnerAddress.VatIdentificationNumber, getModel.PartnerAddress.VatIdentificationNumber);
             Assert.AreEqual(patchModel.PartnerAddress.VatIdentificationNumberSk, getModel.PartnerAddress.VatIdentificationNumberSk);
             Assert.AreEqual(patchModel.PartnerAddress.Www, getModel.PartnerAddress.Www);
+            Assert.AreEqual(patchModel.MyAddress.AccountNumber, getModel.MyAddress.AccountNumber);
+            Assert.AreEqual(patchModel.MyAddress.Iban, getModel.MyAddress.Iban);
+            Assert.AreEqual(patchModel.MyAddress.Swift, getModel.MyAddress.Swift);
+            Assert.AreEqual("0600", getModel.MyAddress.BankCode);
             Assert.AreEqual(patchModel.PaymentOptionId, getModel.PaymentOptionId);
             Assert.IsNotNull(getModel.Prices);
             Assert.NotZero(getModel.Prices.TotalWithVat);
@@ -504,6 +508,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
                     VatIdentificationNumber = "9876543210",
                     VatIdentificationNumberSk = "3216549870",
                     Www = "xxx.yyy.cz"
+                },
+                MyAddress = new MyDocumentAddressPatchModel
+                {
+                    AccountNumber = "555777",
+                    Iban = "5453187522",
+                    Swift = "asda514",
+                    BankId = 14
                 },
                 PaymentOptionId = 4,
                 ReportLanguage = Language.Sk,
