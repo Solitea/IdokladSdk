@@ -8,7 +8,7 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Tag;
 using NUnit.Framework;
 
-namespace Doklad.Tests.Integration.Doklad.Web.Api.ControllerTests.Version3
+namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
 {
     [TestFixture]
     public partial class TagTests : TestBase

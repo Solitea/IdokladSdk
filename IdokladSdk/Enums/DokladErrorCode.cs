@@ -71,13 +71,23 @@
         IsRegistered = 109,
 
         /// <summary>
-        /// Credit note has already been paid
+        /// Document has already been paid
         /// </summary>
-        CreditNoteHasAlreadyBeenPaid = 110,
+        AlreadyPaid = 110,
 
         /// <summary>
-        /// Unpaid amount of the invoice is less than amount of the credit note or credit note currency and invoice currency differ
+        /// Offset conditions not met
         /// </summary>
-        CreditNoteOffsetFailed = 111
+        OffsetNotPossible = 111,
+
+        /// <summary>
+        /// Document has already been accounted
+        /// </summary>
+        AlreadyAccounted = 112,
+
+        /// <summary>
+        /// Document has not been paid
+        /// </summary>
+        NotPaid = 113
     }
 }

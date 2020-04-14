@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
@@ -20,6 +21,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
     public partial class ProformaInvoiceTests : TestBase
     {
         private const int PartnerId = 323823;
+        private const int UnpaidProformaInvoiceId = 922399;
+        private const int AccountedProformaInvoiceId = 922400;
+
         private int _proformaInvoiceId;
         private ProformaInvoicePostModel _proformaInvoicePostModel;
         private ProformaInvoiceClient _proformaInvoiceClient;
@@ -128,8 +132,31 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
-        [Order(6)]
+        public void GetInvoiceForAccount_AlreadyAccounted_ReturnsCorrectErrorCode()
+        {
+            // Act
+            var result = _proformaInvoiceClient.GetInvoiceForAccount(AccountedProformaInvoiceId);
 
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.AreEqual(DokladErrorCode.AlreadyAccounted, result.ErrorCode);
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [Test]
+        public void GetInvoiceForAccount_NotPaid_ReturnsCorrectErrorCode()
+        {
+            // Act
+            var result = _proformaInvoiceClient.GetInvoiceForAccount(UnpaidProformaInvoiceId);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.AreEqual(DokladErrorCode.NotPaid, result.ErrorCode);
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [Test]
+        [Order(6)]
         public void GetInvoiceForAccount_SuccessfullyGetIssuedInvoiceAccountPostModel()
         {
             // Act
