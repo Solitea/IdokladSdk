@@ -11,6 +11,7 @@ namespace IdokladSdk.Clients
     /// </summary>
     public partial class SalesReceiptClient
         : BaseClient,
+        ICopyRequest<SalesReceiptPostModel>,
         IDeleteRequest,
         IEntityDetail<SalesReceiptDetail>,
         IEntityList<SalesReceiptList>,
@@ -54,6 +55,13 @@ namespace IdokladSdk.Clients
         public SalesReceiptList List()
         {
             return new SalesReceiptList(this);
+        }
+
+        /// <inheritdoc />
+        public ApiResult<SalesReceiptPostModel> Copy(int id)
+        {
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return Get<SalesReceiptPostModel>(resource);
         }
 
         /// <inheritdoc/>
