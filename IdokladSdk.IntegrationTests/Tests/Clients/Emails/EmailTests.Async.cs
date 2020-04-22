@@ -67,5 +67,31 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             Assert.IsTrue(result.Sent.Contains(MyEmail));
             Assert.IsTrue(!result.NotSent.Any());
         }
+
+        [TestCase(RemindersDocumentType.ProformaInvoice, 922399)]
+        [TestCase(RemindersDocumentType.IssuedInvoice, 914456)]
+        public async Task Send_Reminders_SuccessfullySentAsync(RemindersDocumentType documentType, int id)
+        {
+            // Arrange
+            var settings = new RemindersEmailSettings
+            {
+                DocumentId = id,
+                ReportLanguage = Language.En,
+                EmailBody = "Test Reminders email.",
+                EmailSubject = "Reminder",
+                DocumentType = documentType,
+                SendToSelf = true,
+                SendToPartner = true,
+                OtherRecipients = new List<string> { OtherEmail }
+            };
+
+            // Act
+            var response = await MailClient.RemindersEmail.SendAsync(settings);
+            var result = response.AssertResult();
+
+            // Assert
+            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
+            Assert.IsTrue(!result.NotSent.Any());
+        }
     }
 }
