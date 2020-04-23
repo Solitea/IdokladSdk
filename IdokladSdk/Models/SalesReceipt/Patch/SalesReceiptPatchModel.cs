@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesReceipt
@@ -48,6 +49,11 @@ namespace IdokladSdk.Models.SalesReceipt
         /// </summary>
         [NullableForeignKey]
         public NullableProperty<int> PartnerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets partner address.
+        /// </summary>
+        public DocumentAddressPatchModel PartnerAddress { get; set; }
 
         /// <summary>
         /// Gets or sets List of payments.
