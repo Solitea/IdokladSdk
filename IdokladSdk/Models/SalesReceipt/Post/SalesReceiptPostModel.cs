@@ -82,6 +82,11 @@ namespace IdokladSdk.Models.SalesReceipt
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets note.
+        /// </summary>
+        public string Note { get; set; }
+
+        /// <summary>
         /// Gets or sets partner id.
         /// </summary>
         [NullableForeignKey]

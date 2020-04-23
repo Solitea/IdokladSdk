@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -16,6 +17,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
     {
         private const int PartnerId = 323823;
         private const int BankStatementId = 990771;
+        private const int Tag1Id = 990;
         private BankStatementClient _bankStatementClient;
         private IssuedInvoiceClient _issuedInvoiceClient;
         private int _invoiceId;
@@ -71,6 +73,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
                 VariableSymbol = invoice.VariableSymbol,
                 MovementType = MovementType.Entry,
                 CurrencyCode = "CZK",
+                Tags = new List<int> { Tag1Id }
             };
 
             // Act
@@ -83,6 +86,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             var item = data.CreatedBankStatement.Items.First();
             Assert.AreEqual(invoice.VariableSymbol, item.VariableSymbol);
             Assert.AreEqual(invoice.Prices.TotalWithVat, item.Prices.PaidAmount);
+            Assert.IsNotNull(data.CreatedBankStatement.Tags.FirstOrDefault(t => t.TagId == Tag1Id));
         }
 
         [Test]

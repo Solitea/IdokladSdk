@@ -71,7 +71,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             // Arrange
             var postModel = Default().AssertResult();
-            this.SetRequiredProperties(postModel);
+            SetRequiredProperties(postModel);
             var id = PostAndMarkForDelete(postModel);
             var patchModel = new TPatchModel { Id = id };
             SetTags(patchModel, new List<int>());
@@ -80,7 +80,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             var result = Update(patchModel).AssertResult();
 
             // Assert
-            this.AssertHasEmptyTags(GetTags(result));
+            AssertHasEmptyTags(GetTags(result));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             // Arrange
             var postModel = Default().AssertResult();
-            this.SetRequiredProperties(postModel);
+            SetRequiredProperties(postModel);
             GetTags(postModel).Add(Tag1Id);
             GetTags(postModel).Add(Tag2Id);
             var id = PostAndMarkForDelete(postModel);
@@ -98,7 +98,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             var result = Update(patchModel).AssertResult();
 
             // Assert
-            this.AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
+            AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             // Arrange
             var postModel = Default().AssertResult();
-            this.SetRequiredProperties(postModel);
+            SetRequiredProperties(postModel);
             var id = PostAndMarkForDelete(postModel);
             var patchModel = new TPatchModel { Id = id };
             SetTags(patchModel, new List<int> { Tag1Id, Tag3Id });
@@ -115,7 +115,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             var result = Update(patchModel).AssertResult();
 
             // Assert
-            this.AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag3Id });
+            AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag3Id });
         }
 
         [Test]
@@ -123,14 +123,14 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             // Arrange
             var postModel = Default().AssertResult();
-            this.SetRequiredProperties(postModel);
+            SetRequiredProperties(postModel);
 
             // Act
             var result = Post(postModel).AssertResult();
             MarkForDelete(result.Id);
 
             // Assert
-            this.AssertHasEmptyTags(GetTags(result));
+            AssertHasEmptyTags(GetTags(result));
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             // Arrange
             var postModel = Default().AssertResult();
-            this.SetRequiredProperties(postModel);
+            SetRequiredProperties(postModel);
             GetTags(postModel).Add(Tag1Id);
             GetTags(postModel).Add(Tag2Id);
 
@@ -147,7 +147,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             MarkForDelete(result.Id);
 
             // Assert
-            this.AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
+            AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             // Arrange
             var postModel = Default().AssertResult();
-            this.SetRequiredProperties(postModel);
+            SetRequiredProperties(postModel);
             GetTags(postModel).Add(1);
 
             // Act
@@ -171,7 +171,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             // Arrange
             var postModel = Default().AssertResult();
-            this.SetRequiredProperties(postModel);
+            SetRequiredProperties(postModel);
             SetTags(postModel, null);
 
             // Act
@@ -179,7 +179,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             MarkForDelete(result.Id);
 
             // Assert
-            this.AssertHasEmptyTags(GetTags(result));
+            AssertHasEmptyTags(GetTags(result));
         }
 
         [Test]
@@ -187,7 +187,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             // Arrange
             var postModel = Default().AssertResult();
-            this.SetRequiredProperties(postModel);
+            SetRequiredProperties(postModel);
             GetTags(postModel).Add(Tag1Id);
 
             // Act
@@ -195,7 +195,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             MarkForDelete(result.Id);
 
             // Assert
-            this.AssertHasTags(GetTags(result), new List<int> { Tag1Id });
+            AssertHasTags(GetTags(result), new List<int> { Tag1Id });
         }
 
         protected virtual ApiResult<TPostModel> Default() => (ApiResult<TPostModel>)((IDefaultRequest<TPostModel>)Client).Default();

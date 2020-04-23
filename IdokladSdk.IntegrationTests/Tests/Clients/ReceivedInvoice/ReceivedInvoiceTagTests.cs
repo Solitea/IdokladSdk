@@ -27,7 +27,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             var result = Client.Copy(EntityWithTags1Id).AssertResult();
 
             // Assert
-            this.AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
         protected override void SetRequiredProperties(ReceivedInvoicePostModel postModel)

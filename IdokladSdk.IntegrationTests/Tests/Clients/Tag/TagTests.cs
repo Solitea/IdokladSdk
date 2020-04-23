@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -15,12 +16,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
     {
         private const string Tag1Color = "#123456";
         private const string Tag2Color = "#654321";
-        private const string Tag1Name = "Tag 1";
-        private const string Tag2Name = "Tag 2";
 
         private readonly List<int> _tagIdsToDelete = new List<int>();
 
         public TagClient TagClient { get; set; }
+
+        private string Tag1Name { get; set; }
+
+        private string Tag2Name { get; set; }
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -33,6 +36,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         public void SetUp()
         {
             _tagIdsToDelete.Clear();
+            var suffixToAvoidDuplicates = (long)DateTime.Now.TimeOfDay.TotalMilliseconds;
+            Tag1Name = $"Tag 1 ({suffixToAvoidDuplicates})";
+            Tag2Name = $"Tag 2 ({suffixToAvoidDuplicates})";
         }
 
         [TearDown]
@@ -302,11 +308,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
         }
 
-        private int PostAndMarkForDelete(TagPostModel tagPostModel)
+        private string Lowercase(string str)
         {
-            var tagGetModel = TagClient.Post(tagPostModel).AssertResult();
-            MarkForDelete(tagGetModel.Id);
-            return tagGetModel.Id;
+            var cultureInfo = CultureInfo.InvariantCulture;
+            return str.ToLower(cultureInfo);
         }
 
         private void MarkForDelete(int id)
@@ -314,10 +319,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             _tagIdsToDelete.Add(id);
         }
 
-        private string Lowercase(string str)
+        private int PostAndMarkForDelete(TagPostModel tagPostModel)
         {
-            var cultureInfo = CultureInfo.InvariantCulture;
-            return str.ToLower(cultureInfo);
+            var tagGetModel = TagClient.Post(tagPostModel).AssertResult();
+            MarkForDelete(tagGetModel.Id);
+            return tagGetModel.Id;
         }
     }
 }

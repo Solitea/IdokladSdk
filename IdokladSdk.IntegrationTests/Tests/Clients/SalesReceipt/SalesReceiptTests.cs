@@ -14,9 +14,10 @@ using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 {
-    public class SalesReceiptTests : TestBase
+    public partial class SalesReceiptTests : TestBase
     {
         private const int PartnerId = 323823;
+        private readonly List<int> _salesReceiptIds = new List<int>();
         private int _salesReceiptId;
         private SalesReceiptClient _client;
         private SalesReceiptPostModel _postModel;
@@ -28,44 +29,30 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             _client = DokladApi.SalesReceiptClient;
         }
 
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            _salesReceiptIds.ForEach(id => _client.Delete(id));
+        }
+
         [Test]
         [Order(1)]
         public void Post_SuccessfullyCreated()
         {
             // Arrange
             _postModel = _client.Default().AssertResult();
-            _postModel.PartnerId = PartnerId;
-            _postModel.Name = "Name";
-            _postModel.ElectronicRecordsOfSales = new ElectronicRecordsOfSalesPostModel
-            {
-                IsEet = false
-            };
-            _postModel.Items.Clear();
-            _postModel.Items.Add(new SalesReceiptItemPostModel
-            {
-                Name = "Test",
-                UnitPrice = 100,
-                PriceType = PriceTypeWithoutOnlyBase.WithVat,
-                VatRateType = VatRateType.Basic,
-                Amount = 1,
-                Unit = string.Empty
-            });
-            _postModel.Payments.Clear();
-            _postModel.Payments.Add(new SalesReceiptPaymentPostModel
-            {
-                PaymentAmount = 100,
-                PaymentOptionId = 3,
-                PaymentTransactionCode = string.Empty
-            });
+            SetPostModel();
 
             // Act
             var data = _client.Post(_postModel).AssertResult();
             _salesReceiptId = data.Id;
+            _salesReceiptIds.Add(_salesReceiptId);
 
             // Assert
             Assert.Greater(data.Id, 0);
             Assert.AreEqual(_postModel.DateOfIssue, data.DateOfIssue);
             Assert.AreEqual(PartnerId, data.PartnerId);
+            Assert.AreEqual(_postModel.Note, data.Note);
             Assert.Greater(data.Items.Count, 0);
             Assert.Greater(data.Payments.Count, 0);
         }
@@ -79,6 +66,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
             // Assert
             Assert.AreEqual(_salesReceiptId, data.Id);
+            Assert.AreEqual(_postModel.Note, data.Note);
         }
 
         [Test]
@@ -120,6 +108,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             {
                 Id = _salesReceiptId,
                 Name = "updated name",
+                Note = "updated note"
                 PartnerAddress = new DocumentAddressPatchModel
                 {
                     CompanyName = "CompanyUpdate"
@@ -132,12 +121,28 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
             // Assert
             Assert.AreEqual(model.Name, data.Name);
+            Assert.AreEqual(model.Note, data.Note);
             Assert.AreEqual(PartnerId, data.PartnerId);
             Assert.AreEqual(model.PartnerAddress.CompanyName, data.PartnerAddress.NickName);
         }
 
         [Test]
         [Order(6)]
+        public void Copy_SuccessfullyGetPosModel()
+        {
+            // Arrange
+            var salesReceiptToCopy = _client.Detail(_salesReceiptId).Get().AssertResult();
+
+            // Act
+            var data = _client.Copy(_salesReceiptId).AssertResult();
+
+            // Assert
+            Assert.AreEqual(salesReceiptToCopy.PartnerId, data.PartnerId);
+            Assert.AreEqual(salesReceiptToCopy.CurrencyId, data.CurrencyId);
+        }
+
+        [Test]
+        [Order(8)]
         public void Delete_SuccessfullyDeleted()
         {
             // Act
@@ -145,6 +150,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
             // Assert
             Assert.IsTrue(data);
+            _salesReceiptIds.Remove(_salesReceiptId);
         }
 
         [Test]
@@ -346,7 +352,32 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             Assert.AreEqual(BatchResultType.Success, data.Status);
             var id = data.Results.First().Data.Id;
             Assert.Greater(id, 0);
-            _client.Delete(id).AssertResult();
+            _salesReceiptIds.Add(id);
+        }
+
+        private void SetPostModel()
+        {
+            _postModel.PartnerId = PartnerId;
+            _postModel.Name = "Name";
+            _postModel.Note = "Note";
+            _postModel.ElectronicRecordsOfSales = new ElectronicRecordsOfSalesPostModel { IsEet = false };
+            _postModel.Items.Clear();
+            _postModel.Items.Add(new SalesReceiptItemPostModel
+            {
+                Name = "Test",
+                UnitPrice = 100,
+                PriceType = PriceTypeWithoutOnlyBase.WithVat,
+                VatRateType = VatRateType.Basic,
+                Amount = 1,
+                Unit = string.Empty
+            });
+            _postModel.Payments.Clear();
+            _postModel.Payments.Add(new SalesReceiptPaymentPostModel
+            {
+                PaymentAmount = 100,
+                PaymentOptionId = 3,
+                PaymentTransactionCode = string.Empty
+            });
         }
     }
 }
