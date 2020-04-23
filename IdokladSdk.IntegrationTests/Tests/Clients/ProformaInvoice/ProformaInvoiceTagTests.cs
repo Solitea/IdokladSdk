@@ -28,7 +28,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             var result = Client.GetInvoiceForAccount(EntityWithTags1Id).AssertResult();
 
             // Assert
-            this.AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             var result = Client.Copy(EntityWithTags1Id).AssertResult();
 
             // Assert
-            this.AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
         protected override void SetRequiredProperties(ProformaInvoicePostModel postModel)

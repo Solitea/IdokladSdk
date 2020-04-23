@@ -16,7 +16,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         public void OneTimeSetUp()
         {
             InitDokladApi();
-            _numericSequenceClient = this.DokladApi.NumericSequenceClient;
+            _numericSequenceClient = DokladApi.NumericSequenceClient;
         }
 
         [Test]

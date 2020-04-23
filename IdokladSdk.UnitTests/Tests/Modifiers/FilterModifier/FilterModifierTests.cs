@@ -35,7 +35,7 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             // Assert
             Assert.AreEqual(2, queryParams.Count);
             Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
-            var filterString = this.GetFilterExpression(filterExpression);
+            var filterString = GetFilterExpression(filterExpression);
             Assert.AreEqual(filterString, filter);
             Assert.IsTrue(queryParams.TryGetValue("filterType", out var filterType));
             Assert.AreEqual("and", filterType);
@@ -57,8 +57,8 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             // Assert
             Assert.AreEqual(2, queryParams.Count);
             Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
-            var filter1 = this.GetFilterExpression(filterExpression1);
-            var filter2 = this.GetFilterExpression(filterExpression2);
+            var filter1 = GetFilterExpression(filterExpression1);
+            var filter2 = GetFilterExpression(filterExpression2);
             Assert.AreEqual($"{filter1}|{filter2}", filter);
             Assert.IsTrue(queryParams.TryGetValue("filterType", out var filterType));
             Assert.AreEqual("or", filterType);
@@ -82,9 +82,9 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             // Assert
             Assert.AreEqual(2, queryParams.Count);
             Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
-            var filter1 = this.GetFilterExpression(filterExpression1);
-            var filter2 = this.GetFilterExpression(filterExpression2);
-            var filter3 = this.GetFilterExpression(filterExpression3);
+            var filter1 = GetFilterExpression(filterExpression1);
+            var filter2 = GetFilterExpression(filterExpression2);
+            var filter3 = GetFilterExpression(filterExpression3);
             Assert.AreEqual($"{filter1}|{filter2}|{filter3}", filter);
             Assert.IsTrue(queryParams.TryGetValue("filterType", out var filterType));
             Assert.AreEqual("and", filterType);

@@ -30,7 +30,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             var result = Client.Default(IssuedInvoiceTagTests.IssuedInvoiceWithTags1Id).AssertResult();
 
             // Assert
-            this.AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
         protected override ApiResult<CreditNotePostModel> Default() => Client.Default(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);

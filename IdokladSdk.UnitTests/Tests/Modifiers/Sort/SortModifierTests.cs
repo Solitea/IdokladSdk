@@ -34,7 +34,7 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Sort
             // Assert
             Assert.AreEqual(1, queryParams.Count);
             Assert.IsTrue(queryParams.TryGetValue("sort", out var sort));
-            var sortString = this.GetSortExpression(sortExpression);
+            var sortString = GetSortExpression(sortExpression);
             Assert.AreEqual(sortString, sort);
         }
 
@@ -53,8 +53,8 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Sort
             // Assert
             Assert.AreEqual(1, queryParams.Count);
             Assert.IsTrue(queryParams.TryGetValue("sort", out var sort));
-            var sort1 = this.GetSortExpression(sortExpression1);
-            var sort2 = this.GetSortExpression(sortExpression2);
+            var sort1 = GetSortExpression(sortExpression1);
+            var sort2 = GetSortExpression(sortExpression2);
             Assert.AreEqual($"{sort1}|{sort2}", sort);
         }
 
@@ -74,8 +74,8 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Sort
             // Assert
             Assert.AreEqual(1, queryParams.Count);
             Assert.IsTrue(queryParams.TryGetValue("sort", out var sort));
-            var sort1 = this.GetSortExpression(sortExpression1);
-            var sort2 = this.GetSortExpression(sortExpression2);
+            var sort1 = GetSortExpression(sortExpression1);
+            var sort2 = GetSortExpression(sortExpression2);
             Assert.AreEqual($"{sort1}|{sort2}", sort);
         }
 
