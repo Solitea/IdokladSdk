@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Validation.Attributes;
@@ -100,6 +101,11 @@ namespace IdokladSdk.Models.BankStatement
         /// </summary>
         [StringLength(10)]
         public string SpecificSymbol { get; set; }
+
+        /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public List<int> Tags { get; set; }
 
         /// <summary>
         /// Gets or sets variable symbol.
