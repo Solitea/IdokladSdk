@@ -106,6 +106,31 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             Assert.IsTrue(!result.NotSent.Any());
         }
 
+        [TestCase(RemindersDocumentType.ProformaInvoice, 922399)]
+        [TestCase(RemindersDocumentType.IssuedInvoice, 914456)]
+        public void Send_Reminders_SuccessfullySent(RemindersDocumentType documentType, int id)
+        {
+            // Arrange
+            var settings = new RemindersEmailSettings
+            {
+                DocumentId = id,
+                ReportLanguage = Language.En,
+                EmailBody = "Test Reminders email.",
+                EmailSubject = "Reminder",
+                DocumentType = documentType,
+                SendToSelf = true,
+                SendToPartner = true,
+                OtherRecipients = new List<string> { OtherEmail }
+            };
+
+            // Act
+            var result = MailClient.RemindersEmail.Send(settings).AssertResult();
+
+            // Assert
+            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
+            Assert.IsTrue(!result.NotSent.Any());
+        }
+
         [Test]
         [TestCaseSource(nameof(GetCreditNoteEmailSettings))]
         public void Send_CreditNoteEmailWithoutRecipient_ThrowsValidationException(CreditNoteEmailSettings setting)
