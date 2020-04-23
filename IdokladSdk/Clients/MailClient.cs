@@ -12,6 +12,7 @@ namespace IdokladSdk.Clients
         private IssuedDocumentPaymentConfirmationEmail _issuedDocumentPaymentConfirmationEmail;
         private ProformaInvoiceEmail _proformaInvoiceEmail;
         private ReceivedInvoiceEmail _receivedInvoiceEmail;
+        private RemindersEmail _remindersEmail;
         private SalesOrderEmail _salesOrderEmail;
 
         /// <summary>
@@ -51,6 +52,11 @@ namespace IdokladSdk.Clients
         /// Gets received invoice email.
         /// </summary>
         public ReceivedInvoiceEmail ReceivedInvoiceEmail => _receivedInvoiceEmail ?? (_receivedInvoiceEmail = new ReceivedInvoiceEmail(this));
+
+        /// <summary>
+        /// Gets remainders email.
+        /// </summary>
+        public RemindersEmail RemindersEmail => _remindersEmail ?? (_remindersEmail = new RemindersEmail(this));
 
         /// <summary>
         /// Gets sales order email.

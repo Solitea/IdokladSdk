@@ -115,7 +115,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets document number of the original document.
         /// </summary>
-        [StringLength(20)]
+        [StringLength(30)]
         public string ReceivedDocumentNumber { get; set; }
 
         /// <summary>
