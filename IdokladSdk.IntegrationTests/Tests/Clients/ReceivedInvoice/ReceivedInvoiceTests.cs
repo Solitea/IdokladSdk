@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
@@ -56,6 +57,48 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             Assert.AreEqual(PartnerId, data.PartnerId);
             Assert.Greater(data.Items.Count, 0);
             Assert.AreEqual(vatCodeId, data.Items.First(i => i.ItemType == IssuedInvoiceItemType.ItemTypeNormal).VatCodeId);
+        }
+
+        [Test]
+        [Order(1)]
+        public void Post_NotValidModel_ReceivedDocumentNumberTooLong_ThrowException()
+        {
+            // Arrange
+            var receivedInvoicePostModel = _receivedInvoiceClient.Default().AssertResult();
+            receivedInvoicePostModel.PartnerId = PartnerId;
+            receivedInvoicePostModel.Description = "Invoice";
+            receivedInvoicePostModel.ReceivedDocumentNumber = new string('A', 31);
+            receivedInvoicePostModel.Items.Clear();
+            receivedInvoicePostModel.Items.Add(new ReceivedInvoiceItemPostModel
+            {
+                Name = "Test",
+                UnitPrice = 100,
+            });
+
+            // Act
+            var exception = Assert.Throws<ValidationException>(() => _receivedInvoiceClient.Post(receivedInvoicePostModel));
+
+            // Assert
+            Assert.IsNotNull(exception.Message);
+            Assert.IsNotEmpty(exception.Message);
+        }
+
+        [Test]
+        [Order(4)]
+        public void Update_NotValidModel_ReceivedDocumentNumberTooLong_ThrowException()
+        {
+            var model = new ReceivedInvoicePatchModel
+            {
+                Id = _receivedInvoiceId,
+                ReceivedDocumentNumber = new string('A', 31)
+            };
+
+            // Act
+            var exception = Assert.Throws<ValidationException>(() => _receivedInvoiceClient.Update(model));
+
+            // Assert
+            Assert.IsNotNull(exception.Message);
+            Assert.IsNotEmpty(exception.Message);
         }
 
         [Test]
