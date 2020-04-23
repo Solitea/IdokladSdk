@@ -8,6 +8,13 @@ namespace IdokladSdk.Clients
 {
     public partial class SalesReceiptClient
     {
+        /// <inheritdoc />
+        public Task<ApiResult<SalesReceiptPostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return GetAsync<SalesReceiptPostModel>(resource, null, cancellationToken);
+        }
+
         /// <inheritdoc/>
         public Task<ApiResult<SalesReceiptPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {

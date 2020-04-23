@@ -13,7 +13,7 @@ using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 {
-    public class SalesReceiptTests : TestBase
+    public partial class SalesReceiptTests : TestBase
     {
         private const int PartnerId = 323823;
         private readonly List<int> _salesReceiptIds = new List<int>();
@@ -121,6 +121,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
         [Test]
         [Order(6)]
+        public void Copy_SuccessfullyGetPosModel()
+        {
+            // Arrange
+            var salesReceiptToCopy = _client.Detail(_salesReceiptId).Get().AssertResult();
+
+            // Act
+            var data = _client.Copy(_salesReceiptId).AssertResult();
+
+            // Assert
+            Assert.AreEqual(salesReceiptToCopy.PartnerId, data.PartnerId);
+            Assert.AreEqual(salesReceiptToCopy.CurrencyId, data.CurrencyId);
+        }
+
+        [Test]
+        [Order(8)]
         public void Delete_SuccessfullyDeleted()
         {
             // Act
