@@ -108,7 +108,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             {
                 Id = _salesReceiptId,
                 Name = "updated name",
-                Note = "updated note"
+                Note = "updated note",
                 PartnerAddress = new DocumentAddressPatchModel
                 {
                     CompanyName = "CompanyUpdate"
