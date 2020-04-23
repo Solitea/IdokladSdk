@@ -30,11 +30,11 @@ namespace IdokladSdk.Models.Email
         public bool SendToPartner { get; set; }
 
         /// <summary>
-        /// Gets or sets invoice send type - pdf attachment or invoice link.
+        /// Gets or sets send type - pdf attachment or invoice link.
         /// If not set, the value from your settings will be used.
         /// </summary>
         [JsonProperty("Method")]
-        public InvoiceSendType? InvoiceSendType { get; set; }
+        public SendType? SendType { get; set; }
 
         /// <inheritdoc/>
         public override bool HasRecipients() => SendToAccountant || SendToPartner || SendToSelf || OtherRecipients.Any();

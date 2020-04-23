@@ -1,9 +1,9 @@
 ﻿namespace IdokladSdk.Enums
 {
     /// <summary>
-    /// Send invoice type.
+    /// Send type.
     /// </summary>
-    public enum InvoiceSendType
+    public enum SendType
     {
         /// <summary>
         /// PDF
