@@ -16,7 +16,7 @@ namespace IdokladSdk.Models.Email
         public RemindersDocumentType DocumentType { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether an email will be sent to acountant.
+        /// Gets or sets a value indicating whether an email will be sent to accountant.
         /// The accountant's E-mail and mail template are specified in the application settings.
         /// </summary>
         [Required]
@@ -39,14 +39,11 @@ namespace IdokladSdk.Models.Email
         /// Gets or sets a value indicating whether include the document's attachment if it has one.
         /// Default is <c>false</c>.
         /// </summary>
-        [Obsolete("Reminders not send attachment", true)]
+        [Obsolete("Reminders don't send attachment", true)]
         public new bool SendAttachment
         {
             get => false;
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set => throw new NotImplementedException();
         }
 
         /// <inheritdoc />
