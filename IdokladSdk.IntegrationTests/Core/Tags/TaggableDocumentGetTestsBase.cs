@@ -49,37 +49,37 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         public void GetDetail_Expand_ReturnsExpandedTags()
         {
             // Act
-            var result = ExpandableDetail(this.EntityWithTags1Id)
+            var result = ExpandableDetail(EntityWithTags1Id)
                 .Include(TagIncludeExpression())
                 .Get<EntityTagDetails>()
                 .AssertResult();
 
             // Assert
-            this.AssertHasTags(result.Tags, new List<int> { Tag1Id, Tag2Id }, true);
+            AssertHasTags(result.Tags, new List<int> { Tag1Id, Tag2Id }, true);
         }
 
         [Test]
         public void GetDetail_WithoutTags_ReturnsEmptyTags()
         {
             // Act
-            var result = Detail(this.EntityWithoutTagsId)
+            var result = Detail(EntityWithoutTagsId)
                 .Get<EntityTagDetails>()
                 .AssertResult();
 
             // Assert
-            this.AssertHasEmptyTags(result.Tags);
+            AssertHasEmptyTags(result.Tags);
         }
 
         [Test]
         public void GetDetail_WithTags_ReturnsTags()
         {
             // Act
-            var result = Detail(this.EntityWithTags1Id)
+            var result = Detail(EntityWithTags1Id)
                 .Get<EntityTagDetails>()
                 .AssertResult();
 
             // Assert
-            this.AssertHasTags(result.Tags, new List<int> { Tag1Id, Tag2Id });
+            AssertHasTags(result.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
         [Test]
@@ -94,8 +94,8 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             // Assert
             var items = result.Items.ToList();
             Assert.That(items.Count, Is.EqualTo(1));
-            var entity = items.FirstOrDefault(i => i.Id == this.EntityWithTags1Id);
-            this.AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
+            var entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
+            AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
         [Test]
@@ -123,12 +123,12 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             // Assert
             var items = result.Items.ToList();
             Assert.That(items.Count, Is.GreaterThanOrEqualTo(3));
-            var entity = items.FirstOrDefault(i => i.Id == this.EntityWithoutTagsId);
-            this.AssertHasEmptyTags(entity.Tags);
-            entity = items.FirstOrDefault(i => i.Id == this.EntityWithTags1Id);
-            this.AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
-            entity = items.FirstOrDefault(i => i.Id == this.EntityWithTags2Id);
-            this.AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
+            var entity = items.FirstOrDefault(i => i.Id == EntityWithoutTagsId);
+            AssertHasEmptyTags(entity.Tags);
+            entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
+            AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
+            entity = items.FirstOrDefault(i => i.Id == EntityWithTags2Id);
+            AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
         }
 
         [Test]
@@ -143,10 +143,10 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             // Assert
             var items = result.Items;
             Assert.That(items.Count(), Is.EqualTo(2));
-            var entity = items.FirstOrDefault(i => i.Id == this.EntityWithTags1Id);
-            this.AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
-            entity = items.FirstOrDefault(i => i.Id == this.EntityWithTags2Id);
-            this.AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
+            var entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
+            AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
+            entity = items.FirstOrDefault(i => i.Id == EntityWithTags2Id);
+            AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
         }
 
         protected void AssertHasEmptyTagIds(IEnumerable<int> tagIds)
