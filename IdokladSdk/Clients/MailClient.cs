@@ -14,6 +14,7 @@ namespace IdokladSdk.Clients
         private ReceivedInvoiceEmail _receivedInvoiceEmail;
         private RemindersEmail _remindersEmail;
         private SalesOrderEmail _salesOrderEmail;
+        private SalesReceiptMail _salesReceiptEmail;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MailClient"/> class.
@@ -62,5 +63,10 @@ namespace IdokladSdk.Clients
         /// Gets sales order email.
         /// </summary>
         public SalesOrderEmail SalesOrderEmail => _salesOrderEmail ?? (_salesOrderEmail = new SalesOrderEmail(this));
+
+        /// <summary>
+        /// Gets sales receipt email.
+        /// </summary>
+        public SalesReceiptMail SalesReceiptEmail => _salesReceiptEmail ?? (_salesReceiptEmail = new SalesReceiptMail(this));
     }
 }

@@ -20,7 +20,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
                 ReportLanguage = Language.En,
                 EmailBody = "Test IssuedInvoice email.",
                 EmailSubject = "IssuedInvoice",
-                InvoiceSendType = InvoiceSendType.AsPdf,
+                SendType = SendType.AsPdf,
                 SendToSelf = true,
                 SendToPartner = true,
                 OtherRecipients = new List<string> { OtherEmail }
@@ -87,6 +87,31 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
 
             // Act
             var response = await MailClient.RemindersEmail.SendAsync(settings);
+            var result = response.AssertResult();
+
+            // Assert
+            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
+            Assert.IsTrue(!result.NotSent.Any());
+        }
+
+        [Test]
+        public async Task Send_SalesReceipt_SuccessfullySentAsync()
+        {
+            // Arrange
+            var settings = new SalesReceiptEmailSettings
+            {
+                DocumentId = 224673,
+                ReportLanguage = Language.En,
+                EmailBody = "Test sales receipt email.",
+                EmailSubject = "Sales receipt",
+                SendType = SendType.AsLink,
+                SendToSelf = true,
+                SendToPartner = true,
+                OtherRecipients = new List<string> { OtherEmail }
+            };
+
+            // Act
+            var response = await MailClient.SalesReceiptEmail.SendAsync(settings);
             var result = response.AssertResult();
 
             // Assert

@@ -37,7 +37,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
                 ReportLanguage = Language.Cz,
                 EmailBody = "Test CreditNote email.",
                 EmailSubject = "CreditNote",
-                InvoiceSendType = InvoiceSendType.AsLink,
+                SendType = SendType.AsLink,
                 SendToSelf = true,
                 SendToPartner = true,
                 OtherRecipients = new List<string> { OtherEmail }
@@ -71,7 +71,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
                 ReportLanguage = Language.Sk,
                 EmailBody = "Test ProformaInvoice email.",
                 EmailSubject = "ProformaInvoice",
-                InvoiceSendType = InvoiceSendType.AsLink,
+                SendType = SendType.AsLink,
                 SendToSelf = true,
                 SendToPartner = true,
                 OtherRecipients = new List<string> { OtherEmail }
@@ -125,6 +125,30 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
 
             // Act
             var result = MailClient.RemindersEmail.Send(settings).AssertResult();
+
+            // Assert
+            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
+            Assert.IsTrue(!result.NotSent.Any());
+        }
+
+        [Test]
+        public void Send_SalesReceipt_SuccessfullySent()
+        {
+            // Arrange
+            var settings = new SalesReceiptEmailSettings
+            {
+                DocumentId = 224673,
+                ReportLanguage = Language.En,
+                EmailBody = "Test sales receipt email.",
+                EmailSubject = "Sales receipt",
+                SendType = SendType.AsLink,
+                SendToSelf = true,
+                SendToPartner = true,
+                OtherRecipients = new List<string> { OtherEmail }
+            };
+
+            // Act
+            var result = MailClient.SalesReceiptEmail.Send(settings).AssertResult();
 
             // Assert
             Assert.IsTrue(result.Sent.Contains(PartnerEmail));
