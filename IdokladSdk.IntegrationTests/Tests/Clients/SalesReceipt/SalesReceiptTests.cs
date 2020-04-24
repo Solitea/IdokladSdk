@@ -6,6 +6,7 @@ using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt.SelectModels;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.RegisteredSale;
 using IdokladSdk.Models.SalesReceipt;
 using IdokladSdk.Requests.Core.Extensions;
@@ -107,16 +108,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             {
                 Id = _salesReceiptId,
                 Name = "updated name",
-                Note = "updated note"
+                Note = "updated note",
+                PartnerAddress = new DocumentAddressPatchModel
+                {
+                    CompanyName = "CompanyUpdate"
+                }
             };
 
             // Act
-            var data = _client.Update(model).AssertResult();
+            _client.Update(model).AssertResult();
+            var data = _client.Detail(_salesReceiptId).Include(s => s.Partner).Get().AssertResult();
 
             // Assert
             Assert.AreEqual(model.Name, data.Name);
             Assert.AreEqual(model.Note, data.Note);
             Assert.AreEqual(PartnerId, data.PartnerId);
+            Assert.AreEqual(model.PartnerAddress.CompanyName, data.PartnerAddress.NickName);
         }
 
         [Test]
