@@ -179,6 +179,7 @@ namespace IdokladSdk.Clients
             request.AddHeader(Constants.Header.App, _apiContext.AppName);
             request.AddHeader(Constants.Header.AppVersion, _apiContext.AppVersion);
             request.AddHeader(Constants.Header.SdkVersion, Constants.Header.SdkVersionNumber);
+            request.AddHeaders(_apiContext.Headers);
 
             return request;
         }
