@@ -1,6 +1,8 @@
-﻿using IdokladSdk.Clients;
+﻿using System.Linq;
+using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.ReceivedInvoice;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
@@ -10,20 +12,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
     {
         private const int PaidInvoiceId = 165435;
         private const int UnpaidInvoiceId = 165460;
-        private ReceivedDocumentPaymentsClient _client;
+        private const int PartnerId = 323823;
+        private ReceivedDocumentPaymentsClient _receivedDocumentPaymentClient;
+        private ReceivedInvoiceClient _receivedInvoiceClient;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
             InitDokladApi();
-            _client = DokladApi.ReceivedDocumentPaymentsClient;
+            _receivedDocumentPaymentClient = DokladApi.ReceivedDocumentPaymentsClient;
+            _receivedInvoiceClient = DokladApi.ReceivedInvoiceClient;
         }
 
         [Test]
         public void List_SuccessfullyGet()
         {
             // Act
-            var data = _client.List().Get().AssertResult();
+            var data = _receivedDocumentPaymentClient.List().Get().AssertResult();
 
             // Assert
             Assert.GreaterOrEqual(data.TotalItems, 1);
@@ -34,10 +39,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
         public void Payment_Post_Successfully()
         {
             // Act
-            var defaultPayment = _client.Default(UnpaidInvoiceId).AssertResult();
-            var postedPayment = _client.Post(defaultPayment).AssertResult();
-            var retrievedPayment = _client.Detail(postedPayment.Id).Get().AssertResult();
-            var deleted = _client.Delete(retrievedPayment.Id).AssertResult();
+            var defaultPayment = _receivedDocumentPaymentClient.Default(UnpaidInvoiceId).AssertResult();
+            var postedPayment = _receivedDocumentPaymentClient.Post(defaultPayment).AssertResult();
+            var retrievedPayment = _receivedDocumentPaymentClient.Detail(postedPayment.Id).Get().AssertResult();
+            var deleted = _receivedDocumentPaymentClient.Delete(retrievedPayment.Id).AssertResult();
 
             // Assert
             Assert.AreEqual(defaultPayment.InvoiceId, UnpaidInvoiceId);
@@ -52,12 +57,65 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
         public void Payment_FullyPay_FullyUnpay_Successfully()
         {
             // Act
-            var unpaid = _client.FullyUnpay(PaidInvoiceId).AssertResult();
-            var paid = _client.FullyPay(PaidInvoiceId).AssertResult();
+            var unpaid = _receivedDocumentPaymentClient.FullyUnpay(PaidInvoiceId).AssertResult();
+            var paid = _receivedDocumentPaymentClient.FullyPay(PaidInvoiceId).AssertResult();
 
             // Assert
             Assert.IsTrue(unpaid);
             Assert.IsTrue(paid);
+        }
+
+        [Test]
+        public void List_WithFilter_PaymentOptionId_ReturnsList()
+        {
+            // Arrange
+            var invoiceId = PostReceivedInvoice();
+            var initialPayments = _receivedDocumentPaymentClient
+                    .List()
+                    .Filter(f => f.InvoiceId.IsEqual(invoiceId))
+                    .Get().AssertResult();
+            Assert.IsEmpty(initialPayments.Items);
+            var paymentOptionId = PostPayment(invoiceId);
+
+            // Act
+            var payments = _receivedDocumentPaymentClient
+                .List()
+                .Filter(f => f.InvoiceId.IsEqual(invoiceId), f => f.PaymentOptionId.IsEqual(paymentOptionId))
+                .Get().AssertResult();
+
+            // Assert
+            Assert.AreEqual(1, payments.Items.Count());
+            var deleted = _receivedInvoiceClient.Delete(invoiceId).AssertResult();
+            Assert.IsTrue(deleted);
+        }
+
+        private int PostPayment(int invoiceId)
+        {
+            var paymentOptions = DokladApi.PaymentOptionClient
+                .List()
+                .Get()
+                .AssertResult()
+                .Items.ToList();
+
+            var paymentOptionId = paymentOptions.First(w => !w.IsDefault).Id;
+            var payment = _receivedDocumentPaymentClient.Default(invoiceId).AssertResult();
+            payment.PaymentOptionId = paymentOptionId;
+            payment.PaymentAmount = 10;
+            _receivedDocumentPaymentClient.Post(payment).AssertResult();
+            return paymentOptionId;
+        }
+
+        private int PostReceivedInvoice()
+        {
+            var invoice = _receivedInvoiceClient.Default().Data;
+            invoice.PartnerId = PartnerId;
+            invoice.Description = "desc";
+            invoice.Items.Clear();
+            invoice.Items.Add(
+                new ReceivedInvoiceItemPostModel { Name = "item", UnitPrice = 1000 });
+            var insertResult = _receivedInvoiceClient.Post(invoice).AssertResult();
+            var unpaidInvoiceId = insertResult.Id;
+            return unpaidInvoiceId;
         }
     }
 }
