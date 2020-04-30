@@ -21,6 +21,6 @@ namespace IdokladSdk.Requests.ReceivedDocumentPayments.Filter
         public FilterItem<int> PartnerId { get; set; } = new CompareFilterItem<int>(nameof(ReceivedInvoiceListGetModel.PartnerId));
 
         /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.PaymentOptionId"/>
-        public FilterItem<int> PaymentOptionId { get; set; } = new CompareFilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.Id));
+        public FilterItem<int> PaymentOptionId { get; set; } = new CompareFilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.PaymentOptionId));
     }
 }
