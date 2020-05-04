@@ -22,9 +22,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
 
             // Assert
             Assert.Greater(data.IssuedInvoices.Count, 0);
-            Assert.Greater(data.IssuedInvoices.First().Period, periodType.ToString());
+            Assert.IsNotNull(data.IssuedInvoices.First().Period);
+            Assert.IsNotEmpty(data.IssuedInvoices.First().Period);
             Assert.Greater(data.ReceivedInvoices.Count, 0);
-            Assert.Greater(data.ReceivedInvoices.First().Period, periodType.ToString());
+            Assert.IsNotNull(data.ReceivedInvoices.First().Period);
+            Assert.IsNotEmpty(data.ReceivedInvoices.First().Period);
         }
 
         [Test]
