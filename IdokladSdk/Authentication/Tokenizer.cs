@@ -74,7 +74,7 @@ namespace IdokladSdk.Authentication
         /// </summary>
         /// <param name="limitInSeconds">Limit in seconds.</param>
         /// <returns><c>true</c> if GranType is different than Client credentials and access token is valid, otherwise <c>false</c>.</returns>
-        public bool ShouldBeRefreshedNow(int limitInSeconds)
+        public virtual bool ShouldBeRefreshedNow(int limitInSeconds)
         {
             return GrantType != GrantType.ClientCredentials && !IsValid(DateTime.Now.AddSeconds(limitInSeconds));
         }
