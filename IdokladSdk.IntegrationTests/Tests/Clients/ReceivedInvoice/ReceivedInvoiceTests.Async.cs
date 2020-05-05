@@ -19,7 +19,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         private int _receivedInvoiceIdAsync;
 
         [Test]
-        [Order(7)]
+        [Order(8)]
         public async Task PostAsync_SuccessfullyCreated()
         {
             var vatCodeId = 24;
@@ -50,7 +50,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         }
 
         [Test]
-        [Order(8)]
+        [Order(9)]
         public async Task GetAsync_SuccessfullyGet()
         {
             // Act
@@ -61,7 +61,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         }
 
         [Test]
-        [Order(9)]
+        [Order(10)]
         public async Task GetAsync_Expand_SuccessfullyGet()
         {
             // Act
@@ -73,7 +73,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         }
 
         [Test]
-        [Order(10)]
+        [Order(11)]
         public async Task UpdateAsync_SuccessfullyUpdated()
         {
             var model = new ReceivedInvoicePatchModel
@@ -90,7 +90,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         }
 
         [Test]
-        [Order(11)]
+        [Order(12)]
         public async Task CopyAsync_SuccessfullyGetPosModel()
         {
             // Arrange
@@ -106,7 +106,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         }
 
         [Test]
-        [Order(12)]
+        [Order(13)]
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
