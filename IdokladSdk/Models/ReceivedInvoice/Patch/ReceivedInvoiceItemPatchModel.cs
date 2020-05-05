@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 
@@ -17,7 +18,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets indicates if item has custom Vat value.
         /// </summary>
-        public decimal? CustomVatRate { get; set; }
+        public NullableProperty<decimal> CustomVatRate { get; set; }
 
         /// <inheritdoc/>
         public int Id { get; set; }

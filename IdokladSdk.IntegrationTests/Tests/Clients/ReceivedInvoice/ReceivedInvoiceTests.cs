@@ -143,6 +143,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(5)]
+        public void Update_SetCustomVatRateToNull_CustomVatRateIsNull()
+        {
+            var invoiceToUpdate = _receivedInvoiceClient.Detail(_receivedInvoiceId).Get().AssertResult();
+            var model = CreatePatchModelWithCustomVatRate(invoiceToUpdate, 13);
+            var data = _receivedInvoiceClient.Update(model).AssertResult();
+            Assert.IsNotNull(data.Items.First().CustomVatRate);
+            model = CreatePatchModelWithCustomVatRate(invoiceToUpdate, null);
+
+            // Act
+            data = _receivedInvoiceClient.Update(model).AssertResult();
+
+            // Assert
+            Assert.IsNull(data.Items.First().CustomVatRate);
+        }
+
+        [Test]
+        [Order(6)]
         public void Copy_SuccessfullyGetPosModel()
         {
             // Arrange
@@ -158,7 +175,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         }
 
         [Test]
-        [Order(6)]
+        [Order(7)]
         public void Delete_SuccessfullyDeleted()
         {
             // Act
@@ -246,6 +263,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             // Assert
             Assert.Greater(data.TotalItems, 0);
             Assert.Greater(data.TotalPages, 0);
+        }
+
+        private ReceivedInvoicePatchModel CreatePatchModelWithCustomVatRate(ReceivedInvoiceGetModel invoiceToUpdate, decimal? customVatRate)
+        {
+            return new ReceivedInvoicePatchModel
+            {
+                Id = invoiceToUpdate.Id,
+                Items = new List<ReceivedInvoiceItemPatchModel>
+                {
+                    new ReceivedInvoiceItemPatchModel
+                    {
+                        Id = invoiceToUpdate.Items.First().Id,
+                        CustomVatRate = customVatRate,
+                        Name = invoiceToUpdate.Items.First().Name
+                    }
+                }
+            };
         }
     }
 }
