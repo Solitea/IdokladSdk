@@ -142,6 +142,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
                 Amount = 2,
                 Name = "Test",
                 Id = 1,
+                ItemType = IssuedInvoiceItemType.ItemTypeReduce,
                 PriceType = PriceType.WithoutVat,
                 VatRateType = VatRateType.Basic
             };
@@ -158,9 +159,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var data = _issuedInvoiceClient.Recount(model).AssertResult();
 
             // Assert
-            var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
+            var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeReduce);
             Assert.AreEqual(item.Id, recountedItem.Id);
             Assert.AreEqual(item.Name, recountedItem.Name);
+            Assert.AreEqual(item.ItemType, recountedItem.ItemType);
             Assert.AreEqual(242, recountedItem.Prices.TotalWithVat);
             Assert.AreEqual(242, recountedItem.Prices.TotalWithVatHc);
             Assert.AreEqual(42, recountedItem.Prices.TotalVat);
