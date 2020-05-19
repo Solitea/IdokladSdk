@@ -38,7 +38,7 @@ namespace IdokladSdk.Requests.Account.Agenda
         }
 
         /// <summary>
-        /// List enpoint.
+        /// List endpoint.
         /// </summary>
         /// <returns>Method return list of agendas.</returns>
         public AgendaList List()
