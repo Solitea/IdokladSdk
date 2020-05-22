@@ -8,6 +8,11 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
     public class CreditNoteExpand : ExpandableEntity
     {
         /// <summary>
+        /// Gets or sets credited invoice.
+        /// </summary>
+        public IssuedInvoiceExpand CreditedInvoice { get; set; }
+
+        /// <summary>
         /// Gets or sets partner.
         /// </summary>
         public ContactExpand Partner { get; set; }

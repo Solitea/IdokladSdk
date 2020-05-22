@@ -79,12 +79,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         public void GetDetail_ReturnsCreditNote()
         {
             // Act
-            var creditNoteGetModel = CreditNoteClient.Detail(_postedCreditNoteId).Get().AssertResult();
+            var creditNoteGetModel = CreditNoteClient.Detail(_postedCreditNoteId)
+                .Include(c => c.CreditedInvoice).Get().AssertResult();
 
             // Assert
             Assert.AreEqual(_postedCreditNoteId, creditNoteGetModel.Id);
             ComparePostAndGetModels(_creditNotePostModel, creditNoteGetModel, false);
             ComparePostAndGetItems(_creditNotePostModel.Items, creditNoteGetModel.Items.Cast<CreditNoteItemListGetModel>().ToList());
+            Assert.NotNull(creditNoteGetModel.CreditedInvoice);
+            Assert.AreEqual(creditNoteGetModel.CreditedInvoiceId, creditNoteGetModel.CreditedInvoice.Id);
         }
 
         [Test]
