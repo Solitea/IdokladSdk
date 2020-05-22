@@ -27,6 +27,11 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
         public DateTime DateOfVatApplication { get; set; }
 
         /// <summary>
+        /// Gets or sets document type.
+        /// </summary>
+        public DocumentType DocumentType { get; set; }
+
+        /// <summary>
         /// Gets or sets Responsibility for handling of electronic records of sales of payments document.
         /// Only for Cz Legislation.
         /// </summary>
