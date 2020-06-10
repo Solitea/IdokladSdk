@@ -13,6 +13,11 @@ namespace IdokladSdk.Models.SalesReceipt
     public partial class SalesReceiptListGetModel : IEntityId
     {
         /// <summary>
+        /// Gets or sets status of sending the sales receipt to the accountant.
+        /// </summary>
+        public MailSentType AccountantSentStatus { get; set; }
+
+        /// <summary>
         /// Gets or sets currencyId.
         /// </summary>
         public int CurrencyId { get; set; }
@@ -137,6 +142,11 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets items.
         /// </summary>
         public Prices Prices { get; set; }
+
+        /// <summary>
+        /// Gets or sets status of sending the sales receipt to the purchaser.
+        /// </summary>
+        public MailSentType PurchaserSentStatus { get; set; }
 
         /// <summary>
         /// Gets or sets items.
