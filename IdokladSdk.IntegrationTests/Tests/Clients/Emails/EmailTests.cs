@@ -135,13 +135,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         public void Send_SalesReceipt_SuccessfullySent()
         {
             // Arrange
+            var salesReceiptId = 224673;
             var settings = new SalesReceiptEmailSettings
             {
-                DocumentId = 224673,
+                DocumentId = salesReceiptId,
                 ReportLanguage = Language.En,
                 EmailBody = "Test sales receipt email.",
                 EmailSubject = "Sales receipt",
                 SendType = SendType.AsLink,
+                SendToAccountant = true,
                 SendToSelf = true,
                 SendToPartner = true,
                 OtherRecipients = new List<string> { OtherEmail }
@@ -153,6 +155,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             // Assert
             Assert.IsTrue(result.Sent.Contains(PartnerEmail));
             Assert.IsTrue(!result.NotSent.Any());
+            var salesReceipt = DokladApi.SalesReceiptClient.Detail(salesReceiptId).Get().Data;
+            Assert.AreNotEqual(MailSentType.NotSent, salesReceipt.AccountantSentStatus);
+            Assert.AreNotEqual(MailSentType.NotSent, salesReceipt.PurchaserSentStatus);
         }
 
         [Test]
