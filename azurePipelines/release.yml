@@ -57,7 +57,7 @@ stages:
         nobuild: true
         versioningScheme: 'off'
         packDirectory: '$(Build.ArtifactStagingDirectory)'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/tags/v*.*.*'))
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
 
     - task: NuGetCommand@2
       displayName: 'Push package to NuGet.org'
@@ -66,7 +66,7 @@ stages:
         packagesToPush: '$(Build.ArtifactStagingDirectory)/**/IdokladSdk*.nupkg;!$(Build.ArtifactStagingDirectory)/**/IdokladSdk*.symbols.nupkg'
         nuGetFeedType: 'external'
         publishFeedCredentials: 'iDoklad Nuget.org'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/tags/v*.*.*'))
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
       
     - task: DeleteFiles@1
       displayName: 'Delete files'
