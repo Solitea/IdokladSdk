@@ -23,20 +23,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             };
 
             // Assert
-            Assert.DoesNotThrow(() => ApiResultValidator.ValidateResponse(response, ApiResultSchema.Basic, null));
-        }
-
-        [Test]
-        public void ApiResult_BasicSchema_Invalid()
-        {
-            // Arrange
-            IRestResponse<ApiResult<bool>> response = new RestResponse<ApiResult<bool>>
-            {
-                Content = JsonConvert.SerializeObject(GetDefaultApiBatchResult())
-            };
-
-            // Assert
-            Assert.Throws<ValidationException>(() => ApiResultValidator.ValidateResponse(response, ApiResultSchema.Basic, null));
+            Assert.DoesNotThrow(() => ApiResultValidator.ValidateResponse(response, null));
         }
 
         [Test]
@@ -49,20 +36,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             };
 
             // Assert
-            Assert.DoesNotThrow(() => ApiResultValidator.ValidateResponse(response, ApiResultSchema.Batch, null));
-        }
-
-        [Test]
-        public void ApiBatchResult_BatchSchema_Invalid()
-        {
-            // Arrange
-            IRestResponse<ApiBatchResult<bool>> response = new RestResponse<ApiBatchResult<bool>>
-            {
-                Content = JsonConvert.SerializeObject(GetDefaultApiresult())
-            };
-
-            // Assert
-            Assert.Throws<ValidationException>(() => ApiResultValidator.ValidateResponse(response, ApiResultSchema.Batch, null));
+            Assert.DoesNotThrow(() => ApiResultValidator.ValidateResponse(response, null));
         }
 
         [Test]
@@ -76,7 +50,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             };
 
             // Assert
-            Assert.Throws<CustomTestException>(() => ApiResultValidator.ValidateResponse(response, ApiResultSchema.Basic, ApiResultHandler));
+            Assert.Throws<CustomTestException>(() => ApiResultValidator.ValidateResponse(response, ApiResultHandler));
 
             void ApiResultHandler(ApiResult apiResult)
             {
@@ -98,7 +72,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             };
 
             // Assert
-            Assert.Throws<CustomTestException>(() => ApiResultValidator.ValidateResponse(response, ApiResultSchema.Batch, ApiBatchResultHandler));
+            Assert.Throws<CustomTestException>(() => ApiResultValidator.ValidateResponse(response, ApiBatchResultHandler));
 
             void ApiBatchResultHandler(ApiBatchResult apiResult)
             {
