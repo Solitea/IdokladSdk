@@ -31,7 +31,7 @@ namespace IdokladSdk.Clients
         {
             var response = await Client.ExecuteAsync<ApiResult<T>>(request, cancellationToken).ConfigureAwait(false);
 
-            ApiResultValidator.ValidateResponse(response, ApiResultSchema.Basic, _apiContext.ApiResultHandler);
+            ApiResultValidator.ValidateResponse(response, _apiContext.ApiResultHandler);
 
             return response.Data;
         }
@@ -42,7 +42,7 @@ namespace IdokladSdk.Clients
         {
             var response = await Client.ExecuteAsync<ApiBatchResult<T>>(request, cancellationToken).ConfigureAwait(false);
 
-            ApiResultValidator.ValidateResponse(response, ApiResultSchema.Batch, _apiContext.ApiBatchResultHandler);
+            ApiResultValidator.ValidateResponse(response, _apiContext.ApiBatchResultHandler);
 
             return response.Data;
         }

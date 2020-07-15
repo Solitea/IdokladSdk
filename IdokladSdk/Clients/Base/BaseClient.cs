@@ -61,7 +61,7 @@ namespace IdokladSdk.Clients
         {
             var response = Client.Execute<ApiResult<T>>(request);
 
-            ApiResultValidator.ValidateResponse(response, ApiResultSchema.Basic, _apiContext.ApiResultHandler);
+            ApiResultValidator.ValidateResponse(response, _apiContext.ApiResultHandler);
 
             return response.Data;
         }
@@ -71,7 +71,7 @@ namespace IdokladSdk.Clients
         {
             var response = Client.Execute<ApiBatchResult<T>>(request);
 
-            ApiResultValidator.ValidateResponse(response, ApiResultSchema.Batch, _apiContext.ApiBatchResultHandler);
+            ApiResultValidator.ValidateResponse(response, _apiContext.ApiBatchResultHandler);
 
             return response.Data;
         }
