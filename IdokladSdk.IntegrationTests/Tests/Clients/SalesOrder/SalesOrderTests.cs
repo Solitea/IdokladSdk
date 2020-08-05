@@ -18,8 +18,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
     public partial class SalesOrderTests : TestBase
     {
         private const int PartnerId = 323823;
+        private const int SalesOrderId = 1002;
         private SalesOrderClient _client;
-        private int _salesOrderId = 1002;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -63,23 +63,24 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         public void Get_SuccessfullyGet()
         {
             // Act
-            var data = _client.Detail(_salesOrderId).Get().AssertResult();
+            var data = _client.Detail(SalesOrderId).Get().AssertResult();
 
             // Assert
-            Assert.AreEqual(_salesOrderId, data.Id);
+            Assert.AreEqual(SalesOrderId, data.Id);
+            Assert.Greater(data.Attachments.Count, 0);
         }
 
         [Test]
         public void Get_WithInclude_SuccessfullyGet()
         {
             // Act
-            var data = _client.Detail(_salesOrderId)
+            var data = _client.Detail(SalesOrderId)
                 .Include(s => s.Partner)
                 .Get()
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual(_salesOrderId, data.Id);
+            Assert.AreEqual(SalesOrderId, data.Id);
             Assert.IsNotNull(data.Partner);
         }
 
@@ -115,10 +116,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         public void GetIssuedInvoice_SuccessfullyReturnIssuedInvoice()
         {
             // Act
-            var issuedInvoice = _client.GetIssuedInvoice(_salesOrderId).AssertResult();
+            var issuedInvoice = _client.GetIssuedInvoice(SalesOrderId).AssertResult();
 
             // Assert
-            var salesOrder = _client.Detail(_salesOrderId).Get().AssertResult();
+            var salesOrder = _client.Detail(SalesOrderId).Get().AssertResult();
             AssertIssuedInvoice(issuedInvoice, salesOrder);
         }
 
@@ -126,10 +127,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         public void GetProformaInvoice_SuccessfullyReturnProformaInvoice()
         {
             // Act
-            var proformaInvoice = _client.GetProformaInvoice(_salesOrderId).AssertResult();
+            var proformaInvoice = _client.GetProformaInvoice(SalesOrderId).AssertResult();
 
             // Assert
-            var salesOrder = _client.Detail(_salesOrderId).Get().AssertResult();
+            var salesOrder = _client.Detail(SalesOrderId).Get().AssertResult();
             AssertProformaInvoice(proformaInvoice, salesOrder);
         }
 
@@ -137,7 +138,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         public void Get_WithSelect_SuccessfullyGet()
         {
             // Act
-            var data = _client.Detail(_salesOrderId)
+            var data = _client.Detail(SalesOrderId)
                 .Get(s => new
                 {
                     s.Id,
@@ -146,7 +147,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual(_salesOrderId, data.Id);
+            Assert.AreEqual(SalesOrderId, data.Id);
             Assert.AreNotEqual(default(string), data.DocumentNumber);
             Assert.AreNotEqual(string.Empty, data.DocumentNumber);
         }
@@ -252,7 +253,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 
         private void AssertIssuedInvoice(IssuedInvoicePostModel issuedInvoice, SalesOrderGetModel salesOrder)
         {
-            Assert.AreEqual(_salesOrderId, issuedInvoice.SalesOrderId);
+            Assert.AreEqual(SalesOrderId, issuedInvoice.SalesOrderId);
             Assert.AreEqual(salesOrder.Description, issuedInvoice.Description);
             Assert.AreEqual(salesOrder.CurrencyId, issuedInvoice.CurrencyId);
             Assert.AreEqual(salesOrder.ExchangeRate, issuedInvoice.ExchangeRate);
@@ -267,7 +268,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 
         private void AssertProformaInvoice(ProformaInvoicePostModel proformaInvoice, SalesOrderGetModel salesOrder)
         {
-            Assert.AreEqual(_salesOrderId, proformaInvoice.SalesOrderId);
+            Assert.AreEqual(SalesOrderId, proformaInvoice.SalesOrderId);
             Assert.AreEqual(salesOrder.Description, proformaInvoice.Description);
             Assert.AreEqual(salesOrder.CurrencyId, proformaInvoice.CurrencyId);
             Assert.AreEqual(salesOrder.ExchangeRate, proformaInvoice.ExchangeRate);

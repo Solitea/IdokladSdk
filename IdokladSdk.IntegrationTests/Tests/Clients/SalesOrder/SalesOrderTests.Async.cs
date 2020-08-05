@@ -12,7 +12,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 {
     public partial class SalesOrderTests
     {
-        private int _salesOrderIdAsync = 1009;
+        private const int SalesOrderIdAsync = 1009;
 
         [Test]
         public async Task PostAsync_SuccessfullyCreated()
@@ -49,10 +49,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         public async Task GetAsync_SuccessfullyGet()
         {
             // Act
-            var data = (await _client.Detail(_salesOrderIdAsync).GetAsync()).AssertResult();
+            var data = (await _client.Detail(SalesOrderIdAsync).GetAsync()).AssertResult();
 
             // Assert
-            Assert.AreEqual(_salesOrderIdAsync, data.Id);
+            Assert.AreEqual(SalesOrderIdAsync, data.Id);
+            Assert.Greater(data.Attachments.Count, 0);
         }
 
         [Test]
@@ -106,10 +107,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         public async Task GetIssuedInvoiceAsync_SuccessfullyReturnIssuedInvoice()
         {
             // Act
-            var issuedInvoice = (await _client.GetIssuedInvoiceAsync(_salesOrderId)).AssertResult();
+            var issuedInvoice = (await _client.GetIssuedInvoiceAsync(SalesOrderId)).AssertResult();
 
             // Assert
-            var salesOrder = _client.Detail(_salesOrderId).Get().AssertResult();
+            var salesOrder = _client.Detail(SalesOrderId).Get().AssertResult();
             AssertIssuedInvoice(issuedInvoice, salesOrder);
         }
 
@@ -117,10 +118,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         public async Task GetProformaInvoiceAsync_SuccessfullyReturnProformaInvoice()
         {
             // Act
-            var proformaInvoice = (await _client.GetProformaInvoiceAsync(_salesOrderId)).AssertResult();
+            var proformaInvoice = (await _client.GetProformaInvoiceAsync(SalesOrderId)).AssertResult();
 
             // Assert
-            var salesOrder = _client.Detail(_salesOrderId).Get().AssertResult();
+            var salesOrder = _client.Detail(SalesOrderId).Get().AssertResult();
             AssertProformaInvoice(proformaInvoice, salesOrder);
         }
     }

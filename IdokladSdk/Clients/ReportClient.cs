@@ -2,6 +2,7 @@
 using IdokladSdk.Requests.Report.CashVoucher;
 using IdokladSdk.Requests.Report.IssuedInvoice;
 using IdokladSdk.Requests.Report.ReceivedInvoice;
+using IdokladSdk.Requests.Report.SalesOrder;
 using IdokladSdk.Requests.Report.SalesReceipt;
 
 namespace IdokladSdk.Clients
@@ -16,6 +17,7 @@ namespace IdokladSdk.Clients
         private IssuedInvoiceReport _issuedInvoice;
         private IssuedInvoiceReport _proformaInvoice;
         private ReceivedInvoiceReport _receivedInvoice;
+        private SalesOrderReport _salesOrder;
         private SalesReceiptReport _salesReceipt;
 
         /// <summary>
@@ -54,6 +56,11 @@ namespace IdokladSdk.Clients
 
         /// <inheritdoc />
         public override string ResourceUrl { get; } = "/Reports/";
+
+        /// <summary>
+        /// Gets sales order reports.
+        /// </summary>
+        public SalesOrderReport SalesOrder => _salesOrder ?? (_salesOrder = new SalesOrderReport(this));
 
         /// <summary>
         /// Gets sales receipt reports.
