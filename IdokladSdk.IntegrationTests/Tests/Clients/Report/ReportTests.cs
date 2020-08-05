@@ -137,6 +137,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         }
 
         [Test]
+        public void Get_SalesOrderDetail_SuccessfullyGetReport()
+        {
+            var data = _reportClient.SalesOrder.Detail(1009).Get(new ReportOption { Language = Language.Sk }).AssertResult();
+
+            Assert.NotNull(data);
+            Assert.IsNotEmpty(data);
+        }
+
+        [Test]
         public void Get_SalesReceiptList_SuccessfullyGetReport()
         {
             var data = _reportClient.SalesReceipt.List().Get(Language.Cz).AssertResult();

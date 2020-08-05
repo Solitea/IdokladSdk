@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Attachment;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
 
@@ -11,6 +12,11 @@ namespace IdokladSdk.Models.SalesOrder
     /// </summary>
     public class SalesOrderListGetModel : IEntityId
     {
+        /// <summary>
+        /// Gets or sets list of attachments. Currently, you can attach a maximum of one attachment.
+        /// </summary>
+        public List<DocumentAttachmentInfo> Attachments { get; set; }
+
         /// <inheritdoc/>
         public int Id { get; set; }
 

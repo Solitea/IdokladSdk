@@ -33,6 +33,11 @@
         /// <summary>
         /// CashVoucher.
         /// </summary>
-        CashVoucher
+        CashVoucher,
+
+        /// <summary>
+        /// SalesOrder.
+        /// </summary>
+        SalesOrder
     }
 }
