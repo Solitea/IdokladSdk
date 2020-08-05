@@ -6,8 +6,8 @@
     <Version>3.0.0</Version>
     <PackageId>IdokladSdk</PackageId>
     <Product>iDoklad</Product>
-    <Company>Solitea Ceska republika a.s.</Company>
-    <Authors>Solitea Ceska republika a.s.</Authors>
+    <Company>Solitea, a.s.</Company>
+    <Authors>Solitea, a.s.</Authors>
     <Copyright>© 2016 - 2020</Copyright>
     <Description>SDK for iDoklad API</Description>
     <PackageTags>idoklad,sdk,rest,api,solitea</PackageTags>

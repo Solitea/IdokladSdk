@@ -14,6 +14,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
     [TestFixture]
     public partial class ContactTests : TestBase
     {
+        private readonly string _updatedCompanyName = "Solitea Slovensko, a.s.";
         private int _newContactId = 0;
         private ContactPostModel _contactPostModel;
         private DateTime _dateLastChange;
@@ -36,7 +37,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             _contactPostModel.AccountNumber = "2102290124/2700";
             _contactPostModel.BankId = 18;
             _contactPostModel.City = "Brno";
-            _contactPostModel.CompanyName = "Solitea Česká republika, a.s.";
+            _contactPostModel.CompanyName = _updatedCompanyName;
             _contactPostModel.CountryId = 2;
             _contactPostModel.DefaultInvoiceMaturity = 15;
             _contactPostModel.DiscountPercentage = 11;
@@ -167,6 +168,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
 
         [Test]
         [Order(5)]
+        public void GetListWithSort_ReturnsList()
+        {
+            // Act
+            var data = ContactClient
+                .List()
+                .Sort(f => f.CompanyName.Desc())
+                .Get()
+                .AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.Greater(data.Items.Count(), 2);
+            Assert.AreEqual("Test company", data.Items.ElementAt(0).CompanyName);
+            Assert.AreEqual(_updatedCompanyName, data.Items.ElementAt(1).CompanyName);
+            Assert.AreEqual("Alza.cz a.s.", data.Items.ElementAt(2).CompanyName);
+        }
+
+        [Test]
+        [Order(6)]
         public void Delete_SuccessfullyDeletedContact()
         {
             // Act
