@@ -24,5 +24,10 @@
         /// Received invoice
         /// </summary>
         ReceivedInvoice = 5,
+
+        /// <summary>
+        /// Sales order
+        /// </summary>
+        SalesOrder = 7,
     }
 }
