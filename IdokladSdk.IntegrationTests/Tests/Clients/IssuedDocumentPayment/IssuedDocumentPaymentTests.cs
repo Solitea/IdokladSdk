@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -11,6 +12,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
     {
         private const int PaidInvoiceId = 913255;
         private const int UnpaidInvoiceId = 913242;
+        private const int CashPaymentOptionId = 3;
         private IssuedDocumentPaymentClient _client;
 
         [OneTimeSetUp]
@@ -21,7 +23,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
         }
 
         [Test]
-        public void List_SucessfullyGet()
+        public void List_SuccessfullyGet()
         {
             // Act
             var data = _client.List().Get().AssertResult();
@@ -32,7 +34,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
 
         [Test]
         [Order(1)]
-        public void Payment_Post_Sucessfully()
+        public void Payment_Post_Successfully()
         {
             // Act
             var defaultPayment = _client.Default(UnpaidInvoiceId).AssertResult();
@@ -50,7 +52,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
 
         [Test]
         [Order(2)]
-        public void Payment_FullyUnpayAndFullyPay_Sucessfully()
+        public void Payment_FullyUnpayAndFullyPay_Successfully()
         {
             // Act
             var dateOfPayment = DateTime.UtcNow.AddDays(-3);
@@ -62,6 +64,26 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
             Assert.IsTrue(unpaid);
             Assert.IsTrue(paid);
             Assert.AreEqual(dateOfPayment.Date, paidInvoice.DateOfPayment);
+        }
+
+        [Test]
+        public void Detail_WithCashVoucher_SuccessfullyReturned()
+        {
+            // Arrange
+            var payments = DokladApi.IssuedDocumentPaymentClient
+                .List()
+                .Filter(i => i.PaymentOptionId.IsEqual(CashPaymentOptionId))
+                .Get()
+                .AssertResult();
+
+            // Act
+            var paymentDetail = DokladApi.IssuedDocumentPaymentClient
+                .Detail(payments.Items.First().Id)
+                .Include(i => i.CashVoucher)
+                .Get();
+
+            // Assert
+            Assert.IsNotNull(paymentDetail.Data.CashVoucher);
         }
     }
 }
