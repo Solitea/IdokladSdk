@@ -8,7 +8,7 @@ SDK targets .NET Standard 2.0
 
 # Application
 
-**iDoklad** is online accounting from Solitea Czech Republic. Ideal for self employed and small businesses. The easiest way to conveniently create, print and manage your invoices online from anywhere. Get started now!
+**iDoklad** is online accounting from Solitea. Ideal for self employed and small businesses. The easiest way to conveniently create, print and manage your invoices online from anywhere. Get started now!
 
 [iDoklad.cz](https://www.idoklad.cz/)
 [iDoklad.sk](https://www.idoklad.sk/)
