@@ -24,6 +24,7 @@ namespace IdokladSdk
         private ExchangeRateClient _exchangeRateClient;
         private IssuedDocumentPaymentClient _issuedDocumentPaymentClient;
         private IssuedInvoiceClient _issuedInvoiceClient;
+        private LogClient _logClient;
         private MailClient _mailClient;
         private NumericSequenceClient _numericSequenceClient;
         private PaymentOptionClient _paymentOptionClient;
@@ -141,6 +142,12 @@ namespace IdokladSdk
         /// </summary>
         public IssuedInvoiceClient IssuedInvoiceClient =>
             _issuedInvoiceClient ?? (_issuedInvoiceClient = new IssuedInvoiceClient(ApiContext));
+
+        /// <summary>
+        /// Gets logs.
+        /// </summary>
+        public LogClient LogClient =>
+            _logClient ?? (_logClient = new LogClient(ApiContext));
 
         /// <summary>
         /// Gets mail.
