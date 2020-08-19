@@ -83,6 +83,16 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
         public bool IsEet { get; set; }
 
         /// <summary>
+        /// Gets or sets related cash voucher id.
+        /// </summary>
+        public int? CashVoucherId { get; set; }
+
+        /// <summary>
+        /// Gets or sets related bank statement id.
+        /// </summary>
+        public int? BankStatementId { get; set; }
+
+        /// <summary>
         /// Gets or sets additional information about the entity.
         /// </summary>
         public Metadata Metadata { get; set; }
