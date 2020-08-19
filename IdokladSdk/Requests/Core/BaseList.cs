@@ -51,12 +51,12 @@ namespace IdokladSdk.Requests.Core
         }
 
         /// <summary>
-        /// Gets URL part for list.
+        /// Gets or sets URL part for list.
         /// </summary>
         /// <remarks>
         /// Can be null or empty string.
         /// </remarks>
-        protected virtual string ListName => string.Empty;
+        protected virtual string ListName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets URL for detail.
