@@ -14,69 +14,78 @@ schedules:
         - master
     always: true
 
-pool:
-  name: iDokladBuild
-workspace:
-  clean: resources
-
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- task: FileTransform@2
-  displayName: 'Substitute settings'
-  inputs:
-    folderPath: '$(System.DefaultWorkingDirectory)'
-    xmlTransformationRules: ''
-    jsonTargetFiles: 'IdokladSdk.IntegrationTests/testsettings.json'
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: BuildJob
+    displayName: Build and test package
+    pool: 'iDokladBuild'
+    workspace:
+      clean: resources
+    steps:
+    - task: NuGetToolInstaller@1
+      displayName: Install Nuget
+      inputs:
+        versionSpec: '5.6.0'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build'
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    - task: FileTransform@2
+      displayName: 'Substitute settings'
+      inputs:
+        folderPath: '$(System.DefaultWorkingDirectory)'
+        xmlTransformationRules: ''
+        jsonTargetFiles: 'IdokladSdk.IntegrationTests/testsettings.json'
 
-- task: DotNetCoreCLI@2
-  displayName: "Run Unit tests"
-  inputs:
-    command: 'test'
-    projects: '**/*UnitTests.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --logger trx'
-    publishTestResults: true
+    - task: DotNetCoreCLI@2
+      displayName: 'Build'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Run Integration tests'
-  inputs:
-    command: 'test'
-    projects: '**/*IntegrationTests.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --logger trx'
-    publishTestResults: true
+    - task: DotNetCoreCLI@2
+      displayName: "Run Unit tests"
+      inputs:
+        command: 'test'
+        projects: '**/*UnitTests.csproj'
+        arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --logger trx'
+        publishTestResults: true
 
-- task: DotNetCoreCLI@2
-  displayName: "Create NuGet package"
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/IdokladSdk.csproj'
-    nobuild: true
-    versioningScheme: 'byEnvVar'
-    versionEnvVar: 'Build.BuildNumber'
-  condition: and(succeeded(), not(eq(variables['Build.Reason'], 'Schedule')), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    - task: DotNetCoreCLI@2
+      displayName: 'Run Integration tests'
+      inputs:
+        command: 'test'
+        projects: '**/*IntegrationTests.csproj'
+        arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --logger trx'
+        publishTestResults: true
 
-- task: NuGetCommand@2
-  displayName: "Publish NuGet package"
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/IdokladSdk*.nupkg;!$(Build.ArtifactStagingDirectory)/**/IdokladSdk*.symbols.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: '4648ca4e-87a8-47c4-ab02-16dcea8269c2/ff881867-c73f-4290-beaa-f96019a33788'
-    allowPackageConflicts: true
-  condition: and(succeeded(), not(eq(variables['Build.Reason'], 'Schedule')), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  
-- task: DeleteFiles@1
-  displayName: 'Delete files'
-  inputs:
-    Contents: '**/*'
-  continueOnError: true
-  condition: always()
+    - task: DotNetCoreCLI@2
+      displayName: "Create NuGet package"
+      inputs:
+        command: 'pack'
+        packagesToPack: '**/IdokladSdk.csproj'
+        nobuild: true
+        versioningScheme: 'byEnvVar'
+        versionEnvVar: 'Build.BuildNumber'
+      condition: and(succeeded(), not(eq(variables['Build.Reason'], 'Schedule')), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+    - task: NuGetCommand@2
+      displayName: "Publish NuGet package"
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/IdokladSdk*.nupkg;!$(Build.ArtifactStagingDirectory)/**/IdokladSdk*.symbols.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: '4648ca4e-87a8-47c4-ab02-16dcea8269c2/ff881867-c73f-4290-beaa-f96019a33788'
+        allowPackageConflicts: true
+      condition: and(succeeded(), not(eq(variables['Build.Reason'], 'Schedule')), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      
+    - task: DeleteFiles@1
+      displayName: 'Delete files'
+      inputs:
+        Contents: '**/*'
+      continueOnError: true
+      condition: always()
 
