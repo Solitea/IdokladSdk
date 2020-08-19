@@ -21,6 +21,6 @@ namespace IdokladSdk.Requests.Account.User
         }
 
         /// <inheritdoc />
-        protected override string ListName { get; } = "Users";
+        protected override string ListName { get; set; } = "Users";
     }
 }

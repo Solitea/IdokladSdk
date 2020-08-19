@@ -21,6 +21,6 @@ namespace IdokladSdk.Requests.Account.Agenda
         }
 
         /// <inheritdoc />
-        protected override string ListName { get; } = "Agendas";
+        protected override string ListName { get; set; } = "Agendas";
     }
 }
