@@ -124,5 +124,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var salesOrder = _client.Detail(SalesOrderId).Get().AssertResult();
             AssertProformaInvoice(proformaInvoice, salesOrder);
         }
+
+        [Test]
+        public async Task CopyAsync_SuccessfullyGetPostModel()
+        {
+            // Arrange
+            var model = GetSalesOrderPostModel();
+            model.AccountNumber = "555777";
+            var salesOrder = _client.Post(model).AssertResult();
+
+            // Act
+            var salesOrderCopy = (await _client.CopyAsync(salesOrder.Id)).AssertResult();
+
+            // Assert
+            Assert.AreEqual(salesOrder.Description, salesOrderCopy.Description);
+            Assert.AreEqual(PartnerId, salesOrderCopy.PartnerId);
+            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, salesOrderCopy.AccountNumber);
+            _client.Delete(salesOrder.Id).AssertResult();
+        }
     }
 }

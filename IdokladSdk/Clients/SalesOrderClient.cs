@@ -12,6 +12,7 @@ namespace IdokladSdk.Clients
     /// </summary>
     public partial class SalesOrderClient :
         BaseClient,
+        ICopyRequest<SalesOrderPostModel>,
         IDeleteRequest,
         IEntityDetail<SalesOrderDetail>,
         IEntityList<SalesOrderList>,
@@ -31,6 +32,13 @@ namespace IdokladSdk.Clients
 
         /// <inheritdoc/>
         public override string ResourceUrl { get; } = "/SalesOrders";
+
+        /// <inheritdoc />
+        public ApiResult<SalesOrderPostModel> Copy(int id)
+        {
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return Get<SalesOrderPostModel>(resource);
+        }
 
         /// <inheritdoc/>
         public ApiResult<SalesOrderPostModel> Default()

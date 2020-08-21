@@ -251,6 +251,24 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVatHc);
         }
 
+        [Test]
+        public void Copy_SuccessfullyGetPostModel()
+        {
+            // Arrange
+            var model = GetSalesOrderPostModel();
+            model.AccountNumber = "555777";
+            var salesOrder = _client.Post(model).AssertResult();
+
+            // Act
+            var salesOrderCopy = _client.Copy(salesOrder.Id).AssertResult();
+
+            // Assert
+            Assert.AreEqual(salesOrder.Description, salesOrderCopy.Description);
+            Assert.AreEqual(PartnerId, salesOrderCopy.PartnerId);
+            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, salesOrderCopy.AccountNumber);
+            _client.Delete(salesOrder.Id).AssertResult();
+        }
+
         private void AssertIssuedInvoice(IssuedInvoicePostModel issuedInvoice, SalesOrderGetModel salesOrder)
         {
             Assert.AreEqual(SalesOrderId, issuedInvoice.SalesOrderId);
