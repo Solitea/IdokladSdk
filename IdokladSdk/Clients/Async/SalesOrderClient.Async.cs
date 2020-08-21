@@ -10,6 +10,13 @@ namespace IdokladSdk.Clients
     public partial class SalesOrderClient
     {
         /// <inheritdoc />
+        public Task<ApiResult<SalesOrderPostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return GetAsync<SalesOrderPostModel>(resource, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public Task<ApiResult<SalesOrderPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
             return DefaultAsync<SalesOrderPostModel>(cancellationToken);
