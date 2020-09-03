@@ -3,13 +3,13 @@
     /// <summary>
     /// Filter item base class.
     /// </summary>
-    public class FilterItemBase
+    public abstract class FilterItemBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FilterItemBase"/> class.
         /// </summary>
         /// <param name="name">Item name.</param>
-        public FilterItemBase(string name)
+        protected FilterItemBase(string name)
         {
             Name = name;
         }

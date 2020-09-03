@@ -13,7 +13,6 @@
         public FilterItem(string name)
             : base(name)
         {
-            Name = name;
         }
 
         /// <summary>

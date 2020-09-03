@@ -68,6 +68,7 @@ namespace IdokladSdk.NetCore.TestApp
             select.List_GetWithGenericType_ReturnsCustomModel();
             select.List_GetWithLambda_SpecificType();
             select.List_FilteringSortingPaging();
+            select.List_Filtering_Obsolete();
             select.Detail_DefaultGetMethod_ReturnsDefaultModel(_partner1Id);
             select.Detail_GetWithGenericType_ReturnsCustomModel(_partner1Id);
             select.Detail_WithLambda_ReturningAnonymousType(_partner1Id);
