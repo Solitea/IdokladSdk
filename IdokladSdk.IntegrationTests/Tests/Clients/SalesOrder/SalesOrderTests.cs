@@ -199,6 +199,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
+        public void GetList_WithComplexFilter_SuccessfullyReturned()
+        {
+            // Act && Assert
+            var data = _client.List()
+                .Filter(f => f.DocumentNumber.Contains("005") &&
+                            (f.State.IsEqual(SalesOrderState.Created) ||
+                             f.State.IsEqual(SalesOrderState.Offered) ||
+                             f.State.IsEqual(SalesOrderState.Ordered) ||
+                             f.State.IsEqual(SalesOrderState.Invoiced)))
+                .Get()
+                .AssertResult();
+        }
+
+        [Test]
         public void GetList_WithSelect_SuccessfullyReturned()
         {
             // Act

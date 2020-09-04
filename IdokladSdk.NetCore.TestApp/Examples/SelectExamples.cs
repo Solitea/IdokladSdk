@@ -22,14 +22,26 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             // When retrieving list of entities, we can specify filter which applies inside iDoklad and reduces amount of data transferred.
             // Expression used in Filter method allows usage only of those properties which can be filtered on server-side, it depends on
             // entity type. The same applies to properties used in Sort method.
+            // Expressions can contain multiple expressions joined by arbitrary combination of && or || operators. Use parentheses to specify
+            // precedence.
+            var list = _api.ContactClient
+                .List()
+                .Filter(c => c.DateLastChange.IsLowerThan(DateTime.UtcNow) && (c.CompanyName.Contains("a.s.") || c.CompanyName.Contains("s.r.o.")))
+                .Sort(c => c.Id.Asc())
+                .PageSize(100)
+                .Page(1)
+                .Get();
+        }
+
+        public void List_Filtering_Obsolete()
+        {
+            // Previous versions of SDK supported usage of multiple conditions in filter, but all expressions parts could be joined by the
+            // same logical operator.
             var list = _api.ContactClient
                 .List()
                 .Filter(c => c.CompanyName.Contains("company"))
                 .Filter(c => c.DateLastChange.IsGreaterThan(DateTime.UtcNow.AddMinutes(-10)))
                 .FilterType(FilterType.And)
-                .Sort(c => c.Id.Asc())
-                .PageSize(100)
-                .Page(1)
                 .Get();
         }
 

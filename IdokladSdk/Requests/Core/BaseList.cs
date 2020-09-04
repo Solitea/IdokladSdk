@@ -78,6 +78,17 @@ namespace IdokladSdk.Requests.Core
         }
 
         /// <summary>
+        /// Filter for a list.
+        /// </summary>
+        /// <param name="filter">Filter expressions.</param>
+        /// <returns>List of models.</returns>
+        public TList Filter(Func<TFilter, FilterExpressionBase> filter)
+        {
+            _filter.Filter(filter);
+            return This;
+        }
+
+        /// <summary>
         /// Filter type for a list.
         /// </summary>
         /// <param name="filterType">Filter type.</param>

@@ -6,7 +6,7 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
     /// <summary>
     /// Filter expression.
     /// </summary>
-    public class FilterExpression
+    public class FilterExpression : FilterExpressionBase
     {
         private readonly string _name;
         private readonly FilterOperator _operator;
