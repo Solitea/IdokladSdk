@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
@@ -67,6 +68,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
             // Assert
             Assert.IsTrue(data);
+        }
+
+        [Test]
+        [Order(4)]
+        public void UploadWithWrongFileName_ExceptionThrown()
+        {
+            // Act
+            var model = new AttachmentUploadModel
+            {
+                FileName = "Wr<>ngF|leNam?.docx"
+            };
+
+            TestDelegate action = () => _attachmentClient.Upload(model).AssertResult();
+
+            // Assert
+            Assert.That(action, Throws.Exception.TypeOf<ValidationException>()
+                .And.Message.EqualTo("File name contains one or more unsupported characters"));
         }
     }
 }
