@@ -77,7 +77,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             // Act
             var model = new AttachmentUploadModel
             {
-                FileName = "Wr<>ngF|leNam?.docx"
+                FileName = "Wr<>ng“F|leNam?.docx"
             };
 
             TestDelegate action = () => _attachmentClient.Upload(model).AssertResult();
