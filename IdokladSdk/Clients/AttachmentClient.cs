@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Response;
@@ -49,6 +51,11 @@ namespace IdokladSdk.Clients
                 throw new ArgumentNullException(nameof(model));
             }
 
+            if (!IsAttachmentNameValid(model))
+            {
+                throw new ValidationException("File name contains one or more unsupported characters");
+            }
+
             var resource = ResourceUrl + $"{model.DocumentId}/{model.DocumentType}";
             var request = CreateRequest(resource, Method.PUT);
             request.AddFile(model.FileName, model.FileBytes, model.FileName);
@@ -66,6 +73,12 @@ namespace IdokladSdk.Clients
         {
             var resource = ResourceUrl + $"{documentId}/{documentType}";
             return Delete<bool>(resource);
+        }
+
+        private bool IsAttachmentNameValid(AttachmentUploadModel attachment)
+        {
+            var unsupportedChars = new char[] { '\\', '/', '"', ':', '?', '*', '<', '>', '|' };
+            return attachment.FileName.IndexOfAny(unsupportedChars) == -1;
         }
     }
 }
