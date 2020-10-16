@@ -1,5 +1,7 @@
-﻿using System.Security.Authentication;
+﻿using System.Net;
+using System.Security.Authentication;
 using IdokladSdk.Authentication.Models;
+using IdokladSdk.Exceptions;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -37,6 +39,11 @@ namespace IdokladSdk.Authentication.Extensions
 
         private static Tokenizer ProcessResponse(IRestResponse response, GrantType grantType)
         {
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new IdokladUnavailableException(response);
+            }
+
             var tokenizer = JsonConvert.DeserializeObject<Tokenizer>(response.Content);
             tokenizer.GrantType = grantType;
 

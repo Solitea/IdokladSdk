@@ -7,7 +7,7 @@ namespace IdokladSdk.Exceptions
     /// <summary>
     /// IdokladSdkException.
     /// </summary>
-    public class IdokladSdkException : Exception
+    public class IdokladSdkException : IdokladBaseException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IdokladSdkException" /> class.

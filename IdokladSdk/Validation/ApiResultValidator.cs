@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
-using IdokladSdk.Enums;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
+using System.Net;
+using IdokladSdk.Exceptions;
 using RestSharp;
 
 namespace IdokladSdk.Validation
@@ -25,6 +22,11 @@ namespace IdokladSdk.Validation
             if (response == null)
             {
                 throw new ArgumentNullException(nameof(response), "Response cannot be null.");
+            }
+
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new IdokladUnavailableException(response);
             }
 
             if (response.ErrorException != null)

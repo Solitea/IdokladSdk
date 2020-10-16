@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Net;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.Response;
 using IdokladSdk.UnitTests.Tests.Validation.Exceptions;
 using IdokladSdk.Validation;
@@ -81,6 +82,32 @@ namespace IdokladSdk.UnitTests.Tests.Validation
                     throw new CustomTestException();
                 }
             }
+        }
+
+        [Test]
+        public void ApiResult_ServiceUnavailabe_Throws()
+        {
+            // Arrange
+            IRestResponse<ApiResult<bool>> response = new RestResponse<ApiResult<bool>>
+            {
+                StatusCode = HttpStatusCode.ServiceUnavailable
+            };
+
+            // Assert
+            Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response, null));
+        }
+
+        [Test]
+        public void ApiBatchResult_ServiceUnavailabe_Throws()
+        {
+            // Arrange
+            IRestResponse<ApiBatchResult<bool>> response = new RestResponse<ApiBatchResult<bool>>
+            {
+                StatusCode = HttpStatusCode.ServiceUnavailable
+            };
+
+            // Assert
+            Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response, null));
         }
 
         private ApiBatchResult<bool> GetDefaultApiBatchResult()
