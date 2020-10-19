@@ -1,9 +1,12 @@
 ﻿using System.Net;
+using System.Runtime.CompilerServices;
 using System.Security.Authentication;
 using IdokladSdk.Authentication.Models;
 using IdokladSdk.Exceptions;
 using Newtonsoft.Json;
 using RestSharp;
+
+[assembly: InternalsVisibleTo("IdokladSdk.UnitTests")]
 
 namespace IdokladSdk.Authentication.Extensions
 {
