@@ -77,7 +77,7 @@ namespace IdokladSdk.Clients
 
         private bool IsAttachmentNameValid(AttachmentUploadModel attachment)
         {
-            var unsupportedChars = new char[] { '\\', '/', '"', ':', '?', '*', '<', '>', '|' };
+            var unsupportedChars = new char[] { '\\', '/', '"', ':', '?', '*', '<', '>', '|', '“' };
             return attachment.FileName.IndexOfAny(unsupportedChars) == -1;
         }
     }
