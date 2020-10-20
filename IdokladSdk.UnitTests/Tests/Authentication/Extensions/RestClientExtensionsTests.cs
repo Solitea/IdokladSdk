@@ -10,7 +10,7 @@ using RestSharp;
 namespace IdokladSdk.UnitTests.Tests.Authentication.Extensions
 {
     [TestFixture]
-    public class RestClientExtensionsTests
+    public partial class RestClientExtensionsTests
     {
         private IRestClient _serviceUnavailableClient;
 
@@ -34,16 +34,6 @@ namespace IdokladSdk.UnitTests.Tests.Authentication.Extensions
         }
 
         [Test]
-        public void RequestAuthorizationCodeToken_ServiceUnavailable_ThrowsAsync()
-        {
-            // Arrange
-            var request = new AuthorizationCodeTokenRequest();
-
-            // Assert
-            Assert.ThrowsAsync<IdokladUnavailableException>(async () => await _serviceUnavailableClient.RequestAuthorizationCodeTokenAsync(request));
-        }
-
-        [Test]
         public void RequestClientCredentialsToken_ServiceUnavailable_Throws()
         {
             // Arrange
@@ -51,16 +41,6 @@ namespace IdokladSdk.UnitTests.Tests.Authentication.Extensions
 
             // Assert
             Assert.Throws<IdokladUnavailableException>(() => _serviceUnavailableClient.RequestClientCredentialsToken(request));
-        }
-
-        [Test]
-        public void RequestClientCredentialsToken_ServiceUnavailable_ThrowsAsync()
-        {
-            // Arrange
-            var request = new ClientCredentialsTokenRequest();
-
-            // Assert
-            Assert.ThrowsAsync<IdokladUnavailableException>(async () => await _serviceUnavailableClient.RequestClientCredentialsTokenAsync(request));
         }
 
         [Test]
@@ -74,16 +54,6 @@ namespace IdokladSdk.UnitTests.Tests.Authentication.Extensions
         }
 
         [Test]
-        public void RequestPinToken_ServiceUnavailable_ThrowsAsync()
-        {
-            // Arrange
-            var request = new PinTokenRequest();
-
-            // Assert
-            Assert.ThrowsAsync<IdokladUnavailableException>(async () => await _serviceUnavailableClient.RequestPinTokenAsync(request));
-        }
-
-        [Test]
         public void RequestRefreshToken_ServiceUnavailable_Throws()
         {
             // Arrange
@@ -91,16 +61,6 @@ namespace IdokladSdk.UnitTests.Tests.Authentication.Extensions
 
             // Assert
             Assert.Throws<IdokladUnavailableException>(() => _serviceUnavailableClient.RequestRefreshToken(request));
-        }
-
-        [Test]
-        public void RequestRefreshToken_ServiceUnavailable_ThrowsAsync()
-        {
-            // Arrange
-            var request = new RefreshTokenRequest();
-
-            // Assert
-            Assert.ThrowsAsync<IdokladUnavailableException>(async () => await _serviceUnavailableClient.RequestRefreshTokenAsync(request));
         }
     }
 }
