@@ -29,7 +29,7 @@ namespace IdokladSdk.IntegrationTests.Core
             DokladApi = new DokladApi(context);
         }
 
-        private void LoadConfiguration()
+        protected void LoadConfiguration()
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
