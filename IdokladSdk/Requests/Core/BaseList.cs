@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using IdokladSdk.Clients;
-using IdokladSdk.Enums;
 using IdokladSdk.Requests.Core.Extensions;
 using IdokladSdk.Requests.Core.Interfaces;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
@@ -179,7 +177,7 @@ namespace IdokladSdk.Requests.Core
             {
                 Data = new Page<TResult>
                 {
-                    Items = apiResult.Data?.Items?.Select(o => selectorFunction.Invoke(o)) ?? null,
+                    Items = apiResult.Data?.Items?.Select(o => selectorFunction.Invoke(o)),
                     TotalItems = apiResult.Data.TotalItems,
                     TotalPages = apiResult.Data.TotalPages
                 },

@@ -166,6 +166,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         }
 
         [Test]
+        public void GetListWithSort_ReturnsList()
+        {
+            // Act
+            var data = PriceListItemClient
+                .List()
+                .Sort(x => x.Name.Desc())
+                .Get()
+                .AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.Greater(data.Items.Count(), 0);
+        }
+
+        [Test]
         public void Post_AsStockItemWithInitialData_SuccessfullyPosted()
         {
             // Arrange

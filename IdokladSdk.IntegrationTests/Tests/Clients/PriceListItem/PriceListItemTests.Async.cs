@@ -130,5 +130,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             // Assert
             Assert.True(data.First());
         }
+
+        [Test]
+        public async Task GetListWithSortAsync_ReturnsList()
+        {
+            // Act
+            var data = (await PriceListItemClient
+                .List()
+                .Sort(x => x.Name.Desc())
+                .GetAsync())
+                .AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.Greater(data.Items.Count(), 0);
+        }
     }
 }
