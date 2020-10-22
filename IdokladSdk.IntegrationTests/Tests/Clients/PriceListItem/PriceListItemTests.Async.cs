@@ -144,6 +144,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             // Assert
             Assert.NotNull(data);
             Assert.Greater(data.Items.Count(), 0);
+            Assert.That(data.Items, Is.Ordered.By(nameof(PriceListItemListGetModel.Name)).Descending);
         }
     }
 }
