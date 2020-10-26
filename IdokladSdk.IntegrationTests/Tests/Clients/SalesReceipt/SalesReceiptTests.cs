@@ -67,6 +67,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             // Assert
             Assert.AreEqual(_salesReceiptId, data.Id);
             Assert.AreEqual(_postModel.Note, data.Note);
+            Assert.True(data.Items.Any(i => i.ItemType == SalesReceiptItemType.ItemTypeNormal));
+            Assert.True(data.Items.Any(i => i.ItemType == SalesReceiptItemType.ItemTypeRound));
         }
 
         [Test]
