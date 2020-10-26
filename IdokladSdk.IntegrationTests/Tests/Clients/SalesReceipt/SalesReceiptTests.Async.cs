@@ -20,5 +20,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             Assert.AreEqual(salesReceiptToCopy.PartnerId, data.PartnerId);
             Assert.AreEqual(salesReceiptToCopy.CurrencyId, data.CurrencyId);
         }
+
+        [Test]
+        public async Task RecountAsync_SuccessfullyRecounted()
+        {
+            // Arrange
+            var model = CreateRecountPostModel();
+
+            // Act
+            var data = (await _client.RecountAsync(model)).AssertResult();
+
+            // Assert
+            AssertRecountModel(data, model);
+        }
     }
 }
