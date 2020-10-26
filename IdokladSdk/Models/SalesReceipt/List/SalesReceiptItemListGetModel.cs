@@ -22,6 +22,11 @@ namespace IdokladSdk.Models.SalesReceipt
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets item type.
+        /// </summary>
+        public SalesReceiptItemType ItemType { get; set; }
+
+        /// <summary>
         /// Gets or sets name.
         /// </summary>
         public string Name { get; set; }
