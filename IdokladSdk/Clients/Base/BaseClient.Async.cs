@@ -102,6 +102,7 @@ namespace IdokladSdk.Clients
         {
             ValidateModel(model);
             var request = await CreateRequestAsync(resource, Method.POST, cancellationToken).ConfigureAwait(false);
+            request.JsonSerializer = new CommonJsonSerializer();
             request.AddJsonBody(model);
 
             return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);

@@ -221,35 +221,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         public void Recount_SuccessfullyRecounted()
         {
             // Arrange
-            var item = new SalesReceiptItemRecountPostModel
-            {
-                UnitPrice = 100,
-                Amount = 2,
-                Name = "Test",
-                PriceType = PriceTypeWithoutOnlyBase.WithoutVat,
-                VatRateType = VatRateType.Basic
-            };
-            var model = new SalesReceiptRecountPostModel
-            {
-                CurrencyId = 1,
-                DateOfIssue = DateTime.Today.SetKindUtc(),
-                Items = new List<SalesReceiptItemRecountPostModel> { item },
-                Payments = new List<SalesReceiptPaymentRecountPostModel> { new SalesReceiptPaymentRecountPostModel { PaymentOptionId = 1 } }
-            };
+            var model = CreateRecountPostModel();
 
             // Act
             var data = _client.Recount(model).AssertResult();
 
             // Assert
-            var recountedItem = data.Items.First();
-            Assert.AreEqual(item.Id, recountedItem.Id);
-            Assert.AreEqual(item.Name, recountedItem.Name);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVatHc);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVat);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVatHc);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVat);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVatHc);
+            AssertRecountModel(data, model);
         }
 
         [Test]
@@ -355,6 +333,40 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var id = data.Results.First().Data.Id;
             Assert.Greater(id, 0);
             _salesReceiptIds.Add(id);
+        }
+
+        private void AssertRecountModel(SalesReceiptRecountGetModel recountGetModel, SalesReceiptRecountPostModel recountPostModel)
+        {
+            var itemToRecount = recountPostModel.Items.First();
+            var recountedItem = recountGetModel.Items.First();
+            Assert.AreEqual(itemToRecount.Id, recountedItem.Id);
+            Assert.AreEqual(itemToRecount.Name, recountedItem.Name);
+            Assert.AreEqual(242, recountedItem.Prices.TotalWithVat);
+            Assert.AreEqual(242, recountedItem.Prices.TotalWithVatHc);
+            Assert.AreEqual(42, recountedItem.Prices.TotalVat);
+            Assert.AreEqual(42, recountedItem.Prices.TotalVatHc);
+            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVat);
+            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVatHc);
+        }
+
+        private SalesReceiptRecountPostModel CreateRecountPostModel()
+        {
+            var item = new SalesReceiptItemRecountPostModel
+            {
+                UnitPrice = 100,
+                Amount = 2,
+                Name = "Test",
+                PriceType = PriceTypeWithoutOnlyBase.WithoutVat,
+                VatRateType = VatRateType.Basic
+            };
+
+            return new SalesReceiptRecountPostModel
+            {
+                CurrencyId = 1,
+                DateOfIssue = DateTime.Today.SetKindUtc(),
+                Items = new List<SalesReceiptItemRecountPostModel> { item },
+                Payments = new List<SalesReceiptPaymentRecountPostModel> { new SalesReceiptPaymentRecountPostModel { PaymentOptionId = 1 } }
+            };
         }
 
         private void SetPostModel()
