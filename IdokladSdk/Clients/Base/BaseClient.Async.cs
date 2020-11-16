@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using IdokladSdk.Enums;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using IdokladSdk.Validation;

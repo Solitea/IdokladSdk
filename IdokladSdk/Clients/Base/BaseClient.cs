@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using IdokladSdk.Enums;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using IdokladSdk.Validation;

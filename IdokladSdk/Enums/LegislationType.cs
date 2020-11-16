@@ -1,18 +1,18 @@
 ﻿namespace IdokladSdk.Enums
 {
     /// <summary>
-    /// EET status.
+    /// LegislationType.
     /// </summary>
-    public enum ElectronicRecordsOfSalesStatus
+    public enum LegislationType
     {
         /// <summary>
-        /// Unregistered
+        /// Slovak
         /// </summary>
-        NotRegistered = 1,
+        Sk = 1,
 
         /// <summary>
-        /// Registered
+        /// Czech
         /// </summary>
-        Registered = 2
+        Cz = 2
     }
 }
