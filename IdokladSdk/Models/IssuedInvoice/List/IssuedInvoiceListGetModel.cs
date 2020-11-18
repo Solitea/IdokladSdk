@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 
 namespace IdokladSdk.Models.IssuedInvoice
@@ -62,6 +63,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets date of VAT application.
         /// </summary>
         public DateTime DateOfVatApplication { get; set; }
+
+        /// <summary>
+        /// Gets or sets delivery address.
+        /// </summary>
+        public DeliveryDocumentAddressGetModel DeliveryAddress { get; set; }
 
         /// <summary>
         /// Gets or sets description.
