@@ -17,6 +17,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
     public partial class SalesReceiptTests : TestBase
     {
         private const int PartnerId = 323823;
+        private const int SalesPosEquipmentId = 12902;
+
         private readonly List<int> _salesReceiptIds = new List<int>();
         private int _salesReceiptId;
         private SalesReceiptClient _client;
@@ -323,6 +325,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         {
             // Arrange
             var defaultSalesReceipt = _client.Default().AssertResult();
+            defaultSalesReceipt.SalesPosEquipmentId = SalesPosEquipmentId;
             defaultSalesReceipt.Items.First().Name = "Test";
 
             // Act
