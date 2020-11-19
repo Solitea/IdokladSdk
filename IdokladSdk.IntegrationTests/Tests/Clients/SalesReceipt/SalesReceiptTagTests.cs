@@ -13,6 +13,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
     public class SalesReceiptTagTests : TaggableDocumentTestsBase<SalesReceiptClient, SalesReceiptDetail, SalesReceiptList, SalesReceiptGetModel,
         SalesReceiptListGetModel, SalesReceiptPostModel, SalesReceiptPatchModel, SalesReceiptExpand, SalesReceiptFilter>
     {
+        public const int SalesPosEquipmentId = 12902;
+
         protected override int EntityWithoutTagsId => 226484;
 
         protected override int EntityWithTags1Id => 226482;
@@ -23,6 +25,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         {
             postModel.Name = "Test sales receipt";
             postModel.Items.First().Name = "Item name";
+            postModel.SalesPosEquipmentId = SalesPosEquipmentId;
         }
     }
 }

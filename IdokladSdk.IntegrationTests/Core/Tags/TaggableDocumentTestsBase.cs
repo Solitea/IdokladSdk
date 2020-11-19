@@ -52,7 +52,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void Path_DuplicateTagIds_Fails()
+        public void Patch_DuplicateTagIds_Fails()
         {
             // Arrange
             var patchModel = new TPatchModel { Id = EntityWithTags1Id };
