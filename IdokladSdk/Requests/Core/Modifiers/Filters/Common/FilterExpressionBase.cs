@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices.ComTypes;
-
-namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
+﻿namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
 {
     /// <summary>
     /// Filter expression base class.

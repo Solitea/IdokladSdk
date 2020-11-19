@@ -26,6 +26,7 @@ namespace IdokladSdk
         private IssuedInvoiceClient _issuedInvoiceClient;
         private LogClient _logClient;
         private MailClient _mailClient;
+        private NotificationClient _notificationClient;
         private NumericSequenceClient _numericSequenceClient;
         private PaymentOptionClient _paymentOptionClient;
         private PriceListItemClient _priceListItemClient;
@@ -153,6 +154,11 @@ namespace IdokladSdk
         /// Gets mail.
         /// </summary>
         public MailClient MailClient => _mailClient ?? (_mailClient = new MailClient(ApiContext));
+
+        /// <summary>
+        /// Gets Notifications.
+        /// </summary>
+        public NotificationClient NotificationClient => _notificationClient ?? (_notificationClient = new NotificationClient(ApiContext));
 
         /// <summary>
         /// Gets numeric sequence.
