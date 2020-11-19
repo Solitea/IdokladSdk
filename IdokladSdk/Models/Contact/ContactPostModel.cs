@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Contact
@@ -43,6 +45,11 @@ namespace IdokladSdk.Models.Contact
         /// Gets or sets default invoice maturity.
         /// </summary>
         public short? DefaultInvoiceMaturity { get; set; }
+
+        /// <summary>
+        /// Gets or sets delivery addresses.
+        /// </summary>
+        public List<DeliveryAddressPostModel> DeliveryAddresses { get; set; }
 
         /// <summary>
         /// Gets or sets default discount percentage for the contact.

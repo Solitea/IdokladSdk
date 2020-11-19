@@ -7,6 +7,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Requests.Core.Extensions;
@@ -20,6 +21,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
     [TestFixture]
     public partial class ProformaInvoiceTests : TestBase
     {
+        private const int DeliveryAddressId1 = 11;
+        private const int DeliveryAddressId2 = 12;
         private const int PartnerId = 323823;
         private const int UnpaidProformaInvoiceId = 922399;
         private const int AccountedProformaInvoiceId = 922400;
@@ -44,6 +47,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             // Arrange
             _proformaInvoicePostModel = _proformaInvoiceClient.Default().AssertResult();
             _proformaInvoicePostModel.PartnerId = PartnerId;
+            _proformaInvoicePostModel.DeliveryAddressId = DeliveryAddressId1;
             _proformaInvoicePostModel.Description = "Invoice";
             _proformaInvoicePostModel.DateOfPayment = DateTime.UtcNow.SetKindUtc();
             _proformaInvoicePostModel.IsEet = false;
@@ -65,6 +69,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.AreEqual(PartnerId, data.PartnerId);
             Assert.AreEqual(_proformaInvoicePostModel.DateOfPayment.GetValueOrDefault().Date, data.DateOfPayment);
             Assert.Greater(data.Items.Count, 0);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
@@ -76,6 +81,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
             // Assert
             Assert.AreEqual(_proformaInvoiceId, data.Id);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
@@ -97,6 +103,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             var model = new ProformaInvoicePatchModel
             {
                 Id = _proformaInvoiceId,
+                DeliveryAddressId = DeliveryAddressId2,
                 Description = "DescriptionUpdated",
                 MyAddress = new MyDocumentAddressPatchModel
                 {
@@ -112,6 +119,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.AreEqual(model.Description, data.Description);
             Assert.AreEqual(model.MyAddress.AccountNumber, data.MyAddress.AccountNumber);
             Assert.AreEqual(model.MyAddress.Iban, data.MyAddress.Iban);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId2);
         }
 
         [Test]
@@ -129,6 +137,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.AreEqual(invoiceToCopy.Description, data.Description);
             Assert.AreEqual(invoiceToCopy.PartnerId, data.PartnerId);
             Assert.AreEqual(invoiceToCopy.CurrencyId, data.CurrencyId);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId2);
         }
 
         [Test]
@@ -275,6 +284,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.AreEqual(2, result.CurrencyId);
             Assert.AreEqual(121, recountedItem.Prices.TotalWithVat);
             Assert.AreEqual(2420, recountedItem.Prices.TotalWithVatHc);
+        }
+
+        private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
+        {
+            Assert.NotNull(data);
+            Assert.NotNull(data.City);
+            Assert.AreEqual(expectedDeliveryAddressId, data.ContactDeliveryAddressId);
+            Assert.NotZero(data.CountryId);
+            Assert.NotNull(data.Name);
+            Assert.NotNull(data.PostalCode);
+            Assert.NotNull(data.Street);
         }
     }
 }

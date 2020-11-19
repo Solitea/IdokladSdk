@@ -67,6 +67,12 @@ namespace IdokladSdk.Models.ProformaInvoice
         public DateTime DateOfVatApplication { get; set; }
 
         /// <summary>
+        /// Gets or sets delivery address Id.
+        /// </summary>
+        [NullableForeignKey]
+        public int? DeliveryAddressId { get; set; }
+
+        /// <summary>
         /// Gets or sets description.
         /// </summary>
         [Required]
