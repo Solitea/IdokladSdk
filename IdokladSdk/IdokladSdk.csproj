@@ -68,4 +68,7 @@
             <_Parameter1>$(MSBuildProjectName).UnitTests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Models\DeliveryAddress\" />
+    </ItemGroup>
 </Project>

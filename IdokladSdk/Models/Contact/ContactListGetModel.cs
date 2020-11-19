@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Models.Common;
+﻿using System.Collections.Generic;
+using IdokladSdk.Models.Common;
+using IdokladSdk.Models.DeliveryAddress;
 
 namespace IdokladSdk.Models.Contact
 {
@@ -141,5 +143,10 @@ namespace IdokladSdk.Models.Contact
         /// Gets or sets default invoice maturity.
         /// </summary>
         public short? DefaultInvoiceMaturity { get; set; }
+
+        /// <summary>
+        /// Gets or sets delivery addresses.
+        /// </summary>
+        public List<DeliveryAddressGetModel> DeliveryAddresses { get; set; }
     }
 }

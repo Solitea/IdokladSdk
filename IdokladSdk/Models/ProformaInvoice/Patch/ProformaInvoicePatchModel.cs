@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Validation.Attributes;
 
@@ -52,6 +53,12 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// Gets or sets date of VAT application.
         /// </summary>
         public DateTime? DateOfVatApplication { get; set; }
+
+        /// <summary>
+        /// Gets or sets delivery address Id.
+        /// </summary>
+        [NullableForeignKey]
+        public NullableProperty<int> DeliveryAddressId { get; set; }
 
         /// <summary>
         /// Gets or sets description.

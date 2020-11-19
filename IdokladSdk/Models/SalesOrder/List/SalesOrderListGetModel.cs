@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 
 namespace IdokladSdk.Models.SalesOrder
@@ -39,6 +40,11 @@ namespace IdokladSdk.Models.SalesOrder
         /// Gets or sets currency id.
         /// </summary>
         public int CurrencyId { get; set; }
+
+        /// <summary>
+        /// Gets or sets delivery address.
+        /// </summary>
+        public DeliveryDocumentAddressGetModel DeliveryAddress { get; set; }
 
         /// <summary>
         /// Gets or sets description.

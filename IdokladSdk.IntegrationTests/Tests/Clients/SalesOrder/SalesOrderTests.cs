@@ -5,6 +5,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
@@ -17,6 +18,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
     [TestFixture]
     public partial class SalesOrderTests : TestBase
     {
+        private const int DeliveryAddressId1 = 11;
+        private const int DeliveryAddressId2 = 12;
         private const int PartnerId = 323823;
         private const int SalesOrderId = 1002;
         private SalesOrderClient _client;
@@ -42,6 +45,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             Assert.AreEqual(model.DateOfIssue.Date, result.DateOfIssue);
             Assert.AreEqual(PartnerId, result.PartnerId);
             Assert.Greater(result.Items.Count, 0);
+            AssertDeliveryAddress(result.DeliveryAddress, DeliveryAddressId1);
             _client.Delete(result.Id).AssertResult();
         }
 
@@ -68,6 +72,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             // Assert
             Assert.AreEqual(SalesOrderId, data.Id);
             Assert.Greater(data.Attachments.Count, 0);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
@@ -93,6 +98,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var patchModel = new SalesOrderPatchModel
             {
                 Id = result.Id,
+                DeliveryAddressId = DeliveryAddressId2,
                 Description = "updated description",
                 MyAddress = new MyDocumentAddressPatchModel
                 {
@@ -109,6 +115,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             Assert.AreEqual(PartnerId, data.PartnerId);
             Assert.AreEqual(patchModel.MyAddress.AccountNumber, data.MyAddress.AccountNumber);
             Assert.AreEqual(patchModel.MyAddress.Iban, data.MyAddress.Iban);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId2);
             _client.Delete(result.Id).AssertResult();
         }
 
@@ -283,6 +290,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             _client.Delete(salesOrder.Id).AssertResult();
         }
 
+        private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
+        {
+            Assert.NotNull(data);
+            Assert.NotNull(data.City);
+            Assert.AreEqual(expectedDeliveryAddressId, data.ContactDeliveryAddressId);
+            Assert.NotZero(data.CountryId);
+            Assert.NotNull(data.Name);
+            Assert.NotNull(data.PostalCode);
+            Assert.NotNull(data.Street);
+        }
+
         private void AssertIssuedInvoice(IssuedInvoicePostModel issuedInvoice, SalesOrderGetModel salesOrder)
         {
             Assert.AreEqual(SalesOrderId, issuedInvoice.SalesOrderId);
@@ -318,6 +336,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var model = _client.Default().AssertResult();
             model.Description = "Test";
             model.PartnerId = PartnerId;
+            model.DeliveryAddressId = DeliveryAddressId1;
             model.DateOfIssue = DateTime.UtcNow.AddDays(-1);
             model.Items.First().Name = "Test";
             model.Items.First().UnitPrice = 100;

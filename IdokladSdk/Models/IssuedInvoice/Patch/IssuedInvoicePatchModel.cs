@@ -56,6 +56,12 @@ namespace IdokladSdk.Models.IssuedInvoice
         public DateTime? DateOfVatApplication { get; set; }
 
         /// <summary>
+        /// Gets or sets delivery address Id.
+        /// </summary>
+        [NullableForeignKey]
+        public NullableProperty<int> DeliveryAddressId { get; set; }
+
+        /// <summary>
         /// Gets or sets description.
         /// </summary>
         public string Description { get; set; }

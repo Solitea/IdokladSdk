@@ -7,6 +7,7 @@ using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
@@ -20,6 +21,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
     public partial class CreditNoteTests : TestBase
     {
         private const int CreditedIssuedInvoiceId = 916236;
+
+        private const int DeliveryAddressId1 = 11;
+
+        private const int DeliveryAddressId2 = 12;
 
         private CreditNotePostModel _creditNotePostModel;
 
@@ -72,6 +77,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             // Assert
             ComparePostAndGetModels(_creditNotePostModel, creditNoteGetModel, false);
             ComparePostAndGetItems(_creditNotePostModel.Items, creditNoteGetModel.Items.Cast<CreditNoteItemListGetModel>().ToList());
+            AssertDeliveryAddress(creditNoteGetModel.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
@@ -86,6 +92,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(_postedCreditNoteId, creditNoteGetModel.Id);
             ComparePostAndGetModels(_creditNotePostModel, creditNoteGetModel, false);
             ComparePostAndGetItems(_creditNotePostModel.Items, creditNoteGetModel.Items.Cast<CreditNoteItemListGetModel>().ToList());
+            AssertDeliveryAddress(creditNoteGetModel.DeliveryAddress, DeliveryAddressId1);
             Assert.NotNull(creditNoteGetModel.CreditedInvoice);
             Assert.AreEqual(creditNoteGetModel.CreditedInvoiceId, creditNoteGetModel.CreditedInvoice.Id);
         }
@@ -123,6 +130,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             // Assert
             Assert.AreEqual(creditNotePatchModel.Id, creditNoteGetModel.Id);
             ComparePatchAndGetModels(creditNotePatchModel, creditNoteGetModel);
+            AssertDeliveryAddress(creditNoteGetModel.DeliveryAddress, DeliveryAddressId2);
         }
 
         [Test]
@@ -229,6 +237,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         {
             Assert.IsNotEmpty(creditNoteItem.DiscountName);
             Assert.IsNotEmpty(creditNoteItem.Name);
+        }
+
+        private static void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
+        {
+            Assert.NotNull(data);
+            Assert.NotNull(data.City);
+            Assert.AreEqual(expectedDeliveryAddressId, data.ContactDeliveryAddressId);
+            Assert.NotZero(data.CountryId);
+            Assert.NotNull(data.Name);
+            Assert.NotNull(data.PostalCode);
+            Assert.NotNull(data.Street);
         }
 
         private static void ComparePatchAndGetModels(CreditNotePatchModel patchModel, CreditNoteGetModel getModel)
@@ -446,6 +465,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         {
             postModel.CreditNoteReason = "reason";
             postModel.DateOfVatClaim = postModel.DateOfVatApplication;
+            postModel.DeliveryAddressId = DeliveryAddressId1;
         }
 
         private CreditNotePatchModel CreatePatchModel()
@@ -461,6 +481,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
                 DateOfPayment = date.AddDays(2).SetKindUtc(),
                 DateOfTaxing = date.AddDays(3).SetKindUtc(),
                 DateOfVatClaim = date.AddDays(4).SetKindUtc(),
+                DeliveryAddressId = DeliveryAddressId2,
                 Description = "other text",
                 DiscountPercentage = 0,
                 EetResponsibility = EetResponsibility.ExternalApplication,

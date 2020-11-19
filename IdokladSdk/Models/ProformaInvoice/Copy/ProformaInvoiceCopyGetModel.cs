@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.DeliveryAddress;
 
 namespace IdokladSdk.Models.ProformaInvoice
 {
@@ -53,6 +54,11 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// Gets or sets date of VAT application.
         /// </summary>
         public DateTime DateOfVatApplication { get; set; }
+
+        /// <summary>
+        /// Gets or sets delivery address.
+        /// </summary>
+        public DeliveryDocumentAddressGetModel DeliveryAddress { get; set; }
 
         /// <summary>
         /// Gets or sets description.

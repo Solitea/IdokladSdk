@@ -44,6 +44,12 @@ namespace IdokladSdk.Models.SalesOrder
         public DateTime DateOfExpiration { get; set; }
 
         /// <summary>
+        /// Gets or sets delivery address Id.
+        /// </summary>
+        [NullableForeignKey]
+        public int? DeliveryAddressId { get; set; }
+
+        /// <summary>
         /// Gets or sets description.
         /// </summary>
         [Required]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Validation.Attributes;
 
@@ -62,6 +63,12 @@ namespace IdokladSdk.Models.CreditNote
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
         public DateTime? DateOfVatClaim { get; set; }
+
+        /// <summary>
+        /// Gets or sets delivery address Id.
+        /// </summary>
+        [NullableForeignKey]
+        public NullableProperty<int> DeliveryAddressId { get; set; }
 
         /// <summary>
         /// Gets or sets description.

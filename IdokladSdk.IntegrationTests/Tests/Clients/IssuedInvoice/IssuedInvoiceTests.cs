@@ -7,6 +7,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Requests.Core.Extensions;
@@ -20,6 +21,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
     [TestFixture]
     public partial class IssuedInvoiceTests : TestBase
     {
+        private const int DeliveryAddressId1 = 11;
+        private const int DeliveryAddressId2 = 12;
         private const int PartnerId = 323823;
         private const int InvoiceId = 913242;
         private const int ProformaInvoiceId = 913250;
@@ -43,6 +46,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             // Arrange
             _issuedInvoicePostModel = _issuedInvoiceClient.Default().AssertResult();
             _issuedInvoicePostModel.PartnerId = PartnerId;
+            _issuedInvoicePostModel.DeliveryAddressId = DeliveryAddressId1;
             _issuedInvoicePostModel.Description = "Invoice";
             _issuedInvoicePostModel.Items.Clear();
             _issuedInvoicePostModel.Items.Add(new IssuedInvoiceItemPostModel
@@ -60,6 +64,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             Assert.AreEqual(_issuedInvoicePostModel.DateOfIssue, data.DateOfIssue);
             Assert.AreEqual(PartnerId, data.PartnerId);
             Assert.Greater(data.Items.Count, 0);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
@@ -71,6 +76,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
             // Assert
             Assert.AreEqual(_issuedInvoiceId, data.Id);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
@@ -93,6 +99,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             {
                 Id = _issuedInvoiceId,
                 Description = "DescriptionUpdated",
+                DeliveryAddressId = DeliveryAddressId2,
                 MyAddress = new MyDocumentAddressPatchModel
                 {
                     AccountNumber = "555777",
@@ -107,6 +114,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             Assert.AreEqual(model.Description, data.Description);
             Assert.AreEqual(model.MyAddress.AccountNumber, data.MyAddress.AccountNumber);
             Assert.AreEqual(model.MyAddress.Iban, data.MyAddress.Iban);
+            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId2);
         }
 
         [Test]
@@ -221,6 +229,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             Assert.AreEqual(invoiceToCopy.Description, data.Description);
             Assert.AreEqual(invoiceToCopy.PartnerId, data.PartnerId);
             Assert.AreEqual(invoiceToCopy.CurrencyId, data.CurrencyId);
+            AssertDeliveryAddress(invoiceToCopy.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
@@ -253,6 +262,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
             // Assert
             Assert.That(action, Throws.Exception.TypeOf<ValidationException>().And.Message.Contains("normal items"));
+        }
+
+        private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
+        {
+            Assert.NotNull(data);
+            Assert.NotNull(data.City);
+            Assert.AreEqual(expectedDeliveryAddressId, data.ContactDeliveryAddressId);
+            Assert.NotZero(data.CountryId);
+            Assert.NotNull(data.Name);
+            Assert.NotNull(data.PostalCode);
+            Assert.NotNull(data.Street);
         }
     }
 }

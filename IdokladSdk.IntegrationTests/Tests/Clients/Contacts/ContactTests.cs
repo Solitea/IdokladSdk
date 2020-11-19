@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Contact;
+using IdokladSdk.Models.DeliveryAddress;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
@@ -40,6 +42,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             _contactPostModel.CompanyName = _updatedCompanyName;
             _contactPostModel.CountryId = 2;
             _contactPostModel.DefaultInvoiceMaturity = 15;
+            _contactPostModel.DeliveryAddresses.Add(new DeliveryAddressPostModel
+            {
+                City = "Brno",
+                Name = "iDoklad",
+                IsDefault = true,
+                PostalCode = "60200",
+                Street = "Hilleho 4"
+            });
             _contactPostModel.DiscountPercentage = 11;
             _contactPostModel.Email = "info@solitea.cz";
             _contactPostModel.Fax = "800 776 776";
@@ -94,6 +104,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
                 CompanyName = "Solitea Slovensko, a.s.",
                 CountryId = 1,
                 DefaultInvoiceMaturity = 9,
+                DeliveryAddresses = new List<DeliveryAddressPatchModel>
+                {
+                    new DeliveryAddressPatchModel
+                    {
+                        City = "Brno",
+                        Name = "Money S5",
+                        Id = 0,
+                        IsDefault = false,
+                        PostalCode = "60200",
+                        Street = "Okružní 732/5"
+                    }
+                },
                 DiscountPercentage = 8,
                 Email = "info@solitea.sk",
                 Fax = "+421 249 212 323",
@@ -128,6 +150,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             Assert.AreEqual(contactPatchModel.CompanyName, data.CompanyName);
             Assert.AreEqual(contactPatchModel.CountryId, data.CountryId);
             Assert.AreEqual(contactPatchModel.DefaultInvoiceMaturity.Value, data.DefaultInvoiceMaturity);
+            AssertDeliveryAddress(data.DeliveryAddresses.First(), contactPatchModel.DeliveryAddresses.First());
             Assert.AreEqual(contactPatchModel.DiscountPercentage, data.DiscountPercentage);
             Assert.AreEqual(contactPatchModel.Email, data.Email);
             Assert.AreEqual(contactPatchModel.Fax, data.Fax);
@@ -196,6 +219,28 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             Assert.True(data);
         }
 
+        private void AssertDeliveryAddress(DeliveryAddressGetModel returnedDeliveryAddress, DeliveryAddressPatchModel expecredDeliveryAddress)
+        {
+            Assert.AreEqual(expecredDeliveryAddress.City, returnedDeliveryAddress.City);
+            Assert.AreEqual(expecredDeliveryAddress.IsDefault, returnedDeliveryAddress.IsDefault);
+            Assert.AreEqual(expecredDeliveryAddress.Name, returnedDeliveryAddress.Name);
+            Assert.AreEqual(expecredDeliveryAddress.PostalCode, returnedDeliveryAddress.PostalCode);
+            Assert.AreEqual(expecredDeliveryAddress.Street, returnedDeliveryAddress.Street);
+            Assert.NotZero(returnedDeliveryAddress.CountryId);
+            Assert.NotZero(returnedDeliveryAddress.Id);
+        }
+
+        private void AssertDeliveryAddress(DeliveryAddressGetModel returnedDeliveryAddress, DeliveryAddressPostModel expecredDeliveryAddress)
+        {
+            Assert.AreEqual(expecredDeliveryAddress.City, returnedDeliveryAddress.City);
+            Assert.AreEqual(expecredDeliveryAddress.IsDefault, returnedDeliveryAddress.IsDefault);
+            Assert.AreEqual(expecredDeliveryAddress.Name, returnedDeliveryAddress.Name);
+            Assert.AreEqual(expecredDeliveryAddress.PostalCode, returnedDeliveryAddress.PostalCode);
+            Assert.AreEqual(expecredDeliveryAddress.Street, returnedDeliveryAddress.Street);
+            Assert.NotZero(returnedDeliveryAddress.CountryId);
+            Assert.NotZero(returnedDeliveryAddress.Id);
+        }
+
         private void AssertGetModel(ContactGetModel data)
         {
             Assert.AreEqual(_contactPostModel.AccountNumber, data.AccountNumber);
@@ -204,6 +249,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             Assert.AreEqual(_contactPostModel.CompanyName, data.CompanyName);
             Assert.AreEqual(_contactPostModel.CountryId, data.CountryId);
             Assert.AreEqual(_contactPostModel.DefaultInvoiceMaturity, data.DefaultInvoiceMaturity);
+            AssertDeliveryAddress(data.DeliveryAddresses.First(), _contactPostModel.DeliveryAddresses.First());
             Assert.AreEqual(_contactPostModel.DiscountPercentage, data.DiscountPercentage);
             Assert.AreEqual(_contactPostModel.Email, data.Email);
             Assert.AreEqual(_contactPostModel.Fax, data.Fax);
