@@ -28,6 +28,11 @@ namespace IdokladSdk.Models.SalesReceipt
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets currency Id.
+        /// </summary>
+        public int? CurrencyId { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicationg whether document is used for income tax.
         /// </summary>
         public bool? IsIncomeTax { get; set; }
