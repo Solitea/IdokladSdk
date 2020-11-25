@@ -1,11 +1,19 @@
-﻿using IdokladSdk.Clients;
+﻿using System;
+using IdokladSdk.Clients;
+using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Models.Account;
+using IdokladSdk.Response;
+using RestSharp;
 
 namespace IdokladSdk.Requests.Account.Agenda
 {
     /// <summary>
     /// Agenda.
     /// </summary>
-    public class Agendas
+    public partial class Agendas :
+        IEntityDetail<AgendaDetail>,
+        IEntityList<AgendaList>,
+        IPatchRequest<AgendaPatchModel, AgendaGetModel>
     {
         private readonly AccountClient _client;
 
@@ -18,6 +26,12 @@ namespace IdokladSdk.Requests.Account.Agenda
             _client = client;
         }
 
+        private string DeleteRequestUrl => $"{_client.ResourceUrl}/Agendas/DeleteRequest";
+
+        private string LogoUrl => $"{CurrentAgendaUrl}/Logo";
+
+        private string CurrentAgendaUrl => $"{_client.ResourceUrl}/CurrentAgenda";
+
         /// <summary>
         /// Current agenda endpoint.
         /// </summary>
@@ -28,22 +42,67 @@ namespace IdokladSdk.Requests.Account.Agenda
         }
 
         /// <summary>
-        /// Detail endpoint.
+        /// Deletes agenda's logo.
         /// </summary>
-        /// <param name="id">Id.</param>
-        /// <returns>Method return detail of agenda.</returns>
+        /// <returns><c>true</c>.</returns>
+        public ApiResult<bool> DeleteLogo()
+        {
+            return _client.Delete<bool>(LogoUrl);
+        }
+
+        /// <summary>
+        /// Request to delete the agenda. Deletion of the agenda has to be confirmed by clicking on the link in the email.
+        /// </summary>
+        /// <param name="model">Reasons for deleting the agenda.</param>
+        /// <returns><c>true</c>.</returns>
+        public ApiResult<bool> DeleteRequest(AgendaDeleteRequestPostModel model)
+        {
+            return _client.Post<AgendaDeleteRequestPostModel, bool>(DeleteRequestUrl, model);
+        }
+
+        /// <inheritdoc/>
         public AgendaDetail Detail(int id)
         {
             return new AgendaDetail(id, _client);
         }
 
         /// <summary>
-        /// List endpoint.
+        /// Returns agenda's logo.
         /// </summary>
-        /// <returns>Method return list of agendas.</returns>
+        /// <returns>Agenda's logo.</returns>
+        public ApiResult<LogoGetModel> GetLogo()
+        {
+            return _client.Get<LogoGetModel>(LogoUrl);
+        }
+
+        /// <inheritdoc/>
         public AgendaList List()
         {
             return new AgendaList(_client);
+        }
+
+        /// <inheritdoc />
+        public ApiResult<AgendaGetModel> Update(AgendaPatchModel model)
+        {
+            return _client.Patch<AgendaPatchModel, AgendaGetModel>(CurrentAgendaUrl, model);
+        }
+
+        /// <summary>
+        /// Sets agenda logo. Existing logo will be replaced. Optimal size is 280 x 100 (96 DPI) or 900 x 300 (300 DPI). Max. file size is 5 MB.
+        /// </summary>
+       /// <param name="model">New logo.</param>
+       /// <returns><c>true</c>.</returns>
+        public ApiResult<bool> UploadLogo(LogoPostModel model)
+        {
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var request = _client.CreateRequest(LogoUrl, Method.PUT);
+            request.AddFile(model.FileName, model.FileBytes, model.FileName);
+            request.AlwaysMultipartFormData = true;
+            return _client.Execute<bool>(request);
         }
     }
 }

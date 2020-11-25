@@ -57,6 +57,9 @@
     <None Update="testsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Tests\Clients\Account\Solitea.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Tests\Clients\Attachment\File\report.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

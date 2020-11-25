@@ -1,11 +1,17 @@
 ﻿using IdokladSdk.Clients;
+using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Models.Account;
+using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.Account.User
 {
     /// <summary>
     /// User.
     /// </summary>
-    public class Users
+    public partial class Users :
+        IEntityDetail<UserDetail>,
+        IEntityList<UserList>,
+        IPatchRequest<UserPatchModel, UserGetModel>
     {
         private readonly AccountClient _client;
 
@@ -18,24 +24,7 @@ namespace IdokladSdk.Requests.Account.User
             _client = client;
         }
 
-        /// <summary>
-        /// Detail endpoint.
-        /// </summary>
-        /// <param name="id">Id.</param>
-        /// <returns>Method return detail of user.</returns>
-        public UserDetail Detail(int id)
-        {
-            return new UserDetail(id, _client);
-        }
-
-        /// <summary>
-        /// List enpoint.
-        /// </summary>
-        /// <returns>Method return list of users.</returns>
-        public UserList List()
-        {
-            return new UserList(_client);
-        }
+        private string CurrentUserUrl => $"{_client.ResourceUrl}/CurrentUser";
 
         /// <summary>
         /// Current user endpoint.
@@ -44,6 +33,24 @@ namespace IdokladSdk.Requests.Account.User
         public UserCurrentDetail Current()
         {
             return new UserCurrentDetail(_client);
+        }
+
+        /// <inheritdoc/>
+        public UserDetail Detail(int id)
+        {
+            return new UserDetail(id, _client);
+        }
+
+        /// <inheritdoc/>
+        public UserList List()
+        {
+            return new UserList(_client);
+        }
+
+        /// <inheritdoc />
+        public ApiResult<UserGetModel> Update(UserPatchModel model)
+        {
+            return _client.Patch<UserPatchModel, UserGetModel>(CurrentUserUrl, model);
         }
     }
 }

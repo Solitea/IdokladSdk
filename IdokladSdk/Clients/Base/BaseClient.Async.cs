@@ -323,7 +323,7 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc cref="CreateRequest"/>
-        protected async Task<RestRequest> CreateRequestAsync(
+        protected internal async Task<RestRequest> CreateRequestAsync(
             string resource,
             Method method,
             CancellationToken cancellationToken)

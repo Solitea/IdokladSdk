@@ -315,7 +315,7 @@ namespace IdokladSdk.Clients
         /// <param name="resource">Resource URL.</param>
         /// <param name="method">HTTP method.</param>
         /// <returns>New RestRequest instance.</returns>
-        protected RestRequest CreateRequest(string resource, Method method)
+        protected internal RestRequest CreateRequest(string resource, Method method)
         {
             if (string.IsNullOrWhiteSpace(resource))
             {

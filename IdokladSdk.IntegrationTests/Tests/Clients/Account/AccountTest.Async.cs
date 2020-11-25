@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.Account;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
@@ -52,6 +54,79 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public async Task AgendaDeleteRequestAsync_DoesNotFail()
+        {
+            // Arrange
+            var model = new AgendaDeleteRequestPostModel();
+
+            // Act
+            var data = (await _accountClient.Agendas.DeleteRequestAsync(model)).AssertResult();
+
+            // Assert
+            Assert.True(data);
+        }
+
+        [Test]
+        public async Task AgendaUpdateAsync_DoesNotFail()
+        {
+            // Arrange
+            var model = new AgendaPatchModel();
+
+            // Act
+            var data = (await _accountClient.Agendas.UpdateAsync(model)).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.NotNull(data.AutomaticPairPaymentsSettings);
+            Assert.True(data.BankAccounts.Any());
+            Assert.True(data.CashRegisters.Any());
+            Assert.NotNull(data.Contact);
+            Assert.NotNull(data.PurchaseSettings);
+            Assert.NotNull(data.SalesSettings);
+            Assert.NotNull(data.SendReminderSettings);
+            Assert.NotNull(data.Subscription);
+        }
+
+        [Test]
+        public async Task LogoGetAsync_SuccessfullyGet()
+        {
+            // Act
+            var data = (await _accountClient.Agendas.GetLogoAsync()).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.NotNull(data.FileBytes);
+        }
+
+        [Test]
+        public async Task LogoDeleteAsync_SuccessfullyDeleted()
+        {
+            // Act
+            var data = (await _accountClient.Agendas.DeleteLogoAsync()).AssertResult();
+
+            // Assert
+            Assert.True(data);
+        }
+
+        [Test]
+        public async Task LogoUpdateAsync_SuccessfullyUpdated()
+        {
+            // Arrange
+            var model = new LogoPostModel
+            {
+                FileBytes = File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{LogoPath}"),
+                FileName = LogoFileName,
+                HighResolution = true
+            };
+
+            // Act
+            var data = (await _accountClient.Agendas.UploadLogoAsync(model)).AssertResult();
+
+            // Assert
+            Assert.True(data);
+        }
+
+        [Test]
         public async Task UserListAsync_SuccessfullyGetUserList()
         {
             // Act
@@ -88,6 +163,19 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.AreEqual(UserId, data.Id);
             Assert.AreEqual("qquc@furusato.tokyo", data.Username);
             Assert.AreEqual(UserRight.Admin, data.Rights);
+        }
+
+        [Test]
+        public async Task UserUpdateAsync_DoesNotFail()
+        {
+            // Arrange
+            var model = new UserPatchModel();
+
+            // Act
+            var data = (await _accountClient.Users.UpdateAsync(model)).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
         }
     }
 }

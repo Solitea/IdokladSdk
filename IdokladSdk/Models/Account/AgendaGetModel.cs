@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.BankAccount;
+using IdokladSdk.Models.CashRegister;
 using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.Account
@@ -12,9 +13,19 @@ namespace IdokladSdk.Models.Account
     public class AgendaGetModel : IEntityId
     {
         /// <summary>
+        /// Gets or sets automatic pair payment settings.
+        /// </summary>
+        public AutomaticPairPaymentsSettingsGetModel AutomaticPairPaymentsSettings { get; set; }
+
+        /// <summary>
         /// Gets or sets list of bank accounts.
         /// </summary>
         public IEnumerable<BankAccountGetModel> BankAccounts { get; set; }
+
+        /// <summary>
+        /// Gets or sets cash registers list.
+        /// </summary>
+        public IEnumerable<CashRegisterGetModel> CashRegisters { get; set; }
 
         /// <summary>
         /// Gets or sets contact information.
@@ -47,22 +58,43 @@ namespace IdokladSdk.Models.Account
         public int DefaultCurrencyId { get; set; }
 
         /// <summary>
+        /// Gets or sets default e-mail send method.
+        /// </summary>
+        public SendType DefaultSendMethod { get; set; }
+
+        /// <summary>
         /// Gets or sets eet regime.
         /// </summary>
         public EetRegime EetRegime { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether VAT classification is used.
+        /// </summary>
+        public bool HasVatCode { get; set; }
 
         /// <inheritdoc/>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether vAT payer indication.
+        /// Gets or sets a value indicating whether prices with VAT are shown.
+        /// </summary>
+        public bool IsPriceWithVat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether agenda is VAT payer.
         /// </summary>
         public bool IsRegisteredForVat { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether attribute for application of VAT based on payments.
+        /// Gets or sets a value indicating whether application of VAT is based on payments.
+        /// Only for SK legislation.
         /// </summary>
         public bool IsRegisteredForVatOnPay { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether automatic payment confirmation is send.
+        /// </summary>
+        public bool IsSendPaymentConfirmation { get; set; }
 
         /// <summary>
         /// Gets or sets additional information about the entity..
@@ -85,14 +117,39 @@ namespace IdokladSdk.Models.Account
         public VatRateType PreferredVatRate { get; set; }
 
         /// <summary>
+        /// Gets or sets purchase settings.
+        /// </summary>
+        public PurchaseSettingsGetModel PurchaseSettings { get; set; }
+
+        /// <summary>
+        /// Gets or sets register records.
+        /// </summary>
+        public string RegisterRecord { get; set; }
+
+        /// <summary>
         /// Gets or sets default rounding type.
         /// </summary>
         public Round RoundingDifference { get; set; }
 
         /// <summary>
+        /// Gets or sets sales settings.
+        /// </summary>
+        public SalesSettingsGetModel SalesSettings { get; set; }
+
+        /// <summary>
+        /// Gets or sets reminder sending settings.
+        /// </summary>
+        public SendReminderSettingsGetModel SendReminderSettings { get; set; }
+
+        /// <summary>
         /// Gets or sets current subscription.
         /// </summary>
         public SubscriptionGetModel Subscription { get; set; }
+
+        /// <summary>
+        /// Gets or sets tax subject type.
+        /// </summary>
+        public TaxSubjectType TaxSubjectType { get; set; }
 
         /// <summary>
         /// Gets or sets vAT registration type.

@@ -21,6 +21,11 @@
         BadFormat = 400,
 
         /// <summary>
+        /// Insufficient rights.
+        /// </summary>
+        UserRights = 420,
+
+        /// <summary>
         /// Billing error
         /// </summary>
         Billing = 600,
@@ -88,6 +93,21 @@
         /// <summary>
         /// Document has not been paid
         /// </summary>
-        NotPaid = 113
+        NotPaid = 113,
+
+        /// <summary>
+        /// The entity is linked to the recurring invoice.
+        /// </summary>
+        RecurringInvoicesDependency = 114,
+
+        /// <summary>
+        /// The entity is linked to the issued document template.
+        /// </summary>
+        IssuedDocumentTemplateDependency = 115,
+
+        /// <summary>
+        /// Sending of email failed.
+        /// </summary>
+        SendMailFailed = 116,
     }
 }

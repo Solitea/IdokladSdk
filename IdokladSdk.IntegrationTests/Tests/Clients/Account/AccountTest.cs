@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.Account;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
@@ -11,8 +13,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
     public partial class AccountTest : TestBase
     {
         private const int AgendaId = 187854;
+        private const string LogoFileName = "Solitea.png";
+        private const string LogoPath = "Tests/Clients/Account/Solitea.png";
         private const int UserId = 161205;
         private const string Street = "Drobného 555/49";
+
         private AccountClient _accountClient;
 
         [OneTimeSetUp]
@@ -69,6 +74,79 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public void AgendaDeleteRequest_DoesNotFail()
+        {
+            // Arrange
+            var model = new AgendaDeleteRequestPostModel();
+
+            // Act
+            var data = _accountClient.Agendas.DeleteRequest(model).AssertResult();
+
+            // Assert
+            Assert.True(data);
+        }
+
+        [Test]
+        public void AgendaUpdate_DoesNotFail()
+        {
+            // Arrange
+            var model = new AgendaPatchModel();
+
+            // Act
+            var data = _accountClient.Agendas.Update(model).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.NotNull(data.AutomaticPairPaymentsSettings);
+            Assert.True(data.BankAccounts.Any());
+            Assert.True(data.CashRegisters.Any());
+            Assert.NotNull(data.Contact);
+            Assert.NotNull(data.PurchaseSettings);
+            Assert.NotNull(data.SalesSettings);
+            Assert.NotNull(data.SendReminderSettings);
+            Assert.NotNull(data.Subscription);
+        }
+
+        [Test]
+        public void LogoGet_SuccessfullyGet()
+        {
+            // Act
+            var data = _accountClient.Agendas.GetLogo().AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.NotNull(data.FileBytes);
+        }
+
+        [Test]
+        public void LogoDelete_SuccessfullyDeleted()
+        {
+            // Act
+            var data = _accountClient.Agendas.DeleteLogo().AssertResult();
+
+            // Assert
+            Assert.True(data);
+        }
+
+        [Test]
+        public void LogoUpdate_SuccessfullyUpdated()
+        {
+            // Arrange
+            var model = new LogoPostModel
+            {
+                FileBytes = File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{LogoPath}"),
+                FileName = LogoFileName,
+                HighResolution = true
+            };
+
+            // Act
+            var data = _accountClient.Agendas.UploadLogo(model).AssertResult();
+
+            // Assert
+            Assert.True(data);
+        }
+
+        [Test]
         public void UserList_SuccessfullyGetUserList()
         {
             // Act
@@ -105,6 +183,19 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.AreEqual(UserId, data.Id);
             Assert.AreEqual("qquc@furusato.tokyo", data.Username);
             Assert.AreEqual(UserRight.Admin, data.Rights);
+        }
+
+        [Test]
+        public void UserUpdate_DoesNotFail()
+        {
+            // Arrange
+            var model = new UserPatchModel();
+
+            // Act
+            var data = _accountClient.Users.Update(model).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
         }
     }
 }
