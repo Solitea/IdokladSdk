@@ -21,7 +21,8 @@ namespace IdokladSdk.Clients
         /// <param name="apiContext">Instance of ApiContext.</param>
         protected BaseClient(ApiContext apiContext)
         {
-            _apiContext = apiContext ?? throw new ArgumentNullException("API context cannot be null.", nameof(apiContext));
+            _apiContext = apiContext ??
+                          throw new ArgumentNullException("API context cannot be null.", nameof(apiContext));
             Client = new RestClient(_apiContext.Configuration.ApiUrl);
             Client.AddHandler("application/json", () => new CommonJsonSerializer());
         }
@@ -40,21 +41,6 @@ namespace IdokladSdk.Clients
         /// Gets RestClient.
         /// </summary>
         protected RestClient Client { get; }
-
-        internal ApiResult<T> Delete<T>(int id)
-            where T : new()
-        {
-            var deleteUrl = $"{ResourceUrl}/{id}";
-            return Delete<T>(deleteUrl);
-        }
-
-        internal ApiResult<T> Delete<T>(string resource)
-            where T : new()
-        {
-            var request = CreateRequest(resource, Method.DELETE);
-
-            return Execute<T>(request);
-        }
 
         internal ApiResult<T> Execute<T>(RestRequest request)
         {
@@ -75,7 +61,41 @@ namespace IdokladSdk.Clients
             return response.Data;
         }
 
-        internal ApiResult<T> Get<T>(string resource, Dictionary<string, string> queryParams = null)
+        /// <summary>
+        /// Delete.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <typeparam name="T">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<T> Delete<T>(int id)
+            where T : new()
+        {
+            var deleteUrl = $"{ResourceUrl}/{id}";
+            return Delete<T>(deleteUrl);
+        }
+
+        /// <summary>
+        /// Delete.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <typeparam name="T">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<T> Delete<T>(string resource)
+            where T : new()
+        {
+            var request = CreateRequest(resource, Method.DELETE);
+
+            return Execute<T>(request);
+        }
+
+        /// <summary>
+        /// Get.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="queryParams">Query params.</param>
+        /// <typeparam name="T">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<T> Get<T>(string resource, Dictionary<string, string> queryParams = null)
         {
             var request = CreateRequest(resource, Method.GET);
             ProcessQueryParameters(request, queryParams);
@@ -83,7 +103,15 @@ namespace IdokladSdk.Clients
             return Execute<T>(request);
         }
 
-        internal ApiResult<TGetModel> Patch<TPatchModel, TGetModel>(string resource, TPatchModel model)
+        /// <summary>
+        /// Patch.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="model">Model.</param>
+        /// <typeparam name="TPatchModel">Patch type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<TGetModel> Patch<TPatchModel, TGetModel>(string resource, TPatchModel model)
             where TGetModel : new()
         {
             ValidateModel(model);
@@ -94,13 +122,30 @@ namespace IdokladSdk.Clients
             return Execute<TGetModel>(request);
         }
 
-        internal ApiResult<TGetModel> Patch<TPatchModel, TGetModel>(TPatchModel model)
+        /// <summary>
+        /// Patch.
+        /// </summary>
+        /// <param name="model">Model.</param>
+        /// <typeparam name="TPatchModel">Patch type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<TGetModel> Patch<TPatchModel, TGetModel>(TPatchModel model)
             where TGetModel : new()
         {
             return Patch<TPatchModel, TGetModel>(ResourceUrl, model);
         }
 
-        internal ApiBatchResult<TGetModel> Patch<TPatchModel, TGetModel>(string resource, IList<TPatchModel> models)
+        /// <summary>
+        /// Patch.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="models">Models.</param>
+        /// <typeparam name="TPatchModel">Patch type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api batch result.</returns>
+        protected internal ApiBatchResult<TGetModel> Patch<TPatchModel, TGetModel>(
+            string resource,
+            IList<TPatchModel> models)
             where TPatchModel : new()
             where TGetModel : new()
         {
@@ -114,14 +159,29 @@ namespace IdokladSdk.Clients
             return ExecuteBatch<TGetModel>(request);
         }
 
-        internal ApiBatchResult<TGetModel> Patch<TPatchModel, TGetModel>(IList<TPatchModel> models)
+        /// <summary>
+        /// Patch.
+        /// </summary>
+        /// <param name="models">Models.</param>
+        /// <typeparam name="TPatchModel">Patch type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api batch result.</returns>
+        protected internal ApiBatchResult<TGetModel> Patch<TPatchModel, TGetModel>(IList<TPatchModel> models)
             where TPatchModel : new()
             where TGetModel : new()
         {
             return Patch<TPatchModel, TGetModel>(BatchUrl, models);
         }
 
-        internal ApiResult<TGetModel> Post<TPostModel, TGetModel>(string resource, TPostModel model)
+        /// <summary>
+        /// Post.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="model">Model.</param>
+        /// <typeparam name="TPostModel">Post type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<TGetModel> Post<TPostModel, TGetModel>(string resource, TPostModel model)
             where TGetModel : new()
         {
             ValidateModel(model);
@@ -132,20 +192,30 @@ namespace IdokladSdk.Clients
             return Execute<TGetModel>(request);
         }
 
-        internal ApiResult<TGetModel> Post<TPostModel, TGetModel>(TPostModel model)
-            where TGetModel : new()
-        {
-            return Post<TPostModel, TGetModel>(ResourceUrl, model);
-        }
-
-        internal ApiResult<TGetModel> Post<TGetModel>(string resource)
+        /// <summary>
+        /// Post.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<TGetModel> Post<TGetModel>(string resource)
         {
             var request = CreateRequest(resource, Method.POST);
 
             return Execute<TGetModel>(request);
         }
 
-        internal ApiBatchResult<TGetModel> Post<TPostModel, TGetModel>(string resource, IList<TPostModel> models)
+        /// <summary>
+        /// Post.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="models">Models.</param>
+        /// <typeparam name="TPostModel">Post type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiBatchResult<TGetModel> Post<TPostModel, TGetModel>(
+            string resource,
+            IList<TPostModel> models)
             where TPostModel : new()
             where TGetModel : new()
         {
@@ -157,14 +227,43 @@ namespace IdokladSdk.Clients
             return ExecuteBatch<TGetModel>(request);
         }
 
-        internal ApiBatchResult<TGetModel> Post<TPostModel, TGetModel>(IList<TPostModel> models)
+        /// <summary>
+        /// Post.
+        /// </summary>
+        /// <param name="models">Models.</param>
+        /// <typeparam name="TPostModel">Post type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiBatchResult<TGetModel> Post<TPostModel, TGetModel>(IList<TPostModel> models)
             where TPostModel : new()
             where TGetModel : new()
         {
             return Post<TPostModel, TGetModel>(BatchUrl, models);
         }
 
-        internal ApiResult<TGetModel> Put<TGetModel>(string resource, Dictionary<string, string> queryParams = null)
+        /// <summary>
+        /// Post.
+        /// </summary>
+        /// <param name="model">Model.</param>
+        /// <typeparam name="TPostModel">PostModel.</typeparam>
+        /// <typeparam name="TGetModel">GetModel.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<TGetModel> Post<TPostModel, TGetModel>(TPostModel model)
+            where TGetModel : new()
+        {
+            return Post<TPostModel, TGetModel>(ResourceUrl, model);
+        }
+
+        /// <summary>
+        /// Put.
+        /// </summary>
+        /// <param name="resource">Result url.</param>
+        /// <param name="queryParams">Query params.</param>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<TGetModel> Put<TGetModel>(
+            string resource,
+            Dictionary<string, string> queryParams = null)
             where TGetModel : new()
         {
             var request = CreateRequest(resource, Method.PUT);
@@ -173,7 +272,15 @@ namespace IdokladSdk.Clients
             return Execute<TGetModel>(request);
         }
 
-        internal ApiResult<TGetModel> Put<TPutModel, TGetModel>(string resource, TPutModel model)
+        /// <summary>
+        /// Put.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="model">Model.</param>
+        /// <typeparam name="TPutModel">Put type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<TGetModel> Put<TPutModel, TGetModel>(string resource, TPutModel model)
             where TGetModel : new()
         {
             ValidateModel(model);
@@ -183,7 +290,15 @@ namespace IdokladSdk.Clients
             return Execute<TGetModel>(request);
         }
 
-        internal ApiBatchResult<TGetModel> Put<TPutModel, TGetModel>(string resource, IList<TPutModel> models)
+        /// <summary>
+        /// Put.
+        /// </summary>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="models">Models.</param>
+        /// <typeparam name="TPutModel">Put type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <returns>Api batch result.</returns>
+        protected internal ApiBatchResult<TGetModel> Put<TPutModel, TGetModel>(string resource, IList<TPutModel> models)
             where TGetModel : new()
         {
             var batch = new BatchModel<TPutModel>(models);
