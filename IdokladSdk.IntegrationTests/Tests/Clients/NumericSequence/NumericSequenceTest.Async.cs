@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.NumericSequence;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
@@ -20,13 +21,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         }
 
         [Test]
-        public async Task DetailAsync_SuccessfullyGetDetail()
+        public async Task DetailWithYearAsync_SuccessfullyGetDetail()
+        {
+            // Act
+            var data = (await _numericSequenceClient.Detail(NumericSequenceId, NumericSequenceYear).GetAsync()).AssertResult();
+
+            // Assert
+            Assert.AreEqual(NumericSequenceDocumentType.IssuedInvoice, data.DocumentType);
+            Assert.AreEqual(NumericSequenceYear, data.Year);
+        }
+
+        [Test]
+        public async Task DetailWithoutYearAsync_SuccessfullyGetDetail()
         {
             // Act
             var data = (await _numericSequenceClient.Detail(NumericSequenceId).GetAsync()).AssertResult();
 
             // Assert
             Assert.AreEqual(NumericSequenceDocumentType.IssuedInvoice, data.DocumentType);
+            Assert.AreNotEqual(NumericSequenceYear, data.Year);
         }
 
         [Test]
@@ -53,6 +66,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
             Assert.AreEqual("20190001", data.Custom.DocumentNumber);
             Assert.IsTrue(data.Custom.IsUnique);
             Assert.NotNull(data.Unique);
+        }
+
+        [Test]
+        public async Task UpdateAsync_DoesNotFail()
+        {
+            // Arrange
+            var model = new NumericSequencePatchModel
+            {
+                Id = NumericSequenceId
+            };
+
+            // Act
+            var data = (await _numericSequenceClient.UpdateAsync(model)).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
         }
     }
 }
