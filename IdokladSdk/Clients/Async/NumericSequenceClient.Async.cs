@@ -24,5 +24,11 @@ namespace IdokladSdk.Clients
             var queryParams = QueryParams(date, documentSerialNumber, numericSequenceId);
             return GetAsync<DocumentNumbersGetModel>(resource, queryParams, cancellationToken);
         }
+
+        /// <inheritdoc />
+        public Task<ApiResult<NumericSequenceGetModel>> UpdateAsync(NumericSequencePatchModel model, CancellationToken cancellationToken = default)
+        {
+            return PatchAsync<NumericSequencePatchModel, NumericSequenceGetModel>(model, cancellationToken);
+        }
     }
 }
