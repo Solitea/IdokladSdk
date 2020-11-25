@@ -13,6 +13,11 @@ namespace IdokladSdk.Models.Account
         /// </summary>
         public string Firstname { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to send newsletter.
+        /// </summary>
+        public bool HasNewsletter { get; set; }
+
         /// <inheritdoc/>
         public int Id { get; set; }
 
