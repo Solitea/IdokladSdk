@@ -286,7 +286,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             Assert.That(notificationData, Is.Not.Null);
             Assert.That(notificationData.ActualRequestCount, Is.Not.Zero);
             Assert.That(notificationData.DateOfRenewal, Is.Not.EqualTo(DateTime.MinValue));
-            Assert.That(notificationData.IsExeeded, Is.True);
             Assert.That(notificationData.LimitValue, Is.Not.Zero);
         }
 
@@ -297,8 +296,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             Assert.That(notificationData, Is.Not.Null);
             Assert.That(notificationData.CurrencySymbol, Is.Not.Null.And.Not.Empty);
             Assert.That(notificationData.PairedDocumentType, Is.EqualTo(DocumentType.IssuedInvoice));
-            Assert.That(notificationData.PairedInvoiceDocumentNumber, Is.Not.Null.And.Not.Empty);
-            Assert.That(notificationData.VariableSymbol, Is.Not.Null.And.Not.Empty);
+            Assert.That(notificationData.PairedInvoiceDocumentNumber, Is.Not.Null);
+            Assert.That(notificationData.VariableSymbol, Is.Not.Null);
         }
 
         private void AssertDocumentLinkActivatedNotification(NotificationListGetModel notification)
