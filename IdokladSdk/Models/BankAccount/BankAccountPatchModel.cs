@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.BankAccount
 {
     /// <summary>
-    /// BankAccountListGetModel.
+    /// BankAccountPatchModel.
     /// </summary>
-    public class BankAccountListGetModel : IEntityId
+    public class BankAccountPatchModel : IEntityId
     {
         /// <summary>
         /// Gets or sets account number.
@@ -18,16 +19,18 @@ namespace IdokladSdk.Models.BankAccount
         /// <summary>
         /// Gets or sets bank Id.
         /// </summary>
-        public int? BankId { get; set; }
+        public NullableProperty<int> BankId { get; set; }
 
         /// <summary>
         /// Gets or sets currency Id.
         /// </summary>
-        public virtual int? CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
 
         /// <summary>
         /// Gets or sets the date when the initial state was set.
         /// </summary>
+        [RequiredIfHasValue(nameof(InitialState))]
+        [DateTime]
         public DateTime? DateInitialState { get; set; }
 
         /// <summary>
@@ -36,10 +39,20 @@ namespace IdokladSdk.Models.BankAccount
         [StringLength(50)]
         public string Iban { get; set; }
 
+        /// <inheritdoc/>
+        [Required]
+        public int Id { get; set; }
+
         /// <summary>
         /// Gets or sets initial amount of money in the bank account.
         /// </summary>
+        [RequiredIfHasValue(nameof(DateInitialState))]
         public decimal? InitialState { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether bank account is default.
+        /// </summary>
+        public bool? IsDefault { get; set; }
 
         /// <summary>
         /// Gets or sets bank account name.
@@ -48,22 +61,9 @@ namespace IdokladSdk.Models.BankAccount
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether bank account is default.
-        /// </summary>
-        public bool IsDefault { get; set; }
-
-        /// <summary>
         /// Gets or sets SWIFT code.
         /// </summary>
         [StringLength(11)]
         public string Swift { get; set; }
-
-        /// <inheritdoc/>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional information about the entity.
-        /// </summary>
-        public Metadata Metadata { get; set; }
     }
 }
