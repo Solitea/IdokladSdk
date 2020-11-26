@@ -1,45 +1,41 @@
 ﻿using System;
-using IdokladSdk.Models.Common;
+using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashRegister
 {
     /// <summary>
-    /// CashRegisterListGetModel.
+    /// CashRegisterPatchModel.
     /// </summary>
-    public class CashRegisterListGetModel : IEntityId
+    public class CashRegisterPatchModel : IEntityId
     {
         /// <summary>
         /// Gets or sets currency Id.
         /// </summary>
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
 
         /// <summary>
-        /// Gets or sets the date when the intial state was set.
+        /// Gets or sets the date when the initial state was set.
         /// </summary>
+        [RequiredIfHasValue(nameof(InitialState))]
+        [DateTime]
         public DateTime? DateInitialState { get; set; }
 
         /// <inheritdoc/>
+        [Required]
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets initial amout of money in the cash register.
+        /// Gets or sets initial amount of money in the cash register.
         /// </summary>
+        [Range(0.0, double.MaxValue)]
+        [RequiredIfHasValue(nameof(DateInitialState))]
         public decimal? InitialState { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether cash register is default.
         /// </summary>
-        public bool IsDefault { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether cash register is connected to EET sales pos equipment.
-        /// </summary>
-        public bool IsEet { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional information about the entity.
-        /// </summary>
-        public Metadata Metadata { get; set; }
+        public bool? IsDefault { get; set; }
 
         /// <summary>
         /// Gets or sets cash register name.
