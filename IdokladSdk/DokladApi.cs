@@ -11,6 +11,7 @@ namespace IdokladSdk
     {
         private AccountClient _accountClient;
         private AttachmentClient _attachmentClient;
+        private BankAccountClient _bankAccountClient;
         private BankClient _bankClient;
         private BankStatementClient _bankStatementClient;
         private BatchClient _batchClient;
@@ -72,6 +73,11 @@ namespace IdokladSdk
         /// </summary>
         public AttachmentClient AttachmentClient =>
             _attachmentClient ?? (_attachmentClient = new AttachmentClient(ApiContext));
+
+        /// <summary>
+        /// Gets bank accounts.
+        /// </summary>
+        public BankAccountClient BankAccountClient => _bankAccountClient ?? (_bankAccountClient = new BankAccountClient(ApiContext));
 
         /// <summary>
         /// Gets banks.
