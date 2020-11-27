@@ -2,7 +2,7 @@
 
 namespace IdokladSdk.Validation.Attributes
 {
-    internal class ColorAttribute : RegularExpressionAttribute
+    public class ColorAttribute : RegularExpressionAttribute
     {
         public const string InvalidColorMessage = "Color value has to be in hexadecimal format (#rrbbgg or #RRBBGG).";
 

@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    internal class DecimalGreaterThanZeroAttribute : ValidationAttribute
+    public class DecimalGreaterThanZeroAttribute : ValidationAttribute
     {
         internal DecimalGreaterThanZeroAttribute()
         {

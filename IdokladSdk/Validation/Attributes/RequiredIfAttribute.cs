@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    /// <summary>
-    /// RequiredIfAttribute.
-    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    internal class RequiredIfAttribute : ValidationAttribute
+    public class RequiredIfAttribute : ValidationAttribute
     {
         private readonly RequiredAttribute _innerAttribute = new RequiredAttribute();
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    internal class MinCollectionLengthAttribute : CollectionRangeAttribute
+    public class MinCollectionLengthAttribute : CollectionRangeAttribute
     {
         public MinCollectionLengthAttribute(int minLength)
             : base(minLength, int.MaxValue)

@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    internal class DateGreaterOrEqualThanAttribute : ValidationAttribute
+    public class DateGreaterOrEqualThanAttribute : ValidationAttribute
     {
         private readonly bool _allowNull;
         private readonly DateTime _minDateTime;

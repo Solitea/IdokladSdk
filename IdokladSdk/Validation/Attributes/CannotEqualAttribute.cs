@@ -2,7 +2,7 @@
 
 namespace IdokladSdk.Validation.Attributes
 {
-    internal class CannotEqualAttribute : ValidationAttribute
+    public class CannotEqualAttribute : ValidationAttribute
     {
         private readonly object _invalidValue;
 

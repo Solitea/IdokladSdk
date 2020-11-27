@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    internal class CollectionRangeAttribute : ValidationAttribute
+    public class CollectionRangeAttribute : ValidationAttribute
     {
         public CollectionRangeAttribute()
         {
@@ -48,6 +49,7 @@ namespace IdokladSdk.Validation.Attributes
 
         protected virtual string InvalidCollectionLengthValidationMessage(ValidationContext validationContext, int length)
         {
+            _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
             return $"{validationContext.DisplayName} count is not within required range <{MinLength}, {MaxLength}>. Actual length is {length}";
         }
 
@@ -80,6 +82,7 @@ namespace IdokladSdk.Validation.Attributes
 
         protected virtual string NullCollectionValidationMessage(ValidationContext validationContext)
         {
+            _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
             return $"{validationContext.DisplayName} must be a collection with length within required range <{MinLength}, {MaxLength}>.";
         }
     }
