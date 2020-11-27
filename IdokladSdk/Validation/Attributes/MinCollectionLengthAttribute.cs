@@ -17,6 +17,7 @@ namespace IdokladSdk.Validation.Attributes
 
         protected override string InvalidCollectionLengthValidationMessage(ValidationContext validationContext, int length)
         {
+            _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
             return $"{validationContext.DisplayName} must have at least {MinLength} elements. Actual number of elements is {length}";
         }
 
@@ -27,6 +28,7 @@ namespace IdokladSdk.Validation.Attributes
 
         protected override string NullCollectionValidationMessage(ValidationContext validationContext)
         {
+            _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
             return $"{validationContext.DisplayName} can not be null. Must have at least {MinLength} elements.";
         }
 

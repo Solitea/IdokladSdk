@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -13,6 +14,8 @@ namespace IdokladSdk.Validation.Attributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+
             var containerType = validationContext.ObjectInstance.GetType();
             var field = containerType.GetProperty(DependentProperty);
 

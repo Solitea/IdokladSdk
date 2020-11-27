@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace IdokladSdk.Validation.Attributes
 {

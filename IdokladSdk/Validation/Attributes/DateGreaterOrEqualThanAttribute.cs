@@ -36,6 +36,8 @@ namespace IdokladSdk.Validation.Attributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+
             if (value == null && _allowNull)
             {
                 return ValidationResult.Success;
