@@ -1,5 +1,8 @@
 ﻿namespace IdokladSdk.Enums
 {
+    /// <summary>
+    /// IdentificationValidationResult.
+    /// </summary>
     public enum IdentificationValidationResult
     {
         /// <summary>

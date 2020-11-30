@@ -5,7 +5,7 @@ using IdokladSdk.Enums;
 
 namespace IdokladSdk.Validation
 {
-    public class IdentificationNumberHelper
+    internal class IdentificationNumberHelper
     {
         public static IdentificationValidationResult IdentificationNumberValidation(string input)
         {
@@ -19,9 +19,9 @@ namespace IdokladSdk.Validation
                 return IdentificationValidationResult.BadFormat;
             }
 
-            int[] weights = {2, 3, 4, 5, 6, 7, 8};
+            int[] weights = { 2, 3, 4, 5, 6, 7, 8 };
             int result = (11 - WeightedModulo(SubstringSafe(0, 7, input), weights, 11)) % 10;
-            return string.Equals(result.ToString(CultureInfo.InvariantCulture), SubstringSafe(7, 1, input))
+            return string.Equals(result.ToString(CultureInfo.InvariantCulture), SubstringSafe(7, 1, input), StringComparison.InvariantCulture)
                 ? IdentificationValidationResult.Ok
                 : IdentificationValidationResult.CheckFailed;
         }
