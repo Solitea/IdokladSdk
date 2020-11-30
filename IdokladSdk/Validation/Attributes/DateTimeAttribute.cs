@@ -1,0 +1,29 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace IdokladSdk.Validation.Attributes
+{
+    public class DateTimeAttribute : RangeAttribute
+    {
+        public DateTimeAttribute()
+            : base(typeof(DateTime), "1753-01-01", "9999-12-31")
+        {
+            ErrorMessage = "The field {0} is invalid. Must be greater or equal {1}.";
+        }
+
+        public DateTimeAttribute(int minimum, int maximum)
+            : base(minimum, maximum)
+        {
+        }
+
+        public DateTimeAttribute(double minimum, double maximum)
+            : base(minimum, maximum)
+        {
+        }
+
+        public DateTimeAttribute(Type type, string minimum, string maximum)
+            : base(type, minimum, maximum)
+        {
+        }
+    }
+}

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    internal class CannotEqualAttribute : ValidationAttribute
+    public class CannotEqualAttribute : ValidationAttribute
     {
         private readonly object _invalidValue;
 
@@ -16,6 +17,8 @@ namespace IdokladSdk.Validation.Attributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+
             if (_invalidValue.Equals(value))
             {
                 return new ValidationResult($"The {validationContext.DisplayName} field value:{value} is not valid. {_reason}");

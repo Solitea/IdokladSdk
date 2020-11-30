@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    /// <summary>
-    /// RequiredIfAttribute.
-    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    internal class RequiredIfAttribute : ValidationAttribute
+    public class RequiredIfAttribute : ValidationAttribute
     {
         private readonly RequiredAttribute _innerAttribute = new RequiredAttribute();
 
@@ -23,6 +20,8 @@ namespace IdokladSdk.Validation.Attributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+
             var containerType = validationContext.ObjectInstance.GetType();
             var field = containerType.GetProperty(DependentProperty);
 
