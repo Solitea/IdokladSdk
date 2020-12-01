@@ -6,18 +6,19 @@ namespace IdokladSdk.Validation.Attributes
 {
     public class DateGreaterOrEqualThanAttribute : ValidationAttribute
     {
-        private readonly bool _allowNull;
-        private readonly DateTime _minDateTime;
-
         public DateGreaterOrEqualThanAttribute(string dateTime, bool allowNull = false)
         {
-            _minDateTime = DateTime.Parse(dateTime, CultureInfo.InvariantCulture);
-            _allowNull = allowNull;
+            MinDateTime = DateTime.Parse(dateTime, CultureInfo.InvariantCulture);
+            AllowNull = allowNull;
         }
+
+        public bool AllowNull { get; private set; }
+
+        public DateTime MinDateTime { get; private set; }
 
         public override bool IsValid(object value)
         {
-            if (value == null && _allowNull)
+            if (value == null && AllowNull)
             {
                 return true;
             }
@@ -25,7 +26,7 @@ namespace IdokladSdk.Validation.Attributes
             if (value != null)
             {
                 var dateTime = (DateTime)value;
-                if (dateTime >= _minDateTime)
+                if (dateTime >= MinDateTime)
                 {
                     return true;
                 }
@@ -38,7 +39,7 @@ namespace IdokladSdk.Validation.Attributes
         {
             _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
 
-            if (value == null && _allowNull)
+            if (value == null && AllowNull)
             {
                 return ValidationResult.Success;
             }
@@ -46,7 +47,7 @@ namespace IdokladSdk.Validation.Attributes
             if (value != null)
             {
                 var dateTime = (DateTime)value;
-                if (dateTime >= _minDateTime)
+                if (dateTime >= MinDateTime)
                 {
                     return ValidationResult.Success;
                 }
@@ -55,7 +56,7 @@ namespace IdokladSdk.Validation.Attributes
             var propertyName = validationContext.MemberName;
 
             return new ValidationResult(
-                $"The field {propertyName} is invalid. Must be greater or equal {_minDateTime}");
+                $"The field {propertyName} is invalid. Must be greater or equal {MinDateTime}");
         }
     }
 }
