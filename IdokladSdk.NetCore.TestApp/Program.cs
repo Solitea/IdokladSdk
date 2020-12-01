@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using IdokladSdk.Authentication;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.NetCore.TestApp.Examples;
 using Microsoft.Extensions.Configuration;
 
@@ -80,6 +81,9 @@ namespace IdokladSdk.NetCore.TestApp
             (_proformaInvoice2Id, _accountingInvoice2Id) = invoices.AccountProforma_WithoutIssuedInvoiceDetail(_partner2Id);
             invoices.UpdateInvoice_AddItemFromPriceList(_issuedInvoiceId, _priceListItemId);
             invoices.UpdateInvoice_NullableProperties(_issuedInvoiceId);
+
+            var validation = new ValidationExamples(_api);
+            validation.ValidateOnClient();
         }
 
         /// <summary>

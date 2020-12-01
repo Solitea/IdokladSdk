@@ -27,10 +27,10 @@ namespace IdokladSdk.Validation.Attributes
 
             if (field != null)
             {
-                var dependentvalue = field.GetValue(validationContext.ObjectInstance, null);
+                var dependentValue = field.GetValue(validationContext.ObjectInstance, null);
 
-                if ((dependentvalue == null && TargetValue == null) ||
-                    (dependentvalue != null && dependentvalue.Equals(TargetValue)))
+                if ((dependentValue == null && TargetValue == null) ||
+                    (dependentValue != null && dependentValue.Equals(TargetValue)))
                 {
                     if (!_innerAttribute.IsValid(value))
                     {

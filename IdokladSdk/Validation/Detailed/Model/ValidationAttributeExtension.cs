@@ -1,0 +1,59 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Enums;
+using IdokladSdk.Validation.Attributes;
+
+namespace IdokladSdk.Validation.Detailed.Model
+{
+    public static class ValidationAttributeExtension
+    {
+        public static ValidationType GetValidationType(this ValidationAttribute attribute)
+        {
+            _ = attribute ?? throw new ArgumentNullException(nameof(attribute));
+
+            switch (attribute.GetType().Name)
+            {
+                case nameof(RequiredAttribute): return ValidationType.Required;
+
+                case nameof(DataTypeAttribute): return ValidationType.DataType;
+
+                case nameof(StringLengthAttribute): return ValidationType.StringLength;
+
+                case nameof(RangeAttribute): return ValidationType.Range;
+
+                case nameof(RegularExpressionAttribute): return ValidationType.RegularExpression;
+
+                case nameof(CannotEqualAttribute): return ValidationType.CannotEqual;
+
+                case nameof(CollectionRangeAttribute): return ValidationType.CollectionRange;
+
+                case nameof(ColorAttribute): return ValidationType.Color;
+
+                case nameof(DateGreaterOrEqualThanAttribute): return ValidationType.DateGreaterOrEqualThan;
+
+                case nameof(DateTimeAttribute): return ValidationType.DateTime;
+
+                case nameof(DecimalGreaterThanZeroAttribute): return ValidationType.DecimalGreaterThanZero;
+
+                case nameof(EmailAttribute): return ValidationType.EmailAddress;
+
+                case nameof(EmailCollectionAttribute): return ValidationType.EmailCollection;
+
+                case nameof(MinCollectionLengthAttribute): return ValidationType.MinCollectionLength;
+
+                case nameof(NotEmptyStringAttribute): return ValidationType.NotEmptyString;
+
+                case nameof(NullableForeignKeyAttribute): return ValidationType.NullableForeignKey;
+
+                case nameof(RequiredIfAttribute): return ValidationType.RequiredIf;
+
+                case nameof(RequiredIfHasValueAttribute): return ValidationType.RequiredIfHasValue;
+
+                case nameof(RequiredNonDefaultAttribute): return ValidationType.RequiredNonDefault;
+
+                default:
+                    throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
+            }
+        }
+    }
+}

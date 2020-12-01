@@ -27,11 +27,11 @@ namespace IdokladSdk.Validation.Attributes
             AllowNull = allowNull;
         }
 
-        protected int MaxLength { get; set; }
+        public int MaxLength { get; set; }
 
-        protected int MinLength { get; set; }
+        public int MinLength { get; set; }
 
-        protected bool AllowNull { get; set; }
+        public bool AllowNull { get; set; }
 
         protected virtual void EnsureLegalLengths()
         {

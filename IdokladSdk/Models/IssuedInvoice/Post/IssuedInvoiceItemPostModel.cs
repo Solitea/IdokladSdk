@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedInvoice
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.IssuedInvoice
     /// <summary>
     /// IssuedInvoiceItemPostModel.
     /// </summary>
-    public class IssuedInvoiceItemPostModel
+    public class IssuedInvoiceItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets item amount.
