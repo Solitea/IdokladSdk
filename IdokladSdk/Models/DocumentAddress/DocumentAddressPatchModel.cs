@@ -8,7 +8,7 @@ namespace IdokladSdk.Models.DocumentAddress
     /// <summary>
     /// DocumentAddressPatchModel.
     /// </summary>
-    public class DocumentAddressPatchModel: ValidatableModel
+    public class DocumentAddressPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets account number.

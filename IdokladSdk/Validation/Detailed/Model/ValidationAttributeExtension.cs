@@ -51,6 +51,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(RequiredNonDefaultAttribute): return ValidationType.RequiredNonDefault;
 
+                case nameof(IdentificationNumberAttribute): return ValidationType.IdentificationNumber;
+
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
             }

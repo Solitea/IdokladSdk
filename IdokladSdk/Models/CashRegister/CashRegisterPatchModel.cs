@@ -41,6 +41,7 @@ namespace IdokladSdk.Models.CashRegister
         /// <summary>
         /// Gets or sets cash register name.
         /// </summary>
+        [StringLength(100)]
         public string Name { get; set; }
     }
 }

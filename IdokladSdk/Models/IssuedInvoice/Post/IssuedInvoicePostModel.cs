@@ -159,7 +159,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets order number.
         /// </summary>
-        [StringLength(20)]
+        [StringLength(25)]
         public string OrderNumber { get; set; }
 
         /// <summary>

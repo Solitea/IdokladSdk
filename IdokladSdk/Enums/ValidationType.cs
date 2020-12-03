@@ -101,6 +101,11 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property value has to be non-zero. <see cref="RequiredNonDefaultAttribute"/>
         /// </summary>
-        RequiredNonDefault = 19
+        RequiredNonDefault = 19,
+
+        /// <summary>
+        /// Property value has to contain valid identification number. <see cref="IdentificationNumberAttribute"/>
+        /// </summary>
+        IdentificationNumber = 20
     }
 }
