@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CreditNote
@@ -9,7 +10,7 @@ namespace IdokladSdk.Models.CreditNote
     /// <summary>
     /// CreditNotePostModel.
     /// </summary>
-    public class CreditNotePostModel
+    public class CreditNotePostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets account number.

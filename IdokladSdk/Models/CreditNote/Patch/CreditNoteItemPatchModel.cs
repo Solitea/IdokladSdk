@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.CreditNote
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.CreditNote
     /// <summary>
     /// CreditNoteItemPatchModel.
     /// </summary>
-    public class CreditNoteItemPatchModel : IEntityId
+    public class CreditNoteItemPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets item amount.

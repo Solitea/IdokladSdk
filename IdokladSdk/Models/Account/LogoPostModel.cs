@@ -1,9 +1,11 @@
-﻿namespace IdokladSdk.Models.Account
+﻿using IdokladSdk.Models.Base;
+
+namespace IdokladSdk.Models.Account
 {
     /// <summary>
     /// LogoPostModel.
     /// </summary>
-    public class LogoPostModel
+    public class LogoPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets filename.

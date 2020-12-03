@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
 
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.SalesOrder
     /// <summary>
     /// SalesOrderItem Model for Patch endpoints.
     /// </summary>
-    public class SalesOrderItemPatchModel : IEntityId
+    public class SalesOrderItemPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets item amount.

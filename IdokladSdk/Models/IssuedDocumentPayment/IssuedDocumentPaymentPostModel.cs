@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.RegisteredSale;
 using IdokladSdk.Validation.Attributes;
 
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
     /// <summary>
     /// IssuedDocumentPaymentPostModel.
     /// </summary>
-    public class IssuedDocumentPaymentPostModel
+    public class IssuedDocumentPaymentPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets date of payment.

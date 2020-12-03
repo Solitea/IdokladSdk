@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ReceivedDocumentPayments
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.ReceivedDocumentPayments
     /// <summary>
     /// ReceivedDocumentPayment model for POST endpoint.
     /// </summary>
-    public class ReceivedDocumentPaymentPostModel
+    public class ReceivedDocumentPaymentPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets date of payment.

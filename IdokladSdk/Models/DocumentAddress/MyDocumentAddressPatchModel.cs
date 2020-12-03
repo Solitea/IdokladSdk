@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
 
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.DocumentAddress
     /// <summary>
     /// MyDocumentAddressPatchModel.
     /// </summary>
-    public class MyDocumentAddressPatchModel
+    public class MyDocumentAddressPatchModel: ValidatableModel
     {
         /// <summary>
         /// Gets or sets account number.

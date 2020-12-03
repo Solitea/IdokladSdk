@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CreditNote
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.CreditNote
     /// <summary>
     /// CreditNoteRecountPostModel.
     /// </summary>
-    public class CreditNoteRecountPostModel
+    public class CreditNoteRecountPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets currency id.

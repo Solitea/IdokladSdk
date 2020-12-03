@@ -1,9 +1,11 @@
-﻿namespace IdokladSdk.Models.Account
+﻿using IdokladSdk.Models.Base;
+
+namespace IdokladSdk.Models.Account
 {
     /// <summary>
     /// AgendaDeleteRequestPostModel.
     /// </summary>
-    public class AgendaDeleteRequestPostModel
+    public class AgendaDeleteRequestPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets a value indicating whether changing to a competing product.

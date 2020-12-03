@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.BankStatement
@@ -9,7 +10,7 @@ namespace IdokladSdk.Models.BankStatement
     /// <summary>
     /// BankStatementPairingPostModel.
     /// </summary>
-    public class BankStatementPairingPostModel
+    public class BankStatementPairingPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets your account number.

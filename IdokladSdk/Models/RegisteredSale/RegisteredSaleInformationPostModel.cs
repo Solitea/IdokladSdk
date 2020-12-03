@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.RegisteredSale
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.RegisteredSale
     /// <summary>
     /// RegisteredSaleInformation model for Post endpoints.
     /// </summary>
-    public class RegisteredSaleInformationPostModel
+    public class RegisteredSaleInformationPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets taxpayers security code.

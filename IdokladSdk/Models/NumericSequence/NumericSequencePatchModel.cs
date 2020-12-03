@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.NumericSequence
 {
     /// <summary>
     /// NumericSequencePatchModel.
     /// </summary>
-    public class NumericSequencePatchModel : IEntityId
+    public class NumericSequencePatchModel : ValidatableModel, IEntityId
     {
         /// <inheritdoc/>
         [Required]

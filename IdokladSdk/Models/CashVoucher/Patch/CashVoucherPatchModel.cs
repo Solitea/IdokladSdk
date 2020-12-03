@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.CashVoucher
     /// <summary>
     /// Patch model for CashVoucher.
     /// </summary>
-    public class CashVoucherPatchModel : IEntityId
+    public class CashVoucherPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets cash register id.

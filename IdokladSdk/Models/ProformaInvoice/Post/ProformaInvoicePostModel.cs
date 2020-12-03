@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ProformaInvoice
@@ -9,7 +10,7 @@ namespace IdokladSdk.Models.ProformaInvoice
     /// <summary>
     /// ProformaInvoicePostModel.
     /// </summary>
-    public class ProformaInvoicePostModel
+    public class ProformaInvoicePostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets account number.

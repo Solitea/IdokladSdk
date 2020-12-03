@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher
@@ -6,7 +7,7 @@ namespace IdokladSdk.Models.CashVoucher
     /// <summary>
     /// Pathc model for CashVoucherItem.
     /// </summary>
-    public class CashVoucherItemPatchModel
+    public class CashVoucherItemPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets item amount.

@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.Account
@@ -6,7 +7,7 @@ namespace IdokladSdk.Models.Account
     /// <summary>
     /// PurchaseSettingsPatchModel.
     /// </summary>
-    public class PurchaseSettingsPatchModel
+    public class PurchaseSettingsPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets default price type.

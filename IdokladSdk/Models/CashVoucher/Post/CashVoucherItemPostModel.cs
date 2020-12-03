@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.CashVoucher
     /// <summary>
     /// Item post model for CashVoucherItem.
     /// </summary>
-    public class CashVoucherItemPostModel
+    public class CashVoucherItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets custom VAT rate.

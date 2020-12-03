@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ReceivedInvoice
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
     /// <summary>
     /// ReceivedInvoiceItemPostModel.
         /// </summary>
-    public class ReceivedInvoiceItemPostModel
+    public class ReceivedInvoiceItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets item amount.

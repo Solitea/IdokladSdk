@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.Account
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.Account
     /// <summary>
     /// SalesSettingsPatchModel.
     /// </summary>
-    public class SalesSettingsPatchModel
+    public class SalesSettingsPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets default invoice maturity.

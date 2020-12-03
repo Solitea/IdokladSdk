@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.Account
 {
     /// <summary>
     /// SendReminderSettingsPatchModel.
     /// </summary>
-    public class SendReminderSettingsPatchModel
+    public class SendReminderSettingsPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets a value indicating whether to send reminders automatically.

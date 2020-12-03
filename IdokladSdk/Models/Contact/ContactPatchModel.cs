@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Validation.Attributes;
@@ -9,7 +10,7 @@ namespace IdokladSdk.Models.Contact
     /// <summary>
     /// PathModel for Contact.
     /// </summary>
-    public class ContactPatchModel : IEntityId
+    public class ContactPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets account number.

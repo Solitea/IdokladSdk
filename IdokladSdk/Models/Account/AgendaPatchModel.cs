@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Account
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.Account
     /// <summary>
     /// AgendaPatchModel.
     /// </summary>
-    public class AgendaPatchModel
+    public class AgendaPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets automatic pair payment settings.

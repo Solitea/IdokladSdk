@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.StockMovement
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.StockMovement
     /// <summary>
     /// StockMovementPostModel.
     /// </summary>
-    public class StockMovementPostModel
+    public class StockMovementPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets current stock balance.
