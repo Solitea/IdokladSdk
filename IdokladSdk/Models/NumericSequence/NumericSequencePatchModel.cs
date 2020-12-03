@@ -26,11 +26,13 @@ namespace IdokladSdk.Models.NumericSequence
         /// <summary>
         /// Gets or sets name of the numeric sequence.
         /// </summary>
+        [StringLength(100)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets invoice number format (R = year, M = month, N = number).
         /// </summary>
+        [StringLength(100)]
         public string NumberFormat { get; set; }
 
         /// <summary>

@@ -53,7 +53,7 @@ namespace IdokladSdk.Models.Account
         /// <summary>
         /// Gets or sets VAT ID.
         /// </summary>
-        [StringLength(20)]
+        [RegularExpression("(CZ|SK){1}[0-9]{8,10}", ErrorMessage = "The VAT ID is not in the right format.")]
         public string VatIdentificationNumber { get; set; }
 
         /// <summary>

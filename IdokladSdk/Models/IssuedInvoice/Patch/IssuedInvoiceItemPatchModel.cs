@@ -20,6 +20,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets item code.
         /// </summary>
+        [StringLength(20)]
         public string Code { get; set; }
 
         /// <summary>

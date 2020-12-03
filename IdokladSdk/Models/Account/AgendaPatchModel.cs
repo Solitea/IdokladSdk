@@ -61,6 +61,7 @@ namespace IdokladSdk.Models.Account
         /// <summary>
         /// Gets or sets register records.
         /// </summary>
+        [StringLength(250)]
         public string RegisterRecord { get; set; }
 
         /// <summary>

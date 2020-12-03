@@ -27,7 +27,7 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets Payment transaction code.
         /// </summary>
         [Required(AllowEmptyStrings = true)]
-        [StringLength(20)]
+        [StringLength(50)]
         public string PaymentTransactionCode { get; set; }
     }
 }

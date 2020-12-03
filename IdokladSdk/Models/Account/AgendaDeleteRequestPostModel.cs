@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Models.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.Account
 {
@@ -30,16 +31,19 @@ namespace IdokladSdk.Models.Account
         /// <summary>
         /// Gets or sets changing to a competing product - details.
         /// </summary>
+        [StringLength(50)]
         public string TextCompetingProductReason { get; set; }
 
         /// <summary>
         /// Gets or sets application had few features - details.
         /// </summary>
+        [StringLength(900)]
         public string TextFunctionsReason { get; set; }
 
         /// <summary>
         /// Gets or sets other reason - details.
         /// </summary>
+        [StringLength(900)]
         public string TextOtherReason { get; set; }
     }
 }

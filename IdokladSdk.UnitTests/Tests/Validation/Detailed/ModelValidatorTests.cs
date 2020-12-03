@@ -600,6 +600,38 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
+        public void ModelWithIdentificationNumberAttribute_ValidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithIdentificationNumberAttribute
+            {
+                IdentificationNumber = "68636938"
+            };
+
+            // Act
+            var result = ModelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [Test]
+        public void ModelWithIdentificationNumberAttribute_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithIdentificationNumberAttribute
+            {
+                IdentificationNumber = "12345678"
+            };
+
+            // Act
+            var result = ModelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.IdentificationNumber), typeof(IdentificationNumberAttribute), ValidationType.IdentificationNumber);
+        }
+
+        [Test]
         public void ComplexModel_Case1_ReturnsExpectedResults()
         {
             // Arrange

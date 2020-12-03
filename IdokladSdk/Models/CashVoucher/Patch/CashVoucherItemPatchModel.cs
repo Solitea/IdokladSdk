@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
@@ -17,6 +18,7 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets item name.
         /// </summary>
+        [StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>

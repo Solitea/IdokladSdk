@@ -11,7 +11,7 @@ using IdokladSdk.Validation.Detailed.Model;
 namespace IdokladSdk.Validation
 {
     /// <summary>
-    /// Model validator allows client side model validation based on validation attributes. 
+    /// Model validator allows client side model validation based on validation attributes.
     /// </summary>
     public class ModelValidator
     {

@@ -60,7 +60,7 @@ namespace IdokladSdk.Models.Contact
         /// <summary>
         /// Gets or sets e-mail address.
         /// </summary>
-        [StringLength(50)]
+        [StringLength(254)]
         [DataType(DataType.EmailAddress)]
         [Email]
         public string Email { get; set; }

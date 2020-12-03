@@ -9,7 +9,7 @@ namespace IdokladSdk.Validation.Detailed.Model
     public class ModelValidationResult
     {
         /// <summary>
-        /// Gets or sets a value indicating whether model is valid.
+        /// Gets a value indicating whether model is valid.
         /// </summary>
         public bool IsValid => !InvalidProperties.Any();
 
