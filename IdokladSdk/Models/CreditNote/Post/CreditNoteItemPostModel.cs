@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.Common;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.CreditNote
 {
     /// <summary>
     /// CreditNoteItemPostModel.
     /// </summary>
-    public class CreditNoteItemPostModel
+    public class CreditNoteItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets item amount.

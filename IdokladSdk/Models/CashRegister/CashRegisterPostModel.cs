@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashRegister
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.CashRegister
     /// <summary>
     /// CashRegisterPostModel.
     /// </summary>
-    public class CashRegisterPostModel
+    public class CashRegisterPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets currency Id.

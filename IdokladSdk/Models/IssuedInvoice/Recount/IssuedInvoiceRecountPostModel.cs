@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedInvoice
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.IssuedInvoice
     /// <summary>
     /// IssuedInvoiceRecountPostModel.
     /// </summary>
-    public class IssuedInvoiceRecountPostModel
+    public class IssuedInvoiceRecountPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets currency id.

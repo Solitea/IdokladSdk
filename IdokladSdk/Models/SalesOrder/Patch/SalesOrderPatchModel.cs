@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Validation.Attributes;
@@ -11,7 +12,7 @@ namespace IdokladSdk.Models.SalesOrder
     /// <summary>
     /// SalesOrder Model for Patch endpoints.
     /// </summary>
-    public class SalesOrderPatchModel : IEntityId
+    public class SalesOrderPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets currency Id.

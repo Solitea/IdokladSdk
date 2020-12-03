@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.RegisteredSale
 {
     /// <summary>
     /// ElectronicRecordsOfSales model for Post endpoints.
     /// </summary>
-    public class ElectronicRecordsOfSalesPostModel
+    public class ElectronicRecordsOfSalesPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets eet status.

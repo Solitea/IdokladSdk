@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.ReceivedInvoice
@@ -9,7 +10,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
     /// <summary>
     /// ReceivedInvoicePatchModel.
     /// </summary>
-    public class ReceivedInvoicePatchModel : IEntityId
+    public class ReceivedInvoicePatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets account number.

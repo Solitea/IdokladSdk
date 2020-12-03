@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.BankAccount
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.BankAccount
     /// <summary>
     /// BankAccountPostModel.
     /// </summary>
-    public class BankAccountPostModel
+    public class BankAccountPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets account number.

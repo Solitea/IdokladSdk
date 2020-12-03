@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.RegisteredSale;
@@ -11,7 +12,7 @@ namespace IdokladSdk.Models.SalesReceipt
     /// <summary>
     /// SalesReceipt model for Patch endpoints.
     /// </summary>
-    public class SalesReceiptPatchModel : IEntityId
+    public class SalesReceiptPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets Date of issue.

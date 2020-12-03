@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesReceipt
@@ -6,7 +7,7 @@ namespace IdokladSdk.Models.SalesReceipt
     /// <summary>
     /// SalesReceiptPayment model for Post endpoints.
     /// </summary>
-    public class SalesReceiptPaymentPostModel
+    public class SalesReceiptPaymentPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets amount.

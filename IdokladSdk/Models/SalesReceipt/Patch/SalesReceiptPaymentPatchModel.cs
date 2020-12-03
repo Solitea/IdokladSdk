@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesReceipt
@@ -6,7 +7,7 @@ namespace IdokladSdk.Models.SalesReceipt
     /// <summary>
     /// SalesReceiptPayment model for Patch endpoints.
     /// </summary>
-    public class SalesReceiptPaymentPatchModel : IEntityId
+    public class SalesReceiptPaymentPatchModel : ValidatableModel, IEntityId
     {
         /// <inheritdoc/>
         public int Id { get; set; }

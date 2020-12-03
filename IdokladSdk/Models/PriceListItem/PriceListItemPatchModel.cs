@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.PriceListItem
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.PriceListItem
     /// <summary>
     /// PriceListItemPatchModel.
     /// </summary>
-    public class PriceListItemPatchModel : IEntityId
+    public class PriceListItemPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets item amount.

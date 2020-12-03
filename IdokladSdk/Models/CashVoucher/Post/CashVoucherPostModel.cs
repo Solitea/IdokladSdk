@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.RegisteredSale;
 using IdokladSdk.Validation.Attributes;
 
@@ -10,7 +11,7 @@ namespace IdokladSdk.Models.CashVoucher
     /// <summary>
     /// POST model for CashVoucher.
     /// </summary>
-    public class CashVoucherPostModel
+    public class CashVoucherPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets cash register id.

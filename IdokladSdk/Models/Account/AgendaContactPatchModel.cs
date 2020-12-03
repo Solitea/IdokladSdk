@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.Account
 {
     /// <summary>
     /// AgendaContactPatchModel.
     /// </summary>
-    public class AgendaContactPatchModel
+    public class AgendaContactPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets city of residence.

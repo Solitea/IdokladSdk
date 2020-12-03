@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Validation.Attributes;
@@ -11,7 +12,7 @@ namespace IdokladSdk.Models.CreditNote
     /// <summary>
     /// CreditNotePatchModel.
     /// </summary>
-    public class CreditNotePatchModel : IEntityId
+    public class CreditNotePatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets constant symbol Id.

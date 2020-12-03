@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ProformaInvoice
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.ProformaInvoice
     /// <summary>
     /// ProformaInvoiceRecountPostModel.
     /// </summary>
-    public class ProformaInvoiceRecountPostModel
+    public class ProformaInvoiceRecountPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets currency id.

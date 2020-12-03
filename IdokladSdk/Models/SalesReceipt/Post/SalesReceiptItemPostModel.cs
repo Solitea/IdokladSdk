@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesReceipt
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.SalesReceipt
     /// <summary>
     /// SalesReceiptItemModel for Post enpoints.
     /// </summary>
-    public class SalesReceiptItemPostModel
+    public class SalesReceiptItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets amount.

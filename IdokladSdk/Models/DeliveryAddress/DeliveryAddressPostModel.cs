@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.DeliveryAddress
 {
     /// <summary>
     /// DeliveryAddressPostModel.
     /// </summary>
-    public class DeliveryAddressPostModel
+    public class DeliveryAddressPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets city of residence.

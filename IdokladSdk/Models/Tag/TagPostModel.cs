@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Tag
@@ -6,7 +7,7 @@ namespace IdokladSdk.Models.Tag
     /// <summary>
     /// TagPostModel.
     /// </summary>
-    public class TagPostModel
+    public class TagPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets the tag color in #rrbbgg or #RRBBGG format.

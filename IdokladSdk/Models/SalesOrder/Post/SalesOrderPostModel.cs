@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesOrder
@@ -9,7 +10,7 @@ namespace IdokladSdk.Models.SalesOrder
     /// <summary>
     /// SalesOrder Model for Post endpoints.
     /// </summary>
-    public class SalesOrderPostModel
+    public class SalesOrderPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets account number.

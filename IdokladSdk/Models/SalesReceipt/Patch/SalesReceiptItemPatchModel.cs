@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.SalesReceipt
 {
     /// <summary>
     /// PathModel for SalesReceiptItem.
     /// </summary>
-    public class SalesReceiptItemPatchModel : IEntityId
+    public class SalesReceiptItemPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets amount.

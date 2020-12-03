@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.StockMovement
@@ -6,7 +7,7 @@ namespace IdokladSdk.Models.StockMovement
     /// <summary>
     /// StockMovementPatchModel.
     /// </summary>
-    public class StockMovementPatchModel : IEntityId
+    public class StockMovementPatchModel : ValidatableModel, IEntityId
     {
         /// <inheritdoc/>
         [RequiredNonDefault]

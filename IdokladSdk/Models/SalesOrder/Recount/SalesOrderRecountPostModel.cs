@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesOrder
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.SalesOrder
     /// <summary>
     /// SalesOrder Model for Post recount endpoints.
     /// </summary>
-    public class SalesOrderRecountPostModel
+    public class SalesOrderRecountPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets currency id.

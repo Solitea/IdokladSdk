@@ -1,9 +1,11 @@
-﻿namespace IdokladSdk.Models.Account
+﻿using IdokladSdk.Models.Base;
+
+namespace IdokladSdk.Models.Account
 {
     /// <summary>
     /// AutomaticPairPaymentsSettingsPatchModel.
     /// </summary>
-    public class AutomaticPairPaymentsSettingsPatchModel
+    public class AutomaticPairPaymentsSettingsPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets a value indicating whether agenda has automatic pair payments.

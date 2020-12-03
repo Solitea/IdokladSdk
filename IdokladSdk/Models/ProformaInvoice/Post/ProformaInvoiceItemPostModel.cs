@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ProformaInvoice
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.ProformaInvoice
     /// <summary>
     /// ProformaInvoiceItemPostModel.
     /// </summary>
-    public class ProformaInvoiceItemPostModel
+    public class ProformaInvoiceItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets item amount.

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Validation.Attributes;
@@ -11,7 +12,7 @@ namespace IdokladSdk.Models.ProformaInvoice
     /// <summary>
     /// ProformaInvoicePatchModel.
     /// </summary>
-    public class ProformaInvoicePatchModel : IEntityId
+    public class ProformaInvoicePatchModel : ValidatableModel, IEntityId
     {
         /// <inheritdoc/>
         [RequiredNonDefault]

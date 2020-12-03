@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.Account
 {
     /// <summary>
     /// UserPatchModel.
     /// </summary>
-    public class UserPatchModel
+    public class UserPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets first name.

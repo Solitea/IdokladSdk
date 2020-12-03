@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesOrder
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.SalesOrder
     /// <summary>
     /// SalesOrderItem Model for Post endpoints.
     /// </summary>
-    public class SalesOrderItemPostModel
+    public class SalesOrderItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets item amount.
