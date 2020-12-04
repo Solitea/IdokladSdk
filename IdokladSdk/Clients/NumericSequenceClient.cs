@@ -14,8 +14,8 @@ namespace IdokladSdk.Clients
     /// </summary>
     public partial class NumericSequenceClient :
         BaseClient,
-        IEntityDetail<NumericSequenceDetail>,
-        IEntityList<NumericSequenceList>
+        IEntityList<NumericSequenceList>,
+        IPatchRequest<NumericSequencePatchModel, NumericSequenceGetModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NumericSequenceClient"/> class.
@@ -29,10 +29,12 @@ namespace IdokladSdk.Clients
         /// <inheritdoc/>
         public override string ResourceUrl { get; } = "/NumericSequences";
 
-        /// <inheritdoc/>
-        public NumericSequenceDetail Detail(int id)
+        /// <inheritdoc cref="IEntityDetail{TDetail}.Detail"/>
+        /// <param name="id">Entity Id.</param>
+        /// <param name="year">Year.</param>
+        public NumericSequenceDetail Detail(int id, int? year = null)
         {
-            return new NumericSequenceDetail(id, this);
+            return new NumericSequenceDetail(id, this, year);
         }
 
         /// <inheritdoc/>
@@ -54,6 +56,12 @@ namespace IdokladSdk.Clients
             var resource = $"{ResourceUrl}/DocumentNumbers/{documentType}";
             var queryParams = QueryParams(date, documentSerialNumber, numericSequenceId);
             return Get<DocumentNumbersGetModel>(resource, queryParams);
+        }
+
+        /// <inheritdoc />
+        public ApiResult<NumericSequenceGetModel> Update(NumericSequencePatchModel model)
+        {
+            return Patch<NumericSequencePatchModel, NumericSequenceGetModel>(model);
         }
 
         private Dictionary<string, string> QueryParams(DateTime? date, int? documentSerialNumber, int? numericSequenceId)

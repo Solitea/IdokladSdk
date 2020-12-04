@@ -68,7 +68,7 @@ namespace IdokladSdk.Models.Contact
         public string IdentificationNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether attribute for application of VAT based on payments
+        /// Gets or sets a value indicating whether application of VAT is based on payments.
         /// Only for Sk legislation.
         /// </summary>
         public bool IsRegisteredForVatOnPay { get; set; }
