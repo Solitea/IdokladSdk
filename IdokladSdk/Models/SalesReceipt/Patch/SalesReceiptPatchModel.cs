@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
+using IdokladSdk.Models.RegisteredSale;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesReceipt
@@ -16,6 +17,12 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets Date of issue.
         /// </summary>
         public DateTime? DateOfIssue { get; set; }
+
+        /// <summary>
+        /// Gets or sets Electronic records of sales information.
+        /// Only for Cz legislation.
+        /// </summary>
+        public ElectronicRecordsOfSalesPostModel ElectronicRecordsOfSales { get; set; }
 
         /// <summary>
         /// Gets or sets Number assigned by external application.
