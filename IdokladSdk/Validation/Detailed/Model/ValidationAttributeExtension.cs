@@ -53,6 +53,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(IdentificationNumberAttribute): return ValidationType.IdentificationNumber;
 
+                case nameof(NumericSequenceNumberFormatAttribute): return ValidationType.NumericSequenceNumberFormat;
+
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
             }

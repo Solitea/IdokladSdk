@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.NumericSequence
 {
@@ -32,7 +33,7 @@ namespace IdokladSdk.Models.NumericSequence
         /// <summary>
         /// Gets or sets invoice number format (R = year, M = month, N = number).
         /// </summary>
-        [StringLength(100)]
+        [NumericSequenceNumberFormat(nameof(LastNumber))]
         public string NumberFormat { get; set; }
 
         /// <summary>

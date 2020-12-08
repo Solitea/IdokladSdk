@@ -106,6 +106,11 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property value has to contain valid identification number. <see cref="IdentificationNumberAttribute"/>
         /// </summary>
-        IdentificationNumber = 20
+        IdentificationNumber = 20,
+
+        /// <summary>
+        /// Property has to contain valid numeric sequence number format. <see cref="NumericSequenceNumberFormatAttribute"/>
+        /// </summary>
+        NumericSequenceNumberFormat = 21
     }
 }

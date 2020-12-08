@@ -30,6 +30,11 @@
         /// </summary>
         public const string DateFormat = "yyyy-MM-dd HH:mm";
 
+        /// <summary>
+        /// Maximum length of document number.
+        /// </summary>
+        public const int MaxDocumentNumberLength = 10;
+
         internal struct Header
         {
             internal const string SecureToken = "SecureToken";
