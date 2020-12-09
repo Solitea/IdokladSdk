@@ -632,6 +632,40 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
+        public void ModelWithNumericSequenceNumberFormatAttribute_ValidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithNumericSequenceNumberFormatAttribute
+            {
+                LastNumber = null,
+                NumberFormat = "FV{RR}{MM}{NNNN}"
+            };
+
+            // Act
+            var result = ModelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [Test]
+        public void ModelWithNumericSequenceNumberFormatAttribute_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithNumericSequenceNumberFormatAttribute
+            {
+                LastNumber = 123,
+                NumberFormat = "FV{RR}{MM}{NNNNN}"
+            };
+
+            // Act
+            var result = ModelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.NumberFormat), typeof(NumericSequenceNumberFormatAttribute), ValidationType.NumericSequenceNumberFormat);
+        }
+
+        [Test]
         public void ComplexModel_Case1_ReturnsExpectedResults()
         {
             // Arrange
