@@ -198,6 +198,11 @@ namespace IdokladSdk.Models.ProformaInvoice
         public InvoicePrices Prices { get; set; }
 
         /// <summary>
+        /// Gets or sets Id of recurring invoice, from which the invoice was created.
+        /// </summary>
+        public int? RecurringInvoiceId { get; set; }
+
+        /// <summary>
         /// Gets or sets number of sent reminders.
         /// </summary>
         public int ReminderCount { get; set; }
