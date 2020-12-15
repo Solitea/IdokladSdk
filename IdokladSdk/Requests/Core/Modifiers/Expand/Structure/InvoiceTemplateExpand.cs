@@ -1,5 +1,8 @@
 ﻿namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
 {
+    /// <summary>
+    /// InvoiceTemplateExpand.
+    /// </summary>
     public class InvoiceTemplateExpand
     {
         /// <summary>
