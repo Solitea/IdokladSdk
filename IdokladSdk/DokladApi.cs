@@ -34,6 +34,7 @@ namespace IdokladSdk
         private ProformaInvoiceClient _proformaInvoiceClient;
         private ReceivedInvoiceClient _receivedInvoiceClient;
         private ReceivedDocumentPaymentsClient _receivedDocumentPaymentsClient;
+        private RecurringInvoiceClient _recurringInvoiceClient;
         private RegisteredSaleClient _registeredSaleClient;
         private ReportClient _reportClient;
         private SalesOfficeClient _salesOfficeClient;
@@ -200,6 +201,12 @@ namespace IdokladSdk
         /// </summary>
         public ReceivedDocumentPaymentsClient ReceivedDocumentPaymentsClient =>
             _receivedDocumentPaymentsClient ?? (_receivedDocumentPaymentsClient = new ReceivedDocumentPaymentsClient(ApiContext));
+
+        /// <summary>
+        /// Gets recurring invoices.
+        /// </summary>
+        public RecurringInvoiceClient RecurringInvoiceClient =>
+            _recurringInvoiceClient ?? (_recurringInvoiceClient = new RecurringInvoiceClient(ApiContext));
 
         /// <summary>
         /// Gets registered sale.

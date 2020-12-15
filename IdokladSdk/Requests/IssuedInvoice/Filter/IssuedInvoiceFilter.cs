@@ -52,6 +52,9 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
         /// <inheritdoc cref="IssuedInvoiceListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>("PurchaserId");
 
+        /// <inheritdoc cref="IssuedInvoiceListGetModel.RecurringInvoiceId"/>
+        public FilterItem<int> RecurringInvoiceId { get; set; } = new FilterItem<int>(nameof(RecurringInvoiceId));
+
         /// <summary>
         /// Gets or sets numeric tag ids.
         /// </summary>
