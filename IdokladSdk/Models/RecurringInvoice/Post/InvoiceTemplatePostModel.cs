@@ -14,13 +14,13 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets bank Account Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int BankAccountId { get; set; }
 
         /// <summary>
         /// Gets or sets currency Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int CurrencyId { get; set; }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets numeric sequence Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int NumericSequenceId { get; set; }
 
         /// <summary>
@@ -107,13 +107,13 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets partner contact Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets payment option Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int PaymentOptionId { get; set; }
 
         /// <summary>

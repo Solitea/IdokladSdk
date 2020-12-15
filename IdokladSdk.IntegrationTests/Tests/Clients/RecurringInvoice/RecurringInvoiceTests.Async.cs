@@ -21,7 +21,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             _issuedInvoiceId = data.CreatedInvoice?.Id;
 
             // Assert
-            AssertData(data);
+            AssertResultGetModel(data);
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             var data = (await RecurringInvoiceClient.Detail(_recurringInvoiceId).GetAsync()).AssertResult();
 
             // Assert
-            AssertData(data);
+            AssertGetModel(data);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
                 .GetAsync()).AssertResult();
 
             // Assert
-            AssertData(data);
+            AssertGetModel(data);
             AssertExpand(data);
         }
 
@@ -65,7 +65,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             var data = (await RecurringInvoiceClient.UpdateAsync(model)).AssertResult();
 
             // Assert
-            AssertData(data);
+            AssertGetModel(data);
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             Assert.That(data.TotalItems, Is.GreaterThan(0));
             Assert.That(data.TotalPages, Is.GreaterThan(0));
             Assert.That(data.Items, Is.Not.Null.And.Not.Empty);
-            AssertData(data.Items.FirstOrDefault());
+            AssertListGetModel(data.Items.FirstOrDefault());
         }
 
         [Test]

@@ -66,7 +66,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             _issuedInvoiceId = data.CreatedInvoice?.Id;
 
             // Assert
-            AssertData(data);
+            AssertResultGetModel(data);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             var data = RecurringInvoiceClient.Detail(_recurringInvoiceId).Get().AssertResult();
 
             // Assert
-            AssertData(data);
+            AssertGetModel(data);
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
                 .Get().AssertResult();
 
             // Assert
-            AssertData(data);
+            AssertGetModel(data);
             AssertExpand(data);
         }
 
@@ -110,7 +110,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             var data = RecurringInvoiceClient.Update(model).AssertResult();
 
             // Assert
-            AssertData(data);
+            AssertGetModel(data);
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             Assert.That(data.TotalItems, Is.GreaterThan(0));
             Assert.That(data.TotalPages, Is.GreaterThan(0));
             Assert.That(data.Items, Is.Not.Null.And.Not.Empty);
-            AssertData(data.Items.FirstOrDefault());
+            AssertListGetModel(data.Items.FirstOrDefault());
         }
 
         [Test]
@@ -182,26 +182,26 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             AssertRecountData(model, data);
         }
 
-        private void AssertData(RecurringInvoiceGetModel data)
+        private void AssertGetModel(RecurringInvoiceGetModel data)
         {
             AssertInvoiceTemplate(data.InvoiceTemplate);
             AssertInvoiceItemsTemplate(data.InvoiceTemplate.Items);
             AssertRecurringSetting(data.RecurringSetting);
         }
 
-        private void AssertData(RecurringInvoiceListGetModel data)
+        private void AssertListGetModel(RecurringInvoiceListGetModel data)
         {
             AssertInvoiceTemplate(data.InvoiceTemplate);
             AssertInvoiceItemsTemplate(data.InvoiceTemplate.Items);
             AssertRecurringSetting(data.RecurringSetting);
         }
 
-        private void AssertData(RecurringInvoiceResultGetModel data)
+        private void AssertResultGetModel(RecurringInvoiceResultGetModel data)
         {
             Assert.Greater(data.Id, 0);
             Assert.That(data.CreatedInvoice, Is.Not.Null);
             Assert.Greater(data.CreatedInvoice.Id, 0);
-            AssertData((RecurringInvoiceGetModel)data);
+            AssertGetModel((RecurringInvoiceGetModel)data);
         }
 
         private void AssertExpand(RecurringInvoiceGetModel data)
