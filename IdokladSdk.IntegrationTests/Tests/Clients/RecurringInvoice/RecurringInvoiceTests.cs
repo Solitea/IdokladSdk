@@ -248,7 +248,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             Assert.That(data.NextIssueDates, Is.Not.Null);
             Assert.That(data.NextIssueDates.Count, Is.GreaterThan(1));
             var firstIssue = data.NextIssueDates.First();
-            Assert.That(firstIssue, Is.EqualTo(new DateTime(2021, 1, 31)));
+            Assert.That(firstIssue, Is.EqualTo(new DateTime(2020, 12, 31)));
         }
 
         private void AssertRecountData(InvoiceTemplateRecountPostModel model, InvoiceTemplateRecountGetModel data)
