@@ -8,11 +8,6 @@ namespace IdokladSdk.Models.Account
     /// </summary>
     public class SubscriptionGetModel
     {
-        /// <summary>
-        /// Gets or sets subscription type.
-        /// </summary>
-        public SubscriptionType? Type { get; set; }
-
         /// <summary xml:lang="en">
         /// Gets or sets date from.
         /// </summary>
@@ -22,5 +17,15 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets date to.
         /// </summary>
         public DateTime? DateTo { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the account is trial account.
+        /// </summary>
+        public bool IsTrial { get; set; }
+
+        /// <summary>
+        /// Gets or sets subscription type.
+        /// </summary>
+        public SubscriptionType? Type { get; set; }
     }
 }
