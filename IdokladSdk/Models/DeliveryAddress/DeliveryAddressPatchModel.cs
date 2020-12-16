@@ -21,7 +21,6 @@ namespace IdokladSdk.Models.DeliveryAddress
         public string Name { get; set; }
 
         /// <inheritdoc />
-        [Required]
         public int Id { get; set; }
 
         /// <summary>
