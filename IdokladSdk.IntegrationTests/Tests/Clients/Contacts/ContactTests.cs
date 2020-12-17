@@ -110,7 +110,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
                     {
                         City = "Brno",
                         Name = "Money S5",
-                        Id = 0,
                         IsDefault = false,
                         PostalCode = "60200",
                         Street = "Okružní 732/5"
