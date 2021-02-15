@@ -43,28 +43,29 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         }
 
         [Test]
-        public async Task GetDocumentNumber_SuccessfullyGetDocumentNumberAsync()
+        public async Task GetDocumentNumber_CurrentYear_SuccessfullyGetDocumentNumberAsync()
         {
             // Act
+            var currentYear = DateTime.UtcNow.Year;
             var data = (await _numericSequenceClient.GetDocumentNumberAsync(NumericSequenceDocumentType.IssuedInvoice, null, 1))
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual("20200001", data.Custom.DocumentNumber);
+            Assert.AreEqual($"{currentYear}0001", data.Custom.DocumentNumber);
             Assert.IsFalse(data.Custom.IsUnique);
             Assert.NotNull(data.Unique);
         }
 
-        [Test]
-        public async Task GetDocumentNumberAsync_AnotherYear_SuccessfullyGetDocumentNumber()
+        [TestCaseSource("TestData_AnotherYear")]
+        public async Task GetDocumentNumberAsync_AnotherYear_SuccessfullyGetDocumentNumber(DateTime date, string expectedDocumentNumber, bool isUnique)
         {
             // Act
-            var data = (await _numericSequenceClient.GetDocumentNumberAsync(NumericSequenceDocumentType.IssuedInvoice, new DateTime(2019, 1, 1), 1))
+            var data = (await _numericSequenceClient.GetDocumentNumberAsync(NumericSequenceDocumentType.IssuedInvoice, date, 1))
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual("20190001", data.Custom.DocumentNumber);
-            Assert.IsTrue(data.Custom.IsUnique);
+            Assert.AreEqual(expectedDocumentNumber, data.Custom.DocumentNumber);
+            Assert.AreEqual(isUnique, data.Custom.IsUnique);
             Assert.NotNull(data.Unique);
         }
 

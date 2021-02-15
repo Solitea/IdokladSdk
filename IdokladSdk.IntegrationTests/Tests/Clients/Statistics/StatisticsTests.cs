@@ -40,7 +40,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         }
 
         [Test]
-        public void InvoicingForYear_ReturnsDataForGivenYear()
+        public void InvoicingForYear_CurrentYear_ReturnsDataForGivenYear()
         {
             // Arrange
             var yearType = YearType.Actual;

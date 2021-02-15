@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
 {
+    [TestFixture]
     public partial class NumericSequenceTest : TestBase
     {
         private const int NumericSequenceId = 607899;
@@ -55,28 +56,29 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         }
 
         [Test]
-        public void GetDocumentNumber_SuccessfullyGetDocumentNumber()
+        public void GetDocumentNumber_CurrentYear_SuccessfullyGetDocumentNumber()
         {
             // Act
+            var currentYear = DateTime.UtcNow.Year;
             var data = _numericSequenceClient.GetDocumentNumber(NumericSequenceDocumentType.IssuedInvoice, null, 1)
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual("20200001", data.Custom.DocumentNumber);
+            Assert.AreEqual($"{currentYear}0001", data.Custom.DocumentNumber);
             Assert.IsFalse(data.Custom.IsUnique);
             Assert.NotNull(data.Unique);
         }
 
-        [Test]
-        public void GetDocumentNumber_AnotherYear_SuccessfullyGetDocumentNumber()
+        [TestCaseSource("TestData_AnotherYear")]
+        public void GetDocumentNumber_AnotherYear_SuccessfullyGetDocumentNumber(DateTime date, string expectedDocumentNumber, bool isUnique)
         {
             // Act
-            var data = _numericSequenceClient.GetDocumentNumber(NumericSequenceDocumentType.IssuedInvoice, new DateTime(2019, 1, 1), 1)
+            var data = _numericSequenceClient.GetDocumentNumber(NumericSequenceDocumentType.IssuedInvoice, date, 1)
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual("20190001", data.Custom.DocumentNumber);
-            Assert.IsTrue(data.Custom.IsUnique);
+            Assert.AreEqual(expectedDocumentNumber, data.Custom.DocumentNumber);
+            Assert.AreEqual(isUnique, data.Custom.IsUnique);
             Assert.NotNull(data.Unique);
         }
 
@@ -94,6 +96,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
 
             // Assert
             Assert.NotNull(data);
+        }
+
+        private static object[] TestData_AnotherYear()
+        {
+            return new object[]
+            {
+                new object[] { new DateTime(2019, 1, 1), "20190001", true },
+                new object[] { new DateTime(2020, 1, 1), "20200001", false }
+            };
         }
     }
 }
