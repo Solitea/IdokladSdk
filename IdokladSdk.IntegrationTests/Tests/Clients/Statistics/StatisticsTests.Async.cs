@@ -30,7 +30,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         }
 
         [Test]
-        public async Task InvoicingForYearAsync_ReturnsDataForGivenYear()
+        public async Task InvoicingForYearAsync_CurrentYear_ReturnsDataForGivenYear()
         {
             // Arrange
             var yearType = YearType.Actual;
