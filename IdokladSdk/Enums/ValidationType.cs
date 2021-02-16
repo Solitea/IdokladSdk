@@ -111,6 +111,21 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property has to contain valid numeric sequence number format. <see cref="NumericSequenceNumberFormatAttribute"/>
         /// </summary>
-        NumericSequenceNumberFormat = 21
+        NumericSequenceNumberFormat = 21,
+
+        /// <summary>
+        /// Property has to contain valid bank account number format. <see cref="BankAccountNumberAttribute"/>
+        /// </summary>
+        BankAccountNumber = 22,
+
+        /// <summary>
+        /// Property has to contain valid IBAN number format. <see cref="IbanAttribute"/>
+        /// </summary>
+        Iban = 23,
+
+        /// <summary>
+        /// Property has to contain at least one number, one lower and one upper case letter. <see cref="MinPasswordStrengthAttribute"/>
+        /// </summary>
+        MinPasswordStrength = 24
     }
 }

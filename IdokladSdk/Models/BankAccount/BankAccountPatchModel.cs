@@ -15,6 +15,7 @@ namespace IdokladSdk.Models.BankAccount
         /// Gets or sets account number.
         /// </summary>
         [StringLength(50)]
+        [BankAccountNumber("Bank account number is in wrong format.")]
         public string AccountNumber { get; set; }
 
         /// <summary>
@@ -38,6 +39,7 @@ namespace IdokladSdk.Models.BankAccount
         /// Gets or sets IBAN.
         /// </summary>
         [StringLength(50)]
+        [Iban("Iban is in wrong format")]
         public string Iban { get; set; }
 
         /// <inheritdoc/>
