@@ -121,6 +121,11 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property has to contain valid IBAN number format. <see cref="IbanAttribute"/>
         /// </summary>
-        Iban = 23
+        Iban = 23,
+
+        /// <summary>
+        /// Property has to contain at least one number, one lower and one upper case letter. <see cref="IbanAttribute"/>
+        /// </summary>
+        MinPasswordStrength = 24
     }
 }
