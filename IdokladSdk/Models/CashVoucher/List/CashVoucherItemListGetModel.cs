@@ -17,6 +17,11 @@ namespace IdokladSdk.Models.CashVoucher
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets issued tax document id.
+        /// </summary>
+        public int? IssuedTaxDocumentId { get; set; }
+
+        /// <summary>
         /// Gets or sets item name.
         /// </summary>
         public string Name { get; set; }

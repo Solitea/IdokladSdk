@@ -37,14 +37,19 @@ namespace IdokladSdk.Models.BankStatement
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether include subject to income tax.
+        /// </summary>
+        public bool IsIncomeTax { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether is paired.
         /// </summary>
         public bool IsPaired { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether include subject to income tax.
+        /// Gets or sets issued tax document id.
         /// </summary>
-        public bool IsIncomeTax { get; set; }
+        public int? IssuedTaxDocumentId { get; set; }
 
         /// <summary>
         /// Gets or sets movement type.

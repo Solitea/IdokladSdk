@@ -25,6 +25,7 @@ namespace IdokladSdk
         private ExchangeRateClient _exchangeRateClient;
         private IssuedDocumentPaymentClient _issuedDocumentPaymentClient;
         private IssuedInvoiceClient _issuedInvoiceClient;
+        private IssuedTaxDocumentClient _issuedTaxDocumentClient;
         private LogClient _logClient;
         private MailClient _mailClient;
         private NotificationClient _notificationClient;
@@ -150,6 +151,12 @@ namespace IdokladSdk
         /// </summary>
         public IssuedInvoiceClient IssuedInvoiceClient =>
             _issuedInvoiceClient ?? (_issuedInvoiceClient = new IssuedInvoiceClient(ApiContext));
+
+        /// <summary>
+        /// Gets issued tax documents.
+        /// </summary>
+        public IssuedTaxDocumentClient IssuedTaxDocumentClient =>
+            _issuedTaxDocumentClient ?? (_issuedTaxDocumentClient = new IssuedTaxDocumentClient(ApiContext));
 
         /// <summary>
         /// Gets logs.

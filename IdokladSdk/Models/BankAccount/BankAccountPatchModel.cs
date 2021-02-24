@@ -21,6 +21,7 @@ namespace IdokladSdk.Models.BankAccount
         /// <summary>
         /// Gets or sets bank Id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> BankId { get; set; }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Models.Common;
@@ -122,9 +123,9 @@ namespace IdokladSdk.Models.ProformaInvoice
         public bool IsIncomeTax { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether is proforma a tax movement indication.
+        /// Gets a value indicating whether is proforma a tax movement indication.
         /// </summary>
-        public bool IsProformaTaxed { get; set; }
+        public bool IsProformaTaxed => IssuedTaxDocumentIds?.Any() ?? false;
 
         /// <summary>
         /// Gets or sets a value indicating whether indicate sending to accountant.
@@ -135,6 +136,11 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// Gets or sets indicate sending to purchaser.
         /// </summary>
         public MailSentType IsSentToPurchaser { get; set; }
+
+        /// <summary>
+        /// Gets or sets issued tax document ids.
+        /// </summary>
+        public List<int> IssuedTaxDocumentIds { get; set; }
 
         /// <summary>
         /// Gets or sets invoice items.

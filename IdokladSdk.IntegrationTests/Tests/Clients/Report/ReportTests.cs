@@ -110,6 +110,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         }
 
         [Test]
+        public void Get_IssuedTaxDocumentDetail_SuccessfullyGetReport()
+        {
+            var data = _reportClient.IssuedTaxDocument.Detail(1542).Get(new ReportOption { Language = Language.Cz }).AssertResult();
+
+            Assert.NotNull(data);
+            Assert.IsNotEmpty(data);
+        }
+
+        [Test]
         public void Get_ProformaInvoiceList_SuccessfullyGetReport()
         {
             var data = _reportClient.ProformaInvoice.List().Get(Language.En).AssertResult();

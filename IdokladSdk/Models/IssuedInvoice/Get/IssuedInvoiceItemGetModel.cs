@@ -5,7 +5,7 @@ namespace IdokladSdk.Models.IssuedInvoice
     /// <summary>
     /// Issued invoice item.
     /// </summary>
-    public class IssuedInvoiceItemGetModel : IssuedInvoiceItemListGetModel
+    public class IssuedInvoiceItemGetModel : IssuedInvoiceItemListGetModel, IEntityId
     {
         /// <summary>
         /// Gets or sets price list item.

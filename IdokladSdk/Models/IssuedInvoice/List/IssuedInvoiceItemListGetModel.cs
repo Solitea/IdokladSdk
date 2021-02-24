@@ -18,8 +18,23 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// </summary>
         public string Code { get; set; }
 
+        /// <summary>
+        /// Gets or sets discount name.
+        /// </summary>
+        public string DiscountName { get; set; }
+
+        /// <summary>
+        /// Gets or sets discount percentage.
+        /// </summary>
+        public decimal DiscountPercentage { get; set; }
+
         /// <inheritdoc/>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets invoice proforma id.
+        /// </summary>
+        public int? InvoiceProformaId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether is the item a tax movement indication.
@@ -70,15 +85,5 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets vAT rate type.
         /// </summary>
         public VatRateType VatRateType { get; set; }
-
-        /// <summary>
-        /// Gets or sets discount name.
-        /// </summary>
-        public string DiscountName { get; set; }
-
-        /// <summary>
-        /// Gets or sets discount on item.
-        /// </summary>
-        public decimal DiscountPercentage { get; set; }
     }
 }

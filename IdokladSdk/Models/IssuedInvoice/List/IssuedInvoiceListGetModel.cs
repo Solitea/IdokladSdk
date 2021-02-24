@@ -137,6 +137,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         public MailSentType IsSentToPurchaser { get; set; }
 
         /// <summary>
+        /// Gets or sets Issued Tax Document Ids.
+        /// </summary>
+        public List<int> IssuedTaxDocumentIds { get; set; }
+
+        /// <summary>
         /// Gets or sets invoice items.
         /// </summary>
         public List<IssuedInvoiceItemListGetModel> Items { get; set; }

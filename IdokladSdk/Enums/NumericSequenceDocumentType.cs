@@ -49,5 +49,10 @@
         /// Internal document
         /// </summary>
         InternalDocument = 9,
+
+        /// <summary>
+        /// Issued tax document
+        /// </summary>
+        IssuedTaxDocument = 10,
     }
 }
