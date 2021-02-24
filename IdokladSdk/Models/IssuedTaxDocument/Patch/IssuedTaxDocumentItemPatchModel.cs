@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Models.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedTaxDocument.Patch
@@ -17,6 +18,7 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Patch
         /// <summary>
         /// Gets or sets Name.
         /// </summary>
+        [StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>

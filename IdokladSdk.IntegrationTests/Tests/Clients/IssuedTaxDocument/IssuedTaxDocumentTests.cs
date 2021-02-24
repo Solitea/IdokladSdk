@@ -17,6 +17,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
     public partial class IssuedTaxDocumentTests : TestBase
     {
         private const int PaymentId = 1981104;
+        private const int ProformaInvoiceId = 1043167;
         private int _issuedTaxDocumentItemId;
         private int _issuedTaxDocumentId;
         private IssuedTaxDocumentClient _issuedTaxDocumentClient;
@@ -36,8 +37,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var data = _issuedTaxDocumentClient.List().Get().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
         }
 
         [Test]
@@ -50,8 +51,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             _issuedTaxDocumentItemId = result.Items.FirstOrDefault().Id;
 
             // Assert
-            Assert.AreEqual(1043167, result.ProformaInvoiceId);
-            Assert.AreEqual(1000, result.Prices.TotalWithVatHc);
+            Assert.That(result.ProformaInvoiceId, Is.EqualTo(ProformaInvoiceId));
+            Assert.That(result.Prices.TotalWithVatHc, Is.EqualTo(1000));
         }
 
         [Test]
@@ -77,9 +78,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var result = _issuedTaxDocumentClient.Update(model).AssertResult();
 
             // Assert
-            Assert.AreEqual(dateOfIssue, result.DateOfIssue);
-            Assert.GreaterOrEqual(result.Items.Count, 0);
-            Assert.AreEqual("TestModel", result.Items[0].Name);
+            Assert.That(result.DateOfIssue, Is.EqualTo(dateOfIssue));
+            Assert.That(result.Items.Count, Is.GreaterThanOrEqualTo(0));
+            Assert.That(result.Items[0].Name, Is.EqualTo("TestModel"));
         }
 
         [Test]
@@ -90,8 +91,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var data = _issuedTaxDocumentClient.Detail(_issuedTaxDocumentId)
                 .Include(s => s.Payment).Get().AssertResult();
 
-            Assert.AreEqual(_issuedTaxDocumentId, data.Id);
-            Assert.IsNotNull(data.Payment);
+            Assert.That(data.Id, Is.EqualTo(_issuedTaxDocumentId));
+            Assert.That(data.Payment, Is.Not.Null);
         }
 
         [Test]
@@ -102,7 +103,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var data = _issuedTaxDocumentClient.Delete(_issuedTaxDocumentId).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
     }
 }

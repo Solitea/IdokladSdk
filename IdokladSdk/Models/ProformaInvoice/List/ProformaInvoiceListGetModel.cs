@@ -123,9 +123,9 @@ namespace IdokladSdk.Models.ProformaInvoice
         public bool IsIncomeTax { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether is proforma a tax movement indication.
+        /// Gets or sets a value indicating whether is proforma a tax movement indication.
         /// </summary>
-        public bool IsProformaTaxed => IssuedTaxDocumentIds?.Any() ?? false;
+        public bool IsProformaTaxed { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether indicate sending to accountant.

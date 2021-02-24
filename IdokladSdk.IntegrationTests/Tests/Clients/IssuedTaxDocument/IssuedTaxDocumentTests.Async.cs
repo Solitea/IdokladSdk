@@ -25,8 +25,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             _issuedTaxDocumentItemIdAsync = result.Items.FirstOrDefault().Id;
 
             // Assert
-            Assert.AreEqual(1043167, result.ProformaInvoiceId);
-            Assert.AreEqual(1000, result.Prices.TotalWithVatHc);
+            Assert.That(result.ProformaInvoiceId, Is.EqualTo(ProformaInvoiceId));
+            Assert.That(result.Prices.TotalWithVatHc, Is.EqualTo(1000));
         }
 
         [Test]
@@ -52,20 +52,43 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var result = (await _issuedTaxDocumentClient.UpdateAsync(model)).AssertResult();
 
             // Assert
-            Assert.AreEqual(dateOfIssue, result.DateOfIssue);
-            Assert.GreaterOrEqual(result.Items.Count, 0);
-            Assert.AreEqual("TestModel", result.Items[0].Name);
+            Assert.That(result.DateOfIssue, Is.EqualTo(dateOfIssue));
+            Assert.That(result.Items.Count, Is.GreaterThanOrEqualTo(0));
+            Assert.That(result.Items[0].Name, Is.EqualTo("TestModel"));
         }
 
         [Test]
         [Order(8)]
+        public async Task GetAsync_SuccessfullyGet()
+        {
+            // Act
+            var data = (await _issuedTaxDocumentClient.Detail(_issuedTaxDocumentIdAsync).GetAsync()).AssertResult();
+
+            // Assert
+            Assert.That(data.Id, Is.EqualTo(_issuedTaxDocumentIdAsync));
+        }
+
+        [Test]
+        [Order(9)]
+        public async Task GetListAsync_SuccessfullyReturned()
+        {
+            // Act
+            var data = (await _issuedTaxDocumentClient.List().GetAsync()).AssertResult();
+
+            // Assert
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
+        }
+
+        [Test]
+        [Order(10)]
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
             var data = (await _issuedTaxDocumentClient.DeleteAsync(_issuedTaxDocumentIdAsync)).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
     }
 }

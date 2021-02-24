@@ -25,7 +25,7 @@ namespace IdokladSdk.Requests.IssuedTaxDocument.Filter
         public CompareFilterItem<DateTime> DateOfTaxing { get; set; } = new CompareFilterItem<DateTime>(nameof(IssuedTaxDocumentGetModel.DateOfTaxing));
 
         /// <inheritdoc cref="IssuedTaxDocumentListGetModel.DocumentNumber"/>
-        public CompareFilterItem<string> DocumentNumber { get; set; } = new CompareFilterItem<string>(nameof(IssuedTaxDocumentGetModel.DocumentNumber));
+        public ContainFilterItem<string> DocumentNumber { get; set; } = new ContainFilterItem<string>(nameof(IssuedTaxDocumentGetModel.DocumentNumber));
 
         /// <inheritdoc cref="IssuedTaxDocumentListGetModel.Exported"/>
         public FilterItem<ExportedState> Exported { get; set; } = new FilterItem<ExportedState>(nameof(IssuedTaxDocumentGetModel.Exported));

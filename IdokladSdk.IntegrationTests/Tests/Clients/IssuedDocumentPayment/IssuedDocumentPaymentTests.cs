@@ -90,7 +90,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
         public void GetPayments_PaymentsForIssuedTaxDocument_SuccessfullyReturned()
         {
             // Act
-            var data = _client.GetPaymentsForIssuedTaxDocument().Get().AssertResult();
+            var data = _client.PaymentsForIssuedTaxDocument().Get().AssertResult();
 
             // Assert
             Assert.GreaterOrEqual(data.TotalItems, 1);
