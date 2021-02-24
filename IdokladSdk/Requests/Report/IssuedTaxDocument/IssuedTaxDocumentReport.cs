@@ -7,7 +7,6 @@ namespace IdokladSdk.Requests.Report.IssuedTaxDocument
     /// </summary>
     public class IssuedTaxDocumentReport : Report
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="IssuedTaxDocumentReport"/> class.
         /// </summary>

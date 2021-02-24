@@ -21,7 +21,7 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// Gets or sets Partner.
         /// </summary>
         public ContactExpand Partner { get; set; }
-        
+
         /// <summary>
         /// Gets or sets Payment.
         /// </summary>
