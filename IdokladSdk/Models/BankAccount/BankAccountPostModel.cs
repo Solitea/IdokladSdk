@@ -19,6 +19,7 @@ namespace IdokladSdk.Models.BankAccount
         /// <summary>
         /// Gets or sets bank Id.
         /// </summary>
+        [NullableForeignKey]
         public int? BankId { get; set; }
 
         /// <summary>

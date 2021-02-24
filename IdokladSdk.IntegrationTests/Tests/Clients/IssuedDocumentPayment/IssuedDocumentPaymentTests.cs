@@ -85,5 +85,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
             // Assert
             Assert.IsNotNull(paymentDetail.Data.CashVoucher);
         }
+
+        [Test]
+        public void GetPayments_PaymentsForIssuedTaxDocument_SuccessfullyReturned()
+        {
+            // Act
+            var data = _client.PaymentsForIssuedTaxDocument().Get().AssertResult();
+
+            // Assert
+            Assert.GreaterOrEqual(data.TotalItems, 1);
+        }
     }
 }

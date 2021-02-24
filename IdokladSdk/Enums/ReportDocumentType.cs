@@ -38,6 +38,11 @@
         /// <summary>
         /// SalesOrder.
         /// </summary>
-        SalesOrder
+        SalesOrder,
+
+        /// <summary>
+        /// IssuedTaxDocument.
+        /// </summary>
+        IssuedTaxDocument
     }
 }

@@ -161,6 +161,34 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         }
 
         [Test]
+        public void Send_IssuedTaxDocument_SuccessfullySent()
+        {
+            // Arrange
+            var issuedTaxDocumentId = 1542;
+            var settings = new IssuedTaxDocumentEmailSettings
+            {
+                DocumentId = issuedTaxDocumentId,
+                ReportLanguage = Language.En,
+                EmailBody = "Test issued tax document email.",
+                EmailSubject = "Issued tax document",
+                SendToAccountant = true,
+                SendToSelf = true,
+                SendToPartner = true,
+                OtherRecipients = new List<string> { OtherEmail }
+            };
+
+            // Act
+            var result = MailClient.IssuedTaxDocumentEmail.Send(settings).AssertResult();
+
+            // Assert
+            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
+            Assert.IsTrue(!result.NotSent.Any());
+            var issuedTaxDocument = DokladApi.IssuedTaxDocumentClient.Detail(issuedTaxDocumentId).Get().Data;
+            Assert.AreNotEqual(MailSentType.NotSent, issuedTaxDocument.IsSentToAccountant);
+            Assert.AreNotEqual(MailSentType.NotSent, issuedTaxDocument.IsSentToPartner);
+        }
+
+        [Test]
         [TestCaseSource(nameof(GetCreditNoteEmailSettings))]
         public void Send_CreditNoteEmailWithoutRecipient_ThrowsValidationException(CreditNoteEmailSettings setting)
         {

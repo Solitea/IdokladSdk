@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Models.Common;
@@ -135,6 +136,11 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// Gets or sets indicate sending to purchaser.
         /// </summary>
         public MailSentType IsSentToPurchaser { get; set; }
+
+        /// <summary>
+        /// Gets or sets issued tax document ids.
+        /// </summary>
+        public List<int> IssuedTaxDocumentIds { get; set; }
 
         /// <summary>
         /// Gets or sets invoice items.

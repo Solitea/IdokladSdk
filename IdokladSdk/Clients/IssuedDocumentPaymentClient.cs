@@ -77,6 +77,15 @@ namespace IdokladSdk.Clients
             return new IssuedDocumentPaymentList(this);
         }
 
+        /// <summary>
+        /// Returns list of positive payments which have not issued tax document.
+        /// </summary>
+        /// <returns><see cref="PaymentsForIssuedTaxDocumentGetModel"/> instance containing positive payments without issued tax document.</returns>
+        public PaymentsForIssuedTaxDocumentList PaymentsForIssuedTaxDocument()
+        {
+            return new PaymentsForIssuedTaxDocumentList(this);
+        }
+
         /// <inheritdoc/>
         public ApiResult<IssuedDocumentPaymentGetModel> Post(IssuedDocumentPaymentPostModel model)
         {

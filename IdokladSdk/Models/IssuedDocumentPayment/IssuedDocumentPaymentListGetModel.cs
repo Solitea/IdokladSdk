@@ -11,6 +11,16 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
     public class IssuedDocumentPaymentListGetModel : IEntityId
     {
         /// <summary>
+        /// Gets or sets bank statement id.
+        /// </summary>
+        public int? BankStatementId { get; set; }
+
+        /// <summary>
+        /// Gets or sets cash voucher id.
+        /// </summary>
+        public int? CashVoucherId { get; set; }
+
+        /// <summary>
         /// Gets or sets currency Id.
         /// </summary>
         public int CurrencyId { get; set; }
@@ -81,16 +91,6 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
         /// Only for Cz Legislation.
         /// </summary>
         public bool IsEet { get; set; }
-
-        /// <summary>
-        /// Gets or sets related cash voucher id.
-        /// </summary>
-        public int? CashVoucherId { get; set; }
-
-        /// <summary>
-        /// Gets or sets related bank statement id.
-        /// </summary>
-        public int? BankStatementId { get; set; }
 
         /// <summary>
         /// Gets or sets additional information about the entity.

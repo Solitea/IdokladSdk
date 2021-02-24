@@ -58,6 +58,11 @@
         /// <summary>
         /// Item of a price list
         /// </summary>
-        PriceListItem
+        PriceListItem,
+
+        /// <summary>
+        /// Issued tax document
+        /// </summary>
+        IssuedTaxDocument
     }
 }

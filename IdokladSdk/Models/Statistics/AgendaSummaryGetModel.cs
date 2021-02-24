@@ -31,6 +31,11 @@
         public int IssuedInvoices { get; set; }
 
         /// <summary>
+        /// Gets or sets Number of issued tax documents.
+        /// </summary>
+        public int IssuedTaxDocuments { get; set; }
+
+        /// <summary>
         /// Gets or sets Number of pricelist items.
         /// </summary>
         public int PriceListItems { get; set; }

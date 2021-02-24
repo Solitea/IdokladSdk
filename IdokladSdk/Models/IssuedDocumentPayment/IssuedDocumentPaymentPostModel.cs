@@ -12,6 +12,11 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
     public class IssuedDocumentPaymentPostModel : ValidatableModel
     {
         /// <summary>
+        /// Gets or sets a value indicating whether issued tax document shall be created.
+        /// </summary>
+        public bool CreateIssuedTaxDocument { get; set; }
+
+        /// <summary>
         /// Gets or sets date of payment.
         /// </summary>
         [Required]

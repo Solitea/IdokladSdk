@@ -1,6 +1,7 @@
 ﻿using IdokladSdk.Enums;
 using IdokladSdk.Requests.Report.CashVoucher;
 using IdokladSdk.Requests.Report.IssuedInvoice;
+using IdokladSdk.Requests.Report.IssuedTaxDocument;
 using IdokladSdk.Requests.Report.ReceivedInvoice;
 using IdokladSdk.Requests.Report.SalesOrder;
 using IdokladSdk.Requests.Report.SalesReceipt;
@@ -15,6 +16,7 @@ namespace IdokladSdk.Clients
         private CashVoucherReport _cashVoucher;
         private IssuedInvoiceReport _creditNote;
         private IssuedInvoiceReport _issuedInvoice;
+        private IssuedTaxDocumentReport _issuedTaxDocument;
         private IssuedInvoiceReport _proformaInvoice;
         private ReceivedInvoiceReport _receivedInvoice;
         private SalesOrderReport _salesOrder;
@@ -43,6 +45,11 @@ namespace IdokladSdk.Clients
         /// Gets issued invoice reports.
         /// </summary>
         public IssuedInvoiceReport IssuedInvoice => _issuedInvoice ?? (_issuedInvoice = new IssuedInvoiceReport(this, ReportDocumentType.IssuedInvoice));
+
+        /// <summary>
+        /// Gets issued tax document reports.
+        /// </summary>
+        public IssuedTaxDocumentReport IssuedTaxDocument => _issuedTaxDocument ?? (_issuedTaxDocument = new IssuedTaxDocumentReport(this));
 
         /// <summary>
         /// Gets proforma invoice reports.

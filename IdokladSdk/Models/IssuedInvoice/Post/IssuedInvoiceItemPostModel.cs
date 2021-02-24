@@ -37,6 +37,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         public decimal DiscountPercentage { get; set; }
 
         /// <summary>
+        /// Gets or sets invoice proforma id.
+        /// </summary>
+        public int? InvoiceProformaId { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether is the item a tax movement indication.
         /// </summary>
         [Required]
@@ -79,15 +84,15 @@ namespace IdokladSdk.Models.IssuedInvoice
         public decimal UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets vAT rate type.
-        /// </summary>
-        [Required]
-        public VatRateType VatRateType { get; set; }
-
-        /// <summary>
         /// Gets or sets id členení DPH.
         /// </summary>
         [NullableForeignKey]
         public int? VatCodeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets vAT rate type.
+        /// </summary>
+        [Required]
+        public VatRateType VatRateType { get; set; }
     }
 }
