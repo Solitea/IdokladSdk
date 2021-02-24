@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>3.3.0</Version>
+    <Version>3.4.0</Version>
     <PackageId>IdokladSdk</PackageId>
     <Product>iDoklad</Product>
     <Company>Solitea, a.s.</Company>
     <Authors>Solitea, a.s.</Authors>
-    <Copyright>© 2016 - 2020</Copyright>
+    <Copyright>© 2016 - 2021</Copyright>
     <Description>SDK for iDoklad API</Description>
     <PackageTags>idoklad,sdk,rest,api,solitea</PackageTags>
   </PropertyGroup>
