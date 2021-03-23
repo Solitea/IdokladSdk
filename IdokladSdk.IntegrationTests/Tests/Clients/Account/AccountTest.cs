@@ -208,7 +208,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
 
             // Assert
             Assert.NotNull(result);
-            Assert.AreEqual(2, result.TotalItems);
+            Assert.AreEqual(4, result.TotalItems);
         }
     }
 }
