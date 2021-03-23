@@ -197,5 +197,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             // Assert
             Assert.NotNull(data);
         }
+
+        [Test]
+        public void GetSubscriptionList_SubscriptionListGotSuccessfully()
+        {
+            // Act
+            var result = _accountClient.SubscriptionList()
+                .Sort(x => x.DateOfIssue.Desc())
+                .Get().AssertResult();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual(2, result.TotalItems);
+        }
     }
 }

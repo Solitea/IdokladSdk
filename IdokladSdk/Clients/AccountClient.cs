@@ -1,12 +1,17 @@
-﻿using IdokladSdk.Requests.Account.Agenda;
+﻿using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Requests.Account.Agenda;
+using IdokladSdk.Requests.Account.Subscription;
 using IdokladSdk.Requests.Account.User;
+using IdokladSdk.Response;
 
 namespace IdokladSdk.Clients
 {
     /// <summary>
     /// Client for communication with account endpoints.
     /// </summary>
-    public class AccountClient : BaseClient
+    public partial class AccountClient :
+        BaseClient,
+        IDeleteRequest
     {
         private Agendas _agendas;
         private Users _users;
@@ -32,5 +37,20 @@ namespace IdokladSdk.Clients
         /// Gets users.
         /// </summary>
         public Users Users => _users ?? (_users = new Users(this));
+
+        /// <inheritdoc />
+        public ApiResult<bool> Delete(int id)
+        {
+            return Delete<bool>($"{ResourceUrl}/Users/" + id);
+        }
+
+        /// <summary>
+        /// Gives list of subscriptions.
+        /// </summary>
+        /// <returns>List of subscriptions.</returns>
+        public SubscriptionList SubscriptionList()
+        {
+            return new SubscriptionList(this);
+        }
     }
 }
