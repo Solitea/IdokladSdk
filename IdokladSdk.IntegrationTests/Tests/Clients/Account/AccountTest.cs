@@ -203,7 +203,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         public void GetSubscriptionList_SubscriptionListGotSuccessfully()
         {
             // Act
-            var result = _accountClient.Users.SubscriptionList()
+            var result = _accountClient.SubscriptionList()
                 .Sort(x => x.DateOfIssue.Desc())
                 .Get().AssertResult();
 

@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Requests.Account.Agenda;
+using IdokladSdk.Requests.Account.Subscription;
 using IdokladSdk.Requests.Account.User;
 
 namespace IdokladSdk.Clients
@@ -32,5 +33,14 @@ namespace IdokladSdk.Clients
         /// Gets users.
         /// </summary>
         public Users Users => _users ?? (_users = new Users(this));
+
+        /// <summary>
+        /// Gives list of subscriptions.
+        /// </summary>
+        /// <returns>List of subscriptions.</returns>
+        public SubscriptionList SubscriptionList()
+        {
+            return new SubscriptionList(this);
+        }
     }
 }

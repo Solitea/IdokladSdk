@@ -1,7 +1,6 @@
 ﻿using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Account;
-using IdokladSdk.Requests.Account.Subscription;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.Account.User
@@ -62,15 +61,6 @@ namespace IdokladSdk.Requests.Account.User
         public ApiResult<bool> Delete(int id)
         {
             return _client.Delete<bool>($"{_client.ResourceUrl}/Users/" + id);
-        }
-
-        /// <summary>
-        /// Gives list of subscriptions.
-        /// </summary>
-        /// <returns>List of subscriptions.</returns>
-        public SubscriptionList SubscriptionList()
-        {
-            return new SubscriptionList(_client);
         }
     }
 }
