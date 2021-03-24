@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Requests.Account.Agenda;
+using IdokladSdk.Requests.Account.Subscription;
 using IdokladSdk.Requests.Account.User;
 
 namespace IdokladSdk.Clients
@@ -9,6 +10,7 @@ namespace IdokladSdk.Clients
     public class AccountClient : BaseClient
     {
         private Agendas _agendas;
+        private Subscription _subscription;
         private Users _users;
 
         /// <summary>
@@ -27,6 +29,11 @@ namespace IdokladSdk.Clients
         /// Gets agendas.
         /// </summary>
         public Agendas Agendas => _agendas ?? (_agendas = new Agendas(this));
+
+        /// <summary>
+        /// Gets subscriptions.
+        /// </summary>
+        public Subscription Subscriptions => _subscription ?? (_subscription = new Subscription(this));
 
         /// <summary>
         /// Gets users.

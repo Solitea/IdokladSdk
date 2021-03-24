@@ -52,5 +52,15 @@ namespace IdokladSdk.Requests.Account.User
         {
             return _client.Patch<UserPatchModel, UserGetModel>(CurrentUserUrl, model);
         }
+
+        /// <summary>
+        /// Delets user with given id.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <returns>Returns true if user deletion was successfull, false otherwise.</returns>
+        public ApiResult<bool> Delete(int id)
+        {
+            return _client.Delete<bool>($"{_client.ResourceUrl}/Users/" + id);
+        }
     }
 }
