@@ -10,6 +10,7 @@ namespace IdokladSdk.Clients
     public class AccountClient : BaseClient
     {
         private Agendas _agendas;
+        private Subscription _subscription;
         private Users _users;
 
         /// <summary>
@@ -30,17 +31,13 @@ namespace IdokladSdk.Clients
         public Agendas Agendas => _agendas ?? (_agendas = new Agendas(this));
 
         /// <summary>
+        /// Gets subscriptions.
+        /// </summary>
+        public Subscription Subscriptions => _subscription ?? (_subscription = new Subscription(this));
+
+        /// <summary>
         /// Gets users.
         /// </summary>
         public Users Users => _users ?? (_users = new Users(this));
-
-        /// <summary>
-        /// Gives list of subscriptions.
-        /// </summary>
-        /// <returns>List of subscriptions.</returns>
-        public SubscriptionList SubscriptionList()
-        {
-            return new SubscriptionList(this);
-        }
     }
 }

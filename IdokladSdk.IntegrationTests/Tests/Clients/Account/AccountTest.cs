@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -203,7 +202,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         public void GetSubscriptionList_SubscriptionListGotSuccessfully()
         {
             // Act
-            var result = _accountClient.SubscriptionList()
+            var result = _accountClient.Subscriptions.List()
                 .Sort(x => x.DateOfIssue.Desc())
                 .Get().AssertResult();
 
