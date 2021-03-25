@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using IdokladSdk.Clients;
@@ -7,6 +8,7 @@ using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Notification.List;
 using IdokladSdk.Models.Notification.NotificationData;
+using IdokladSdk.Models.Notification.Put;
 using IdokladSdk.Response;
 using NUnit.Framework;
 
@@ -277,6 +279,46 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             // Assert
             AssertNonEmptyListResult(result);
             AssertVatPayerLimitReachedNotification(result.Items.First());
+        }
+
+        [Test]
+        public void GetNewNotificationCount_Success()
+        {
+            // Act
+            var result = NotificationClient.GetNewNotificationCount().AssertResult();
+
+            // Assert
+            Assert.Greater(result.NewNotificationsCount, 0);
+        }
+
+        [Test]
+        public void SetNotificationStatus_StatusSetSuccessfully()
+        {
+            // Arrange
+            var notificationId = 527012;
+            var notification = NotificationClient
+                .List()
+                .Filter(e => e.Id.IsEqual(notificationId))
+                .Get().Data.Items.First();
+
+            var notificationStatus = (NotificationUserStatus)new List<int> { 0, 1 }
+                .First(e => e != (int)notification.Status);
+
+            var model = new List<NotificationPutModel>()
+            {
+                new NotificationPutModel
+                {
+                    Id = notificationId,
+                    Status = notificationStatus
+                },
+            };
+
+            // Act
+            var result = NotificationClient.ChangeStatus(model).AssertResult();
+
+            // Assert
+            Assert.IsNotNull(result.First());
+            Assert.AreEqual(notificationStatus, result.First().Status);
         }
 
         private void AssertApiLimitNotification(NotificationListGetModel notification)
