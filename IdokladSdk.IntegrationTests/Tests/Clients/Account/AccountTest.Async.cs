@@ -88,6 +88,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public async Task Agenda_GenerateBankStatementMailAsync_ReturnsEmailAddress()
+        {
+            // Act
+            var data = (await _accountClient.Agendas.GenerateBankStatementMailAsync()).AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null.And.Not.Empty);
+        }
+
+        [Test]
         public async Task LogoGetAsync_SuccessfullyGet()
         {
             // Act
