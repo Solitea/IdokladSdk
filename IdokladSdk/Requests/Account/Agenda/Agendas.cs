@@ -71,7 +71,7 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// <summary>
         /// Generation of an e-mail address to which the bank will send bank movements messages.
         /// </summary>
-        /// <returns>E-mail address</returns>
+        /// <returns>E-mail address.</returns>
         public ApiResult<string> GenerateBankStatementMail()
         {
             return _client.Post<string>(GenerateBankStatementMailUrl);

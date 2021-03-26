@@ -34,7 +34,7 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// Generation of an e-mail address to which the bank will send bank movements messages.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>E-mail address</returns>
+        /// <returns>E-mail address.</returns>
         public Task<ApiResult<string>> GenerateBankStatementMailAsync(CancellationToken cancellationToken = default)
         {
             return _client.PostAsync<string>(GenerateBankStatementMailUrl, cancellationToken);
