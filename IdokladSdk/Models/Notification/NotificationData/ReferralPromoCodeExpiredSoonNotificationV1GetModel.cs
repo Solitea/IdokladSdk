@@ -13,6 +13,11 @@ namespace IdokladSdk.Models.Notification.NotificationData
         public decimal Amount { get; set; }
 
         /// <summary>
+        /// Gets or sets currency symbol.
+        /// </summary>
+        public string CurrencySymbol { get; set; }
+
+        /// <summary>
         /// Gets or sets date of expiration.
         /// </summary>
         public DateTime DateExpiration { get; set; }

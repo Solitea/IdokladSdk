@@ -14,6 +14,9 @@ namespace IdokladSdk.Requests.Notification.Filter
         /// <inheritdoc cref="NotificationListGetModel.DateCreated"/>
         public CompareFilterItem<DateTime> DateCreated { get; set; } = new CompareFilterItem<DateTime>(nameof(NotificationListGetModel.DateCreated));
 
+        /// <inheritdoc cref="NotificationListGetModel.SeverityType"/>
+        public FilterItem<NotificationSeverityType> SeverityType { get; set; } = new FilterItem<NotificationSeverityType>(nameof(NotificationListGetModel.SeverityType));
+
         /// <inheritdoc cref="NotificationListGetModel.Status"/>
         public FilterItem<NotificationUserStatus> Status { get; set; } = new FilterItem<NotificationUserStatus>(nameof(NotificationListGetModel.Status));
 

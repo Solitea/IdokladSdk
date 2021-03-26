@@ -143,6 +143,19 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
+        public void GetList_FilterBySeverityType_Success()
+        {
+            // Act
+            var result = NotificationClient.List()
+                .Filter(n => n.SeverityType.IsEqual(NotificationSeverityType.Warning))
+                .Get()
+                .AssertResult();
+
+            // Assert
+            AssertNonEmptyListResult(result);
+        }
+
+        [Test]
         public void GetList_FilterByStatus_Success()
         {
             // Act
@@ -153,6 +166,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
 
             // Assert
             AssertNonEmptyListResult(result);
+        }
+
+        [Test]
+        public void GetList_ProformaPaymentNotAccountedMessage_Success()
+        {
+            // Act
+            var result = NotificationClient.List()
+                .Filter(n => n.Type.IsEqual(NotificationType.ProformaPaymentNotAccounted))
+                .Get()
+                .AssertResult();
+
+            // Assert
+            AssertNonEmptyListResult(result);
+            AssertProformaPaymentNotAccountedNotification(result.Items.First());
         }
 
         [Test]
@@ -389,6 +416,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             Assert.That(notification.Title, Is.Not.Null.And.Not.Empty);
         }
 
+        private void AssertProformaPaymentNotAccountedNotification(NotificationListGetModel notification)
+        {
+            AssertNotification(notification);
+            var notificationData = notification.NotificationData as ProformaPaymentNotAccountedMessageModelV1GetModel;
+            Assert.That(notificationData, Is.Not.Null);
+            Assert.That(notificationData.DateOfPayment, Is.Not.EqualTo(DateTime.MinValue));
+            Assert.That(notificationData.DocumentNumber, Is.Not.Null.And.Not.Empty);
+            Assert.That(notificationData.ProformaId, Is.Not.Zero);
+        }
+
         private void AssertRecurringInvoiceNotification(NotificationListGetModel notification)
         {
             AssertNotification(notification);
@@ -433,6 +470,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
                 notification.NotificationData as ReferralPromoCodeExpiredSoonNotificationV1GetModel;
             Assert.That(notificationData, Is.Not.Null);
             Assert.That(notificationData.Amount, Is.Not.Zero);
+            Assert.That(notificationData.CurrencySymbol, Is.Not.Null.And.Not.Empty);
             Assert.That(notificationData.DateExpiration, Is.Not.EqualTo(DateTime.MinValue));
         }
 
