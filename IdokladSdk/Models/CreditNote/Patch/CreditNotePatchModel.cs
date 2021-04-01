@@ -22,6 +22,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets reason for issuing a credit note.
         /// </summary>
+        [NotEmptyString]
         public string CreditNoteReason { get; set; }
 
         /// <summary>
