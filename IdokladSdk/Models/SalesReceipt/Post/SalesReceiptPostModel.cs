@@ -81,6 +81,7 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets name.
         /// </summary>
         [StringLength(200)]
+        [Required(AllowEmptyStrings = false)]
         public string Name { get; set; }
 
         /// <summary>
