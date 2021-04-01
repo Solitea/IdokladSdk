@@ -11,7 +11,7 @@ namespace IdokladSdk.Models.Common
     /// <typeparam name="T">Original property type.</typeparam>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     [JsonConverter(typeof(NullablePropertyJsonConverter))]
-    public struct NullableProperty<T> : IEquatable<NullableProperty<T>>, IConvertible
+    public partial struct NullableProperty<T>
         where T : struct, IConvertible
     {
         /// <summary>
@@ -46,8 +46,6 @@ namespace IdokladSdk.Models.Common
                 return "not set";
             }
         }
-
-        private IConvertible OriginalValue => (IConvertible)Value.Value;
 
         /// <summary>
         /// Operator for casting of a value of original type to NullableProperty type.
@@ -96,12 +94,6 @@ namespace IdokladSdk.Models.Common
         }
 
         /// <inheritdoc />
-        public bool Equals(NullableProperty<T> other)
-        {
-            return other.IsSet == IsSet && other.Value.Equals(Value);
-        }
-
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             var hash = 17;
@@ -109,56 +101,5 @@ namespace IdokladSdk.Models.Common
             hash = (hash * 23) + Value.GetHashCode();
             return hash;
         }
-
-        /// <inheritdoc />
-        public TypeCode GetTypeCode() => OriginalValue.GetTypeCode();
-
-        /// <inheritdoc />
-        public bool ToBoolean(IFormatProvider provider) => OriginalValue.ToBoolean(provider);
-
-        /// <inheritdoc />
-        public byte ToByte(IFormatProvider provider) => OriginalValue.ToByte(provider);
-
-        /// <inheritdoc />
-        public char ToChar(IFormatProvider provider) => OriginalValue.ToChar(provider);
-
-        /// <inheritdoc />
-        public DateTime ToDateTime(IFormatProvider provider) => OriginalValue.ToDateTime(provider);
-
-        /// <inheritdoc />
-        public decimal ToDecimal(IFormatProvider provider) => OriginalValue.ToDecimal(provider);
-
-        /// <inheritdoc />
-        public double ToDouble(IFormatProvider provider) => OriginalValue.ToDouble(provider);
-
-        /// <inheritdoc />
-        public short ToInt16(IFormatProvider provider) => OriginalValue.ToInt16(provider);
-
-        /// <inheritdoc />
-        public int ToInt32(IFormatProvider provider) => OriginalValue.ToInt32(provider);
-
-        /// <inheritdoc />
-        public long ToInt64(IFormatProvider provider) => OriginalValue.ToInt64(provider);
-
-        /// <inheritdoc />
-        public sbyte ToSByte(IFormatProvider provider) => OriginalValue.ToSByte(provider);
-
-        /// <inheritdoc />
-        public float ToSingle(IFormatProvider provider) => OriginalValue.ToSingle(provider);
-
-        /// <inheritdoc />
-        public string ToString(IFormatProvider provider) => OriginalValue.ToString(provider);
-
-        /// <inheritdoc />
-        public object ToType(Type conversionType, IFormatProvider provider) => OriginalValue.ToType(conversionType, provider);
-
-        /// <inheritdoc />
-        public ushort ToUInt16(IFormatProvider provider) => OriginalValue.ToUInt16(provider);
-
-        /// <inheritdoc />
-        public uint ToUInt32(IFormatProvider provider) => OriginalValue.ToUInt32(provider);
-
-        /// <inheritdoc />
-        public ulong ToUInt64(IFormatProvider provider) => OriginalValue.ToUInt64(provider);
     }
 }

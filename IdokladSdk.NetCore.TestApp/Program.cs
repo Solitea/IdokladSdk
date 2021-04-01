@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using IdokladSdk.Authentication;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.NetCore.TestApp.Examples;
 using Microsoft.Extensions.Configuration;
 
