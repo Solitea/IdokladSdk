@@ -418,10 +418,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(postModel.ExchangeRateAmount, getModel.ExchangeRateAmount);
             Assert.AreEqual(0, getModel.Prices.TotalPaid);
             Assert.AreEqual(0, getModel.Prices.TotalPaidHc);
-            Assert.AreEqual(37.83m, getModel.Prices.TotalVat);
-            Assert.AreEqual(37.83m, getModel.Prices.TotalVatHc);
-            Assert.AreEqual(180.17m, getModel.Prices.TotalWithoutVat);
-            Assert.AreEqual(180.17m, getModel.Prices.TotalWithoutVatHc);
+            Assert.AreEqual(37.8m, getModel.Prices.TotalVat);
+            Assert.AreEqual(37.8m, getModel.Prices.TotalVatHc);
+            Assert.AreEqual(180.2m, getModel.Prices.TotalWithoutVat);
+            Assert.AreEqual(180.2m, getModel.Prices.TotalWithoutVatHc);
             Assert.AreEqual(218m, getModel.Prices.TotalWithVat);
             Assert.AreEqual(218m, getModel.Prices.TotalWithVatHc);
             Assert.AreEqual(-24.2m, getModel.Prices.TotalDiscountAmount);
@@ -430,8 +430,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.GreaterOrEqual(getModel.Items.Count, 1);
             ComparePostAndGetRecountItemModels(postModel.Items.First(), getModel.Items.First(i => i.ItemType == IssuedInvoiceItemType.ItemTypeNormal));
 
-            Assert.AreEqual(1, getModel.Prices.VatRateSummary.Count);
-            CheckRecountVatRateSummary(getModel.Prices.VatRateSummary.First(), getModel);
+            Assert.AreEqual(2, getModel.Prices.VatRateSummary.Count);
+            CheckRecountVatRateSummary(getModel.Prices.VatRateSummary.First());
         }
 
         private static void ComparePostAndGetRecountItemModels(CreditNoteItemRecountPostModel postModel, CreditNoteItemRecountGetModel getModel)
@@ -450,15 +450,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(postModel.VatRateType, getModel.VatRateType);
         }
 
-        private static void CheckRecountVatRateSummary(VatRateSummaryItem vatRateSummary, CreditNoteRecountGetModel getModel)
+        private static void CheckRecountVatRateSummary(VatRateSummaryItem vatRateSummary)
         {
             Assert.AreEqual(VatRateType.Basic, vatRateSummary.VatRateType);
-            Assert.AreEqual(getModel.Prices.TotalVat, vatRateSummary.TotalVat);
-            Assert.AreEqual(getModel.Prices.TotalVatHc, vatRateSummary.TotalVatHc);
-            Assert.AreEqual(getModel.Prices.TotalWithoutVat, vatRateSummary.TotalWithoutVat);
-            Assert.AreEqual(getModel.Prices.TotalWithoutVatHc, vatRateSummary.TotalWithoutVatHc);
-            Assert.AreEqual(getModel.Prices.TotalWithVat, vatRateSummary.TotalWithVat);
-            Assert.AreEqual(getModel.Prices.TotalWithVatHc, vatRateSummary.TotalWithVatHc);
+            Assert.AreEqual(37.8m, vatRateSummary.TotalVat);
+            Assert.AreEqual(37.8m, vatRateSummary.TotalVatHc);
+            Assert.AreEqual(180m, vatRateSummary.TotalWithoutVat);
+            Assert.AreEqual(180m, vatRateSummary.TotalWithoutVatHc);
+            Assert.AreEqual(217.8m, vatRateSummary.TotalWithVat);
+            Assert.AreEqual(217.8m, vatRateSummary.TotalWithVatHc);
         }
 
         private static void CreatePostModel(CreditNotePostModel postModel)

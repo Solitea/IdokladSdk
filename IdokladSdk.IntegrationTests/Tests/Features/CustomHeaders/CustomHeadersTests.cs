@@ -71,7 +71,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.CustomHeaders
                     {
                         Amount = 1,
                         PriceType = PriceType.WithVat,
-                        UnitPrice = 10,
+                        UnitPrice = 10.1m,
                         VatRateType = VatRateType.Basic
                     }
                 }

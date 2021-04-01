@@ -11,8 +11,8 @@ namespace IdokladSdk.Models.Common
     /// <typeparam name="T">Original property type.</typeparam>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     [JsonConverter(typeof(NullablePropertyJsonConverter))]
-    public struct NullableProperty<T> : IEquatable<NullableProperty<T>>
-        where T : struct
+    public partial struct NullableProperty<T>
+        where T : struct, IConvertible
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NullableProperty{T}"/> struct.
@@ -91,12 +91,6 @@ namespace IdokladSdk.Models.Common
         public override bool Equals(object obj)
         {
             return obj is NullableProperty<T> nullable && Equals(nullable);
-        }
-
-        /// <inheritdoc />
-        public bool Equals(NullableProperty<T> other)
-        {
-            return other.IsSet == IsSet && other.Value.Equals(Value);
         }
 
         /// <inheritdoc />
