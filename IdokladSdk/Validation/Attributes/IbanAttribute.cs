@@ -13,7 +13,8 @@ namespace IdokladSdk.Validation.Attributes
 
         public override bool IsValid(object value)
         {
-            return Regex.IsMatch((string)value, "^[A-Z]{2}[0-9]{2}[0-9A-Z]{12,30}$")
+            return string.IsNullOrEmpty((string)value)
+                || Regex.IsMatch((string)value, "^[A-Z]{2}[0-9]{2}[0-9A-Z]{12,30}$")
                      ||
                      Regex.IsMatch(
                          (string)value,
