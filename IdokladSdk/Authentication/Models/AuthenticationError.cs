@@ -35,17 +35,24 @@ namespace IdokladSdk.Authentication.Models
                 return null;
             }
 
-            if (ErrorDescription.StartsWith("AuthErrorCode", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return ParseErrorCode();
-            }
-
-            return null;
+            return ParseErrorCode();
         }
 
         private AuthenticationErrorCode? ParseErrorCode()
         {
-            var errorCode = Convert.ToInt32(Regex.Match(ErrorDescription, @"\d+").Value, CultureInfo.InvariantCulture);
+            var errorCode = Regex.Match(ErrorDescription, @"^AuthErrorCode?\((\d+)\)").Groups[1].Value;
+
+            if (string.IsNullOrWhiteSpace(errorCode))
+            {
+                return null;
+            }
+
+            return ConvertToErrorCode(errorCode);
+        }
+
+        private AuthenticationErrorCode? ConvertToErrorCode(string text)
+        {
+            var errorCode = Convert.ToInt32(text, CultureInfo.InvariantCulture);
             return Enum.IsDefined(typeof(AuthenticationErrorCode), errorCode)
                 ? (AuthenticationErrorCode?)errorCode
                 : null;

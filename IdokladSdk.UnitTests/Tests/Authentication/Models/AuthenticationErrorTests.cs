@@ -11,6 +11,10 @@ namespace IdokladSdk.UnitTests.Tests.Authentication.Models
         [TestCase("AuthErrorCode(1) - Agenda has NeedToDowngrade status.", AuthenticationErrorCode.NeedToDowngrade)]
         [TestCase("AuthErrorCode(2) - Agenda has Expired status.", AuthenticationErrorCode.Expired)]
         [TestCase("AuthErrorCode(10)", null)]
+        [TestCase("(20)AuthErrorCode", null)]
+        [TestCase("(100)", null)]
+        [TestCase("abcd(1)", null)]
+        [TestCase("", null)]
         [TestCase("Random string", null)]
         public void GetErrorCode_ParsedCorrectly(string errorDescription, AuthenticationErrorCode? expectedResult)
         {
