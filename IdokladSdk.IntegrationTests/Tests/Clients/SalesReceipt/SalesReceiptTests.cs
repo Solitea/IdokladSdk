@@ -70,7 +70,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             Assert.AreEqual(_salesReceiptId, data.Id);
             Assert.AreEqual(_postModel.Note, data.Note);
             Assert.True(data.Items.Any(i => i.ItemType == SalesReceiptItemType.ItemTypeNormal));
-            Assert.True(data.Items.Any(i => i.ItemType == SalesReceiptItemType.ItemTypeRound));
         }
 
         [Test]
@@ -279,10 +278,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             Assert.AreEqual(198.4M, recountedItem.Prices.TotalWithoutVatHc);
             Assert.AreEqual(-0.06M, roundingItem.Prices.TotalWithVat);
             Assert.AreEqual(-0.06M, roundingItem.Prices.TotalWithVatHc);
-            Assert.AreEqual(-0.01M, roundingItem.Prices.TotalVat);
-            Assert.AreEqual(-0.01M, roundingItem.Prices.TotalVatHc);
-            Assert.AreEqual(-0.05M, roundingItem.Prices.TotalWithoutVat);
-            Assert.AreEqual(-0.05M, roundingItem.Prices.TotalWithoutVatHc);
+            Assert.AreEqual(-0.00M, roundingItem.Prices.TotalVat);
+            Assert.AreEqual(-0.00M, roundingItem.Prices.TotalVatHc);
+            Assert.AreEqual(-0.06M, roundingItem.Prices.TotalWithoutVat);
+            Assert.AreEqual(-0.06M, roundingItem.Prices.TotalWithoutVatHc);
         }
 
         [Test]
@@ -326,6 +325,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             // Arrange
             var defaultSalesReceipt = _client.Default().AssertResult();
             defaultSalesReceipt.SalesPosEquipmentId = SalesPosEquipmentId;
+            defaultSalesReceipt.Name = "Test";
             defaultSalesReceipt.Items.First().Name = "Test";
 
             // Act
