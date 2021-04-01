@@ -52,8 +52,8 @@ namespace IdokladSdk.Authentication.Extensions
 
             if (string.IsNullOrEmpty(tokenizer.AccessToken))
             {
-                var errorMessage = JsonConvert.DeserializeObject<dynamic>(response.Content).error;
-                throw new AuthenticationException("Authentication failed: " + errorMessage);
+                var authResponse = JsonConvert.DeserializeObject<AuthenticationError>(response.Content);
+                throw new IdokladAuthenticationException(authResponse);
             }
 
             return tokenizer;
