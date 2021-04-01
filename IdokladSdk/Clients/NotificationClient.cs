@@ -1,4 +1,7 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Collections.Generic;
+using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Models.Notification.Get;
+using IdokladSdk.Models.Notification.Put;
 using IdokladSdk.Requests.Notification;
 using IdokladSdk.Response;
 
@@ -34,6 +37,25 @@ namespace IdokladSdk.Clients
         public NotificationList List()
         {
             return new NotificationList(this);
+        }
+
+        /// <summary>
+        /// Gives count of notifications with status New.
+        /// </summary>
+        /// <returns>Count of notifications with status New.</returns>
+        public ApiResult<NewNotificationsCountGetModel> GetNewNotificationCount()
+        {
+            return Get<NewNotificationsCountGetModel>(ResourceUrl + "/New");
+        }
+
+        /// <summary>
+        /// Changes status of given notifications.
+        /// </summary>
+        /// <param name="model">Notification Put Model.</param>
+        /// <returns>Notification Change Status Get Model.</returns>
+        public ApiBatchResult<NotificationChangeStatusGetModel> ChangeStatus(List<NotificationPutModel> model)
+        {
+            return Put<NotificationPutModel, NotificationChangeStatusGetModel>(ResourceUrl + "/Status", model);
         }
     }
 }

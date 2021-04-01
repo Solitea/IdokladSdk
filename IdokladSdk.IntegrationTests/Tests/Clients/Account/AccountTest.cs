@@ -108,6 +108,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public void Agenda_GenerateBankStatementMail_ReturnsEmailAddress()
+        {
+            // Act
+            var data = _accountClient.Agendas.GenerateBankStatementMail().AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null.And.Not.Empty);
+        }
+
+        [Test]
         public void LogoGet_SuccessfullyGet()
         {
             // Act

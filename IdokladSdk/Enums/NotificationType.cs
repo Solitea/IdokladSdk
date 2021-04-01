@@ -88,6 +88,11 @@
         /// <summary>
         /// General message (not available via iDoklad API)
         /// </summary>
-        CustomMessage = 19
+        CustomMessage = 19,
+
+        /// <summary>
+        /// Non accounted payment of proforma invoice
+        /// </summary>
+        ProformaPaymentNotAccounted = 20
     }
 }

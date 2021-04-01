@@ -28,6 +28,8 @@ namespace IdokladSdk.Requests.Account.Agenda
 
         private string DeleteRequestUrl => $"{_client.ResourceUrl}/Agendas/DeleteRequest";
 
+        private string GenerateBankStatementMailUrl => $"{CurrentAgendaUrl}/GenerateBankStatementMail";
+
         private string LogoUrl => $"{CurrentAgendaUrl}/Logo";
 
         private string CurrentAgendaUrl => $"{_client.ResourceUrl}/CurrentAgenda";
@@ -64,6 +66,15 @@ namespace IdokladSdk.Requests.Account.Agenda
         public AgendaDetail Detail(int id)
         {
             return new AgendaDetail(id, _client);
+        }
+
+        /// <summary>
+        /// Generation of an e-mail address to which the bank will send bank movements messages.
+        /// </summary>
+        /// <returns>E-mail address.</returns>
+        public ApiResult<string> GenerateBankStatementMail()
+        {
+            return _client.Post<string>(GenerateBankStatementMailUrl);
         }
 
         /// <summary>
