@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -6,7 +7,7 @@ namespace IdokladSdk.Validation.Attributes
     {
         public override bool IsValid(object value)
         {
-            return value == null || !string.IsNullOrEmpty((string)value);
+            return value == null || Regex.IsMatch((string)value, @"^\s*$");
         }
     }
 }
