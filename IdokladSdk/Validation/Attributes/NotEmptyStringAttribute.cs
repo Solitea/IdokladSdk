@@ -7,7 +7,7 @@ namespace IdokladSdk.Validation.Attributes
     {
         public override bool IsValid(object value)
         {
-            return value == null || Regex.IsMatch((string)value, @"^\s*$");
+            return value == null || !Regex.IsMatch((string)value, @"^\s*$");
         }
     }
 }
