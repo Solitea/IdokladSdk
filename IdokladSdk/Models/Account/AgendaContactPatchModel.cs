@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Account
 {
@@ -23,6 +24,7 @@ namespace IdokladSdk.Models.Account
         /// <summary>
         /// Gets or sets the company's ID.
         /// </summary>
+        [IdentificationNumber]
         [StringLength(20)]
         public string IdentificationNumber { get; set; }
 
@@ -60,7 +62,7 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets VAT ID.
         /// Only for SK legislation.
         /// </summary>
-        [StringLength(20)]
+        [StringLength(10)]
         public string VatIdentificationNumberSk { get; set; }
 
         /// <summary>
