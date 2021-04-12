@@ -15,10 +15,12 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         public void GetValidationType_AllIdokladModelAttributes_DoesNotFail()
         {
             // Arrange
-            var namespacePrefix = string.Join(".", typeof(ValidatableModel).Namespace.Split(".").Take(2));
-            var allModels = typeof(ValidatableModel).Assembly.GetTypes()
+            var referenceType = typeof(ValidatableModel);
+            var namespacePrefix = string.Join(".", referenceType.Namespace.Split(".").Take(2));
+            var allModels = referenceType.Assembly.GetTypes()
                 .Where(t => t.Namespace != null && t.Namespace.StartsWith(namespacePrefix))
                 .ToList();
+            Assert.That(allModels, Is.Not.Empty, $"No models were found in namespace starting with {namespacePrefix}.");
             var allModelProperties = allModels.SelectMany(m => m.GetRuntimeProperties().Where(IsPublicProperty))
                 .ToList();
             var allPropertyAttributes = allModelProperties.SelectMany(p => p.GetCustomAttributes()
