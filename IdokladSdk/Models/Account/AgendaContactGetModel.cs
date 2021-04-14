@@ -25,6 +25,11 @@
         /// </summary>
         public string Fax { get; set; }
 
+        /// <summary xml:lang="en">
+        /// The company ID flag indication
+        /// </summary>
+        public bool HasNoIdentificationNumber { get; set; }
+
         /// <summary>
         /// Gets or sets the company's ID.
         /// </summary>
