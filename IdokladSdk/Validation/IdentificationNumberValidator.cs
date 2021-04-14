@@ -5,7 +5,7 @@ using IdokladSdk.Enums;
 
 namespace IdokladSdk.Validation
 {
-    internal class IdentificationNumberHelper
+    public static class IdentificationNumberValidator
     {
         public static IdentificationValidationResult IdentificationNumberValidation(string input)
         {

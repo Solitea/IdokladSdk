@@ -28,7 +28,7 @@ namespace IdokladSdk.Models.Account
         public string IdentificationNumber { get; set; }
 
         /// <summary xml:lang="en">
-        /// The company ID flag indication
+        /// Gets or sets the company ID flag indication
         /// </summary>
         public bool? HasNoIdentificationNumber { get; set; }
 

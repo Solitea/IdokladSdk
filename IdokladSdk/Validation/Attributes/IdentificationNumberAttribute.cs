@@ -18,7 +18,7 @@ namespace IdokladSdk.Validation.Attributes
                 return ValidationResult.Success;
             }
 
-            var result = IdentificationNumberHelper.IdentificationNumberValidation(identNumber);
+            var result = IdentificationNumberValidator.IdentificationNumberValidation(identNumber);
 
             if (result != IdentificationValidationResult.Ok && result != IdentificationValidationResult.NoValue)
             {
