@@ -111,18 +111,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         public void AgendaUpdate_ValidIdentification_DoesNotFail()
         {
             // Arrange
-            var agenda = _accountClient.Agendas.Detail(AgendaId).Get().AssertResult();
-            Assert.That(agenda.Contact.IdentificationNumber, Is.Empty);
-            Assert.That(agenda.Contact.HasNoIdentificationNumber, Is.True);
-            var identificationNumber = "25568736";
             var model = new AgendaPatchModel
             {
                 Contact = new AgendaContactPatchModel
                 {
-                    IdentificationNumber = identificationNumber,
-                    HasNoIdentificationNumber = false
+                    IdentificationNumber = string.Empty,
+                    HasNoIdentificationNumber = true
                 }
             };
+
+            // Act
+            var hasIdentificationData = _accountClient.Agendas.Update(model).AssertResult().Contact;
+
+            // Assert
+            Assert.That(hasIdentificationData.IdentificationNumber, Is.Empty);
+            Assert.That(hasIdentificationData.HasNoIdentificationNumber, Is.True);
+
+            var identificationNumber = "25568736";
+            model.Contact.IdentificationNumber = identificationNumber;
+            model.Contact.HasNoIdentificationNumber = false;
 
             // Act
             var data = _accountClient.Agendas.Update(model).AssertResult();
