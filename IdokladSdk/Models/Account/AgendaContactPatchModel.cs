@@ -24,9 +24,13 @@ namespace IdokladSdk.Models.Account
         /// <summary>
         /// Gets or sets the company's ID.
         /// </summary>
-        [IdentificationNumber]
         [StringLength(20)]
         public string IdentificationNumber { get; set; }
+
+        /// <summary xml:lang="en">
+        /// Gets or sets a value indicating whether the company has an ID.
+        /// </summary>
+        public bool? HasNoIdentificationNumber { get; set; }
 
         /// <summary>
         /// Gets or sets mobile phone number.

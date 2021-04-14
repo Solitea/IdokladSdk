@@ -108,6 +108,40 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public void AgendaUpdate_ValidIdentification_DoesNotFail()
+        {
+            // Arrange
+            var model = new AgendaPatchModel
+            {
+                Contact = new AgendaContactPatchModel
+                {
+                    IdentificationNumber = string.Empty,
+                    HasNoIdentificationNumber = true
+                }
+            };
+
+            // Act
+            var hasIdentificationData = _accountClient.Agendas.Update(model).AssertResult().Contact;
+
+            // Assert
+            Assert.That(hasIdentificationData.IdentificationNumber, Is.Empty);
+            Assert.That(hasIdentificationData.HasNoIdentificationNumber, Is.True);
+
+            var identificationNumber = "25568736";
+            model.Contact.IdentificationNumber = identificationNumber;
+            model.Contact.HasNoIdentificationNumber = false;
+
+            // Act
+            var data = _accountClient.Agendas.Update(model).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.NotNull(data.Contact);
+            Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
+            Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+        }
+
+        [Test]
         public void Agenda_GenerateBankStatementMail_ReturnsEmailAddress()
         {
             // Act
