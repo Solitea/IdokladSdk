@@ -7,7 +7,7 @@ namespace IdokladSdk.Validation
     {
         public static void ValidatePatch(AgendaPatchModel model)
         {
-            if (model.Contact != null)
+            if (model?.Contact != null)
             {
                 var contact = model.Contact;
                 ValidateIdentificationNumber(contact.IdentificationNumber, contact.HasNoIdentificationNumber);
