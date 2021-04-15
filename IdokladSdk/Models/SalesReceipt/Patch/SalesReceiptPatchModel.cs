@@ -84,7 +84,7 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets POS equipment id.
         /// </summary>
         [NullableForeignKey]
-        public int? SalesPosEquipmentId { get; set; }
+        public NullableProperty<int> SalesPosEquipmentId { get; set; }
 
         /// <summary>
         /// Gets or sets tags.
