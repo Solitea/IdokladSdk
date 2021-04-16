@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -336,6 +337,53 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var id = data.Results.First().Data.Id;
             Assert.Greater(id, 0);
             _salesReceiptIds.Add(id);
+        }
+
+        [Test]
+        public void Patch_ChangeCurrency_SucessfullyUpdated()
+        {
+            // Arrange
+            var defaultSalesReceipt = _client.Default().AssertResult();
+            defaultSalesReceipt.SalesPosEquipmentId = SalesPosEquipmentId;
+            defaultSalesReceipt.Name = "Test";
+            defaultSalesReceipt.Items.First().Name = "Test";
+
+            var postResult = _client.Post(defaultSalesReceipt).AssertResult();
+            _salesReceiptIds.Add(postResult.Id);
+            var updateModel = new SalesReceiptPatchModel
+            {
+                Id = postResult.Id,
+                CurrencyId = 2,
+                SalesPosEquipmentId = null
+            };
+
+            // Assert
+            _client.Update(updateModel).AssertResult();
+        }
+
+        [Test]
+        public void Patch_ChangeCurrencyWithoutSalesPosEquipment_Unsucessful()
+        {
+            // Arrange
+            var defaultSalesReceipt = _client.Default().AssertResult();
+            defaultSalesReceipt.SalesPosEquipmentId = SalesPosEquipmentId;
+            defaultSalesReceipt.Name = "Test";
+            defaultSalesReceipt.Items.First().Name = "Test";
+
+            var postResult = _client.Post(defaultSalesReceipt).AssertResult();
+            _salesReceiptIds.Add(postResult.Id);
+            var updateModel = new SalesReceiptPatchModel
+            {
+                Id = postResult.Id,
+                CurrencyId = 2
+            };
+
+            // Act
+            var patchResult = _client.Update(updateModel);
+
+            // Assert
+            Assert.IsFalse(patchResult.IsSuccess);
+            Assert.AreEqual(HttpStatusCode.BadRequest, patchResult.StatusCode);
         }
 
         private void AssertRecountModel(SalesReceiptRecountGetModel recountGetModel, SalesReceiptRecountPostModel recountPostModel)
