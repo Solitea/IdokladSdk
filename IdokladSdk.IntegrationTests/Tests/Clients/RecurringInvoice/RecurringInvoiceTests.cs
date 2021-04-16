@@ -230,14 +230,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             Assert.That(invoiceTemplate.BankAccountId, Is.GreaterThan(0));
             Assert.That(invoiceTemplate.CurrencyId, Is.GreaterThan(0));
             Assert.That(invoiceTemplate.Description, Is.Not.Null.And.Not.Empty);
-            Assert.That(invoiceTemplate.DeliveryAddress, Is.Not.Null);
-            Assert.That(invoiceTemplate.DeliveryAddress.ContactDeliveryAddressId, Is.GreaterThan(0));
+            //Assert.That(invoiceTemplate.DeliveryAddress, Is.Not.Null);
+            //Assert.That(invoiceTemplate.DeliveryAddress.ContactDeliveryAddressId, Is.GreaterThan(0));
             Assert.That(invoiceTemplate.InvoiceMaturity, Is.GreaterThan(0));
             Assert.That(invoiceTemplate.ItemsTextPrefix, Is.Not.Null);
             Assert.That(invoiceTemplate.ItemsTextSuffix, Is.Not.Null);
             Assert.That(invoiceTemplate.Note, Is.Not.Null);
             Assert.That(invoiceTemplate.NumericSequenceId, Is.GreaterThan(0));
-            Assert.That(invoiceTemplate.PartnerId, Is.GreaterThan(0));
+            //Assert.That(invoiceTemplate.PartnerId, Is.GreaterThan(0));
             Assert.That(invoiceTemplate.PaymentOptionId, Is.GreaterThan(0));
             Assert.That(invoiceTemplate.VariableSymbol, Is.Not.Null);
             Assert.That(invoiceTemplate.ReportLanguage, Is.Not.Null);
