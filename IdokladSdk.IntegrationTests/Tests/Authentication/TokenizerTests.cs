@@ -27,7 +27,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Authentication
 
             // Assert
             Assert.IsNotNull(token);
-            Assert.That(token.Claims, Is.Not.Null.Or.Empty);
+            Assert.That(token.Claims, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Authentication
 
             // Assert
             Assert.IsNotNull(token);
-            Assert.That(token.Claims, Is.Not.Null.Or.Empty);
+            Assert.That(token.Claims, Is.Not.Null.And.Not.Empty);
         }
     }
 }

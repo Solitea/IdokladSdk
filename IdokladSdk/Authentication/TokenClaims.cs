@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using IdokladSdk.Enums;
@@ -38,11 +37,13 @@ namespace IdokladSdk.Authentication
         private LicenceStatus? GetLicenceStatus()
         {
             var claim = _claims?.FirstOrDefault(x => x.Type == LicenceStatusClaim);
-            var intValue = Convert.ToInt32(claim?.Value, CultureInfo.InvariantCulture);
 
-            return intValue > 0 && intValue <= Enum.GetValues(typeof(LicenceStatus)).Length
-                ? (LicenceStatus?)Enum.ToObject(typeof(LicenceStatus), intValue)
-                : null;
+            if (Enum.TryParse<LicenceStatus>(claim?.Value, out var value) && Enum.IsDefined(typeof(LicenceStatus), value))
+            {
+                return value;
+            }
+
+            return null;
         }
 
         private UserRight? GetUserRight()

@@ -12,7 +12,7 @@ namespace IdokladSdk.Authentication
     public class Tokenizer
     {
         private string _accessToken;
-        private JwtSecurityToken _jwtToken;
+        private IEnumerable<Claim> _claims;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tokenizer"/> class.
@@ -52,14 +52,14 @@ namespace IdokladSdk.Authentication
             internal set
             {
                 _accessToken = value;
-                ParseAccessToken();
+                _claims = null;
             }
         }
 
         /// <summary>
         /// Gets claims from token.
         /// </summary>
-        public IEnumerable<Claim> Claims => _jwtToken?.Claims;
+        public IEnumerable<Claim> Claims => _claims ?? (_claims = GetClaims());
 
         /// <summary>
         /// Gets refresh token.
@@ -98,22 +98,22 @@ namespace IdokladSdk.Authentication
             return GrantType != GrantType.ClientCredentials && !IsValid(DateTime.Now.AddSeconds(limitInSeconds));
         }
 
-        private void ParseAccessToken()
+        private IEnumerable<Claim> GetClaims()
         {
-            if (string.IsNullOrWhiteSpace(_accessToken))
+            if (string.IsNullOrWhiteSpace(AccessToken))
             {
-                _jwtToken = null;
-                return;
+                return null;
             }
 
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                _jwtToken = tokenHandler.ReadJwtToken(_accessToken);
+                var jwtToken = tokenHandler.ReadJwtToken(AccessToken);
+                return jwtToken.Claims;
             }
             catch (ArgumentException)
             {
-                _jwtToken = null;
+                return null;
             }
         }
     }
