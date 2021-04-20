@@ -65,7 +65,7 @@ namespace IdokladSdk.UnitTests.Tests.Authentication
                 new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "User") }, UserRight.User },
                 new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "NoRights") }, UserRight.NoRights },
                 new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "xyz") }, null },
-                new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "abc") }, null },
+                new object[] { new List<Claim> { new Claim("qwerty", "abc") }, null },
                 new object[] { new List<Claim>(), null },
                 new object[] { null, null }
             };
