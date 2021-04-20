@@ -28,6 +28,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Authentication
             // Assert
             Assert.IsNotNull(token);
             Assert.That(token.Claims, Is.Not.Null.And.Not.Empty);
+            var tokenClaims = new TokenClaims(token.Claims);
+            Assert.That(tokenClaims.LicenceStatus, Is.Not.Null);
+            Assert.That(tokenClaims.UserRight, Is.Not.Null);
         }
 
         [Test]
@@ -44,6 +47,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Authentication
             // Assert
             Assert.IsNotNull(token);
             Assert.That(token.Claims, Is.Not.Null.And.Not.Empty);
+            var tokenClaims = new TokenClaims(token.Claims);
+            Assert.That(tokenClaims.LicenceStatus, Is.Not.Null);
+            Assert.That(tokenClaims.UserRight, Is.Not.Null);
         }
     }
 }

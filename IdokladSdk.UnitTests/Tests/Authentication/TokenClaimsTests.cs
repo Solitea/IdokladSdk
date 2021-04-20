@@ -39,14 +39,16 @@ namespace IdokladSdk.UnitTests.Tests.Authentication
         {
             return new object[]
             {
-                new object[] { new List<Claim> { new Claim("licence_status", "0") }, null },
-                new object[] { new List<Claim> { new Claim("licence_status", "1") }, LicenceStatus.Ok },
-                new object[] { new List<Claim> { new Claim("licence_status", "2") }, LicenceStatus.Changed },
-                new object[] { new List<Claim> { new Claim("licence_status", "3") }, LicenceStatus.WillExpireSoon },
-                new object[] { new List<Claim> { new Claim("licence_status", "4") }, LicenceStatus.NeedToDowngrade },
-                new object[] { new List<Claim> { new Claim("licence_status", "5") }, LicenceStatus.Expired },
-                new object[] { new List<Claim> { new Claim("licence_status", "6") }, null },
-                new object[] { new List<Claim> { new Claim("licence_status", "xyz") }, null },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, "0") }, null },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, "1") }, LicenceStatus.Ok },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, "2") }, LicenceStatus.Changed },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, "3") }, LicenceStatus.WillExpireSoon },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, "4") }, LicenceStatus.NeedToDowngrade },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, "5") }, LicenceStatus.Expired },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, "6") }, null },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, "xyz") }, null },
+                new object[] { new List<Claim> { new Claim(TokenClaims.LicenceStatusClaim, string.Empty) }, null },
+                new object[] { new List<Claim> { new Claim("licence_status", "1") }, null },
                 new object[] { new List<Claim> { new Claim("licence_status", string.Empty) }, null },
                 new object[] { new List<Claim> { new Claim("qwerty", "abc") }, null },
                 new object[] { new List<Claim>(), null },
@@ -58,11 +60,11 @@ namespace IdokladSdk.UnitTests.Tests.Authentication
         {
             return new object[]
             {
-                new object[] { new List<Claim> { new Claim("user_rights", "0") }, null },
-                new object[] { new List<Claim> { new Claim("user_rights", "Admin") }, UserRight.Admin },
-                new object[] { new List<Claim> { new Claim("user_rights", "User") }, UserRight.User },
-                new object[] { new List<Claim> { new Claim("user_rights", "NoRights") }, UserRight.NoRights },
-                new object[] { new List<Claim> { new Claim("user_rights", "xyz") }, null },
+                new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "0") }, null },
+                new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "Admin") }, UserRight.Admin },
+                new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "User") }, UserRight.User },
+                new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "NoRights") }, UserRight.NoRights },
+                new object[] { new List<Claim> { new Claim(TokenClaims.UserRightsClaim, "xyz") }, null },
                 new object[] { new List<Claim> { new Claim("qwerty", "abc") }, null },
                 new object[] { new List<Claim>(), null },
                 new object[] { null, null }
