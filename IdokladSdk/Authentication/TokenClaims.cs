@@ -11,8 +11,9 @@ namespace IdokladSdk.Authentication
     /// </summary>
     public class TokenClaims
     {
-        private const string LicenceStatusClaim = "license_status";
-        private const string UserRightsClaim = "user_rights";
+        public const string LicenceStatusClaim = "license_status";
+        public const string UserRightsClaim = "user_rights";
+
         private readonly IEnumerable<Claim> _claims;
 
         /// <summary>
