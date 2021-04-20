@@ -89,6 +89,11 @@ namespace IdokladSdk
         public Dictionary<string, string> Headers { get; } = new Dictionary<string, string>();
 
         /// <summary>
+        /// Gets claims from token.
+        /// </summary>
+        public TokenClaims TokenClaims { get; private set; }
+
+        /// <summary>
         /// Access token.
         /// </summary>
         /// <returns>Tokenizer.</returns>
@@ -109,6 +114,8 @@ namespace IdokladSdk
             {
                 _token = _authentication.RefreshAccessToken();
             }
+
+            TokenClaims = new TokenClaims(_token.Claims);
 
             return _token;
         }
@@ -135,6 +142,8 @@ namespace IdokladSdk
             {
                 _token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
             }
+
+            TokenClaims = new TokenClaims(_token.Claims);
 
             return _token;
         }

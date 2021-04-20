@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Newtonsoft.Json;
 
 namespace IdokladSdk.Authentication
@@ -8,6 +11,9 @@ namespace IdokladSdk.Authentication
     /// </summary>
     public class Tokenizer
     {
+        private string _accessToken;
+        private IEnumerable<Claim> _claims;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Tokenizer"/> class.
         /// </summary>
@@ -40,7 +46,20 @@ namespace IdokladSdk.Authentication
         /// Gets access token.
         /// </summary>
         [JsonProperty("access_token")]
-        public string AccessToken { get; internal set; }
+        public string AccessToken
+        {
+            get => _accessToken;
+            internal set
+            {
+                _accessToken = value;
+                _claims = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets claims from token.
+        /// </summary>
+        public IEnumerable<Claim> Claims => _claims ?? (_claims = GetClaims());
 
         /// <summary>
         /// Gets refresh token.
@@ -77,6 +96,25 @@ namespace IdokladSdk.Authentication
         public virtual bool ShouldBeRefreshedNow(int limitInSeconds)
         {
             return GrantType != GrantType.ClientCredentials && !IsValid(DateTime.Now.AddSeconds(limitInSeconds));
+        }
+
+        private IEnumerable<Claim> GetClaims()
+        {
+            if (string.IsNullOrWhiteSpace(AccessToken))
+            {
+                return null;
+            }
+
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = tokenHandler.ReadJwtToken(AccessToken);
+                return jwtToken.Claims;
+            }
+            catch (ArgumentException)
+            {
+                return null;
+            }
         }
     }
 }
