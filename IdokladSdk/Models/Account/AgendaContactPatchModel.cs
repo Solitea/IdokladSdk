@@ -25,6 +25,7 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets the company's ID.
         /// </summary>
         [StringLength(20)]
+        [IdentificationNumberPatch(nameof(HasNoIdentificationNumber))]
         public string IdentificationNumber { get; set; }
 
         /// <summary xml:lang="en">

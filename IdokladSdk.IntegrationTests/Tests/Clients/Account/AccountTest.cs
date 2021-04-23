@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -139,6 +140,28 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.NotNull(data.Contact);
             Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
             Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+        }
+
+        [Test]
+        public void AgendaUpdate_InValidIdentification_UpdateFailed()
+        {
+            // Arrange
+            var model = new AgendaPatchModel
+            {
+                Contact = new AgendaContactPatchModel
+                {
+                    IdentificationNumber = "invalid",
+                    HasNoIdentificationNumber = false
+                }
+            };
+
+            // Act
+            var result = _accountClient.Agendas.Update(model);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.AreEqual(DokladErrorCode.InvalidIdentificationNumber, result.ErrorCode);
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
         }
 
         [Test]
