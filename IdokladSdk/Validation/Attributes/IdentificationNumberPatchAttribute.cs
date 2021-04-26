@@ -19,7 +19,6 @@ namespace IdokladSdk.Validation.Attributes
             var identificationNumber = (string)value;
             var hasNoIdentificationNumber = GetHasNoIdentificationNumber(validationContext);
 
-
             if (identificationNumber != null && hasNoIdentificationNumber != null)
             {
                 if (!string.IsNullOrEmpty(identificationNumber) && hasNoIdentificationNumber.Value)
@@ -40,7 +39,6 @@ namespace IdokladSdk.Validation.Attributes
             }
 
             return ValidationResult.Success;
-
         }
 
         private bool? GetHasNoIdentificationNumber(ValidationContext validationContext)
