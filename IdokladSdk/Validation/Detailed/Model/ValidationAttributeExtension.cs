@@ -53,6 +53,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(IdentificationNumberAttribute): return ValidationType.IdentificationNumber;
 
+                case nameof(IdentificationNumberPatchAttribute): return ValidationType.IdentificationNumber;
+
                 case nameof(NumericSequenceNumberFormatAttribute): return ValidationType.NumericSequenceNumberFormat;
 
                 case nameof(BankAccountNumberAttribute): return ValidationType.BankAccountNumber;

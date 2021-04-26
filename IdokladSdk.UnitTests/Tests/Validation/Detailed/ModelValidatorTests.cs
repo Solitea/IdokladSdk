@@ -648,6 +648,90 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             AssertIsValid(result);
         }
 
+        [TestCase("x", false)]
+        [TestCase("x", true)]
+        [TestCase("25568736", true)]
+        [TestCase(null, false)]
+        [TestCase("", false)]
+        [TestCase(" ", false)]
+        [TestCase(" ", true)]
+        public void ModelWithHasNoIdentificationNumber_InvalidModel_ReturnsExpectedResults(string identificationNumber, bool hasNoIdentificationNumber)
+        {
+            // Arrange
+            var model = new ModelWithHasNoIdentificationNumber()
+            {
+                IdentificationNumber = identificationNumber,
+                HasNoIdentificationNumber = hasNoIdentificationNumber
+            };
+
+            // Act
+            var result = ModelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.IdentificationNumber), typeof(IdentificationNumberAttribute), ValidationType.IdentificationNumber);
+        }
+
+        [TestCase("25568736", false)]
+        [TestCase("", true)]
+        public void ModelWithHasNoIdentificationNumber_ValidModel_ReturnsExpectedResults(string identificationNumber, bool hasNoIdentificationNumber)
+        {
+            // Arrange
+            var model = new ModelWithHasNoIdentificationNumber()
+            {
+                IdentificationNumber = identificationNumber,
+                HasNoIdentificationNumber = hasNoIdentificationNumber
+            };
+
+            // Act
+            var result = ModelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [TestCase("x", true)]
+        [TestCase("x", null)]
+        [TestCase("25568736", true)]
+        [TestCase(null, false)]
+        [TestCase(null, true)]
+        [TestCase("", false)]
+        [TestCase(" ", true)]
+        [TestCase(" ", null)]
+        public void ModelWithNullableHasNoIdentificationNumber_InvalidModel_ReturnsExpectedResults(string identificationNumber, bool? hasNoIdentificationNumber)
+        {
+            // Arrange
+            var model = new ModelWithNullableHasNoIdentificationNumber()
+            {
+                IdentificationNumber = identificationNumber,
+                HasNoIdentificationNumber = hasNoIdentificationNumber
+            };
+
+            // Act
+            var result = ModelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.IdentificationNumber), typeof(IdentificationNumberPatchAttribute), ValidationType.IdentificationNumber);
+        }
+
+        [TestCase("25568736", false)]
+        [TestCase(null, null)]
+        [TestCase("", true)]
+        public void ModelWithNullableHasNoIdentificationNumber_ValidModel_ReturnsExpectedResults(string identificationNumber, bool? hasNoIdentificationNumber)
+        {
+            // Arrange
+            var model = new ModelWithNullableHasNoIdentificationNumber()
+            {
+                IdentificationNumber = identificationNumber,
+                HasNoIdentificationNumber = hasNoIdentificationNumber
+            };
+
+            // Act
+            var result = ModelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
         [Test]
         public void ModelWithNumericSequenceNumberFormatAttribute_InvalidModel_ReturnsExpectedResults()
         {

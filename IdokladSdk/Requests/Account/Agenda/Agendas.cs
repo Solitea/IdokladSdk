@@ -96,7 +96,6 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// <inheritdoc />
         public ApiResult<AgendaGetModel> Update(AgendaPatchModel model)
         {
-            AgendaValidator.ValidatePatch(model);
             return _client.Patch<AgendaPatchModel, AgendaGetModel>(CurrentAgendaUrl, model);
         }
 
