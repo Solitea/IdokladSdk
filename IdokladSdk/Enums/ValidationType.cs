@@ -126,6 +126,11 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property has to contain at least one number, one lower and one upper case letter. <see cref="MinPasswordStrengthAttribute"/>
         /// </summary>
-        MinPasswordStrength = 24
+        MinPasswordStrength = 24,
+
+        /// <summary>
+        /// Property must not be equal to zero, but can have null value.
+        /// </summary>
+        DenyZeroAllowNull = 25
     }
 }

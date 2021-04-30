@@ -19,7 +19,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets item type.
         /// </summary>
-        public IssuedInvoiceItemType ItemType { get; set; }
+        public RecurringInvoiceItemGetType ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets item name.

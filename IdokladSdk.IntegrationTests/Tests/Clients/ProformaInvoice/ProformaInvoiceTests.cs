@@ -10,6 +10,7 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.ProformaInvoice;
+using IdokladSdk.Models.ProformaInvoice.Put;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
 
@@ -213,6 +214,37 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             // Assert
             Assert.Greater(data.TotalItems, 0);
             Assert.Greater(data.TotalPages, 0);
+        }
+
+        [Test]
+        public void AccountMultipleProformas_SuccessfullyAccounted()
+        {
+            // Arrange
+            var proformaModel = _proformaInvoiceClient.Default().AssertResult();
+            proformaModel.PartnerId = PartnerId;
+            proformaModel.Description = "Invoice";
+            proformaModel.DateOfPayment = DateTime.UtcNow.SetKindUtc();
+            proformaModel.Items.Clear();
+            proformaModel.Items.Add(new ProformaInvoiceItemPostModel
+            {
+                Name = "Test",
+                UnitPrice = 100,
+                Amount = 1
+            });
+            var proformaId1 = _proformaInvoiceClient.Post(proformaModel).AssertResult().Id;
+            var proformaId2 = _proformaInvoiceClient.Post(proformaModel).AssertResult().Id;
+            var putModel = new AccountProformaInvoicesPutModel { ProformaIds = new[] { proformaId1, proformaId2 } };
+
+            // Act
+            var result = _proformaInvoiceClient.AccountMultipleProformaInvoices(putModel).AssertResult();
+
+            // Assert
+            Assert.NotNull(result);
+
+            // Teardown
+            _issuedInvoiceClient.Delete(result.Id);
+            _proformaInvoiceClient.Delete(proformaId1);
+            _proformaInvoiceClient.Delete(proformaId2);
         }
 
         [Test]

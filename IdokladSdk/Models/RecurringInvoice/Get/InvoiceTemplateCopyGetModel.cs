@@ -1,125 +1,141 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.Models.RecurringInvoice
+namespace IdokladSdk.Models.RecurringInvoice.Get
 {
     /// <summary>
-    /// InvoiceTemplateListGetModel.
+    /// InvoiceTemplateCopyGetModel.
     /// </summary>
-    public class InvoiceTemplateListGetModel
+    public class InvoiceTemplateCopyGetModel
     {
         /// <summary>
-        /// Gets or sets bank account Id.
+        /// Gets or Sets Bank Account Id.
         /// </summary>
+        [Required]
         public int BankAccountId { get; set; }
 
         /// <summary>
-        /// Gets or sets constant symbol Id.
+        /// Gets or Sets Constant symbol Id.
         /// </summary>
         public int? ConstantSymbolId { get; set; }
 
         /// <summary>
-        /// Gets or sets currency Id.
+        /// Gets or Sets Currency Id.
         /// </summary>
+        [Required]
         public int CurrencyId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Partner delivery address id.
+        /// Gets or Sets Delivery address id.
         /// </summary>
         public int? DeliveryAddressId { get; set; }
 
         /// <summary>
-        /// Gets or sets description.
+        /// Gets or Sets Description.
         /// </summary>
+        [Required]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets discount size in percent.
+        /// Gets or Sets Discount size in percent.
         /// </summary>
+        [Range(0.0, 99.99)]
         public decimal DiscountPercentage { get; set; }
 
         /// <summary>
-        /// Gets or sets document type.
+        /// Gets or Sets Document type.
         /// </summary>
+        [Required]
         public RecurringDocumentType DocumentType { get; set; }
 
         /// <summary>
-        /// Gets or sets invoice maturity (in days).
+        /// Gets or Sets Invoice maturity (in days).
         /// </summary>
+        [Required]
         public int InvoiceMaturity { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether fixed variable symbol is used.
+        /// Gets or Sets a value indicating whether Fixed variable symbol.
         /// </summary>
         public bool IsConstantVariableSymbol { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether application of VAT is based on payments.
+        /// Gets or Sets a value indicating whether Attribute for application of VAT based on payments.
         /// </summary>
         public bool IsDocumentInVatOnPay { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the document is registered in EET.
+        /// Gets or Sets a value indicating whether Flag indicating whether the document is registered in EET.
         /// </summary>
+        [Required]
         public bool IsEet { get; set; }
 
         /// <summary>
-        /// Gets or sets invoice items.
+        /// Gets or Sets Invoice items.
         /// </summary>
-        public List<InvoiceItemTemplateListGetModel> Items { get; set; }
+        [MinCollectionLength(1)]
+        [Required]
+        public List<InvoiceItemTemplateCopyGetModel> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets items text prefix.
+        /// Gets or Sets Text Items text prefix.
         /// </summary>
         public string ItemsTextPrefix { get; set; }
 
         /// <summary>
-        /// Gets or sets items text suffix.
+        /// Gets or Sets Items text suffix.
         /// </summary>
         public string ItemsTextSuffix { get; set; }
 
         /// <summary>
-        /// Gets or sets note.
+        /// Gets or Sets Note.
         /// </summary>
         public string Note { get; set; }
 
         /// <summary>
-        /// Gets or sets numeric sequence Id.
+        /// Gets or Sets Numeric sequence id.
         /// </summary>
+        [Required]
         public int NumericSequenceId { get; set; }
 
         /// <summary>
-        /// Gets or sets order number.
+        /// Gets or Sets Order number.
         /// </summary>
+        [StringLength(20)]
         public string OrderNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets payment option Id.
+        /// Gets or Sets Partner contact id.
         /// </summary>
+        [Required]
+        public int PartnerId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Payment option id.
+        /// </summary>
+        [Required]
         public int PaymentOptionId { get; set; }
 
         /// <summary>
-        /// Gets or sets prices and calculations.
-        /// </summary>
-        public InvoiceTemplatePrices Prices { get; set; }
-
-        /// <summary>
-        /// Gets or sets report language.
+        /// Gets or Sets Language of report.
         /// </summary>
         public Language? ReportLanguage { get; set; }
 
         /// <summary>
-        /// Gets or sets setting for date of taxing.
+        /// Gets or Sets Setting for date of taxing.
         /// </summary>
         public TaxingType TaxingType { get; set; }
 
         /// <summary>
-        /// Gets or sets variable symbol.
+        /// Gets or Sets Variable symbol.
         /// </summary>
+        [StringLength(10)]
         public string VariableSymbol { get; set; }
 
         /// <summary>
-        /// Gets or sets VAT reverse charge code Id.
+        /// Gets or Sets Vat reverse charge code id.
         /// </summary>
         public int? VatReverseChargeCodeId { get; set; }
     }

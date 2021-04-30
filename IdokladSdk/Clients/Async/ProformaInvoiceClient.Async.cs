@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
+using IdokladSdk.Models.ProformaInvoice.Put;
 using IdokladSdk.Response;
 using RestSharp;
 
@@ -60,6 +61,14 @@ namespace IdokladSdk.Clients
             var resource = $"{ResourceUrl}/{id}/Account";
             var request = await CreateRequestAsync(resource, Method.PUT, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync<IssuedInvoiceGetModel>(request, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc cref="AccountMultipleProformaInvoices"/>>
+        public async Task<ApiResult<IssuedInvoiceGetModel>> AccountMultipleProformaInvoicesAsync(
+            AccountProformaInvoicesPutModel model, CancellationToken cancellationToken = default)
+        {
+            var resource = $"{ResourceUrl}/Account";
+            return await PutAsync<AccountProformaInvoicesPutModel, IssuedInvoiceGetModel>(resource, model, cancellationToken).ConfigureAwait(false);
         }
     }
 }

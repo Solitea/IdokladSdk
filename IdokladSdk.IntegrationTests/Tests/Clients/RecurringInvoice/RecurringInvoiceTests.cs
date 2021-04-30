@@ -17,6 +17,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         private const int DeliveryAddressId1 = 11;
         private const int PartnerId = 323823;
         private const int PriceListItemId = 107444;
+        private const string PartnerName = "Alza.cz a.s.";
 
         private int? _issuedInvoiceId;
         private int _recurringInvoiceId;
@@ -132,7 +133,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         {
             // Act
             var data = RecurringInvoiceClient.List()
-                .Filter(i => i.PartnerId.IsEqual(PartnerId))
+                .Filter(i => i.PartnerName.IsEqual(PartnerName))
                 .Filter(i => i.Id.IsEqual(_recurringInvoiceId))
                 .Get().AssertResult();
 
@@ -145,6 +146,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(7)]
+        public void GetRecurringInvoiceCopy_SuccessfullyGot()
+        {
+            // Act
+            var data = RecurringInvoiceClient.Copy(_recurringInvoiceId).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.AreEqual(PartnerId, data.InvoiceTemplate.PartnerId);
+        }
+
+        [Test]
+        [Order(8)]
         public void Delete_SuccessfullyDeleted()
         {
             // Act
@@ -155,7 +168,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(8)]
+        [Order(9)]
         public void NextIssueDate_ReturnsCorrectValue()
         {
             // Arrange
@@ -169,7 +182,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(9)]
+        [Order(10)]
         public void Recount_SuccessfullyRecounted()
         {
             // Arrange
@@ -254,7 +267,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         private void AssertRecountData(InvoiceTemplateRecountPostModel model, InvoiceTemplateRecountGetModel data)
         {
             var itemToRecount = model.Items.First();
-            var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
+            var recountedItem = data.Items.First(x => x.ItemType == RecurringInvoiceItemGetType.ItemTypeNormal);
             Assert.That(recountedItem.Id, Is.EqualTo(itemToRecount.Id));
             Assert.That(recountedItem.Name, Is.EqualTo(itemToRecount.Name));
             Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(242));
