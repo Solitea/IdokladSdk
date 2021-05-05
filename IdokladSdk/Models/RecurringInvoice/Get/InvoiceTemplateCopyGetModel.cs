@@ -57,17 +57,17 @@ namespace IdokladSdk.Models.RecurringInvoice
         public int InvoiceMaturity { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether fixed variable symbol.
+        /// Gets or sets a value indicating whether variable symbol is fixed.
         /// </summary>
         public bool IsConstantVariableSymbol { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Attribute for application of VAT based on payments.
+        /// Gets or sets a value indicating whether document is in VAT on payments.
         /// </summary>
         public bool IsDocumentInVatOnPay { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether flag indicating whether the document is registered in EET.
+        /// Gets or sets a value indicating whether the document is registered in EET.
         /// </summary>
         [Required]
         public bool IsEet { get; set; }

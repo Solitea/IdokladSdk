@@ -14,6 +14,6 @@ namespace IdokladSdk.Requests.RecurringInvoice.Sort
         public SortItem TemplateName { get; set; } = new SortItem(nameof(RecurringInvoiceListGetModel.RecurringSetting.TemplateName));
 
         /// <inheritdoc cref="ContactListGetModel.CompanyName"/>
-        public SortItem PartnerName { get; set; } = new SortItem(nameof(ContactGetModel.CompanyName));
+        public SortItem CompanyName { get; set; } = new SortItem(nameof(ContactGetModel.CompanyName));
     }
 }

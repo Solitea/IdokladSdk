@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Contact;
 
 namespace IdokladSdk.Models.RecurringInvoice
 {
@@ -92,6 +93,11 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// Gets or sets order number.
         /// </summary>
         public string OrderNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets partner.
+        /// </summary>
+        public ContactGetModel Partner { get; set; }
 
         /// <summary>
         /// Gets or sets payment option id.
