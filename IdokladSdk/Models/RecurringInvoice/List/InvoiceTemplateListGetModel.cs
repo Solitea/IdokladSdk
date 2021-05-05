@@ -9,17 +9,17 @@ namespace IdokladSdk.Models.RecurringInvoice
     public class InvoiceTemplateListGetModel
     {
         /// <summary>
-        /// Gets or sets bank account Id.
+        /// Gets or sets bank account id.
         /// </summary>
         public int BankAccountId { get; set; }
 
         /// <summary>
-        /// Gets or sets constant symbol Id.
+        /// Gets or sets constant symbol id.
         /// </summary>
         public int? ConstantSymbolId { get; set; }
 
         /// <summary>
-        /// Gets or sets currency Id.
+        /// Gets or sets currency id.
         /// </summary>
         public int CurrencyId { get; set; }
 
@@ -84,7 +84,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         public string Note { get; set; }
 
         /// <summary>
-        /// Gets or sets numeric sequence Id.
+        /// Gets or sets numeric sequence id.
         /// </summary>
         public int NumericSequenceId { get; set; }
 
@@ -94,7 +94,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         public string OrderNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets payment option Id.
+        /// Gets or sets payment option id.
         /// </summary>
         public int PaymentOptionId { get; set; }
 
@@ -119,7 +119,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         public string VariableSymbol { get; set; }
 
         /// <summary>
-        /// Gets or sets VAT reverse charge code Id.
+        /// Gets or sets VAT reverse charge code id.
         /// </summary>
         public int? VatReverseChargeCodeId { get; set; }
     }

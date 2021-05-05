@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
 
-namespace IdokladSdk.Models.ProformaInvoice.Put
+namespace IdokladSdk.Models.ProformaInvoice
 {
     /// <summary>
     /// AccountProformaInvoicesPutModel.
@@ -10,7 +10,7 @@ namespace IdokladSdk.Models.ProformaInvoice.Put
     public class AccountProformaInvoicesPutModel : ValidatableModel
     {
         /// <summary>
-        /// Gets or Sets Ids of proforma invoices.
+        /// Gets or sets ids of proforma invoices.
         /// </summary>
         [Required]
         public IEnumerable<int> ProformaIds { get; set; }

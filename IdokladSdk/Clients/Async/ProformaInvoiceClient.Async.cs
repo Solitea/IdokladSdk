@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
-using IdokladSdk.Models.ProformaInvoice.Put;
 using IdokladSdk.Response;
 using RestSharp;
 

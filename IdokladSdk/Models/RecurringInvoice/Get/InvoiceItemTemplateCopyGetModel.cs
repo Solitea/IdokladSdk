@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 
-namespace IdokladSdk.Models.RecurringInvoice.Get
+namespace IdokladSdk.Models.RecurringInvoice
 {
     /// <summary>
     /// InvoiceItemTemplateCopyGetModel.
@@ -9,53 +9,53 @@ namespace IdokladSdk.Models.RecurringInvoice.Get
     public class InvoiceItemTemplateCopyGetModel
     {
         /// <summary>
-        /// Gets or Sets Item amount.
+        /// Gets or sets item amount.
         /// </summary>
         [Required]
         public decimal Amount { get; set; }
 
         /// <summary>
-        /// Gets or Sets Item type.
+        /// Gets or sets item type.
         /// </summary>
         public RecurringInvoiceItemGetType ItemType { get; set; }
 
         /// <summary>
-        /// Gets or Sets Item name.
+        /// Gets or sets item name.
         /// </summary>
         [Required(AllowEmptyStrings = false)]
         [StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or Sets Pricelist item id.
+        /// Gets or sets price list item id.
         /// </summary>
         public int? PriceListItemId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Price type.
+        /// Gets or sets price type.
         /// </summary>
         [Required]
         public PriceType PriceType { get; set; }
 
         /// <summary>
-        /// Gets or Sets Unit of measure.
+        /// Gets or sets unit of measure.
         /// </summary>
         [StringLength(20)]
         public string Unit { get; set; }
 
         /// <summary>
-        /// Gets or Sets Unit price.
+        /// Gets or sets unit price.
         /// </summary>
         [Required]
         public decimal UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or Sets Vat code id.
+        /// Gets or sets VAT code id.
         /// </summary>
         public int? VatCodeId { get; set; }
 
         /// <summary>
-        /// Gets or Sets VAT rate type.
+        /// Gets or sets VAT rate type.
         /// </summary>
         [Required]
         public VatRateType VatRateType { get; set; }

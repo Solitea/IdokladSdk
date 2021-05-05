@@ -1,7 +1,6 @@
 ﻿using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
-using IdokladSdk.Models.ProformaInvoice.Put;
 using IdokladSdk.Requests.ProformaInvoice;
 using IdokladSdk.Response;
 using RestSharp;
@@ -110,7 +109,7 @@ namespace IdokladSdk.Clients
         /// Accounts proforma invoices with ids given in the model.
         /// </summary>
         /// <param name="model">Model containing proforma invoices id.</param>
-        /// <returns>Get Model of Accounting Invoice.</returns>
+        /// <returns>Get model of accounting invoice.</returns>
         public ApiResult<IssuedInvoiceGetModel> AccountMultipleProformaInvoices(AccountProformaInvoicesPutModel model)
         {
             var resource = $"{ResourceUrl}/Account";
