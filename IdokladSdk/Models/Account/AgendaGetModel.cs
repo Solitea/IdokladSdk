@@ -152,6 +152,11 @@ namespace IdokladSdk.Models.Account
         public TaxSubjectType TaxSubjectType { get; set; }
 
         /// <summary>
+        /// Gets or sets taxing period.
+        /// </summary>
+        public VatPeriod VatPeriod { get; set; }
+
+        /// <summary>
         /// Gets or sets vAT registration type.
         /// </summary>
         public VatRegistrationType VatRegistrationType { get; set; }
