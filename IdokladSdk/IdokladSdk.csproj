@@ -49,6 +49,7 @@
     <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="IbanNet" Version="4.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

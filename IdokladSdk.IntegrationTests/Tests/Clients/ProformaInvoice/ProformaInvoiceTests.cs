@@ -27,6 +27,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         private const int UnpaidProformaInvoiceId = 922399;
         private const int AccountedProformaInvoiceId = 922400;
 
+        private readonly List<int> _proformaInvoiceToDeleteIds = new List<int>();
+        private readonly List<int> _issuedInvoiceToDeleteIds = new List<int>();
         private int _proformaInvoiceId;
         private ProformaInvoicePostModel _proformaInvoicePostModel;
         private ProformaInvoiceClient _proformaInvoiceClient;
@@ -38,6 +40,27 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             InitDokladApi();
             _proformaInvoiceClient = DokladApi.ProformaInvoiceClient;
             _issuedInvoiceClient = DokladApi.IssuedInvoiceClient;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            _proformaInvoiceToDeleteIds.Clear();
+            _issuedInvoiceToDeleteIds.Clear();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            foreach (var id in _proformaInvoiceToDeleteIds)
+            {
+                _proformaInvoiceClient.Delete(id);
+            }
+
+            foreach (var id in _issuedInvoiceToDeleteIds)
+            {
+                _issuedInvoiceClient.Delete(id);
+            }
         }
 
         [Test]
@@ -184,13 +207,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         {
             // Act
             var data = _proformaInvoiceClient.Account(_proformaInvoiceId).AssertResult();
+            _issuedInvoiceToDeleteIds.Add(data.Id);
 
             // Assert
             var item = data.Items.Where(i => i.ItemType == IssuedInvoiceItemType.ItemTypeReduce);
             Assert.NotNull(item);
-
-            // Teardown
-            _issuedInvoiceClient.Delete(data.Id);
         }
 
         [Test]
@@ -213,6 +234,24 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             // Assert
             Assert.Greater(data.TotalItems, 0);
             Assert.Greater(data.TotalPages, 0);
+        }
+
+        [Test]
+        public void AccountMultipleProformas_SuccessfullyAccounted()
+        {
+            // Arrange
+            var proformaModel = CreateProformaInvoicePostModel();
+            var proformaId1 = _proformaInvoiceClient.Post(proformaModel).AssertResult().Id;
+            var proformaId2 = _proformaInvoiceClient.Post(proformaModel).AssertResult().Id;
+            _proformaInvoiceToDeleteIds.AddRange(new[] { proformaId1, proformaId2 });
+            var putModel = new AccountProformaInvoicesPutModel { ProformaIds = new[] { proformaId1, proformaId2 } };
+
+            // Act
+            var result = _proformaInvoiceClient.AccountMultipleProformaInvoices(putModel).AssertResult();
+            _issuedInvoiceToDeleteIds.Add(result.Id);
+
+            // Assert
+            Assert.NotNull(result);
         }
 
         [Test]
@@ -295,6 +334,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.NotNull(data.Name);
             Assert.NotNull(data.PostalCode);
             Assert.NotNull(data.Street);
+        }
+
+        private ProformaInvoicePostModel CreateProformaInvoicePostModel()
+        {
+            var proformaModel = _proformaInvoiceClient.Default().AssertResult();
+            proformaModel.PartnerId = PartnerId;
+            proformaModel.Description = "Invoice";
+            proformaModel.DateOfPayment = DateTime.UtcNow.SetKindUtc();
+            proformaModel.Items.Clear();
+            proformaModel.Items.Add(new ProformaInvoiceItemPostModel
+            {
+                Name = "Test",
+                UnitPrice = 100,
+                Amount = 1
+            });
+
+            return proformaModel;
         }
     }
 }

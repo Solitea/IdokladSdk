@@ -104,5 +104,16 @@ namespace IdokladSdk.Clients
             var request = CreateRequest(resource, Method.PUT);
             return Execute<IssuedInvoiceGetModel>(request);
         }
+
+        /// <summary>
+        /// Accounts proforma invoices with ids given in the model.
+        /// </summary>
+        /// <param name="model">Model containing proforma invoices id.</param>
+        /// <returns>Get model of accounting invoice.</returns>
+        public ApiResult<IssuedInvoiceGetModel> AccountMultipleProformaInvoices(AccountProformaInvoicesPutModel model)
+        {
+            var resource = $"{ResourceUrl}/Account";
+            return Put<AccountProformaInvoicesPutModel, IssuedInvoiceGetModel>(resource, model);
+        }
     }
 }

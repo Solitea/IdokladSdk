@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.Contact;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.RecurringInvoice
 {
     /// <summary>
-    /// InvoiceTemplateListGetModel.
+    /// InvoiceTemplateCopyGetModel.
     /// </summary>
-    public class InvoiceTemplateListGetModel
+    public class InvoiceTemplateCopyGetModel
     {
         /// <summary>
         /// Gets or sets bank account id.
         /// </summary>
+        [Required]
         public int BankAccountId { get; set; }
 
         /// <summary>
@@ -22,55 +24,63 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets currency id.
         /// </summary>
+        [Required]
         public int CurrencyId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Partner delivery address id.
+        /// Gets or sets delivery address id.
         /// </summary>
         public int? DeliveryAddressId { get; set; }
 
         /// <summary>
         /// Gets or sets description.
         /// </summary>
+        [Required]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets discount size in percent.
         /// </summary>
+        [Range(0.0, 99.99)]
         public decimal DiscountPercentage { get; set; }
 
         /// <summary>
         /// Gets or sets document type.
         /// </summary>
+        [Required]
         public RecurringDocumentType DocumentType { get; set; }
 
         /// <summary>
         /// Gets or sets invoice maturity (in days).
         /// </summary>
+        [Required]
         public int InvoiceMaturity { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether fixed variable symbol is used.
+        /// Gets or sets a value indicating whether variable symbol is fixed.
         /// </summary>
         public bool IsConstantVariableSymbol { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether application of VAT is based on payments.
+        /// Gets or sets a value indicating whether document is in VAT on payments.
         /// </summary>
         public bool IsDocumentInVatOnPay { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the document is registered in EET.
         /// </summary>
+        [Required]
         public bool IsEet { get; set; }
 
         /// <summary>
         /// Gets or sets invoice items.
         /// </summary>
-        public List<InvoiceItemTemplateListGetModel> Items { get; set; }
+        [MinCollectionLength(1)]
+        [Required]
+        public List<InvoiceItemTemplateCopyGetModel> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets items text prefix.
+        /// Gets or sets text items text prefix.
         /// </summary>
         public string ItemsTextPrefix { get; set; }
 
@@ -87,30 +97,29 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets numeric sequence id.
         /// </summary>
+        [Required]
         public int NumericSequenceId { get; set; }
 
         /// <summary>
         /// Gets or sets order number.
         /// </summary>
+        [StringLength(20)]
         public string OrderNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets partner.
+        /// Gets or sets partner contact id.
         /// </summary>
-        public ContactGetModel Partner { get; set; }
+        [Required]
+        public int PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets payment option id.
         /// </summary>
+        [Required]
         public int PaymentOptionId { get; set; }
 
         /// <summary>
-        /// Gets or sets prices and calculations.
-        /// </summary>
-        public InvoiceTemplatePrices Prices { get; set; }
-
-        /// <summary>
-        /// Gets or sets report language.
+        /// Gets or sets language of report.
         /// </summary>
         public Language? ReportLanguage { get; set; }
 
@@ -122,6 +131,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
+        [StringLength(10)]
         public string VariableSymbol { get; set; }
 
         /// <summary>

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using IdokladSdk.Models.Contact;
-using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ReadOnly.ConstantSymbol;
 using IdokladSdk.Models.ReadOnly.Currency;
 using IdokladSdk.Models.ReadOnly.PaymentOption;
@@ -13,11 +11,6 @@ namespace IdokladSdk.Models.RecurringInvoice
     /// </summary>
     public class InvoiceTemplateGetModel : InvoiceTemplateListGetModel
     {
-        /// <summary>
-        /// Gets or sets partner.
-        /// </summary>
-        public ContactGetModel Partner { get; set; }
-
         /// <summary>
         /// Gets or sets currency.
         /// </summary>

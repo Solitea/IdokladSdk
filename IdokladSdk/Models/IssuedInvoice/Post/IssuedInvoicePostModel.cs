@@ -65,8 +65,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets date of VAT application.
         /// </summary>
-        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
-        public DateTime DateOfVatApplication { get; set; }
+        public DateTime? DateOfVatApplication { get; set; }
 
         /// <summary>
         /// Gets or sets delivery address Id.

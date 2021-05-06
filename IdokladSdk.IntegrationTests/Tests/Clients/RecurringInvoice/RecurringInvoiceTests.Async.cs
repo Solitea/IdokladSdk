@@ -8,7 +8,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
     public partial class RecurringInvoiceTests
     {
         [Test]
-        [Order(10)]
+        [Order(11)]
         public async Task PostAsync_SuccessfullyCreated()
         {
             // Arrange
@@ -25,7 +25,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(11)]
+        [Order(12)]
         public async Task GetDetailAsync_ReturnsRecurringInvoice()
         {
             // Act
@@ -36,7 +36,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(12)]
+        [Order(13)]
         public async Task GetDetailAsync_Expand_ReturnsRecurringInvoice()
         {
             // Act
@@ -55,7 +55,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(13)]
+        [Order(14)]
         public async Task UpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
@@ -69,7 +69,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(14)]
+        [Order(15)]
         public async Task GetListAsync_ReturnsList()
         {
             // Act
@@ -82,12 +82,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(15)]
+        [Order(16)]
         public async Task GetListAsync_WithFilter_ReturnsList()
         {
             // Act
             var data = (await RecurringInvoiceClient.List()
-                .Filter(i => i.PartnerId.IsEqual(PartnerId))
+                .Filter(i => i.CompanyName.IsEqual(PartnerName))
                 .Filter(i => i.Id.IsEqual(_recurringInvoiceId))
                 .GetAsync()).AssertResult();
 
@@ -99,7 +99,19 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(16)]
+        [Order(17)]
+        public async Task GetRecurringInvoiceCopyAsync_SuccessfullyGot()
+        {
+            // Act
+            var data = (await RecurringInvoiceClient.CopyAsync(_recurringInvoiceId)).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.AreEqual(PartnerId, data.InvoiceTemplate.PartnerId);
+        }
+
+        [Test]
+        [Order(18)]
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
@@ -110,7 +122,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(17)]
+        [Order(19)]
         public async Task NextIssueDateAsync_ReturnsCorrectValue()
         {
             // Arrange
@@ -124,7 +136,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [Test]
-        [Order(18)]
+        [Order(20)]
         public async Task RecountAsync_SuccessfullyRecounted()
         {
             // Arrange

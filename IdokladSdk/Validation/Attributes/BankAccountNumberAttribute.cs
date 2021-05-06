@@ -4,10 +4,10 @@ namespace IdokladSdk.Validation.Attributes
 {
     public class BankAccountNumberAttribute : RegularExpressionAttribute
     {
-        public BankAccountNumberAttribute(string errorMessage)
+        public BankAccountNumberAttribute()
             : base(@"^(\d*|(\d+-\d+))$")
         {
-            ErrorMessage = errorMessage;
+            ErrorMessage = "Bank account number is in wrong format.";
         }
     }
 }

@@ -15,7 +15,7 @@ namespace IdokladSdk.Models.BankAccount
         /// Gets or sets account number.
         /// </summary>
         [StringLength(50)]
-        [BankAccountNumber("Bank account number is in wrong format.")]
+        [BankAccountNumber]
         public string AccountNumber { get; set; }
 
         /// <summary>

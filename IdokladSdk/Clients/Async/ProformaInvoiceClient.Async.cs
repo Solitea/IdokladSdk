@@ -61,5 +61,13 @@ namespace IdokladSdk.Clients
             var request = await CreateRequestAsync(resource, Method.PUT, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync<IssuedInvoiceGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
+
+        /// <inheritdoc cref="AccountMultipleProformaInvoices"/>>
+        public async Task<ApiResult<IssuedInvoiceGetModel>> AccountMultipleProformaInvoicesAsync(
+            AccountProformaInvoicesPutModel model, CancellationToken cancellationToken = default)
+        {
+            var resource = $"{ResourceUrl}/Account";
+            return await PutAsync<AccountProformaInvoicesPutModel, IssuedInvoiceGetModel>(resource, model, cancellationToken).ConfigureAwait(false);
+        }
     }
 }

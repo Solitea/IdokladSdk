@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.RecurringInvoice;
+using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Clients
@@ -45,6 +46,13 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<RecurringInvoiceGetModel>> UpdateAsync(RecurringInvoicePatchModel model, CancellationToken cancellationToken = default)
         {
             return PatchAsync<RecurringInvoicePatchModel, RecurringInvoiceGetModel>(model, cancellationToken);
+        }
+
+        /// <inheritdoc cref="Copy"/>
+        public Task<ApiResult<RecurringInvoiceCopyGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return GetAsync<RecurringInvoiceCopyGetModel>(resource, null, cancellationToken);
         }
     }
 }

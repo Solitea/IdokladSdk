@@ -1,14 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.Base;
-using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.RecurringInvoice
 {
     /// <summary>
-    /// InvoiceItemTemplatePostModel.
+    /// InvoiceItemTemplateCopyGetModel.
     /// </summary>
-    public class InvoiceItemTemplatePostModel : ValidatableModel
+    public class InvoiceItemTemplateCopyGetModel
     {
         /// <summary>
         /// Gets or sets item amount.
@@ -17,9 +15,9 @@ namespace IdokladSdk.Models.RecurringInvoice
         public decimal Amount { get; set; }
 
         /// <summary>
-        /// Gets or Sets Item type.
+        /// Gets or sets item type.
         /// </summary>
-        public RecurringInvoiceItemPostType ItemType { get; set; }
+        public RecurringInvoiceItemGetType ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets item name.
@@ -29,9 +27,8 @@ namespace IdokladSdk.Models.RecurringInvoice
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets price list item Id.
+        /// Gets or sets price list item id.
         /// </summary>
-        [NullableForeignKey]
         public int? PriceListItemId { get; set; }
 
         /// <summary>
@@ -53,9 +50,8 @@ namespace IdokladSdk.Models.RecurringInvoice
         public decimal UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets VAT code Id.
+        /// Gets or sets VAT code id.
         /// </summary>
-        [NullableForeignKey]
         public int? VatCodeId { get; set; }
 
         /// <summary>

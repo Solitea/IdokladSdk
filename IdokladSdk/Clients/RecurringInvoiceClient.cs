@@ -1,5 +1,6 @@
 ﻿using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.RecurringInvoice;
+using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Requests.RecurringInvoice;
 using IdokladSdk.Response;
 
@@ -79,6 +80,17 @@ namespace IdokladSdk.Clients
         public ApiResult<RecurringInvoiceGetModel> Update(RecurringInvoicePatchModel model)
         {
             return Patch<RecurringInvoicePatchModel, RecurringInvoiceGetModel>(model);
+        }
+
+        /// <summary>
+        /// Method returns copy of recurring invoice. Returned resource is suitable for new invoice creation.
+        /// </summary>
+        /// <param name="id">Invoice id.</param>
+        /// <returns>Resource of recurring invoice for creation.</returns>
+        public ApiResult<RecurringInvoiceCopyGetModel> Copy(int id)
+        {
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return Get<RecurringInvoiceCopyGetModel>(resource);
         }
     }
 }
