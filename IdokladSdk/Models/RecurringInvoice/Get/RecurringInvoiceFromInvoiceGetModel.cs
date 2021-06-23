@@ -1,7 +1,7 @@
 ﻿namespace IdokladSdk.Models.RecurringInvoice.Get
 {
     /// <summary>
-    /// RecurringInvoiceFromInvoiceGetModel
+    /// RecurringInvoiceFromInvoiceGetModel.
     /// </summary>
     public class RecurringInvoiceFromInvoiceGetModel
     {
