@@ -31,6 +31,11 @@ namespace IdokladSdk.Models.Account
         public bool? HasVatCode { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether OSS regime is set on agenda.
+        /// </summary>
+        public bool? HasVatRegimeOss { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether prices with VAT are shown.
         /// </summary>
         public bool? IsPriceWithVat { get; set; }

@@ -24,6 +24,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         private const int DeliveryAddressId1 = 11;
         private const int DeliveryAddressId2 = 12;
         private const int PartnerId = 323823;
+        private const int GermanPartnerId = 681606;
         private const int InvoiceId = 913242;
         private const int ProformaInvoiceId = 913250;
         private int _issuedInvoiceId;
@@ -129,6 +130,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         }
 
         [Test]
+        public void GetRecurrenceFromInvoice_SuccessfullyReturned()
+        {
+            // Act
+            var data = _issuedInvoiceClient.Recurrence(InvoiceId).AssertResult();
+
+            // Assert
+            Assert.IsNotNull(data);
+            Assert.IsNotNull(data.InvoiceTemplate);
+            Assert.IsNotNull(data.RecurringSetting);
+        }
+
+        [Test]
         public void GetList_SuccessfullyReturned()
         {
             // Act
@@ -230,6 +243,35 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             Assert.AreEqual(invoiceToCopy.PartnerId, data.PartnerId);
             Assert.AreEqual(invoiceToCopy.CurrencyId, data.CurrencyId);
             AssertDeliveryAddress(invoiceToCopy.DeliveryAddress, DeliveryAddressId1);
+        }
+
+        [Test]
+        public void PostWithOssRegime_SuccessfullyCreated()
+        {
+            // Arrange
+            _issuedInvoicePostModel = _issuedInvoiceClient.Default().AssertResult();
+            _issuedInvoicePostModel.PartnerId = GermanPartnerId;
+            _issuedInvoicePostModel.Description = "MossTest";
+            _issuedInvoicePostModel.HasVatRegimeOss = true;
+            _issuedInvoicePostModel.Items.Clear();
+            _issuedInvoicePostModel.Items.Add(new IssuedInvoiceItemPostModel
+            {
+                Name = "Test",
+                UnitPrice = 100,
+                VatRateType = VatRateType.Basic
+            });
+
+            // Act
+            var data = _issuedInvoiceClient.Post(_issuedInvoicePostModel).AssertResult();
+
+            // Assert
+            Assert.That(data.HasVatRegimeOss, Is.True);
+            Assert.Greater(data.Id, 0);
+            Assert.Greater(data.Items.Count, 0);
+            Assert.AreEqual(data.Items.First().VatRate, 19);
+
+            // Teardown
+            _issuedInvoiceClient.Delete(data.Id);
         }
 
         [Test]

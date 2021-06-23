@@ -72,6 +72,11 @@ namespace IdokladSdk.Models.Account
         /// </summary>
         public bool HasVatCode { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether OSS regime is set on agenda.
+        /// </summary>
+        public bool HasVatRegimeOss { get; set; }
+
         /// <inheritdoc/>
         public int Id { get; set; }
 

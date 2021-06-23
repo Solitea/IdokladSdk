@@ -37,6 +37,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.AreEqual("Solitea Česká republika, a.s.", data.Name);
             Assert.NotNull(data.Contact);
             Assert.AreEqual(Street, data.Contact.Street);
+            Assert.That(data.HasVatRegimeOss, Is.True);
         }
 
         [Test]

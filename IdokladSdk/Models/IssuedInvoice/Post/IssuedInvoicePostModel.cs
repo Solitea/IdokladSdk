@@ -107,6 +107,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         public decimal? ExchangeRateAmount { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether OSS regime is set on invoice.
+        /// </summary>
+        public bool HasVatRegimeOss { get; set; }
+
+        /// <summary>
         /// Gets or sets iBAN.
         /// </summary>
         [StringLength(50)]

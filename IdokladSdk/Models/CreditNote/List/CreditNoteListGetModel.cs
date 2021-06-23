@@ -126,6 +126,11 @@ namespace IdokladSdk.Models.CreditNote
         /// </summary>
         public ExportedState Exported { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether OSS regime is set on invoice.
+        /// </summary>
+        public bool HasVatRegimeOss { get; set; }
+
         /// <inheritdoc/>
         public int Id { get; set; }
 

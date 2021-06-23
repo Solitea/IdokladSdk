@@ -28,6 +28,11 @@ namespace IdokladSdk.Models.CreditNote
         public decimal ExchangeRateAmount { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether OSS regime is set on invoice.
+        /// </summary>
+        public bool HasVatRegimeOss { get; set; }
+
+        /// <summary>
         /// Gets or sets invoice items.
         /// </summary>
         [MinCollectionLength(1)]
@@ -52,5 +57,10 @@ namespace IdokladSdk.Models.CreditNote
         /// </summary>
         [RequiredNonDefault]
         public int PaymentOptionId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets country Id fo vat rate.
+        /// </summary>
+        public int? VatRateCountryId { get; set; }
     }
 }

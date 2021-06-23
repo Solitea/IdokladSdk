@@ -40,6 +40,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
+        public void GetList_DocumentNumberExceeded_Success()
+        {
+            // Act
+            var result = NotificationClient.List()
+                .Filter(n => n.Type.IsEqual(NotificationType.DocumentNumberExceeded))
+                .Get()
+                .AssertResult();
+
+            // Assert
+            AssertNonEmptyListResult(result);
+            AssertDocumentNumberExceededNotification(result.Items.First());
+        }
+
+        [Test]
         public void GetList_ApiLimitNotification_Success()
         {
             // Act
@@ -346,6 +360,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             // Assert
             Assert.IsNotNull(result.First());
             Assert.AreEqual(notificationStatus, result.First().Status);
+        }
+
+        private void AssertDocumentNumberExceededNotification(NotificationListGetModel notification)
+        {
+            AssertNotification(notification);
+            var notificationData = notification.NotificationData as DocumentNumberExceededMessageModelV1GetModel;
+            Assert.That(notificationData, Is.Not.Null);
+            Assert.That(notificationData.RecurringSettingName, Is.EqualTo("Test"));
         }
 
         private void AssertApiLimitNotification(NotificationListGetModel notification)

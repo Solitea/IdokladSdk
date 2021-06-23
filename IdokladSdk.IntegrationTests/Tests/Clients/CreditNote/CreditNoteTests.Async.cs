@@ -153,5 +153,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.True(result1);
             Assert.True(result2);
         }
+
+        [Test]
+        public async Task CreateFromInvoiceWithMossAsync_SuccessfullyCreated()
+        {
+            // Act
+            var model = (await CreditNoteClient.DefaultAsync(InvoiceWithMossId)).AssertResult();
+            model.CreditNoteReason = "Creadit note reason";
+            var result = (await CreditNoteClient.PostAsync(model)).AssertResult();
+
+            // Assert
+            Assert.Greater(result.Id, 0);
+            Assert.That(result.HasVatRegimeOss, Is.True);
+            Assert.AreEqual(result.Items.First().VatRate, 19);
+
+            // Teardown
+            CreditNoteClient.Delete(result.Id);
+        }
     }
 }
