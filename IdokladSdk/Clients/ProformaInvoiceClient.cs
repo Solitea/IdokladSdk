@@ -1,6 +1,7 @@
 ﻿using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
+using IdokladSdk.Models.RecurringInvoice;
 using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Requests.ProformaInvoice;
 using IdokladSdk.Response;
@@ -20,7 +21,7 @@ namespace IdokladSdk.Clients
         IPatchRequest<ProformaInvoicePatchModel, ProformaInvoiceGetModel>,
         IPostRequest<ProformaInvoicePostModel, ProformaInvoiceGetModel>,
         IRecountRequest<ProformaInvoiceRecountPostModel, ProformaInvoiceRecountGetModel>,
-        IRecurrenceRequest<RecurringInvoiceFromInvoicePostModel>
+        IRecurrenceRequest<RecurringInvoicePostModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProformaInvoiceClient"/> class.
@@ -79,10 +80,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<RecurringInvoiceFromInvoicePostModel> Recurrence(int id)
+        public ApiResult<RecurringInvoicePostModel> Recurrence(int id)
         {
             var resource = $"{ResourceUrl}/{id}/Recurrence";
-            return Get<RecurringInvoiceFromInvoicePostModel>(resource);
+            return Get<RecurringInvoicePostModel>(resource);
         }
 
         /// <inheritdoc />

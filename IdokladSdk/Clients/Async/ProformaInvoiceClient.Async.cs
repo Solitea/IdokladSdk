@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
+using IdokladSdk.Models.RecurringInvoice;
 using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Response;
 using RestSharp;
@@ -43,10 +44,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<RecurringInvoiceFromInvoicePostModel>> RecurrenceAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<RecurringInvoicePostModel>> RecurrenceAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Recurrence";
-            return GetAsync<RecurringInvoiceFromInvoicePostModel>(resource, null, cancellationToken);
+            return GetAsync<RecurringInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
