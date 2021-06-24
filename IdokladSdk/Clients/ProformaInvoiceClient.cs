@@ -2,7 +2,6 @@
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.RecurringInvoice;
-using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Requests.ProformaInvoice;
 using IdokladSdk.Response;
 using RestSharp;

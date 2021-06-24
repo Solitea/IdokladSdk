@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.RecurringInvoice;
-using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Response;
 using RestSharp;
 

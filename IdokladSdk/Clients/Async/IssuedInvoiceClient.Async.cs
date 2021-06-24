@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.RecurringInvoice;
-using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Clients

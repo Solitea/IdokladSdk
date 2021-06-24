@@ -5,7 +5,6 @@ using Doklad.Shared.Enums.Api;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.RecurringInvoice;
-using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Requests.IssuedInvoice;
 using IdokladSdk.Response;
 
