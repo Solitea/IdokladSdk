@@ -42,10 +42,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<RecurringInvoiceFromInvoiceGetModel>> RecurrenceAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<RecurringInvoiceFromInvoicePostModel>> RecurrenceAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Recurrence";
-            return GetAsync<RecurringInvoiceFromInvoiceGetModel>(resource, null, cancellationToken);
+            return GetAsync<RecurringInvoiceFromInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc />

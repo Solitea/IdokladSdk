@@ -3,7 +3,7 @@
     /// <summary>
     /// RecurringInvoiceFromInvoiceGetModel.
     /// </summary>
-    public class RecurringInvoiceFromInvoiceGetModel
+    public class RecurringInvoiceFromInvoicePostModel
     {
         /// <summary>
         /// Gets or sets invoice template for recurring invoice.

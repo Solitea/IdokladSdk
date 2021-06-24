@@ -20,7 +20,7 @@ namespace IdokladSdk.Clients
         IPatchRequest<ProformaInvoicePatchModel, ProformaInvoiceGetModel>,
         IPostRequest<ProformaInvoicePostModel, ProformaInvoiceGetModel>,
         IRecountRequest<ProformaInvoiceRecountPostModel, ProformaInvoiceRecountGetModel>,
-        IRecurrenceRequest<RecurringInvoiceFromInvoiceGetModel>
+        IRecurrenceRequest<RecurringInvoiceFromInvoicePostModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProformaInvoiceClient"/> class.
@@ -79,10 +79,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<RecurringInvoiceFromInvoiceGetModel> Recurrence(int id)
+        public ApiResult<RecurringInvoiceFromInvoicePostModel> Recurrence(int id)
         {
             var resource = $"{ResourceUrl}/{id}/Recurrence";
-            return Get<RecurringInvoiceFromInvoiceGetModel>(resource);
+            return Get<RecurringInvoiceFromInvoicePostModel>(resource);
         }
 
         /// <inheritdoc />

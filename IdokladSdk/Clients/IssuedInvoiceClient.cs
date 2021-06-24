@@ -23,7 +23,7 @@ namespace IdokladSdk.Clients
         IPostRequest<IssuedInvoicePostModel, IssuedInvoiceGetModel>,
         IPatchRequest<IssuedInvoicePatchModel, IssuedInvoiceGetModel>,
         IRecountRequest<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>,
-        IRecurrenceRequest<RecurringInvoiceFromInvoiceGetModel>
+        IRecurrenceRequest<RecurringInvoiceFromInvoicePostModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IssuedInvoiceClient" /> class.
@@ -83,10 +83,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<RecurringInvoiceFromInvoiceGetModel> Recurrence(int id)
+        public ApiResult<RecurringInvoiceFromInvoicePostModel> Recurrence(int id)
         {
             var resource = $"{ResourceUrl}/{id}/Recurrence";
-            return Get<RecurringInvoiceFromInvoiceGetModel>(resource);
+            return Get<RecurringInvoiceFromInvoicePostModel>(resource);
         }
 
         /// <inheritdoc />
