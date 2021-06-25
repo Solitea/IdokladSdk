@@ -131,6 +131,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
+        public async Task GetRecurrenceFromInvoiceAsync_SuccessfullyReturned()
+        {
+            // Act
+            var data = (await _proformaInvoiceClient.RecurrenceAsync(UnpaidProformaInvoiceId)).AssertResult();
+
+            // Assert
+            Assert.IsNotNull(data);
+            Assert.IsNotNull(data.InvoiceTemplate);
+            Assert.IsNotNull(data.RecurringSetting);
+        }
+
+        [Test]
         public async Task AccountMultipleProformasAsync_SuccessfullyAccounted()
         {
             // Arrange

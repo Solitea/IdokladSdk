@@ -93,6 +93,11 @@
         /// <summary>
         /// Non accounted payment of proforma invoice
         /// </summary>
-        ProformaPaymentNotAccounted = 20
+        ProformaPaymentNotAccounted = 20,
+
+        /// <summary>
+        /// Document number length exceeded
+        /// </summary>
+        DocumentNumberExceeded = 21
     }
 }

@@ -57,6 +57,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.AreEqual(Street, data.Contact.Street);
             Assert.IsNotEmpty(data.CswCustomerPin);
             Assert.AreNotEqual(Guid.Empty, data.CswCustomerGuid);
+            Assert.That(data.HasVatRegimeOss, Is.True);
         }
 
         [Test]

@@ -22,6 +22,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
     {
         private const int CreditedIssuedInvoiceId = 916236;
 
+        private const int InvoiceWithMossId = 1052496;
+
         private const int DeliveryAddressId1 = 11;
 
         private const int DeliveryAddressId2 = 12;
@@ -197,6 +199,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             // Assert
             Assert.True(result1);
             Assert.True(result2);
+        }
+
+        [Test]
+        public void CreateFromInvoiceWithMoss_SuccessfullyCreated()
+        {
+            // Act
+            var model = CreditNoteClient.Default(InvoiceWithMossId).AssertResult();
+            model.CreditNoteReason = "Creadit note reason";
+            var result = CreditNoteClient.Post(model).AssertResult();
+
+            // Assert
+            Assert.Greater(result.Id, 0);
+            Assert.That(result.HasVatRegimeOss, Is.True);
+            Assert.AreEqual(result.Items.First().VatRate, 19);
+
+            // Teardown
+            CreditNoteClient.Delete(result.Id);
         }
 
         private static void AssertDefault(CreditNotePostModel creditNote)

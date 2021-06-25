@@ -84,6 +84,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         }
 
         [Test]
+        public async Task GetRecurrenceFromInvoiceAsync_SuccessfullyReturned()
+        {
+            // Act
+            var data = (await _issuedInvoiceClient.RecurrenceAsync(InvoiceId)).AssertResult();
+
+            // Assert
+            Assert.IsNotNull(data);
+            Assert.IsNotNull(data.InvoiceTemplate);
+            Assert.IsNotNull(data.RecurringSetting);
+        }
+
+        [Test]
         public async Task GetListAsync_SuccessfullyReturned()
         {
             // Act
@@ -92,6 +104,35 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             // Assert
             Assert.Greater(data.TotalItems, 0);
             Assert.Greater(data.TotalPages, 0);
+        }
+
+        [Test]
+        public async Task PostWithOssRegimeAsync_SuccessfullyCreated()
+        {
+            // Arrange
+            _issuedInvoicePostModel = _issuedInvoiceClient.Default().AssertResult();
+            _issuedInvoicePostModel.PartnerId = GermanPartnerId;
+            _issuedInvoicePostModel.Description = "MossTest";
+            _issuedInvoicePostModel.HasVatRegimeOss = true;
+            _issuedInvoicePostModel.Items.Clear();
+            _issuedInvoicePostModel.Items.Add(new IssuedInvoiceItemPostModel
+            {
+                Name = "Test",
+                UnitPrice = 100,
+                VatRateType = VatRateType.Basic
+            });
+
+            // Act
+            var data = (await _issuedInvoiceClient.PostAsync(_issuedInvoicePostModel)).AssertResult();
+
+            // Assert
+            Assert.That(data.HasVatRegimeOss, Is.True);
+            Assert.Greater(data.Id, 0);
+            Assert.Greater(data.Items.Count, 0);
+            Assert.AreEqual(data.Items.First().VatRate, 19);
+
+            // Teardown
+            _issuedInvoiceClient.Delete(data.Id);
         }
 
         [Test]

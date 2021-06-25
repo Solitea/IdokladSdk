@@ -4,6 +4,7 @@ using System.Linq;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
+using IdokladSdk.Models.RecurringInvoice;
 using IdokladSdk.Requests.IssuedInvoice;
 using IdokladSdk.Response;
 
@@ -21,7 +22,8 @@ namespace IdokladSdk.Clients
         IDefaultRequest<IssuedInvoicePostModel>,
         IPostRequest<IssuedInvoicePostModel, IssuedInvoiceGetModel>,
         IPatchRequest<IssuedInvoicePatchModel, IssuedInvoiceGetModel>,
-        IRecountRequest<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>
+        IRecountRequest<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>,
+        IRecurrenceRequest<RecurringInvoicePostModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IssuedInvoiceClient" /> class.
@@ -78,6 +80,13 @@ namespace IdokladSdk.Clients
         {
             var resource = $"{ResourceUrl}/Recount";
             return Post<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>(resource, model);
+        }
+
+        /// <inheritdoc />
+        public ApiResult<RecurringInvoicePostModel> Recurrence(int id)
+        {
+            var resource = $"{ResourceUrl}/{id}/Recurrence";
+            return Get<RecurringInvoicePostModel>(resource);
         }
 
         /// <inheritdoc />
