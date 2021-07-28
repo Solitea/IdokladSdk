@@ -11,6 +11,12 @@ namespace IdokladSdk.Enums
         /// Normal issued invoice item
         /// </summary>
         [EnumMember(Value = "0")]
-        ItemTypeNormal = IssuedInvoiceItemType.ItemTypeNormal
+        ItemTypeNormal = IssuedInvoiceItemType.ItemTypeNormal,
+
+        /// <summary>
+        /// Rounding item
+        /// </summary>
+        [EnumMember(Value = "1")]
+        ItemTypeRound = IssuedInvoiceItemType.ItemTypeRound
     }
 }
