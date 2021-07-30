@@ -48,8 +48,6 @@
             internal const string ApiVersion = "X-Api-Version";
 
             internal const string SdkVersion = "X-Sdk-Version";
-
-            internal const string SdkVersionNumber = "3.0";
         }
     }
 }
