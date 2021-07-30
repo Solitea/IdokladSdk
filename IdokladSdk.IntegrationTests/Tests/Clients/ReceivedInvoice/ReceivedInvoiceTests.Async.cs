@@ -107,6 +107,42 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(13)]
+        public async Task UpdateAsync_AddNewItems_Sucessfull()
+        {
+            // Arrange
+            var invoiceToUpdate = (await _receivedInvoiceClient.Detail(_receivedInvoiceIdAsync).GetAsync()).AssertResult();
+            var itemName2 = "Test2Test";
+            var itemName3 = "Test3Test";
+            var model = new ReceivedInvoicePatchModel
+            {
+                Id = invoiceToUpdate.Id,
+                Items = new List<ReceivedInvoiceItemPatchModel>
+                {
+                    new ReceivedInvoiceItemPatchModel
+                    {
+                        Id = 1,
+                        Name = itemName2,
+                        UnitPrice = 100
+                    },
+                    new ReceivedInvoiceItemPatchModel
+                    {
+                        Name = itemName3,
+                        UnitPrice = 100
+                    }
+                }
+            };
+
+            // Act
+            var data = (await _receivedInvoiceClient.UpdateAsync(model)).AssertResult();
+
+            // Assert
+            Assert.GreaterOrEqual(2, data.Items.Count);
+            Assert.That(data.Items.Any(x => x.Name == itemName2));
+            Assert.That(data.Items.Any(x => x.Name == itemName3));
+        }
+
+        [Test]
+        [Order(14)]
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
