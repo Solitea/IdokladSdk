@@ -107,7 +107,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(13)]
-        public async Task UpdateAsync_AddNewItems_Sucessfull()
+        public async Task UpdateAsync_AddNewItems_SucessfullyUpdated()
         {
             // Arrange
             var invoiceToUpdate = (await _receivedInvoiceClient.Detail(_receivedInvoiceIdAsync).GetAsync()).AssertResult();

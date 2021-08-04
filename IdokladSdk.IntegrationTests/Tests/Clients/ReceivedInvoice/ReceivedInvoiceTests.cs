@@ -176,7 +176,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(7)]
-        public void Update_AddNewItems_Sucessfull()
+        public void Update_AddNewItems_SucessfullyUpdated()
         {
             // Arrange
             var invoiceToUpdate = _receivedInvoiceClient.Detail(_receivedInvoiceId).Get().AssertResult();
