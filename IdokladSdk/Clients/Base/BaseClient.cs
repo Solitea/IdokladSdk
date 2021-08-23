@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using IdokladSdk.Validation;
@@ -328,7 +329,7 @@ namespace IdokladSdk.Clients
             request.AddHeader(Constants.Header.Authorization, "Bearer " + token.AccessToken);
             request.AddHeader(Constants.Header.App, _apiContext.AppName);
             request.AddHeader(Constants.Header.AppVersion, _apiContext.AppVersion);
-            request.AddHeader(Constants.Header.SdkVersion, Constants.Header.SdkVersionNumber);
+            request.AddHeader(Constants.Header.SdkVersion, GetSdkVersion());
             request.AddHeaders(_apiContext.Headers);
 
             return request;
@@ -372,6 +373,8 @@ namespace IdokladSdk.Clients
                 }
             }
         }
+
+        private string GetSdkVersion() => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         private void ValidateModel<T>(T model)
         {
