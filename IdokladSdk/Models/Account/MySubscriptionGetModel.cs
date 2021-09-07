@@ -64,6 +64,11 @@ namespace IdokladSdk.Models.Account
         public bool IsTrial { get; set; }
 
         /// <summary>
+        /// Gets or sets mobile store type.
+        /// </summary>
+        public MobileStoreType MobileStoreType { get; set; }
+
+        /// <summary>
         /// Gets or sets Order type.
         /// </summary>
         public OrderType? OrderType { get; set; }
