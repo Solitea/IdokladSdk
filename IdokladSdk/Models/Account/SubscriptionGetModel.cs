@@ -24,6 +24,11 @@ namespace IdokladSdk.Models.Account
         public bool IsTrial { get; set; }
 
         /// <summary>
+        /// Gets or sets mobile store type.
+        /// </summary>
+        public MobileStoreType MobileStoreType { get; set; }
+
+        /// <summary>
         /// Gets or sets subscription type.
         /// </summary>
         public SubscriptionType? Type { get; set; }
