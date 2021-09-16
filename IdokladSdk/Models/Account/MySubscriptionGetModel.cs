@@ -66,7 +66,7 @@ namespace IdokladSdk.Models.Account
         /// <summary>
         /// Gets or sets mobile store type.
         /// </summary>
-        public MobileStoreType MobileStoreType { get; set; }
+        public MobileStoreType? MobileStoreType { get; set; }
 
         /// <summary>
         /// Gets or sets Order type.
