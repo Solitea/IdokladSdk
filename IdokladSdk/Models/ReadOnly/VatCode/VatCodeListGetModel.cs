@@ -67,11 +67,6 @@ namespace IdokladSdk.Models.ReadOnly.VatCode
         public VatMovementType VatMovementType { get; set; }
 
         /// <summary>
-        /// Gets or sets VAT rate type.
-        /// </summary>
-        public VatRateType VatRateType { get; set; }
-
-        /// <summary>
         /// Gets or sets VAT return row.
         /// </summary>
         public string VatReturnRow { get; set; }
