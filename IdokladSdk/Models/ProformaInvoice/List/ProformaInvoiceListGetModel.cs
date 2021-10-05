@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Models.Common;
@@ -15,6 +14,11 @@ namespace IdokladSdk.Models.ProformaInvoice
     /// </summary>
     public class ProformaInvoiceListGetModel : IEntityId
     {
+        /// <summary>
+        /// Gets or sets accounting invoice Id.
+        /// </summary>
+        public int? AccountedByInvoiceId { get; set; }
+
         /// <summary>
         /// Gets or sets list of attachments. Currently, you can attach a maximum of one attachment.
         /// </summary>
