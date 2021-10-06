@@ -1,6 +1,7 @@
 ﻿using System;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
@@ -44,13 +45,16 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
         /// </summary>
         public FilterItem<bool> IsPaid { get; set; } = new FilterItem<bool>("IsPaid");
 
+        /// <inheritdoc cref="DocumentAddressModel.NickName"/>
+        public ContainFilterItem<string> NickName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));
+
         /// <summary>
         /// Gets or sets numeric sequence Id.
         /// </summary>
         public FilterItem<int> NumericSequenceId { get; set; } = new FilterItem<int>("NumericSequenceId");
 
         /// <inheritdoc cref="IssuedInvoiceListGetModel.PartnerId"/>
-        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>("PurchaserId");
+        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(IssuedInvoiceListGetModel.PartnerId));
 
         /// <inheritdoc cref="IssuedInvoiceListGetModel.RecurringInvoiceId"/>
         public FilterItem<int> RecurringInvoiceId { get; set; } = new FilterItem<int>(nameof(RecurringInvoiceId));

@@ -1,6 +1,7 @@
 ﻿using System;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.SalesOrder;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
@@ -32,6 +33,9 @@ namespace IdokladSdk.Requests.SalesOrder.Filter
 
         /// <inheritdoc cref="SalesOrderListGetModel.DocumentNumber"/>
         public ContainFilterItem<string> DocumentNumber { get; set; } = new ContainFilterItem<string>(nameof(SalesOrderListGetModel.DocumentNumber));
+
+        /// <inheritdoc cref="DocumentAddressModel.NickName"/>
+        public ContainFilterItem<string> NickName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));
 
         /// <inheritdoc cref="SalesOrderListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(SalesOrderListGetModel.PartnerId));

@@ -50,7 +50,7 @@ namespace IdokladSdk.Requests.CreditNote.Filter
         public FilterItem<int> NumericSequenceId { get; set; } = new FilterItem<int>("NumericSequenceId");
 
         /// <inheritdoc cref="CreditNoteListGetModel.PartnerId"/>
-        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>("PurchaserId");
+        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(CreditNoteListGetModel.PartnerId));
 
         /// <summary>
         /// Gets or sets numeric tag ids.

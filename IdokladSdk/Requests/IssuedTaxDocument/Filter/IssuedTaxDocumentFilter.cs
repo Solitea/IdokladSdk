@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.IssuedTaxDocument.Get;
 using IdokladSdk.Models.IssuedTaxDocument.List;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
@@ -29,6 +30,9 @@ namespace IdokladSdk.Requests.IssuedTaxDocument.Filter
 
         /// <inheritdoc cref="IssuedTaxDocumentListGetModel.Exported"/>
         public FilterItem<ExportedState> Exported { get; set; } = new FilterItem<ExportedState>(nameof(IssuedTaxDocumentGetModel.Exported));
+
+        /// <inheritdoc cref="DocumentAddressModel.NickName"/>
+        public ContainFilterItem<string> NickName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));
 
         /// <inheritdoc cref="IssuedTaxDocumentListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(IssuedTaxDocumentGetModel.PartnerId));
