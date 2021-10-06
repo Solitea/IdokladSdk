@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.ReceivedInvoice;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
@@ -31,6 +32,9 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Filter
 
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.Description"/>
         public ContainFilterItem<string> Description { get; set; } = new ContainFilterItem<string>(nameof(ReceivedInvoiceGetModel.Description));
+
+        /// <inheritdoc cref="DocumentAddressModel.NickName"/>
+        public ContainFilterItem<string> NickName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));
 
         /// <summary>
         /// Gets or sets numeric sequence id.

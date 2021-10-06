@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
@@ -44,13 +45,16 @@ namespace IdokladSdk.Requests.CreditNote.Filter
         /// </summary>
         public FilterItem<bool> IsPaid { get; set; } = new FilterItem<bool>("IsPaid");
 
+        /// <inheritdoc cref="DocumentAddressModel.NickName"/>
+        public ContainFilterItem<string> NickName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));
+
         /// <summary>
         /// Gets or sets numeric sequence Id.
         /// </summary>
         public FilterItem<int> NumericSequenceId { get; set; } = new FilterItem<int>("NumericSequenceId");
 
         /// <inheritdoc cref="CreditNoteListGetModel.PartnerId"/>
-        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>("PurchaserId");
+        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(CreditNoteListGetModel.PartnerId));
 
         /// <summary>
         /// Gets or sets numeric tag ids.
