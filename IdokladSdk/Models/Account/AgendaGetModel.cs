@@ -63,6 +63,11 @@ namespace IdokladSdk.Models.Account
         public SendType DefaultSendMethod { get; set; }
 
         /// <summary>
+        /// Gets or sets delete agenda status.
+        /// </summary>
+        public AgendaDeleteStatus DeleteStatus { get; set; }
+
+        /// <summary>
         /// Gets or sets eet regime.
         /// </summary>
         public EetRegime EetRegime { get; set; }

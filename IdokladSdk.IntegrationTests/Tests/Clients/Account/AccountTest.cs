@@ -58,6 +58,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.IsNotEmpty(data.CswCustomerPin);
             Assert.AreNotEqual(Guid.Empty, data.CswCustomerGuid);
             Assert.That(data.HasVatRegimeOss, Is.True);
+            Assert.That(data.DeleteStatus, Is.EqualTo(AgendaDeleteStatus.RequestSent));
         }
 
         [Test]
