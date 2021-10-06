@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
@@ -43,6 +44,9 @@ namespace IdokladSdk.Requests.CreditNote.Filter
         /// Gets or sets a value indicating whether invoice is paid.
         /// </summary>
         public FilterItem<bool> IsPaid { get; set; } = new FilterItem<bool>("IsPaid");
+
+        /// <inheritdoc cref="DocumentAddressModel.NickName"/>
+        public ContainFilterItem<string> NickName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));
 
         /// <summary>
         /// Gets or sets numeric sequence Id.
