@@ -73,7 +73,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         public async Task GetListAsync_SuccessfullyReturned()
         {
             // Act
-            var data = (await _issuedTaxDocumentClient.List().GetAsync()).AssertResult();
+            var data = (await _issuedTaxDocumentClient.List().Sort(x => x.DateOfIssue.Desc()).GetAsync()).AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.GreaterThan(0));
