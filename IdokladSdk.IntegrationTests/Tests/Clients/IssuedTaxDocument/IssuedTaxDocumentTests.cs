@@ -34,7 +34,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         public void GetList_SuccessfullyReturned()
         {
             // Act
-            var data = _issuedTaxDocumentClient.List().Get().AssertResult();
+            var data = _issuedTaxDocumentClient.List().Sort(x => x.DateOfIssue.Desc()).Get().AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.GreaterThan(0));
