@@ -6,7 +6,7 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Get
     /// <summary>
     /// IssuedTaxDocumentItemGetModel.
     /// </summary>
-    public class IssuedTaxDocumentItemGetModel
+    public class IssuedTaxDocumentItemGetModel : IEntityId
     {
         /// <summary>
         /// Gets or sets Id.

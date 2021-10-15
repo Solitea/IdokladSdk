@@ -41,6 +41,10 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
             {
                 return _value.ToString().ToLowerInvariant();
             }
+            else if (_value is null)
+            {
+                return "null";
+            }
 
             return _value.ToString();
         }

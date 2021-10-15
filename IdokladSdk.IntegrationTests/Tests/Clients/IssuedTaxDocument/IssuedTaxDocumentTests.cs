@@ -43,6 +43,31 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
 
         [Test]
         [Order(2)]
+        public void GetList_WithAccountByInvoiceSimpleFilter_SuccessfullyReturned()
+        {
+            // Act
+            var allDocuments = _issuedTaxDocumentClient.List().Get().AssertResult();
+            var accounted = _issuedTaxDocumentClient.List().Filter(i => i.AccountedByInvoiceId.IsNotEqual(null)).Get().AssertResult();
+            var notAccounted = _issuedTaxDocumentClient.List().Filter(i => i.AccountedByInvoiceId.IsEqual(null)).Get().AssertResult();
+
+            // Assert
+            Assert.That(allDocuments.Items.Count(i => i.AccountedByInvoiceId != null), Is.EqualTo(accounted.TotalItems));
+            Assert.That(allDocuments.Items.Count(i => i.AccountedByInvoiceId == null), Is.EqualTo(notAccounted.TotalItems));
+        }
+
+        [Test]
+        [Order(3)]
+        public void GetList_WithAccountByInvoiceComplexFilter_SuccessfullyReturned()
+        {
+            // Act
+            var data = _issuedTaxDocumentClient.List().Filter(i => i.AccountedByInvoiceId.IsEqual(null) && i.Id.IsNotEqual(0)).Get().AssertResult();
+
+            // Assert
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+        }
+
+        [Test]
+        [Order(4)]
         public void Post_SuccessfullyCreated()
         {
             // Act
@@ -56,7 +81,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         }
 
         [Test]
-        [Order(3)]
+        [Order(5)]
         public void Update_SuccessfullyUpdated()
         {
             var dateOfIssue = new DateTime(2020, 10, 12).SetKindUtc();
@@ -84,7 +109,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         }
 
         [Test]
-        [Order(4)]
+        [Order(6)]
         public void Get_Expand_SuccessfullyGet()
         {
             // Act
@@ -96,7 +121,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         }
 
         [Test]
-        [Order(5)]
+        [Order(7)]
         public void Delete_SuccessfullyDeleted()
         {
             // Act

@@ -16,7 +16,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         private int _issuedTaxDocumentItemIdAsync;
 
         [Test]
-        [Order(6)]
+        [Order(8)]
         public async Task PostAsync_SuccessfullyCreated()
         {
             // Act
@@ -30,7 +30,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         }
 
         [Test]
-        [Order(7)]
+        [Order(9)]
         public async Task UpdateAsync_SuccessfullyUpdate()
         {
             var dateOfIssue = new DateTime(2020, 10, 12).SetKindUtc();
@@ -58,7 +58,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         }
 
         [Test]
-        [Order(8)]
+        [Order(10)]
         public async Task GetAsync_SuccessfullyGet()
         {
             // Act
@@ -69,7 +69,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         }
 
         [Test]
-        [Order(9)]
+        [Order(11)]
         public async Task GetListAsync_SuccessfullyReturned()
         {
             // Act
@@ -81,7 +81,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         }
 
         [Test]
-        [Order(10)]
+        [Order(12)]
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
