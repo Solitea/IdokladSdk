@@ -40,7 +40,7 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
             else if (_value is bool)
             {
                 return _value.ToString().ToLowerInvariant();
-            } 
+            }
             else if (_value is null)
             {
                 return "null";
