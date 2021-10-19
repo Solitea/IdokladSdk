@@ -50,19 +50,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             {
                 DateOfIssue = defaultData.DateOfIssue,
                 PaymentId = PaymentIdForDefault,
-                Items = new List<IssuedTaxDocumentItemPostModel>()
-            };
-
-            foreach (var item in defaultData.Items)
-            {
-                postData.Items.Add(new IssuedTaxDocumentItemPostModel
+                Items = defaultData.Items.Select(x => new IssuedTaxDocumentItemPostModel
                 {
                     Name = "test",
-                    PriceType = item.PriceType,
-                    VatRate = item.VatRate,
-                    VatCodeId = item.VatCodeId
-                });
-            }
+                    PriceType = x.PriceType,
+                    VatRate = x.VatRate,
+                    VatCodeId = x.VatCodeId
+                }).ToList()
+            };
 
             // Act
             var result = _issuedTaxDocumentClient.Post(postData).AssertResult();
@@ -72,6 +67,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             Assert.That(result.DateOfIssue, Is.EqualTo(defaultData.DateOfIssue));
             Assert.That(result.Items.Count, Is.EqualTo(postData.Items.Count));
 
+            // Teardown
             _issuedTaxDocumentClient.Delete(result.Id).AssertResult();
         }
 
