@@ -93,6 +93,11 @@ namespace IdokladSdk.Models.IssuedDocumentPayment
         public bool IsEet { get; set; }
 
         /// <summary>
+        /// Gets or Sets Id of issued tax document.
+        /// </summary>
+        public int? IssuedTaxDocumentId { get; set; }
+
+        /// <summary>
         /// Gets or sets additional information about the entity.
         /// </summary>
         public Metadata Metadata { get; set; }

@@ -8,7 +8,7 @@ namespace IdokladSdk.Requests.Mail
     public partial class IssuedTaxDocumentEmail
     {
         /// <inheritdoc/>
-        public Task<ApiResult<EmailSendResult>> SendAsync(IssuedTaxDocumentEmailSettings settings, CancellationToken cancellationToken)
+        public Task<ApiResult<EmailSendResult>> SendAsync(IssuedTaxDocumentEmailSettings settings, CancellationToken cancellationToken = default)
         {
             return SendAsync<IssuedTaxDocumentEmailSettings>(settings, cancellationToken);
         }
