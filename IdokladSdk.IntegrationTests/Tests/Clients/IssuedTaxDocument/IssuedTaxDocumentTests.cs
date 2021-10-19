@@ -5,6 +5,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.IssuedTaxDocument.Patch;
+using IdokladSdk.Models.IssuedTaxDocument.Post;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
 
@@ -17,6 +18,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
     public partial class IssuedTaxDocumentTests : TestBase
     {
         private const int PaymentId = 1981104;
+        private const int PaymentIdForDefault = 1984505;
         private const int ProformaInvoiceId = 1043167;
         private int _issuedTaxDocumentItemId;
         private int _issuedTaxDocumentId;
@@ -27,6 +29,50 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         {
             InitDokladApi();
             _issuedTaxDocumentClient = DokladApi.IssuedTaxDocumentClient;
+        }
+
+        [Test]
+        public void GetDefault_SucessfullyReturned()
+        {
+            // Act
+            var data = _issuedTaxDocumentClient.Default(PaymentIdForDefault).AssertResult();
+
+            // Assert
+            Assert.That(data.Prices.TotalWithVatHc, Is.EqualTo(100));
+        }
+
+        [Test]
+        public void Post_SucessfullyCreatedFromDefault()
+        {
+            // Arrange
+            var defaultData = _issuedTaxDocumentClient.Default(PaymentIdForDefault).AssertResult();
+            var postData = new IssuedTaxDocumentPostModel
+            {
+                DateOfIssue = defaultData.DateOfIssue,
+                PaymentId = PaymentIdForDefault,
+                Items = new List<IssuedTaxDocumentItemPostModel>()
+            };
+
+            foreach (var item in defaultData.Items)
+            {
+                postData.Items.Add(new IssuedTaxDocumentItemPostModel
+                {
+                    Name = "test",
+                    PriceType = item.PriceType,
+                    VatRate = item.VatRate,
+                    VatCodeId = item.VatCodeId
+                });
+            }
+
+            // Act
+            var result = _issuedTaxDocumentClient.Post(postData).AssertResult();
+
+            // Assert
+            Assert.That(result.PaymentId, Is.EqualTo(PaymentIdForDefault));
+            Assert.That(result.DateOfIssue, Is.EqualTo(defaultData.DateOfIssue));
+            Assert.That(result.Items.Count, Is.EqualTo(postData.Items.Count));
+
+            _issuedTaxDocumentClient.Delete(result.Id).AssertResult();
         }
 
         [Test]
