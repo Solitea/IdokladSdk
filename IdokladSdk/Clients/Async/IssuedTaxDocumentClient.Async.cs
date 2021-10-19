@@ -2,12 +2,19 @@
 using System.Threading.Tasks;
 using IdokladSdk.Models.IssuedTaxDocument.Get;
 using IdokladSdk.Models.IssuedTaxDocument.Patch;
+using IdokladSdk.Models.IssuedTaxDocument.Post;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Clients
 {
     public partial class IssuedTaxDocumentClient
     {
+        /// <inheritdoc />
+        public Task<ApiResult<IssuedTaxDocumentGetModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return DefaultAsync<IssuedTaxDocumentGetModel>(id, cancellationToken);
+        }
+
         /// <inheritdoc />
         public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
@@ -24,6 +31,12 @@ namespace IdokladSdk.Clients
         {
             var resource = $"{ResourceUrl}/{id}";
             return PostAsync<IssuedTaxDocumentGetModel>(resource, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<ApiResult<IssuedTaxDocumentGetModel>> PostAsync(IssuedTaxDocumentPostModel model, CancellationToken cancellationToken = default)
+        {
+            return PostAsync<IssuedTaxDocumentPostModel, IssuedTaxDocumentGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
