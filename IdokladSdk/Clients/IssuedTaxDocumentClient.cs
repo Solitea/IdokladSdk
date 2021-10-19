@@ -1,6 +1,7 @@
 ﻿using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedTaxDocument.Get;
 using IdokladSdk.Models.IssuedTaxDocument.Patch;
+using IdokladSdk.Models.IssuedTaxDocument.Post;
 using IdokladSdk.Requests.IssuedTaxDocument;
 using IdokladSdk.Response;
 
@@ -11,10 +12,12 @@ namespace IdokladSdk.Clients
     /// </summary>
     public partial class IssuedTaxDocumentClient :
         BaseClient,
+        IDefaultWithIdRequest<IssuedTaxDocumentGetModel>,
         IEntityDetail<IssuedTaxDocumentDetail>,
         IEntityList<IssuedTaxDocumentList>,
         IDeleteRequest,
-        IPatchRequest<IssuedTaxDocumentPatchModel, IssuedTaxDocumentGetModel>
+        IPatchRequest<IssuedTaxDocumentPatchModel, IssuedTaxDocumentGetModel>,
+        IPostRequest<IssuedTaxDocumentPostModel, IssuedTaxDocumentGetModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IssuedTaxDocumentClient"/> class.
@@ -27,6 +30,12 @@ namespace IdokladSdk.Clients
 
         /// <inheritdoc />
         public override string ResourceUrl { get; } = "/IssuedTaxDocuments";
+
+        /// <inheritdoc />
+        public ApiResult<IssuedTaxDocumentGetModel> Default(int id)
+        {
+            return Default<IssuedTaxDocumentGetModel>(id);
+        }
 
         /// <inheritdoc />
         public ApiResult<bool> Delete(int id)
@@ -55,6 +64,12 @@ namespace IdokladSdk.Clients
         {
             var resource = $"{ResourceUrl}/{id}";
             return Post<IssuedTaxDocumentGetModel>(resource);
+        }
+
+        /// <inheritdoc/>
+        public ApiResult<IssuedTaxDocumentGetModel> Post(IssuedTaxDocumentPostModel model)
+        {
+            return Post<IssuedTaxDocumentPostModel, IssuedTaxDocumentGetModel>(model);
         }
 
         /// <inheritdoc/>

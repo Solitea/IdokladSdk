@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.IssuedTaxDocument.Patch;
+using IdokladSdk.Models.IssuedTaxDocument.Post;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
 
@@ -14,6 +15,46 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
     {
         private int _issuedTaxDocumentIdAsync;
         private int _issuedTaxDocumentItemIdAsync;
+
+        [Test]
+        public async Task GetDefaultAsync_SucessfullyReturnedAsync()
+        {
+            // Act
+            var data = (await _issuedTaxDocumentClient.DefaultAsync(PaymentIdForDefault)).AssertResult();
+
+            // Assert
+            Assert.That(data.Prices.TotalWithVatHc, Is.EqualTo(100));
+        }
+
+        [Test]
+        public async Task PostAsync_SucessfullyCreatedFromDefaultAsync()
+        {
+            // Arrange
+            var defaultData = (await _issuedTaxDocumentClient.DefaultAsync(PaymentIdForDefault)).AssertResult();
+            var postData = new IssuedTaxDocumentPostModel
+            {
+                DateOfIssue = defaultData.DateOfIssue,
+                PaymentId = PaymentIdForDefault,
+                Items = defaultData.Items.Select(x => new IssuedTaxDocumentItemPostModel
+                {
+                    Name = "test",
+                    PriceType = x.PriceType,
+                    VatRate = x.VatRate,
+                    VatCodeId = x.VatCodeId
+                }).ToList()
+            };
+
+            // Act
+            var result = (await _issuedTaxDocumentClient.PostAsync(postData)).AssertResult();
+
+            // Assert
+            Assert.That(result.PaymentId, Is.EqualTo(PaymentIdForDefault));
+            Assert.That(result.DateOfIssue, Is.EqualTo(defaultData.DateOfIssue));
+            Assert.That(result.Items.Count, Is.EqualTo(postData.Items.Count));
+
+            // Teardown
+            (await _issuedTaxDocumentClient.DeleteAsync(result.Id)).AssertResult();
+        }
 
         [Test]
         [Order(8)]
