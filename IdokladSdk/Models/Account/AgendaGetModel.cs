@@ -68,6 +68,11 @@ namespace IdokladSdk.Models.Account
         public AgendaDeleteStatus DeleteStatus { get; set; }
 
         /// <summary>
+        /// Has subscription payed on mobile device.
+        /// </summary>
+        public bool IsActiveStorePayment { get; set; }
+
+        /// <summary>
         /// Gets or sets eet regime.
         /// </summary>
         public EetRegime EetRegime { get; set; }
