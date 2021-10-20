@@ -68,7 +68,7 @@ namespace IdokladSdk.Models.Account
         public AgendaDeleteStatus DeleteStatus { get; set; }
 
         /// <summary>
-        /// Has subscription payed on mobile device.
+        /// Gets or sets a value indicating whether subscription paid on mobile device.
         /// </summary>
         public bool IsActiveStorePayment { get; set; }
 
