@@ -10,9 +10,6 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Post
         /// <summary>
         /// Gets or sets Id entity.
         /// </summary>
-        /// <summary xml:lang="en">
-        /// The entity's Id
-        /// </summary>
         [Required]
         public int Id { get; set; }
 
