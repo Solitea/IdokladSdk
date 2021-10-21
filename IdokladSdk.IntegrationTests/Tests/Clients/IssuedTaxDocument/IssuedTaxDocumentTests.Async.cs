@@ -37,9 +37,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
                 PaymentId = PaymentIdForDefault,
                 Items = defaultData.Items.Select(x => new IssuedTaxDocumentItemPostModel
                 {
+                    Id = x.Id,
                     Name = "test",
-                    PriceType = x.PriceType,
-                    VatRate = x.VatRate,
                     VatCodeId = x.VatCodeId
                 }).ToList()
             };
