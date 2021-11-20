@@ -18,7 +18,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
     public partial class IssuedTaxDocumentTests : TestBase
     {
         private const int PaymentId = 1981104;
-        private const int PaymentIdForDefault = 1984505;
+        private const int PaymentIdForDefault = 1981104;
         private const int ProformaInvoiceId = 1043167;
         private int _issuedTaxDocumentItemId;
         private int _issuedTaxDocumentId;
@@ -38,7 +38,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var data = _issuedTaxDocumentClient.Default(PaymentIdForDefault).AssertResult();
 
             // Assert
-            Assert.That(data.Prices.TotalWithVatHc, Is.EqualTo(100));
+            Assert.That(data.Prices.TotalWithVatHc, Is.EqualTo(1000m));
         }
 
         [Test]
