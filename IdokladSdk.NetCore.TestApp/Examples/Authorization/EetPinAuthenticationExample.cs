@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using IdokladSdk.Authentication;
+using IdokladSdk.Builders;
 
 namespace IdokladSdk.NetCore.TestApp.Examples
 {
@@ -13,7 +14,6 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         private const string AppName = "application name";
         private const string AppVersion = "application version";
 
-        private ApiContext _context;
         private DokladApi _api;
 
         public async Task PinAuthorization_Authorize_UseApi_SaveRefreshToken_AuthorizeAgain()
@@ -22,7 +22,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             var initialAuthentication = new PinAuthentication(ClientId, ClientSecret, "pin");
 
             // Initialize context and api
-            InitializeContextAndApi(initialAuthentication);
+            InitializeContextAndApi("pin", null);
 
             // Use api as usual
             var agenda = await _api.AccountClient.Agendas.Current().GetAsync();
@@ -31,11 +31,8 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             // Before shutting down the application, save refresh token
             var refreshToken = initialAuthentication.RefreshToken;
 
-            // Afterwards, when loading the application, use refresh token when creating authentication
-            var subsequentAuthentication = new PinAuthentication(ClientId, ClientSecret, null, refreshToken);
-
             // Initialize context and api
-            InitializeContextAndApi(subsequentAuthentication);
+            InitializeContextAndApi(null, refreshToken);
 
             // Use api as usual
             var issuedInvoice = await _api.IssuedInvoiceClient.DefaultAsync();
@@ -53,11 +50,8 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             var refreshToken1 = tokenizer.RefreshToken;
             var refreshToken2 = initialAuthentication.RefreshToken;
 
-            // Afterwards, refresh token is used for authentication
-            var subsequentAuthentication = new PinAuthentication(ClientId, ClientSecret, null, refreshToken1 ?? refreshToken2);
-
-            // Initialize context and api
-            InitializeContextAndApi(subsequentAuthentication);
+            // Initialize api
+            InitializeContextAndApi(null, refreshToken1 ?? refreshToken2);
 
             // Use api as usual
             var apiResult = await _api.IssuedInvoiceClient.DefaultAsync();
@@ -65,10 +59,11 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             var defaultIssuedInvoice = apiResult.Data;
         }
 
-        private void InitializeContextAndApi(IAuthentication authentication)
+        private void InitializeContextAndApi(string pin, string refreshToken)
         {
-            _context = new ApiContext(AppName, AppVersion, authentication);
-            _api = new DokladApi(_context);
+            _api = new DokladApiBuilder(AppName, AppVersion)
+                .AddPinAuthentication(ClientId, ClientSecret, pin, refreshToken)
+                .Build();
         }
     }
 }

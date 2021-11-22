@@ -10,13 +10,15 @@ SDK targets .NET Standard 2.0
 
 **iDoklad** is online accounting from Solitea. Ideal for self employed and small businesses. The easiest way to conveniently create, print and manage your invoices online from anywhere. Get started now!
 
-[iDoklad.cz](https://www.idoklad.cz/)
+[iDoklad.cz](https://www.idoklad.cz/)  
 [iDoklad.sk](https://www.idoklad.sk/)
 
 ## NuGet
+
 You can install **SDK for iDoklad API** using the [NuGet](https://www.nuget.org/packages/IdokladSdk)
-```powershell
-PM> Install-Package IdokladSdk
+
+```cmd
+> dotnet add package IdokladSdk
 ```
 
 # Quick start (examples)
@@ -24,18 +26,16 @@ PM> Install-Package IdokladSdk
 ## Basic
 
 ### 1. Authenticate and initialize API
+
 ```csharp
-// Create authentication using your client credentials (from User setting in iDoklad).
-var auth = new ClientCredentialsAuthentication("ClientId", "ClientSecret");
-
-// Create API context.
-var context = new ApiContext("your application name", "your application version", auth);
-
-// Create DokladApi.
-var api = new DokladApi(context);
+// Use DokladApiBuilder to create DokladApi.
+var api = new DokladApiBuilder("your application name", "your application version")
+        .AddClientCredentialsAuthentication("ClientId", "ClientSecret")
+        .Build();
 ```
 
 ### 2. Use it!
+
 ```csharp
 // All methods are exposed as synchronous and asynchronous.
 // Use whichever is more convenient to you.
@@ -54,7 +54,9 @@ var contact = (await api.ContactClient.List().GetAsync()).Data;
 ## Advanced
 
 ### 3. Error handling
-Classes *ApiResult* and *ApiBatchResult* contain method *CheckResult()* which will throw exception if the response is unsuccessful, otherwise it will return your data.
+
+Classes _ApiResult_ and _ApiBatchResult_ contain method _CheckResult()_ which will throw exception if the response is unsuccessful, otherwise it will return your data.
+
 ```csharp
 var models = new List<UpdateExportedModel>() { ... }; // non empty list
 var batchResult = await _api.BatchClient.UpdateAsync(models); // returns ApiBatchResult
@@ -63,6 +65,7 @@ var batchData = batchResult.CheckResult();
 var issuedInvoiceResult = await api.IssuedInvoiceClient.DefaultAsync(); // returns ApiResult
 var issuedInvoice = issuedInvoiceResult.CheckResult();
 ```
+
 ApiContext contains handlers, which are called right after the response is received. We run our basic check to validate the response and these handlers are called right after that.  
 **You can define your own handlers.** These can be useful, if you want to handle each kind of error differently and in one place.
 
@@ -107,6 +110,7 @@ context.ApiBatchResultHandler = handleBatchResult;
 ```
 
 ### 4. Filtering and paging
+
 ```csharp
 // When retrieving list of entities, we can specify filter which applies inside iDoklad and reduces amount of data transferred.
 // Expression used in Filter method allows usage only of those properties which can be filtered on server-side, it depends on
@@ -137,6 +141,7 @@ var detail = api.ContactClient
         Discount = c.CompanyName.Length > 10 ? 10.0m : c.DiscountPercentage
     });
 ```
+
 ### 5. Additional examples
 
 More examples can be found in test application **IdokladSdk.NetCore.TestApp**.
