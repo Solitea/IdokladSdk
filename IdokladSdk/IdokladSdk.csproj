@@ -17,6 +17,10 @@
     <Compile Remove="Requests\ProformaInvoice\Sort\**" />
     <EmbeddedResource Remove="Requests\ProformaInvoice\Sort\**" />
     <None Remove="Requests\ProformaInvoice\Sort\**" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="iDoklad_128px.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -34,6 +38,8 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\IdokladSdk.ruleset</CodeAnalysisRuleSet>
     <PackageIcon>iDoklad_128px.png</PackageIcon>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -50,10 +56,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="IbanNet" Version="5.3.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="RestSharp" Version="106.13.0" />
