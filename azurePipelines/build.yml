@@ -1,11 +1,5 @@
 name: $(date:yyyyMMdd)$(rev:.r)
 
-pr:
-   autoCancel: true
-   branches:
-     include:
-       - master
-
 schedules:
   - cron: '0 19 * * *'
     displayName: Daily build
