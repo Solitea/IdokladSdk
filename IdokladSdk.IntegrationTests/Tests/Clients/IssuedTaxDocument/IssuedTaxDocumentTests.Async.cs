@@ -23,7 +23,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var data = (await _issuedTaxDocumentClient.DefaultAsync(PaymentIdForDefault)).AssertResult();
 
             // Assert
-            Assert.That(data.Prices.TotalWithVatHc, Is.EqualTo(100));
+            Assert.That(data.Prices.TotalWithVatHc, Is.EqualTo(1000m));
         }
 
         [Test]

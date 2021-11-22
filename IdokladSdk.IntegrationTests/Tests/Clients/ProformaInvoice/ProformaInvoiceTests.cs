@@ -30,7 +30,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         private readonly List<int> _proformaInvoiceToDeleteIds = new List<int>();
         private readonly List<int> _issuedInvoiceToDeleteIds = new List<int>();
         private int _proformaInvoiceId;
-        private ProformaInvoicePostModel _proformaInvoicePostModel;
+
         private ProformaInvoiceClient _proformaInvoiceClient;
         private IssuedInvoiceClient _issuedInvoiceClient;
 
@@ -52,14 +52,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         [TearDown]
         public void TearDown()
         {
-            foreach (var id in _proformaInvoiceToDeleteIds)
-            {
-                _proformaInvoiceClient.Delete(id);
-            }
-
             foreach (var id in _issuedInvoiceToDeleteIds)
             {
                 _issuedInvoiceClient.Delete(id);
+            }
+
+            foreach (var id in _proformaInvoiceToDeleteIds)
+            {
+                _proformaInvoiceClient.Delete(id);
             }
         }
 
@@ -68,14 +68,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         public void Post_SuccessfullyCreated()
         {
             // Arrange
-            _proformaInvoicePostModel = _proformaInvoiceClient.Default().AssertResult();
-            _proformaInvoicePostModel.PartnerId = PartnerId;
-            _proformaInvoicePostModel.DeliveryAddressId = DeliveryAddressId1;
-            _proformaInvoicePostModel.Description = "Invoice";
-            _proformaInvoicePostModel.DateOfPayment = DateTime.UtcNow.SetKindUtc();
-            _proformaInvoicePostModel.IsEet = false;
-            _proformaInvoicePostModel.Items.Clear();
-            _proformaInvoicePostModel.Items.Add(new ProformaInvoiceItemPostModel
+            var proformaInvoicePostModel = _proformaInvoiceClient.Default().AssertResult();
+            proformaInvoicePostModel.PartnerId = PartnerId;
+            proformaInvoicePostModel.DeliveryAddressId = DeliveryAddressId1;
+            proformaInvoicePostModel.Description = "Test: Update_SuccessfullyUpdated";
+            proformaInvoicePostModel.DateOfPayment = DateTime.UtcNow.SetKindUtc();
+            proformaInvoicePostModel.IsEet = false;
+            proformaInvoicePostModel.Items.Clear();
+            proformaInvoicePostModel.Items.Add(new ProformaInvoiceItemPostModel
             {
                 Name = "Test",
                 UnitPrice = 100,
@@ -83,14 +83,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             });
 
             // Act
-            var data = _proformaInvoiceClient.Post(_proformaInvoicePostModel).AssertResult();
+            var data = _proformaInvoiceClient.Post(proformaInvoicePostModel).AssertResult();
             _proformaInvoiceId = data.Id;
 
             // Assert
             Assert.Greater(data.Id, 0);
-            Assert.AreEqual(_proformaInvoicePostModel.DateOfIssue, data.DateOfIssue);
+            Assert.AreEqual(proformaInvoicePostModel.DateOfIssue, data.DateOfIssue);
             Assert.AreEqual(PartnerId, data.PartnerId);
-            Assert.AreEqual(_proformaInvoicePostModel.DateOfPayment.GetValueOrDefault().Date, data.DateOfPayment);
+            Assert.AreEqual(proformaInvoicePostModel.DateOfPayment.GetValueOrDefault().Date, data.DateOfPayment);
             Assert.Greater(data.Items.Count, 0);
             AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
@@ -127,7 +127,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             {
                 Id = _proformaInvoiceId,
                 DeliveryAddressId = DeliveryAddressId2,
-                Description = "DescriptionUpdated",
+                Description = "Test: Update_SuccessfullyUpdated",
                 MyAddress = new MyDocumentAddressPatchModel
                 {
                     AccountNumber = "555777",
@@ -147,8 +147,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(5)]
-
-        public void Copy_SuccessfullyGetPosModel()
+        public void Copy_SuccessfullyGetPostModel()
         {
             // Arrange
             var invoiceToCopy = _proformaInvoiceClient.Detail(_proformaInvoiceId).Get().AssertResult();

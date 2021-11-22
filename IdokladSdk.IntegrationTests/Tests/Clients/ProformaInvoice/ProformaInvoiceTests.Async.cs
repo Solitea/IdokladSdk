@@ -16,7 +16,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
     /// </summary>
     public partial class ProformaInvoiceTests
     {
-        private ProformaInvoicePostModel _proformaInvoicePostModelAsync;
         private int _proformaInvoiceIdAsync;
 
         [Test]
@@ -24,13 +23,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         public async Task PostAsync_SuccessfullyCreated()
         {
             // Arrange
-            _proformaInvoicePostModelAsync = _proformaInvoiceClient.Default().AssertResult();
-            _proformaInvoicePostModelAsync.PartnerId = PartnerId;
-            _proformaInvoicePostModelAsync.Description = "Invoice";
-            _proformaInvoicePostModelAsync.DateOfPayment = DateTime.UtcNow.SetKindUtc();
-            _proformaInvoicePostModelAsync.IsEet = false;
-            _proformaInvoicePostModelAsync.Items.Clear();
-            _proformaInvoicePostModelAsync.Items.Add(new ProformaInvoiceItemPostModel
+            var proformaInvoicePostModelAsync = _proformaInvoiceClient.Default().AssertResult();
+            proformaInvoicePostModelAsync.PartnerId = PartnerId;
+            proformaInvoicePostModelAsync.Description = "Test: PostAsync_SuccessfullyCreated";
+            proformaInvoicePostModelAsync.DateOfPayment = DateTime.UtcNow.SetKindUtc();
+            proformaInvoicePostModelAsync.IsEet = false;
+            proformaInvoicePostModelAsync.Items.Clear();
+            proformaInvoicePostModelAsync.Items.Add(new ProformaInvoiceItemPostModel
             {
                 Name = "Test",
                 UnitPrice = 100,
@@ -38,12 +37,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             });
 
             // Act
-            var data = (await _proformaInvoiceClient.PostAsync(_proformaInvoicePostModelAsync)).AssertResult();
+            var data = (await _proformaInvoiceClient.PostAsync(proformaInvoicePostModelAsync)).AssertResult();
             _proformaInvoiceIdAsync = data.Id;
 
             // Assert
             Assert.Greater(data.Id, 0);
-            Assert.AreEqual(_proformaInvoicePostModelAsync.DateOfIssue, data.DateOfIssue);
+            Assert.AreEqual(proformaInvoicePostModelAsync.DateOfIssue, data.DateOfIssue);
             Assert.AreEqual(PartnerId, data.PartnerId);
             Assert.Greater(data.Items.Count, 0);
         }
@@ -55,7 +54,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             var model = new ProformaInvoicePatchModel
             {
                 Id = _proformaInvoiceIdAsync,
-                Description = "DescriptionUpdated"
+                Description = "Test: UpdateAsync_SuccessfullyUpdated"
             };
 
             // Act
