@@ -17,6 +17,10 @@
     <Compile Remove="Requests\ProformaInvoice\Sort\**" />
     <EmbeddedResource Remove="Requests\ProformaInvoice\Sort\**" />
     <None Remove="Requests\ProformaInvoice\Sort\**" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="iDoklad_128px.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -34,6 +38,8 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\IdokladSdk.ruleset</CodeAnalysisRuleSet>
     <PackageIcon>iDoklad_128px.png</PackageIcon>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -49,21 +55,16 @@
     <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="IbanNet" Version="4.3.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="IbanNet" Version="5.3.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.13" />
-    <PackageReference Include="RestSharp" Version="106.12.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RestSharp" Version="106.13.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.2" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
   </ItemGroup>
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
