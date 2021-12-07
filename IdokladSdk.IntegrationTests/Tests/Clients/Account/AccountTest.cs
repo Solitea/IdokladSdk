@@ -44,6 +44,28 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public void SubscriptionsList_FilteredByDateFromSuccessfullyGetSubscription()
+        {
+            // Act
+            var data = _accountClient.Subscriptions.List()
+                .Filter(f => f.DateFrom.IsGreaterThan(new DateTime(2020, 3, 1))).Get().AssertResult();
+
+            // Assert
+            Assert.That(data.TotalItems, Is.GreaterThan(2));
+        }
+
+        [Test]
+        public void SubscriptionsList_FilteredByIsCanceledSuccessfullyGetSubscription()
+        {
+            // Act
+            var data = _accountClient.Subscriptions.List()
+                .Filter(f => f.IsCanceled.IsEqual(true)).Get().AssertResult();
+
+            // Assert
+            Assert.That(data.TotalItems, Is.EqualTo(0));
+        }
+
+        [Test]
         public void AgendaDetail_SuccessfullyGetAgendaDetail()
         {
             // Act

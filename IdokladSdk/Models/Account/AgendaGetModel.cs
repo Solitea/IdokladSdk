@@ -68,14 +68,14 @@ namespace IdokladSdk.Models.Account
         public AgendaDeleteStatus DeleteStatus { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether subscription is paid on mobile device.
-        /// </summary>
-        public bool IsActiveStorePayment { get; set; }
-
-        /// <summary>
         /// Gets or sets eet regime.
         /// </summary>
         public EetRegime EetRegime { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether agenda has active web recurring payments.
+        /// </summary>
+        public bool HasActiveWebRecurringPayments { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether VAT classification is used.
@@ -89,6 +89,11 @@ namespace IdokladSdk.Models.Account
 
         /// <inheritdoc/>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether subscription is paid on mobile device.
+        /// </summary>
+        public bool IsActiveStorePayment { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether prices with VAT are shown.
