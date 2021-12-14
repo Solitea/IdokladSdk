@@ -8,7 +8,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
     public partial class BankAccountTests
     {
         [Test]
-        [Order(6)]
+        [Order(7)]
         public async Task PostAsync_SuccessfullyPosted()
         {
             // Arrange
@@ -24,7 +24,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
         }
 
         [Test]
-        [Order(7)]
+        [Order(8)]
         public async Task GetDetailAsync_ReturnsDetail()
         {
             // Act
@@ -37,7 +37,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
         }
 
         [Test]
-        [Order(8)]
+        [Order(9)]
         public async Task UpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
@@ -51,7 +51,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
         }
 
         [Test]
-        [Order(9)]
+        [Order(10)]
         public async Task GetListAsync_ReturnsList()
         {
             // Act
@@ -62,7 +62,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
         }
 
         [Test]
-        [Order(10)]
+        [Order(11)]
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act

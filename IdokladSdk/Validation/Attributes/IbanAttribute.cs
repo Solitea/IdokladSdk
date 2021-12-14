@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IbanNet;
-
 namespace IdokladSdk.Validation.Attributes
 {
     public class IbanAttribute : ValidationAttribute
@@ -12,8 +11,8 @@ namespace IdokladSdk.Validation.Attributes
 
         public override bool IsValid(object value)
         {
-            var ibanValidator = new IbanValidator();
-            return ibanValidator.Validate((string)value).IsValid;
+            var stringValue = (string)value;
+            return string.IsNullOrEmpty(stringValue) || new IbanValidator().Validate(stringValue).IsValid;
         }
     }
 }
