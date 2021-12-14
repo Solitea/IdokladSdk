@@ -66,21 +66,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
 
         [Test]
         [Order(4)]
-        public void Update_IbanIsEmpty_SuccessfullyUpdated()
-        {
-            // Arrange
-            var model = CreatePatchModel();
-            model.Iban = string.Empty;
-
-            // Act
-            var data = BankAccountClient.Update(model).AssertResult();
-
-            // Assert
-            AssertData(model, data);
-        }
-
-        [Test]
-        [Order(5)]
         public void GetList_ReturnsList()
         {
             // Act
@@ -91,7 +76,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
         }
 
         [Test]
-        [Order(6)]
+        [Order(5)]
         public void Delete_SuccessfullyDeleted()
         {
             // Act
