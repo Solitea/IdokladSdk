@@ -119,7 +119,7 @@ namespace IdokladSdk.Enums
         BankAccountNumber = 22,
 
         /// <summary>
-        /// Property has to contain valid IBAN number format. <see cref="IbanAttribute"/>
+        /// Property has to contain valid IBAN number format or empty/null value. <see cref="IbanAttribute"/>
         /// </summary>
         Iban = 23,
 

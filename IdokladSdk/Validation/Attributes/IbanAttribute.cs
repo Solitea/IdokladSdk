@@ -5,9 +5,9 @@ namespace IdokladSdk.Validation.Attributes
 {
     public class IbanAttribute : ValidationAttribute
     {
-        public IbanAttribute(string errorMessage)
+        public IbanAttribute()
         {
-            ErrorMessage = errorMessage;
+            ErrorMessage = "Wrong iban format";
         }
 
         public override bool IsValid(object value)
