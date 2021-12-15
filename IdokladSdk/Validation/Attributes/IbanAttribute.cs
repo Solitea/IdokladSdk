@@ -5,15 +5,15 @@ namespace IdokladSdk.Validation.Attributes
 {
     public class IbanAttribute : ValidationAttribute
     {
-        public IbanAttribute(string errorMessage)
+        public IbanAttribute()
         {
-            ErrorMessage = errorMessage;
+            ErrorMessage = "Wrong iban format";
         }
 
         public override bool IsValid(object value)
         {
-            var ibanValidator = new IbanValidator();
-            return ibanValidator.Validate((string)value).IsValid;
+            var stringValue = (string)value;
+            return string.IsNullOrEmpty(stringValue) || new IbanValidator().Validate(stringValue).IsValid;
         }
     }
 }

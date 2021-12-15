@@ -16,12 +16,12 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
     [TestFixture]
     public class ModelValidatorTests
     {
-        public ModelValidator ModelValidator { get; set; }
+        private ModelValidator _modelValidator;
 
         [SetUp]
         public void SetUp()
         {
-            ModelValidator = new ModelValidator();
+            _modelValidator = new ModelValidator();
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -47,7 +47,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithRequiredAttribute();
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.Name), typeof(RequiredAttribute), ValidationType.Required);
@@ -63,7 +63,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -79,7 +79,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -95,7 +95,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.Name), typeof(StringLengthAttribute), ValidationType.StringLength);
@@ -111,7 +111,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -127,7 +127,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.Discount), typeof(RangeAttribute), ValidationType.Range);
@@ -143,7 +143,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -159,7 +159,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.DocumentNumber), typeof(RegularExpressionAttribute), ValidationType.RegularExpression);
@@ -176,7 +176,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -193,7 +193,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, 2);
@@ -217,7 +217,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -230,7 +230,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithCollectionRangeAttribute();
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.EntityIds), typeof(CollectionRangeAttribute), ValidationType.CollectionRange);
@@ -250,7 +250,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -263,7 +263,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithDateGreaterOrEqualThanAttribute();
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.DateOfIssue), typeof(DateGreaterOrEqualThanAttribute), ValidationType.DateGreaterOrEqualThan);
@@ -282,7 +282,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -295,7 +295,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithDateTimeAttribute();
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.DateOfIssue), typeof(DateTimeAttribute), ValidationType.DateTime);
@@ -314,7 +314,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -327,7 +327,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithDecimalGreaterThanZeroAttribute();
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.Amount), typeof(DecimalGreaterThanZeroAttribute), ValidationType.DecimalGreaterThanZero);
@@ -343,7 +343,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -359,7 +359,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.Email), typeof(EmailAttribute), ValidationType.EmailAddress);
@@ -379,7 +379,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -398,7 +398,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.OtherRecipients), typeof(EmailCollectionAttribute), ValidationType.EmailCollection);
@@ -414,7 +414,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -427,7 +427,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithMinCollectionLengthAttribute();
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.RelatedEntityIds), typeof(MinCollectionLengthAttribute), ValidationType.MinCollectionLength);
@@ -443,7 +443,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -459,7 +459,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.Description), typeof(NotEmptyStringAttribute), ValidationType.NotEmptyString);
@@ -475,7 +475,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -491,7 +491,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.SalesPosEuqipmentId), typeof(NullableForeignKeyAttribute), ValidationType.NullableForeignKey);
@@ -508,7 +508,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -525,7 +525,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.DateOfSent), typeof(RequiredIfAttribute), ValidationType.RequiredIf);
@@ -545,7 +545,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -562,7 +562,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.InitialState), typeof(RequiredIfHasValueAttribute), ValidationType.RequiredIfHasValue);
@@ -580,7 +580,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -593,7 +593,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithRequiredNonDefaultAttribute();
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.CurrencyId), typeof(RequiredNonDefaultAttribute), ValidationType.RequiredNonDefault);
@@ -609,7 +609,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -625,7 +625,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.IdentificationNumber), typeof(IdentificationNumberAttribute), ValidationType.IdentificationNumber);
@@ -642,7 +642,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -665,7 +665,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.IdentificationNumber), typeof(IdentificationNumberAttribute), ValidationType.IdentificationNumber);
@@ -683,7 +683,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -707,7 +707,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.IdentificationNumber), typeof(IdentificationNumberPatchAttribute), ValidationType.IdentificationNumber);
@@ -726,7 +726,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsValid(result);
@@ -743,10 +743,86 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             };
 
             // Act
-            var result = ModelValidator.Validate(model);
+            var result = _modelValidator.Validate(model);
 
             // Assert
             AssertIsNotValid(result, nameof(model.NumberFormat), typeof(NumericSequenceNumberFormatAttribute), ValidationType.NumericSequenceNumberFormat);
+        }
+
+        [Test]
+        public void ModelWithIbanAttribute_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithIbanAttribute()
+            {
+                Iban = "Wrong iban",
+            };
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.Iban), typeof(IbanAttribute), ValidationType.Iban);
+        }
+
+        [TestCase("SK3002000000003604642112")]
+        [TestCase("")]
+        [TestCase(null)]
+        public void ModelWithIbanAttribute_ValidModel_ReturnsExpectedResults(string value)
+        {
+            // Arrange
+            var model = new ModelWithIbanAttribute()
+            {
+                Iban = value,
+            };
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [TestCase("#000000")]
+        [TestCase("#123456")]
+        [TestCase("#abcdef")]
+        [TestCase("#ABCDEF")]
+        [TestCase("#a1B23C")]
+        [TestCase("#ffFFff")]
+        public void ModelWithColorAttribute_ValidModel_ReturnsExpectedResults(string value)
+        {
+            // Arrange
+            var model = new ModelWithColorAttribute()
+            {
+                Color = value,
+            };
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [TestCase("blue")]
+        [TestCase("#aabbccd")]
+        [TestCase("#abc")]
+        [TestCase("#123")]
+        [TestCase("abcdef")]
+        [TestCase("123456")]
+        public void ModelWithColorAttribute_InvalidModel_ReturnsExpectedResults(string value)
+        {
+            // Arrange
+            var model = new ModelWithColorAttribute()
+            {
+                Color = value,
+            };
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.Color), typeof(ColorAttribute), ValidationType.Color);
         }
 
         [Test]
@@ -759,7 +835,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var items = $"{nameof(ComplexModel.Items)}";
 
             // Act
-            var validationResults = ModelValidator.Validate(instance);
+            var validationResults = _modelValidator.Validate(instance);
             // Assert
             Assert.That(validationResults, Is.Not.Null);
             Assert.That(validationResults.IsValid, Is.False);
@@ -819,7 +895,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var itemsDiscountName = $"{nameof(ComplexModel.Items)}[0].{nameof(ItemModel.DiscountName)}";
 
             // Act
-            var validationResults = ModelValidator.Validate(instance);
+            var validationResults = _modelValidator.Validate(instance);
 
             // Assert
             Assert.That(validationResults, Is.Not.Null);
