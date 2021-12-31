@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using IdokladSdk.Builders;
 using IdokladSdk.IntegrationTests.Core.AuthProviders;
+using IdokladSdk.IntegrationTests.Core.Builder;
 using IdokladSdk.IntegrationTests.Core.Configuration;
 using IdokladSdk.Response;
 using Microsoft.Extensions.Configuration;
@@ -22,11 +24,15 @@ namespace IdokladSdk.IntegrationTests.Core
          where TAuthProvider : IAuthorizationProvider, new()
         {
             LoadConfiguration();
-            var context = CreateApiContext<TAuthProvider>();
-            context.ApiResultHandler = apiResultHandler;
-            context.ApiBatchResultHandler = apiBatchResultHandler;
 
-            DokladApi = new DokladApi(context);
+            var builder = CreateBuilder<TAuthProvider>();
+            builder.AddApiContextOptions(options =>
+            {
+                options.ApiResultHandler = apiResultHandler;
+                options.ApiBatchResultHandler = apiBatchResultHandler;
+            });
+
+            DokladApi = builder.Build();
         }
 
         protected void LoadConfiguration()
@@ -40,12 +46,12 @@ namespace IdokladSdk.IntegrationTests.Core
             Configuration = configuration.Get<TestConfiguration>();
         }
 
-        private ApiContext CreateApiContext<TAuthProvider>()
+        private DokladApiBuilder CreateBuilder<TAuthProvider>()
             where TAuthProvider : IAuthorizationProvider, new()
         {
-            var auth = new TAuthProvider().GetAuthentication(Configuration);
-            var dokladConfig = new DokladConfiguration(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl);
-            return new ApiContext("Tests", "1.0", auth, dokladConfig);
+            return new DokladApiTestBuilder("Tests", "1.0")
+                .AddAuthorizationProvider<TAuthProvider>(Configuration)
+                .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl);
         }
     }
 }

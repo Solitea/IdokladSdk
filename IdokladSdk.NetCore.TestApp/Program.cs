@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using IdokladSdk.Authentication;
+using IdokladSdk.Builders;
 using IdokladSdk.Enums;
 using IdokladSdk.NetCore.TestApp.Examples;
 using Microsoft.Extensions.Configuration;
@@ -29,9 +29,11 @@ namespace IdokladSdk.NetCore.TestApp
             try
             {
                 LoadConfiguration();
-                _api = GetIdokladApi();
+                SetIdokladApi();
+
                 SyncFlow();
                 await AsyncFlow();
+
                 CleanUp();
             }
             catch (Exception ex)
@@ -41,12 +43,11 @@ namespace IdokladSdk.NetCore.TestApp
             }
         }
 
-        private static DokladApi GetIdokladApi()
+        private static void SetIdokladApi()
         {
-            var auth = new ClientCredentialsAuthentication(_clientId, _clientSecret);
-            var context = new ApiContext("Test", "1.0", auth);
-            var api = new DokladApi(context);
-            return api;
+            _api = new DokladApiBuilder("Test", "1.0")
+                .AddClientCredentialsAuthentication(_clientId, _clientSecret)
+                .Build();
         }
 
         private static async Task AsyncFlow()
