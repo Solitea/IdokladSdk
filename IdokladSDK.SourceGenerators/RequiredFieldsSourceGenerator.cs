@@ -22,8 +22,8 @@ namespace IdokladSdk.SourceGenerators
             var @namespace = GetNamespace(context);
             var validableModels = GetAllValidatableModels(context);
             var requiredPropertiesPerModel = GetRequiredPropertiesForModels(validableModels);
-            var sb = GenerateConstantClass(requiredPropertiesPerModel, @namespace);
-            context.AddSource(ConstantGeneratedFileName, SourceText.From(sb.ToString(), Encoding.UTF8));
+            var generatedClass = GenerateConstantClass(requiredPropertiesPerModel, @namespace);
+            context.AddSource(ConstantGeneratedFileName, SourceText.From(generatedClass, Encoding.UTF8));
         }
 
         private static string GetNamespace(GeneratorExecutionContext context)
@@ -41,7 +41,7 @@ namespace IdokladSdk.SourceGenerators
                 .FirstOrDefault();
         }
 
-        private static StringBuilder GenerateConstantClass(List<KeyValuePair<string, IEnumerable<string>>> requiredPropertiesPerModel, string @namespace)
+        private static string GenerateConstantClass(List<KeyValuePair<string, IEnumerable<string>>> requiredPropertiesPerModel, string @namespace)
         {
             var builder = new StringBuilder(@"
 using System.Collections.Generic;
@@ -68,7 +68,7 @@ namespace ");
         };
     }
 }");
-            return builder;
+            return builder.ToString();
         }
 
         private static List<KeyValuePair<string, IEnumerable<string>>> GetRequiredPropertiesForModels(IEnumerable<ClassDeclarationSyntax> validableModels)
