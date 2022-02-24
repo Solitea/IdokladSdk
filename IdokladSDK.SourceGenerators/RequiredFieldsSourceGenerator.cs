@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using IdokladSDK.SourceGenerators.Extensions;
@@ -13,7 +14,7 @@ namespace IdokladSdk.SourceGenerators
     public class RequiredFieldsSourceGenerator : ISourceGenerator
     {
         private const string ConstantGeneratedFileName = "Constants.g.cs";
-        private const string RequiredAttributeName = "Required";
+        private const string RequiredAttributeName = "RequiredAttribute";
         private const string ValidableModelClassName = "ValidatableModel";
         private const string ConstantsClassName = "Constants";
 
@@ -21,9 +22,23 @@ namespace IdokladSdk.SourceGenerators
         {
             var @namespace = GetNamespace(context);
             var validableModels = GetAllValidatableModels(context);
-            var requiredPropertiesPerModel = GetRequiredPropertiesForModels(validableModels);
+            var requiredPropertiesPerModel = GetRequiredPropertiesForModels(validableModels, context);
             var generatedClass = GenerateConstantClass(requiredPropertiesPerModel, @namespace);
             context.AddSource(ConstantGeneratedFileName, SourceText.From(generatedClass, Encoding.UTF8));
+        }
+
+        private static bool IsAssignableFromValidatableModel(GeneratorExecutionContext context, ClassDeclarationSyntax node)
+        {
+            var semanticMode = context.Compilation.GetSemanticModel(node.SyntaxTree);
+            var baseType = semanticMode.GetDeclaredSymbol(node);
+            while (baseType != null)
+            {
+                if (baseType.Name == ValidableModelClassName)
+                    return true;
+                baseType = baseType.BaseType;
+            }
+
+            return false;
         }
 
         private static string GetNamespace(GeneratorExecutionContext context)
@@ -71,19 +86,28 @@ namespace ");
             return builder.ToString();
         }
 
-        private static List<KeyValuePair<string, IEnumerable<string>>> GetRequiredPropertiesForModels(IEnumerable<ClassDeclarationSyntax> validableModels)
+        private static List<KeyValuePair<string, IEnumerable<string>>> GetRequiredPropertiesForModels(IEnumerable<ClassDeclarationSyntax> validableModels, GeneratorExecutionContext context)
         {
             return validableModels
                             .Select(model =>
                             {
-                                var properties = model.ChildNodes()
-                                .Where(childNode => childNode.IsKind(SyntaxKind.PropertyDeclaration))
-                                .Cast<PropertyDeclarationSyntax>()
-                                .Where(childNode => childNode.AttributeLists
-                                    .Any(childNodeAttribute => childNodeAttribute.Attributes
-                                        .Any(attribute => attribute.Name.ToString() == RequiredAttributeName)))
-                                .Select(childNode => childNode.Identifier.Text)
-                                .ToList();
+                                var semanticModel = context.Compilation.GetSemanticModel(model.SyntaxTree);
+                                var baseType = semanticModel.GetDeclaredSymbol(model);
+                                var properties = new List<string>();
+
+                                while (baseType != null)
+                                {
+                                    var typeProperties = baseType.GetMembers()
+                                    .Where(member => member.Kind == SymbolKind.Property)
+                                    .Where(member =>
+                                    {
+                                        return member.GetAttributes().Any(attribute => attribute.AttributeClass.Name == RequiredAttributeName);
+                                    })
+                                    .Select(member => member.Name);
+                                    properties.AddRange(typeProperties);
+                                    baseType = baseType.BaseType;
+                                }
+                              
                                 return new KeyValuePair<string, IEnumerable<string>>(model.GetFullName(), properties);
                             })
                             .Where(modelProperties => modelProperties.Value.Any())
@@ -92,19 +116,13 @@ namespace ");
 
         private static IEnumerable<ClassDeclarationSyntax> GetAllValidatableModels(GeneratorExecutionContext context)
         {
+
+            Debugger.Launch();
             IEnumerable<SyntaxNode> nodes = context.Compilation.SyntaxTrees.SelectMany(s => s.GetRoot().DescendantNodes());
             IEnumerable<ClassDeclarationSyntax> models = nodes
                 .Where(node => node.IsKind(SyntaxKind.ClassDeclaration))
                 .OfType<ClassDeclarationSyntax>()
-                .Where(node => node.BaseList?.Types.Any(baseNode =>
-                {
-                    if (baseNode.Type.IsKind(SyntaxKind.IdentifierName))
-                    {
-                        return ((IdentifierNameSyntax)baseNode.Type).Identifier.Text == ValidableModelClassName;
-                    }
-                    return false;
-
-                }) == true);
+                .Where(node => IsAssignableFromValidatableModel(context, node));
             return models;
         }
 
