@@ -75,6 +75,6 @@
         <Folder Include="Models\DeliveryAddress\" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\IdokladSdk.SourceGenerators\IdokladSDK.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\IdokladSdk.SourceGenerators\IdokladSdk.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 </Project>
