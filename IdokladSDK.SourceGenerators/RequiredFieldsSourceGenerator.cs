@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using IdokladSDK.SourceGenerators.Extensions;
+using IdokladSdk.SourceGenerators.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -116,8 +115,6 @@ namespace ");
 
         private static IEnumerable<ClassDeclarationSyntax> GetAllValidatableModels(GeneratorExecutionContext context)
         {
-
-            Debugger.Launch();
             IEnumerable<SyntaxNode> nodes = context.Compilation.SyntaxTrees.SelectMany(s => s.GetRoot().DescendantNodes());
             IEnumerable<ClassDeclarationSyntax> models = nodes
                 .Where(node => node.IsKind(SyntaxKind.ClassDeclaration))

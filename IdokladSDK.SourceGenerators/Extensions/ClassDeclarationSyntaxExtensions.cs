@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace IdokladSDK.SourceGenerators.Extensions
+namespace IdokladSdk.SourceGenerators.Extensions
 {
     public static class ClassDeclarationSyntaxExtensions
     {
