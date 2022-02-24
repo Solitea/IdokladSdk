@@ -1,77 +1,80 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>3.6.0</Version>
-    <PackageId>IdokladSdk</PackageId>
-    <Product>iDoklad</Product>
-    <Company>Solitea, a.s.</Company>
-    <Authors>Solitea, a.s.</Authors>
-    <Copyright>© 2016 - 2021</Copyright>
-    <Description>SDK for iDoklad API</Description>
-    <PackageTags>idoklad,sdk,rest,api,solitea</PackageTags>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Version>3.6.0</Version>
+        <PackageId>IdokladSdk</PackageId>
+        <Product>iDoklad</Product>
+        <Company>Solitea, a.s.</Company>
+        <Authors>Solitea, a.s.</Authors>
+        <Copyright>© 2016 - 2021</Copyright>
+        <Description>SDK for iDoklad API</Description>
+        <PackageTags>idoklad,sdk,rest,api,solitea</PackageTags>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Requests\ProformaInvoice\Sort\**" />
-    <EmbeddedResource Remove="Requests\ProformaInvoice\Sort\**" />
-    <None Remove="Requests\ProformaInvoice\Sort\**" />
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="iDoklad_128px.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Requests\ProformaInvoice\Sort\**" />
+        <EmbeddedResource Remove="Requests\ProformaInvoice\Sort\**" />
+        <None Remove="Requests\ProformaInvoice\Sort\**" />
+        <None Include="..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="iDoklad_128px.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="stylecop.json" />
-  </ItemGroup>
+    <ItemGroup>
+        <Content Remove="stylecop.json" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+    </ItemGroup>
 
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>..\IdokladSdk.ruleset</CodeAnalysisRuleSet>
-    <PackageIcon>iDoklad_128px.png</PackageIcon>
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
+    <PropertyGroup>
+        <CodeAnalysisRuleSet>..\IdokladSdk.ruleset</CodeAnalysisRuleSet>
+        <PackageIcon>iDoklad_128px.png</PackageIcon>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <DocumentationFile>obj\Debug\netstandard2.0\IdokladSdk.xml</DocumentationFile>
-    <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <DocumentationFile>obj\Debug\netstandard2.0\IdokladSdk.xml</DocumentationFile>
+        <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="IbanNet" Version="5.3.1" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="RestSharp" Version="106.13.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="IbanNet" Version="5.3.1" />
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="RestSharp" Version="106.13.0" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />        
+    </ItemGroup>
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(MSBuildProjectName).UnitTests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Models\DeliveryAddress\" />
+        <Folder Include="Models\DeliveryAddress\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\IdokladSdk.SourceGenerators\IdokladSdk.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 </Project>

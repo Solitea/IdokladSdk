@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32120.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdokladSdk", "IdokladSdk\IdokladSdk.csproj", "{B090D115-45AB-40C0-AE2E-3ADE81A81E83}"
 EndProject
@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		IdokladSdk.ruleset = IdokladSdk.ruleset
 		stylecop.json = stylecop.json
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdokladSdk.SourceGenerators", "IdokladSdk.SourceGenerators\IdokladSdk.SourceGenerators.csproj", "{DA9A62F3-76D0-4072-B5D8-924CBB4442A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{59543206-566E-4840-A666-884EDBE7709A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59543206-566E-4840-A666-884EDBE7709A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59543206-566E-4840-A666-884EDBE7709A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9A62F3-76D0-4072-B5D8-924CBB4442A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9A62F3-76D0-4072-B5D8-924CBB4442A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9A62F3-76D0-4072-B5D8-924CBB4442A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9A62F3-76D0-4072-B5D8-924CBB4442A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

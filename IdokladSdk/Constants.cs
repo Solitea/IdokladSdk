@@ -3,7 +3,7 @@
     /// <summary>
     /// Set of constants.
     /// </summary>
-    public static class Constants
+    public static partial class Constants
     {
         /// <summary>
         /// SDK's API version.
