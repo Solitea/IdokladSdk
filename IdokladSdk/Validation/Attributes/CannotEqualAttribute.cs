@@ -48,10 +48,13 @@ namespace IdokladSdk.Validation.Attributes
 
         private dynamic GetValueFromNullableProperty(object value)
         {
-            var type = value.GetType();
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(NullableProperty<>))
+            if (value != null)
             {
-                return type.GetProperty("Value").GetValue(value);
+                var type = value.GetType();
+                if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(NullableProperty<>))
+                {
+                    return type.GetProperty("Value").GetValue(value);
+                }
             }
 
             return value;

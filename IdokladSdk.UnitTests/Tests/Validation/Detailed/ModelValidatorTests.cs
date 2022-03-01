@@ -514,6 +514,35 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
+        public void ModelWithNullablePropertyAndNullableForeignKeyAttribute_ValidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithNullablePropertyAndNullableForeignKeyAttribute
+            {
+                BankId = 1
+            };
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [Test]
+        public void ModelWithNullablePropertyAndNullableForeignKeyAttribute_ValidModelWithNull_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithNullablePropertyAndNullableForeignKeyAttribute();
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [Test]
         public void ModelWithRequiredIfAttribute_ValidModel_ReturnsExpectedResults()
         {
             // Arrange
