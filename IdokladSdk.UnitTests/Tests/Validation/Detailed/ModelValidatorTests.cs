@@ -498,6 +498,22 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
+        public void ModelWithNullablePropertyAndNullableForeignKeyAttribute_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithNullablePropertyAndNullableForeignKeyAttribute
+            {
+                BankId = 0
+            };
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.BankId), typeof(NullableForeignKeyAttribute), ValidationType.NullableForeignKey);
+        }
+
+        [Test]
         public void ModelWithRequiredIfAttribute_ValidModel_ReturnsExpectedResults()
         {
             // Arrange

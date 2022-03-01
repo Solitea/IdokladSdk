@@ -21,6 +21,7 @@ namespace IdokladSdk.Validation.Attributes
         {
             _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
             var invalidValue = ConvertInvalidValueToPropertyType(validationContext);
+            value = GetValueFromNullableProperty(value);
 
             if (invalidValue.Equals(value))
             {
@@ -43,6 +44,17 @@ namespace IdokladSdk.Validation.Attributes
             }
 
             return InvalidValue;
+        }
+
+        private dynamic GetValueFromNullableProperty(object value)
+        {
+            var type = value.GetType();
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(NullableProperty<>))
+            {
+                return type.GetProperty("Value").GetValue(value);
+            }
+
+            return value;
         }
 
         private Type GetValidatedPropertyType(ValidationContext validationContext)
