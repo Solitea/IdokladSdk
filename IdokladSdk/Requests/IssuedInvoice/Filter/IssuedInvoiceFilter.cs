@@ -43,7 +43,11 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
         /// <summary>
         /// Gets or sets a value indicating whether invoice is paid.
         /// </summary>
+        [Obsolete("Use PaymentStatus filter instead.")]
         public FilterItem<bool> IsPaid { get; set; } = new FilterItem<bool>("IsPaid");
+
+        /// <inheritdoc cref="IssuedInvoiceListGetModel.PaymentStatus"/>
+        public FilterItem<PaymentStatus> PaymentStatus { get; set; } = new FilterItem<PaymentStatus>(nameof(IssuedInvoiceListGetModel.PaymentStatus));
 
         /// <inheritdoc cref="DocumentAddressModel.NickName"/>
         public ContainFilterItem<string> NickName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));

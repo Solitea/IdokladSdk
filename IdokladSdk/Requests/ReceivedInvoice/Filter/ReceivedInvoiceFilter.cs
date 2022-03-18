@@ -44,11 +44,6 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Filter
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.DocumentNumber"/>
         public ContainFilterItem<string> DocumentNumber { get; set; } = new ContainFilterItem<string>(nameof(ReceivedInvoiceGetModel.DocumentNumber));
 
-        /// <summary>
-        /// Gets or sets is paid.
-        /// </summary>
-        public FilterItem<bool> IsPaid { get; set; } = new FilterItem<bool>("IsPaid");
-
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.PaymentStatus"/>
         public FilterItem<PaymentStatus> PaymentStatus { get; set; } = new FilterItem<PaymentStatus>(nameof(ReceivedInvoiceGetModel.PaymentStatus));
 
