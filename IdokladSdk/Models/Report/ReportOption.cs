@@ -15,6 +15,6 @@ namespace IdokladSdk.Models.Report
         /// <summary>
         /// Gets or sets language.
         /// </summary>
-        public Language Language { get; set; }
+        public Language? Language { get; set; }
     }
 }
