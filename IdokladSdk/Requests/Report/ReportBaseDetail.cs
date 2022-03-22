@@ -63,7 +63,11 @@ namespace IdokladSdk.Requests.Report
             if (option != null)
             {
                 queryParams.Add("compressed", option.Compressed.ToString(CultureInfo.InvariantCulture));
-                queryParams.Add("language", option.Language.ToString());
+                if (option.Language != null)
+                {
+                    queryParams.Add("language", option.Language.ToString());
+                }
+
                 if (option.PaymentOption == PaymentOption.WithOnlyEetPayment)
                 {
                     queryParams.Add("onlyEetPayments", "true");

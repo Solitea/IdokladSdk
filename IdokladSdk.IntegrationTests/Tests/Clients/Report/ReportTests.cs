@@ -37,6 +37,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         }
 
         [Test]
+        public void Get_IssuedInvoiceDetail_WithoutSpecificLanguage_SuccessfullyGetReport()
+        {
+            // Act
+            var data = _reportClient.IssuedInvoice.Detail(913255).Get(new ExtendedReportOption
+            {
+                PaymentOption = PaymentOption.WithPayment,
+            }).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.IsNotEmpty(data);
+        }
+
+        [Test]
         public void Get_ProformaInvoiceDetail_SuccessfullyGetReport()
         {
             // Act
