@@ -24,6 +24,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         }
 
         [Test]
+        public void GetAsync_IssuedInvoiceDetail_WithoutSpecificLanguage_SuccessfullyGetAsyncAsyncReport()
+        {
+            var data = _reportClient.IssuedInvoice.Detail(913255).GetAsync(new ExtendedReportOption
+            {
+                PaymentOption = PaymentOption.WithPayment,
+            }).Result.AssertResult();
+
+            Assert.NotNull(data);
+            Assert.IsNotEmpty(data);
+        }
+
+        [Test]
         public void GetAsyncAsync_ProformaInvoiceDetail_SuccessfullyGetAsyncReport()
         {
             var data = _reportClient.ProformaInvoice.Detail(913250).GetAsync().Result.AssertResult();
