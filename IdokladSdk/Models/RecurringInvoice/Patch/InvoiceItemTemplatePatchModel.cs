@@ -1,6 +1,7 @@
 ﻿using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.RecurringInvoice
 {
@@ -25,6 +26,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets price list item Id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> PriceListItemId { get; set; }
 
         /// <summary>
@@ -45,6 +47,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets VAT code Id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> VatCodeId { get; set; }
 
         /// <summary>

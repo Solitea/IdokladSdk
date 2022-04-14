@@ -69,6 +69,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets vat code id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> VatCodeId { get; set; }
 
         /// <summary>

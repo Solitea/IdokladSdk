@@ -24,6 +24,7 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Patch
         /// <summary>
         /// Gets or sets VatCodeId.
         /// </summary>
+        [NullableForeignKey]
         public int? VatCodeId { get; set; }
     }
 }

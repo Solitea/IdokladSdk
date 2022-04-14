@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CreditNote
 {
@@ -50,6 +51,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets price list item id.
         /// </summary>
+        [NullableForeignKey]
         public int? PriceListItemId { get; set; }
 
         /// <summary>
@@ -73,6 +75,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets VAT classification code.
         /// </summary>
+        [NullableForeignKey]
         public int? VatCodeId { get; set; }
 
         /// <summary>

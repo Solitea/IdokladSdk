@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.RecurringInvoice
 {
@@ -13,21 +14,25 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets bank account Id.
         /// </summary>
+        [NullableForeignKey]
         public int? BankAccountId { get; set; }
 
         /// <summary>
         /// Gets or sets constant symbol Id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> ConstantSymbolId { get; set; }
 
         /// <summary>
         /// Gets or sets delivery address Id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> DeliveryAddressId { get; set; }
 
         /// <summary>
         /// Gets or sets currency Id.
         /// </summary>
+        [NullableForeignKey]
         public int? CurrencyId { get; set; }
 
         /// <summary>
@@ -88,6 +93,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets numeric sequence Id.
         /// </summary>
+        [NullableForeignKey]
         public int? NumericSequenceId { get; set; }
 
         /// <summary>
@@ -98,11 +104,13 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets partner contact Id.
         /// </summary>
+        [NullableForeignKey]
         public int? PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets payment option Id.
         /// </summary>
+        [NullableForeignKey]
         public int? PaymentOptionId { get; set; }
 
         /// <summary>
@@ -123,6 +131,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets VAT reverse charge code Id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> VatReverseChargeCodeId { get; set; }
     }
 }

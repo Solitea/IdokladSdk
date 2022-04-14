@@ -13,6 +13,7 @@ namespace IdokladSdk.Models.CashRegister
         /// <summary>
         /// Gets or sets currency Id.
         /// </summary>
+        [NullableForeignKey]
         public int? CurrencyId { get; set; }
 
         /// <summary>

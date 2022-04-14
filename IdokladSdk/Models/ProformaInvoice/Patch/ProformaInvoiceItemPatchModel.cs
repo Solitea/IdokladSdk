@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ProformaInvoice
 {
@@ -50,6 +51,7 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// <summary>
         /// Gets or sets vat code id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> VatCodeId { get; set; }
 
         /// <summary>

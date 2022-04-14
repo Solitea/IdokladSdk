@@ -36,7 +36,6 @@ namespace IdokladSdk.Models.CreditNote
         public NullableProperty<decimal> DiscountPercentage { get; set; }
 
         /// <inheritdoc/>
-        [Required]
         public int Id { get; set; }
 
         /// <summary>
@@ -53,6 +52,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets price list item id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> PriceListItemId { get; set; }
 
         /// <summary>
@@ -74,6 +74,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets vat code id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> VatCodeId { get; set; }
 
         /// <summary>
