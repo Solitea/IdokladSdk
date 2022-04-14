@@ -76,5 +76,48 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             Assert.True(result);
             Assert.Zero(errors.Count);
         }
+
+        [TestCase(null)]
+        [TestCase(10)]
+        public void ApiValidator_NullableRange_ValidValues_ReturnsTrue(int? discount)
+        {
+            // Arrange
+            var entity = new TestEntity
+            {
+                IdentificationNumber = "something",
+                Name = "something",
+                NonNullableDate = DateTime.Now.SetKindUtc(),
+                DiscountPercentage = discount
+            };
+
+            // Act
+            var result = ApiValidator.ValidateObject(entity, out var errors);
+
+            // Assert
+            Assert.True(result);
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ApiValidator_NullableRange_OutOfRange_ReturnsFalse()
+        {
+            // Arrange
+            var entity = new TestEntity
+            {
+                IdentificationNumber = "something",
+                Name = "something",
+                NonNullableDate = DateTime.Now.SetKindUtc(),
+                DiscountPercentage = 1000
+            };
+
+            // Act
+            var result = ApiValidator.ValidateObject(entity, out var errors);
+
+            // Assert
+            Assert.False(result);
+            Assert.AreEqual(1, errors.Count);
+            var memberNames = errors.SelectMany(error => error.MemberNames).ToList();
+            Assert.Contains(nameof(TestEntity.DiscountPercentage), memberNames);
+        }
     }
 }

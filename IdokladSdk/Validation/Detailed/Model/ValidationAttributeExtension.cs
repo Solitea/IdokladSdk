@@ -21,6 +21,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(RangeAttribute): return ValidationType.Range;
 
+                case nameof(NullableRangeAttribute): return ValidationType.Range;
+
                 case nameof(RegularExpressionAttribute): return ValidationType.RegularExpression;
 
                 case nameof(CannotEqualAttribute): return ValidationType.CannotEqual;

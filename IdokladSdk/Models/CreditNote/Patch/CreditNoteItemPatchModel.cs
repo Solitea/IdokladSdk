@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CreditNote
 {
@@ -31,7 +32,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets discount size in percent.
         /// </summary>
-        [Range(0.0, 99.99)]
+        [NullableRange(0.0, 99.99)]
         public NullableProperty<decimal> DiscountPercentage { get; set; }
 
         /// <inheritdoc/>
