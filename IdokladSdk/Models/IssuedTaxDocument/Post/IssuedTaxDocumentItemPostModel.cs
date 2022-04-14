@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedTaxDocument.Post
 {
@@ -22,6 +23,7 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Post
         /// <summary>
         /// Gets or sets Vat code id.
         /// </summary>
+        [NullableForeignKey]
         public int? VatCodeId { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.UnitTests.Tests.Validation.Model
 {
@@ -16,6 +18,9 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Model
 
         [Range(1, 10)]
         public int? Rating { get; set; }
+
+        [NullableRange(0.0, 99.99)]
+        public NullableProperty<int> DiscountPercentage { get; set; }
 
         public DateTime NonNullableDate { get; set; }
 

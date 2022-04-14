@@ -39,6 +39,7 @@ namespace IdokladSdk.Models.Contact
         /// <summary>
         /// Gets or sets country id.
         /// </summary>
+        [NullableForeignKey]
         public int? CountryId { get; set; }
 
         /// <summary>

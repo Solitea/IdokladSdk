@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ReceivedInvoice
 {
@@ -21,11 +22,13 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets bank id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> BankId { get; set; }
 
         /// <summary>
         /// Gets or sets currency id.
         /// </summary>
+        [NullableForeignKey]
         public int? CurrencyId { get; set; }
 
         /// <summary>
@@ -80,6 +83,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public string Iban { get; set; }
 
         /// <inheritdoc/>
+        [RequiredNonDefault]
         public int Id { get; set; }
 
         /// <summary>
@@ -106,11 +110,13 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets partner contact id.
         /// </summary>
+        [NullableForeignKey]
         public int? PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets payment option id.
         /// </summary>
+        [NullableForeignKey]
         public int? PaymentOptionId { get; set; }
 
         /// <summary>
@@ -144,6 +150,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets vat reverse charge code id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> VatReverseChargeCodeId { get; set; }
     }
 }

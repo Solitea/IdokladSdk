@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CreditNote
 {
@@ -31,11 +32,10 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets discount size in percent.
         /// </summary>
-        [Range(0.0, 99.99)]
+        [NullableRange(0.0, 99.99)]
         public NullableProperty<decimal> DiscountPercentage { get; set; }
 
         /// <inheritdoc/>
-        [Required]
         public int Id { get; set; }
 
         /// <summary>
@@ -52,6 +52,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets price list item id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> PriceListItemId { get; set; }
 
         /// <summary>
@@ -73,6 +74,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets vat code id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> VatCodeId { get; set; }
 
         /// <summary>

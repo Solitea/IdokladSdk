@@ -39,6 +39,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets invoice proforma id.
         /// </summary>
+        [NullableForeignKey]
         public int? InvoiceProformaId { get; set; }
 
         /// <summary>

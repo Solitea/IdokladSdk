@@ -17,6 +17,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets constant symbol Id.
         /// </summary>
+        [NullableForeignKey]
         public int? ConstantSymbolId { get; set; }
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets currency Id.
         /// </summary>
+        [NullableForeignKey]
         public int? CurrencyId { get; set; }
 
         /// <summary>
@@ -156,11 +158,13 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets partner contact id.
         /// </summary>
+        [NullableForeignKey]
         public int? PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets payment option id.
         /// </summary>
+        [NullableForeignKey]
         public int? PaymentOptionId { get; set; }
 
         /// <summary>
@@ -187,6 +191,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets VAT reverse charge code id.
         /// </summary>
+        [NullableForeignKey]
         public int? VatReverseChargeCodeId { get; set; }
     }
 }

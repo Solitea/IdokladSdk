@@ -32,7 +32,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets discount size in percent.
         /// </summary>
-        [Range(0.0, 99.99)]
+        [NullableRange(0.0, 99.99)]
         public NullableProperty<decimal> DiscountPercentage { get; set; }
 
         /// <inheritdoc/>
@@ -69,6 +69,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets vat code id.
         /// </summary>
+        [NullableForeignKey]
         public NullableProperty<int> VatCodeId { get; set; }
 
         /// <summary>

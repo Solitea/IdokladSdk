@@ -67,6 +67,7 @@ namespace IdokladSdk.Models.PriceListItem
         /// <summary>
         /// Gets or sets VAT classification code.
         /// </summary>
+        [NullableForeignKey]
         public int? VatCodeId { get; set; }
 
         /// <summary>

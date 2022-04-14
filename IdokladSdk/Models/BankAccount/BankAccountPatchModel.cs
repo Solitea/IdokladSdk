@@ -27,6 +27,7 @@ namespace IdokladSdk.Models.BankAccount
         /// <summary>
         /// Gets or sets currency Id.
         /// </summary>
+        [NullableForeignKey]
         public int? CurrencyId { get; set; }
 
         /// <summary>
