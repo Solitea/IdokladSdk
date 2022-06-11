@@ -29,8 +29,6 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(CollectionRangeAttribute): return ValidationType.CollectionRange;
 
-                case nameof(ColorAttribute): return ValidationType.Color;
-
                 case nameof(DateGreaterOrEqualThanAttribute): return ValidationType.DateGreaterOrEqualThan;
 
                 case nameof(DateTimeAttribute): return ValidationType.DateTime;

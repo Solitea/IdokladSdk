@@ -188,7 +188,6 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
                 {
                     Assert.That(expandedTag.Tag, Is.Not.Null);
                     Assert.That(expandedTag.Tag.Name, Is.Not.Null.And.Not.Empty);
-                    Assert.That(expandedTag.Tag.Color, Is.Not.Null.And.Not.Empty);
                 }
                 else if (expandedTag != null)
                 {

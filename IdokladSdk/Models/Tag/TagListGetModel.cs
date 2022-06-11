@@ -1,4 +1,6 @@
-﻿namespace IdokladSdk.Models.Tag
+﻿using System;
+
+namespace IdokladSdk.Models.Tag
 {
     /// <summary>
     /// TagGetModel.
@@ -8,6 +10,7 @@
         /// <summary>
         /// Gets or sets the tag color in #rrbbgg format.
         /// </summary>
+        [Obsolete("Tag color is no longer supported")]
         public string Color { get; set; }
 
         /// <inheritdoc />

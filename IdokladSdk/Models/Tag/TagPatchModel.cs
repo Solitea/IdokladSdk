@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using IdokladSdk.Validation.Attributes;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace IdokladSdk.Models.Tag
 {
@@ -11,7 +11,7 @@ namespace IdokladSdk.Models.Tag
         /// <summary>
         /// Gets or sets the tag color in #rrbbgg or #RRBBGG format.
         /// </summary>
-        [Color]
+        [Obsolete("Tag color is no longer supported")]
         public string Color { get; set; }
 
         /// <inheritdoc />

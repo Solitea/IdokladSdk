@@ -828,48 +828,6 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             AssertIsValid(result);
         }
 
-        [TestCase("#000000")]
-        [TestCase("#123456")]
-        [TestCase("#abcdef")]
-        [TestCase("#ABCDEF")]
-        [TestCase("#a1B23C")]
-        [TestCase("#ffFFff")]
-        public void ModelWithColorAttribute_ValidModel_ReturnsExpectedResults(string value)
-        {
-            // Arrange
-            var model = new ModelWithColorAttribute()
-            {
-                Color = value,
-            };
-
-            // Act
-            var result = _modelValidator.Validate(model);
-
-            // Assert
-            AssertIsValid(result);
-        }
-
-        [TestCase("blue")]
-        [TestCase("#aabbccd")]
-        [TestCase("#abc")]
-        [TestCase("#123")]
-        [TestCase("abcdef")]
-        [TestCase("123456")]
-        public void ModelWithColorAttribute_InvalidModel_ReturnsExpectedResults(string value)
-        {
-            // Arrange
-            var model = new ModelWithColorAttribute()
-            {
-                Color = value,
-            };
-
-            // Act
-            var result = _modelValidator.Validate(model);
-
-            // Assert
-            AssertIsNotValid(result, nameof(model.Color), typeof(ColorAttribute), ValidationType.Color);
-        }
-
         [Test]
         public void ComplexModel_Case1_ReturnsExpectedResults()
         {
@@ -1029,11 +987,6 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             Assert.That(attributeValidationResult.ValidationResult, Is.Not.Null);
             Assert.That(attributeValidationResult.ValidationResult.ErrorMessage, Is.Not.Null.And.Not.Empty);
             Assert.That(attributeValidationResult.ValidationResult.MemberNames, Is.Not.Null);
-        }
-
-        private ValidationAttribute GetValidationAttribute(ModelValidationResult model)
-        {
-            return model.InvalidProperties.Values.First().InvalidAttributes.First().ValidationAttribute;
         }
 
         private ValidationAttribute GetValidationAttribute(ModelValidationResult model, string propertyName)

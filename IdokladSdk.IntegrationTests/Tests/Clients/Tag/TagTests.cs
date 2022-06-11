@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using IdokladSdk.Clients;
@@ -14,9 +13,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
     [TestFixture]
     public partial class TagTests : TestBase
     {
-        private const string Tag1Color = "#123456";
-        private const string Tag2Color = "#654321";
-
         private readonly List<int> _tagIdsToDelete = new List<int>();
 
         public TagClient TagClient { get; set; }
@@ -56,14 +52,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             // Arrange
             var tagPostModel = new TagPostModel
             {
-                Name = Tag1Name,
-                Color = Tag1Color
+                Name = Tag1Name
             };
             PostAndMarkForDelete(tagPostModel);
             tagPostModel = new TagPostModel
             {
-                Name = Tag1Name,
-                Color = Tag2Color
+                Name = Tag1Name
             };
 
             // Act
@@ -80,8 +74,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             // Arrange
             var tagPostModel = new TagPostModel
             {
-                Name = Tag1Name,
-                Color = Tag1Color
+                Name = Tag1Name
             };
 
             // Act
@@ -90,7 +83,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
 
             // Assert
             Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPostModel.Color), tagGetModel.Color);
             Assert.AreEqual(tagPostModel.Name, tagGetModel.Name);
         }
 
@@ -114,8 +106,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             // Arrange
             var tagPostModel = new TagPostModel
             {
-                Name = Tag1Name,
-                Color = Tag1Color
+                Name = Tag1Name
             };
             var id = PostAndMarkForDelete(tagPostModel);
 
@@ -132,8 +123,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             // Arrange
             var tagPostModel = new TagPostModel
             {
-                Name = Tag1Name,
-                Color = Tag1Color
+                Name = Tag1Name
             };
             var id = PostAndMarkForDelete(tagPostModel);
 
@@ -147,7 +137,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             Assert.NotZero(data.Items.Count());
             var tag = data.Items.First(t => t.Id == id);
             Assert.AreEqual(id, tag.Id);
-            Assert.AreEqual(tagPostModel.Color, tag.Color);
             Assert.AreEqual(tagPostModel.Name, tag.Name);
         }
 
@@ -157,14 +146,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             // Arrange
             var tagPostModel = new TagPostModel
             {
-                Name = Tag1Name,
-                Color = Tag1Color
+                Name = Tag1Name
             };
             PostAndMarkForDelete(tagPostModel);
             tagPostModel = new TagPostModel
             {
-                Name = Tag2Name,
-                Color = Tag2Color
+                Name = Tag2Name
             };
             var id = PostAndMarkForDelete(tagPostModel);
 
@@ -180,33 +167,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             Assert.NotZero(data.Items.Count());
             var tag = data.Items.First(t => t.Id == id);
             Assert.AreEqual(id, tag.Id);
-            Assert.AreEqual(tagPostModel.Color, tag.Color);
             Assert.AreEqual(tagPostModel.Name, tag.Name);
-        }
-
-        [Test]
-        public void UpdateTag_ColorOnlyUpdate_SuccessfullyUpdated()
-        {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
-            var tagPatchModel = new TagPatchModel
-            {
-                Id = id,
-                Color = Tag2Color
-            };
-
-            // Act
-            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
-
-            // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPatchModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPostModel.Name, tagGetModel.Name);
         }
 
         [Test]
@@ -215,14 +176,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             // Arrange
             var tagPostModel = new TagPostModel
             {
-                Name = Tag1Name,
-                Color = Tag1Color
+                Name = Tag1Name
             };
             PostAndMarkForDelete(tagPostModel);
             tagPostModel = new TagPostModel
             {
-                Name = Tag2Color,
-                Color = Tag2Color
+                Name = Tag2Name,
             };
             var id = PostAndMarkForDelete(tagPostModel);
             var tagPatchModel = new TagPatchModel
@@ -245,34 +204,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             // Arrange
             var tagPostModel = new TagPostModel
             {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
-            var tagPatchModel = new TagPatchModel
-            {
-                Id = id,
-                Name = Tag2Name,
-                Color = Tag2Color
-            };
-
-            // Act
-            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
-
-            // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPatchModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
-        }
-
-        [Test]
-        public void UpdateTag_NameOnlyUpdate_Name_SuccessfullyUpdated()
-        {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
+                Name = Tag1Name
             };
             var id = PostAndMarkForDelete(tagPostModel);
             var tagPatchModel = new TagPatchModel
@@ -286,7 +218,29 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
 
             // Assert
             Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPostModel.Color), tagGetModel.Color);
+            Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
+        }
+
+        [Test]
+        public void UpdateTag_NameOnlyUpdate_Name_SuccessfullyUpdated()
+        {
+            // Arrange
+            var tagPostModel = new TagPostModel
+            {
+                Name = Tag1Name
+            };
+            var id = PostAndMarkForDelete(tagPostModel);
+            var tagPatchModel = new TagPatchModel
+            {
+                Id = id,
+                Name = Tag2Name
+            };
+
+            // Act
+            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
+
+            // Assert
+            Assert.NotZero(tagGetModel.Id);
             Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
         }
 
@@ -306,12 +260,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             // Assert
             Assert.False(result.IsSuccess);
             Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
-        }
-
-        private string Lowercase(string str)
-        {
-            var cultureInfo = CultureInfo.InvariantCulture;
-            return str.ToLower(cultureInfo);
         }
 
         private void MarkForDelete(int id)

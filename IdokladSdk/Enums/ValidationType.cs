@@ -44,11 +44,6 @@ namespace IdokladSdk.Enums
         CollectionRange = 7,
 
         /// <summary>
-        /// Property specifies color value. <see cref="ColorAttribute"/>
-        /// </summary>
-        Color = 8,
-
-        /// <summary>
         /// Property has to contain date newer than given data. <see cref="DateGreaterOrEqualThanAttribute"/>
         /// </summary>
         DateGreaterOrEqualThan = 9,
