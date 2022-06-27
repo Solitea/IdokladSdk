@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedTaxDocument.Post
@@ -6,7 +7,7 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Post
     /// <summary>
     /// IssuedTaxDocumentItemPostModel.
     /// </summary>
-    public class IssuedTaxDocumentItemPostModel
+    public class IssuedTaxDocumentItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets Id entity.
@@ -18,6 +19,7 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Post
         /// Gets or sets Item name.
         /// </summary>
         [Required]
+        [StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
