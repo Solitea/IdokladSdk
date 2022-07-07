@@ -14,6 +14,7 @@ namespace IdokladSdk.Models.DocumentAddress
         /// Gets or sets account number.
         /// </summary>
         [StringLength(50)]
+        [BankAccountNumber]
         public string AccountNumber { get; set; }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
         {
             // Arrange
             _contactPostModel = ContactClient.Default().AssertResult();
-            _contactPostModel.AccountNumber = "2102290124/2700";
+            _contactPostModel.AccountNumber = "2102290124";
             _contactPostModel.BankId = 18;
             _contactPostModel.City = "Brno";
             _contactPostModel.CompanyName = _updatedCompanyName;
@@ -98,7 +98,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             // Arrange
             var contactPatchModel = new ContactPatchModel
             {
-                AccountNumber = "2626708763/1100",
+                AccountNumber = "2626708763",
                 BankId = 63,
                 City = "Bratislava",
                 CompanyName = "Solitea Slovensko, a.s.",
