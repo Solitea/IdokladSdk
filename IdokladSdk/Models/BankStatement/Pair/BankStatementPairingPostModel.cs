@@ -18,6 +18,7 @@ namespace IdokladSdk.Models.BankStatement
         [StringLength(50)]
         [RequiredIf(nameof(Iban), null)]
         [RequiredIf(nameof(Iban), "")]
+        [BankAccountNumber]
         public string AccountNumber { get; set; }
 
         /// <summary>
