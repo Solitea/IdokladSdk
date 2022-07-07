@@ -128,7 +128,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
         {
             return new BankAccountPostModel
             {
-                AccountNumber = "27-7493690207/0100",
+                AccountNumber = "27-7493690207",
                 BankId = 7,
                 CurrencyId = 1,
                 Iban = "CZ9101000000277493690207",
