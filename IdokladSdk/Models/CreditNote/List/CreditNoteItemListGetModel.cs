@@ -54,7 +54,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets prices and calculations.
         /// </summary>
-        public ItemPrices Prices { get; set; }
+        public InvoiceItemPrices Prices { get; set; }
 
         /// <summary>
         /// Gets or sets price type.
