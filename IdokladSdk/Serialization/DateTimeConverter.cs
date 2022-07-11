@@ -11,7 +11,7 @@ namespace IdokladSdk.Serialization
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader.Value.ToString().Equals(DefaultDateTime))
+            if (reader.Value == null || reader.Value.ToString().Equals(DefaultDateTime))
             {
                 return null;
             }
