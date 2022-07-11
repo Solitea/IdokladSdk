@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Serialization;
+using Newtonsoft.Json;
 
 namespace IdokladSdk.Models.BankAccount
 {
@@ -28,6 +30,7 @@ namespace IdokladSdk.Models.BankAccount
         /// <summary>
         /// Gets or sets the date when the initial state was set.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateInitialState { get; set; }
 
         /// <summary>

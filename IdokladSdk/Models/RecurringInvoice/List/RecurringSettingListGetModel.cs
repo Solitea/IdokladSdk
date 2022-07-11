@@ -1,5 +1,7 @@
 ﻿using System;
 using IdokladSdk.Enums;
+using IdokladSdk.Serialization;
+using Newtonsoft.Json;
 
 namespace IdokladSdk.Models.RecurringInvoice
 {
@@ -21,16 +23,19 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets date of recurrence issue end. Applies to <see cref="RecurrenceTypeOfEnd.OnSpecificDate"/>.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateOfEnd { get; set; }
 
         /// <summary>
         /// Gets or sets date of last issued document.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateOfLastIssue { get; set; }
 
         /// <summary>
         /// Gets or sets date of last activation of recurring invoice. Same as DateOfLastIssue with exception for reactivating after new subscription bought.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateOfLastActivation { get; set; }
 
         /// <summary>

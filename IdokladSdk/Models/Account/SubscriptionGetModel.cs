@@ -1,5 +1,7 @@
 ﻿using System;
 using IdokladSdk.Enums;
+using IdokladSdk.Serialization;
+using Newtonsoft.Json;
 
 namespace IdokladSdk.Models.Account
 {
@@ -11,11 +13,13 @@ namespace IdokladSdk.Models.Account
         /// <summary xml:lang="en">
         /// Gets or sets date from.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateFrom { get; set; }
 
         /// <summary>
         /// Gets or sets date to.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateTo { get; set; }
 
         /// <summary>

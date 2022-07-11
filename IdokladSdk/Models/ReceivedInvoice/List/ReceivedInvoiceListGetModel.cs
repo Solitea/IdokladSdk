@@ -5,6 +5,8 @@ using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
+using IdokladSdk.Serialization;
+using Newtonsoft.Json;
 
 namespace IdokladSdk.Models.ReceivedInvoice
 {
@@ -31,6 +33,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets date of issue.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateOfIssue { get; set; }
 
         /// <summary>
@@ -41,6 +44,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets date of payment.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateOfPayment { get; set; }
 
         /// <summary>
@@ -51,6 +55,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets date of taxing.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateOfTaxing { get; set; }
 
         /// <summary>
