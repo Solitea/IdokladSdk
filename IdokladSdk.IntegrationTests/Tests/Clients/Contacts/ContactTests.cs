@@ -147,7 +147,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             Assert.AreEqual(contactPatchModel.BankId.Value, data.BankId);
             Assert.AreEqual(contactPatchModel.City, data.City);
             Assert.AreEqual(contactPatchModel.CompanyName, data.CompanyName);
-            Assert.AreEqual(contactPatchModel.CountryId.Value, data.CountryId);
+            Assert.AreEqual(contactPatchModel.CountryId, data.CountryId);
             Assert.AreEqual(contactPatchModel.DefaultInvoiceMaturity.Value, data.DefaultInvoiceMaturity);
             AssertDeliveryAddress(data.DeliveryAddresses.First(), contactPatchModel.DeliveryAddresses.First());
             Assert.AreEqual(contactPatchModel.DiscountPercentage, data.DiscountPercentage);
