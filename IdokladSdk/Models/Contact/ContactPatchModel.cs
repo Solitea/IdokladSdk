@@ -41,7 +41,7 @@ namespace IdokladSdk.Models.Contact
         /// Gets or sets country id.
         /// </summary>
         [NullableForeignKey]
-        public int? CountryId { get; set; }
+        public NullableProperty<int> CountryId { get; set; }
 
         /// <summary>
         /// Gets or sets default invoice maturity.
