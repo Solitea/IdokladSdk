@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.DeliveryAddress;
@@ -41,6 +42,7 @@ namespace IdokladSdk.Models.Contact
         /// Gets or sets country id.
         /// </summary>
         [RequiredNonDefault]
+        [Range(1, int.MaxValue)]
         public int CountryId { get; set; }
 
         /// <summary>
