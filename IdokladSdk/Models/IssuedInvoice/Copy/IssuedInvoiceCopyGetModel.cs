@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.DeliveryAddress;
+using IdokladSdk.Serialization;
+using Newtonsoft.Json;
 
 namespace IdokladSdk.Models.IssuedInvoice
 {
@@ -43,6 +45,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets date of payment.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateOfPayment { get; set; }
 
         /// <summary>

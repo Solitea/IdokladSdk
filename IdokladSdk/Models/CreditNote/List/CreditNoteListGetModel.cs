@@ -7,6 +7,8 @@ using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.IssuedInvoice;
+using IdokladSdk.Serialization;
+using Newtonsoft.Json;
 
 namespace IdokladSdk.Models.CreditNote
 {
@@ -78,7 +80,8 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets date of VAT claim.
         /// </summary>
-        public DateTime DateOfVatClaim { get; set; }
+        [JsonConverter(typeof(DateTimeConverter))]
+        public DateTime? DateOfVatClaim { get; set; }
 
         /// <summary>
         /// Gets or sets delivery address.
