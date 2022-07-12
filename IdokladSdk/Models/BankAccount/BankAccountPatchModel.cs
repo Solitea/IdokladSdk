@@ -63,6 +63,7 @@ namespace IdokladSdk.Models.BankAccount
         /// Gets or sets bank account name.
         /// </summary>
         [StringLength(100)]
+        [NotEmptyString]
         public string Name { get; set; }
 
         /// <summary>

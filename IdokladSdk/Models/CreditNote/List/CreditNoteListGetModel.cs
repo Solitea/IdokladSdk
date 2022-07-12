@@ -99,6 +99,11 @@ namespace IdokladSdk.Models.CreditNote
         public decimal DiscountPercentage { get; set; }
 
         /// <summary>
+        /// Gets or sets discount type.
+        /// </summary>
+        public DiscountType DiscountType { get; set; }
+
+        /// <summary>
         /// Gets or sets document number.
         /// </summary>
         [StringLength(10)]
