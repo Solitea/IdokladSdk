@@ -65,6 +65,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(MinPasswordStrengthAttribute): return ValidationType.MinPasswordStrength;
 
+                case nameof(DateGreaterThanOrEqualThanAnotherDateAttribute): return ValidationType.DateGreaterOrEqualThanAnotherDate;
+
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
             }
