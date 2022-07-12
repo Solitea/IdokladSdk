@@ -80,6 +80,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         public decimal DiscountPercentage { get; set; }
 
         /// <summary>
+        /// Gets or sets discount type.
+        /// </summary>
+        public DiscountType DiscountType { get; set; }
+
+        /// <summary>
         /// Gets or sets documentNumber.
         /// </summary>
         [StringLength(10)]

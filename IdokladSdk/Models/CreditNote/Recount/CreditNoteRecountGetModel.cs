@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.IssuedInvoice;
 
 namespace IdokladSdk.Models.CreditNote
@@ -27,6 +28,11 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or sets discount.
         /// </summary>
         public decimal DiscountPercentage { get; set; }
+
+        /// <summary>
+        /// Gets or sets discount type.
+        /// </summary>
+        public DiscountType DiscountType { get; set; }
 
         /// <summary>
         /// Gets or sets invoice items.
