@@ -871,6 +871,23 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
+        public void ModelDateGreaterOrEqualThanAnotherDate_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithDateGreaterOrEqualThanAnotherDateAttribute()
+            {
+                DateOfIssue = new DateTime(2020, 10, 10),
+            };
+            model.DateOfExpiration = model.DateOfIssue.AddDays(-1);
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.DateOfExpiration), typeof(DateGreaterThanOrEqualThanAnotherDateAttribute), ValidationType.DateGreaterOrEqualThanAnotherDate);
+        }
+
+        [Test]
         public void ComplexModel_Case1_ReturnsExpectedResults()
         {
             // Arrange
