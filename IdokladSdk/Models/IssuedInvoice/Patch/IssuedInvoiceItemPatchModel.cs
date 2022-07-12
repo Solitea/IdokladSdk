@@ -21,12 +21,14 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets item code.
         /// </summary>
         [StringLength(20)]
+        [NotEmptyString]
         public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets discount name.
         /// </summary>
         [StringLength(200)]
+        [NotEmptyString]
         public string DiscountName { get; set; }
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets item name.
         /// </summary>
         [StringLength(200)]
+        [NotEmptyString]
         public string Name { get; set; }
 
         /// <summary>
