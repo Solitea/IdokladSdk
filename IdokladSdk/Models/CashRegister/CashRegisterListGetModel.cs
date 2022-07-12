@@ -1,5 +1,7 @@
 ﻿using System;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Serialization;
+using Newtonsoft.Json;
 
 namespace IdokladSdk.Models.CashRegister
 {
@@ -16,6 +18,7 @@ namespace IdokladSdk.Models.CashRegister
         /// <summary>
         /// Gets or sets the date when the intial state was set.
         /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime? DateInitialState { get; set; }
 
         /// <inheritdoc/>

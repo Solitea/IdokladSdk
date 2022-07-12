@@ -278,7 +278,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(patchModel.DateOfIssue.GetValueOrDefault().Date, getModel.DateOfIssue.Date);
             Assert.AreEqual(patchModel.DateOfMaturity.GetValueOrDefault().Date, getModel.DateOfMaturity.Date);
             Assert.AreEqual(patchModel.DateOfTaxing.GetValueOrDefault().Date, getModel.DateOfTaxing.Date);
-            Assert.AreEqual(patchModel.DateOfVatClaim, getModel.DateOfVatClaim.Date);
+            Assert.AreEqual(patchModel.DateOfVatClaim, getModel.DateOfVatClaim?.Date);
             Assert.AreEqual(patchModel.Description, getModel.Description);
             Assert.AreEqual(patchModel.DiscountPercentage, getModel.DiscountPercentage);
             Assert.AreEqual(patchModel.EetResponsibility, getModel.EetResponsibility);
@@ -365,7 +365,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             }
 
             Assert.AreEqual(postModel.DateOfTaxing.Date, getModel.DateOfTaxing.Date);
-            Assert.AreEqual(postModel.DateOfVatClaim, getModel.DateOfVatClaim.Date);
+            Assert.AreEqual(postModel.DateOfVatClaim, getModel.DateOfVatClaim?.Date);
             Assert.AreEqual(postModel.Description, getModel.Description);
             Assert.AreEqual(postModel.DiscountPercentage, getModel.DiscountPercentage);
             Assert.Greater(getModel.DocumentSerialNumber, 0);
