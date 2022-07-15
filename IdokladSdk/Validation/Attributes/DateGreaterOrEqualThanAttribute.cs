@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -18,14 +19,16 @@ namespace IdokladSdk.Validation.Attributes
 
         public override bool IsValid(object value)
         {
-            if (value == null && AllowNull)
+            var propertyValue = GetNullablePropertyValue(value);
+
+            if (propertyValue == null && AllowNull)
             {
                 return true;
             }
 
-            if (value != null)
+            if (propertyValue != null)
             {
-                var dateTime = (DateTime)value;
+                var dateTime = (DateTime)propertyValue;
                 if (dateTime >= MinDateTime)
                 {
                     return true;
@@ -38,15 +41,16 @@ namespace IdokladSdk.Validation.Attributes
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+            var propertyValue = GetNullablePropertyValue(value);
 
-            if (value == null && AllowNull)
+            if (propertyValue == null && AllowNull)
             {
                 return ValidationResult.Success;
             }
 
-            if (value != null)
+            if (propertyValue != null)
             {
-                var dateTime = (DateTime)value;
+                var dateTime = (DateTime)propertyValue;
                 if (dateTime >= MinDateTime)
                 {
                     return ValidationResult.Success;
@@ -57,6 +61,21 @@ namespace IdokladSdk.Validation.Attributes
 
             return new ValidationResult(
                 $"The field {propertyName} is invalid. Must be greater or equal {MinDateTime}");
+        }
+
+        private object GetNullablePropertyValue(object value)
+        {
+            if (value is NullableProperty<DateTime> propertyValue)
+            {
+                if (!propertyValue.IsSet)
+                {
+                    return null;
+                }
+
+                return propertyValue.Value;
+            }
+
+            return value;
         }
     }
 }
