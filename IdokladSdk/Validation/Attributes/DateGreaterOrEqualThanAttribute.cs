@@ -19,6 +19,11 @@ namespace IdokladSdk.Validation.Attributes
 
         public override bool IsValid(object value)
         {
+            if (value is NullableProperty<DateTime> property && !property.IsSet)
+            {
+                return true;
+            }
+
             var propertyValue = GetNullablePropertyValue(value);
 
             if (propertyValue == null && AllowNull)
@@ -41,6 +46,12 @@ namespace IdokladSdk.Validation.Attributes
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+
+            if (value is NullableProperty<DateTime> property && !property.IsSet)
+            {
+                return ValidationResult.Success;
+            }
+
             var propertyValue = GetNullablePropertyValue(value);
 
             if (propertyValue == null && AllowNull)
@@ -65,17 +76,7 @@ namespace IdokladSdk.Validation.Attributes
 
         private object GetNullablePropertyValue(object value)
         {
-            if (value is NullableProperty<DateTime> propertyValue)
-            {
-                if (!propertyValue.IsSet)
-                {
-                    return null;
-                }
-
-                return propertyValue.Value;
-            }
-
-            return value;
+            return value is NullableProperty<DateTime> propertyValue ? propertyValue.Value : value;
         }
     }
 }
