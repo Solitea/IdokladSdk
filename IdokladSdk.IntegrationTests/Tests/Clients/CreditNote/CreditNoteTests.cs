@@ -534,7 +534,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
                 PartnerId = 323823,
                 PartnerAddress = new DocumentAddressPatchModel
                 {
-                    AccountNumber = "1234567890/1234",
+                    AccountNumber = "1234567890",
                     City = "Bystrice nad Pernstejnem",
                     CountryId = 3,
                     Fax = "1234567890",
