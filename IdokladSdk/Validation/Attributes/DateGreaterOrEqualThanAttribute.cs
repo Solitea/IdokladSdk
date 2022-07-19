@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -18,14 +19,21 @@ namespace IdokladSdk.Validation.Attributes
 
         public override bool IsValid(object value)
         {
-            if (value == null && AllowNull)
+            if (value is NullableProperty<DateTime> property && !property.IsSet)
             {
                 return true;
             }
 
-            if (value != null)
+            var propertyValue = GetNullablePropertyValue(value);
+
+            if (propertyValue == null && AllowNull)
             {
-                var dateTime = (DateTime)value;
+                return true;
+            }
+
+            if (propertyValue != null)
+            {
+                var dateTime = (DateTime)propertyValue;
                 if (dateTime >= MinDateTime)
                 {
                     return true;
@@ -39,14 +47,21 @@ namespace IdokladSdk.Validation.Attributes
         {
             _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
 
-            if (value == null && AllowNull)
+            if (value is NullableProperty<DateTime> property && !property.IsSet)
             {
                 return ValidationResult.Success;
             }
 
-            if (value != null)
+            var propertyValue = GetNullablePropertyValue(value);
+
+            if (propertyValue == null && AllowNull)
             {
-                var dateTime = (DateTime)value;
+                return ValidationResult.Success;
+            }
+
+            if (propertyValue != null)
+            {
+                var dateTime = (DateTime)propertyValue;
                 if (dateTime >= MinDateTime)
                 {
                     return ValidationResult.Success;
@@ -57,6 +72,11 @@ namespace IdokladSdk.Validation.Attributes
 
             return new ValidationResult(
                 $"The field {propertyName} is invalid. Must be greater or equal {MinDateTime}");
+        }
+
+        private object GetNullablePropertyValue(object value)
+        {
+            return value is NullableProperty<DateTime> propertyValue ? propertyValue.Value : value;
         }
     }
 }
