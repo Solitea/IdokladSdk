@@ -13,6 +13,11 @@ namespace IdokladSdk.Models.Account
     public class AgendaGetModel : IEntityId
     {
         /// <summary>
+        /// Gets or sets a value indicating whether editing of exported documents is allowed.
+        /// </summary>
+        public bool AllowEditExported { get; set; }
+
+        /// <summary>
         /// Gets or sets automatic pair payment settings.
         /// </summary>
         public AutomaticPairPaymentsSettingsGetModel AutomaticPairPaymentsSettings { get; set; }
