@@ -60,13 +60,14 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or sets date of VAT application.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
-        public NullableProperty<DateTime> DateOfVatApplication { get; set; }
+        public DateTime? DateOfVatApplication { get; set; }
 
         /// <summary>
         /// Gets or sets date of VAT claim.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
-        public DateTime? DateOfVatClaim { get; set; }
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
+        public NullableProperty<DateTime> DateOfVatClaim { get; set; }
 
         /// <summary>
         /// Gets or sets delivery address Id.

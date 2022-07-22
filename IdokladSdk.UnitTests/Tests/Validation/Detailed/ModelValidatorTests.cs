@@ -888,6 +888,60 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
+        public void ModelNullableDateGreaterOrEqualThanAnotherDate_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute()
+            {
+                DateOfIssue = new DateTime(2020, 10, 10),
+            };
+            model.DateOfVatClaim = model.DateOfIssue.AddDays(-1);
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.DateOfVatClaim), typeof(DateGreaterThanOrEqualThanAnotherDateAttribute), ValidationType.DateGreaterOrEqualThanAnotherDate);
+        }
+
+        [TestCaseSource(nameof(GetValidModelsWithNullableDateGreaterOrEqualThanAnotherDateAttribute))]
+        public void ModelNullableDateGreaterOrEqualThanAnotherDate_ValidModel_ReturnsExpectedResults(ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute model)
+        {
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [Test]
+        public void ModelNullablePropertyDateGreaterOrEqualThanAnotherNullableDate_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute()
+            {
+                DateOfIssue = new DateTime(2020, 10, 10),
+            };
+            model.DateOfVatClaim = model.DateOfIssue.Value.AddDays(-1);
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.DateOfVatClaim), typeof(DateGreaterThanOrEqualThanAnotherDateAttribute), ValidationType.DateGreaterOrEqualThanAnotherDate);
+        }
+
+        [TestCaseSource(nameof(GetValidModelsWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute))]
+        public void ModelNullablePropertyDateGreaterOrEqualThanAnotherNullableDate_ValidModel_ReturnsExpectedResults(ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute model)
+        {
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsValid(result);
+        }
+
+        [Test]
         public void ComplexModel_Case1_ReturnsExpectedResults()
         {
             // Arrange
@@ -1007,6 +1061,30 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             Assert.That(propertyValidationResult.Name, Is.EqualTo(itemsDiscountName));
             Assert.That(propertyValidationResult.InvalidAttributes.Count, Is.EqualTo(1));
             Assert.That(propertyValidationResult.InvalidAttributes.First().ValidationAttribute.GetType(), Is.EqualTo(typeof(RequiredIfHasValueAttribute)));
+        }
+
+        private static IList<object> GetValidModelsWithNullableDateGreaterOrEqualThanAnotherDateAttribute()
+        {
+            var defaultDateTime = new DateTime(2020, 10, 10);
+
+            return new List<object>
+            {
+                new ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute { DateOfIssue = defaultDateTime },
+                new ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute { DateOfIssue = defaultDateTime, DateOfVatClaim = defaultDateTime },
+            };
+        }
+
+        private static IList<object> GetValidModelsWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute()
+        {
+            var defaultDateTime = new DateTime(2020, 10, 10);
+
+            return new List<object>
+            {
+                new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute(),
+                new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfIssue = defaultDateTime, DateOfVatClaim = defaultDateTime },
+                new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfVatClaim = defaultDateTime },
+                new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfIssue = defaultDateTime },
+            };
         }
 
         private void AssertIsValid(ModelValidationResult model)
