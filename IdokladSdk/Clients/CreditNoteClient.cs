@@ -1,5 +1,6 @@
 ﻿using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Requests.CreditNote;
 using IdokladSdk.Response;
 
@@ -69,11 +70,12 @@ namespace IdokladSdk.Clients
         /// Offsets existing credit note with issued invoice.
         /// </summary>
         /// <param name="id">Entity Id.</param>
+        /// <param name="model">Credit note offset parameters.</param>
         /// <returns><see cref="ApiResult{CreditNoteGetModel}"/> instance.</returns>
-        public ApiResult<CreditNoteGetModel> Offset(int id)
+        public ApiResult<CreditNoteGetModel> Offset(int id, CreditNoteOffsetPutModel model = null)
         {
             var resource = $"{ResourceUrl}/{id}/Offset";
-            return Put<CreditNoteGetModel>(resource);
+            return Put<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model);
         }
 
         /// <inheritdoc />
