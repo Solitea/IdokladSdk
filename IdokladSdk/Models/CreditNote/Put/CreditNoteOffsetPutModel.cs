@@ -12,7 +12,7 @@ namespace IdokladSdk.Models.CreditNote.Put
         /// <summary>
         /// Gets or sets date of payment.
         /// </summary>
-        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
+        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
         public DateTime? DateOfPayment { get; set; }
     }
 }
