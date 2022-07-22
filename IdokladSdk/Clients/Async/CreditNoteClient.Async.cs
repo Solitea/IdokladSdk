@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Clients
@@ -35,12 +36,13 @@ namespace IdokladSdk.Clients
         /// Offsets existing credit note with issued invoice.
         /// </summary>
         /// <param name="id">Entity Id.</param>
+        /// <param name="model">Credit note offset parameters.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{CreditNoteGetModel}"/> instance.</returns>
-        public Task<ApiResult<CreditNoteGetModel>> OffsetAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<CreditNoteGetModel>> OffsetAsync(int id, CreditNoteOffsetPutModel model = null, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Offset";
-            return PutAsync<CreditNoteGetModel>(resource, null, cancellationToken);
+            return PutAsync<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc/>
