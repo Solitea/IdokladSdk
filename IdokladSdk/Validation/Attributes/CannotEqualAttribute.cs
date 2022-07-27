@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.Common.Extensions;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -64,33 +65,12 @@ namespace IdokladSdk.Validation.Attributes
         {
             var propertyInfo = validationContext?.ObjectType.GetProperty(validationContext?.MemberName) ?? throw new ValidationException();
 
-            if (IsNullableType(propertyInfo.PropertyType, out Type underlyingType) ||
-                IsNullablePropertyType(propertyInfo.PropertyType, out underlyingType))
+            if (propertyInfo.PropertyType.IsAnyNullableType(out Type underlyingType))
             {
                 return underlyingType;
             }
 
             return propertyInfo.PropertyType;
-        }
-
-        private bool IsNullablePropertyType(Type type, out Type underlyingType)
-        {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(NullableProperty<>))
-            {
-                underlyingType = type.GetGenericArguments()[0];
-            }
-            else
-            {
-                underlyingType = null;
-            }
-
-            return underlyingType != null;
-        }
-
-        private bool IsNullableType(Type type, out Type underlyingType)
-        {
-            underlyingType = Nullable.GetUnderlyingType(type);
-            return underlyingType != null;
         }
     }
 }
