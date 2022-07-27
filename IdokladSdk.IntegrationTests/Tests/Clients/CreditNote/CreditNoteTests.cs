@@ -278,7 +278,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(patchModel.DateOfIssue.GetValueOrDefault().Date, getModel.DateOfIssue.Date);
             Assert.AreEqual(patchModel.DateOfMaturity.GetValueOrDefault().Date, getModel.DateOfMaturity.Date);
             Assert.AreEqual(patchModel.DateOfTaxing.GetValueOrDefault().Date, getModel.DateOfTaxing.Date);
-            Assert.AreEqual(patchModel.DateOfVatClaim, getModel.DateOfVatClaim?.Date);
+            Assert.AreEqual(patchModel.DateOfVatClaim.Value?.Date, getModel.DateOfVatClaim?.Date);
             Assert.AreEqual(patchModel.Description, getModel.Description);
             Assert.AreEqual(patchModel.DiscountPercentage, getModel.DiscountPercentage);
             Assert.AreEqual(patchModel.EetResponsibility, getModel.EetResponsibility);
