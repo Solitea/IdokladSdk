@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.CreditNote.Put;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
@@ -132,7 +133,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.True(result);
 
             // Act
-            var offsetCreditNote = (await CreditNoteClient.OffsetAsync(_offsetCreditNoteId)).AssertResult();
+            var offsetCreditNote = (await CreditNoteClient.OffsetAsync(_offsetCreditNoteId, new CreditNoteOffsetPutModel())).AssertResult();
 
             // Assert
             Assert.AreEqual(_offsetCreditNoteId, offsetCreditNote.Id);
