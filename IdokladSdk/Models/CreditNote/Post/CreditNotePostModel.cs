@@ -83,6 +83,7 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or sets date of VAT claim.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
         public DateTime? DateOfVatClaim { get; set; }
 
         /// <summary>
