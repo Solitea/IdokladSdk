@@ -5,6 +5,7 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Core.Tags;
 using IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.CreditNote.Get;
 using IdokladSdk.Requests.Core.Modifiers.Expand.Structure;
 using IdokladSdk.Requests.CreditNote;
 using IdokladSdk.Requests.CreditNote.Filter;
@@ -15,7 +16,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 {
     [TestFixture]
     public class CreditNoteTagTests : TaggableDocumentTestsBase<CreditNoteClient, CreditNoteDetail, CreditNoteList, CreditNoteGetModel,
-        CreditNoteListGetModel, CreditNotePostModel, CreditNotePatchModel, CreditNoteExpand, CreditNoteFilter>
+        CreditNoteListGetModel, CreditNoteDefaultPostModel, CreditNotePatchModel, CreditNoteExpand, CreditNoteFilter>
     {
         protected override int EntityWithoutTagsId => 921789;
 
@@ -33,9 +34,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
-        protected override ApiResult<CreditNotePostModel> Default() => Client.Default(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);
+        protected override ApiResult<CreditNoteDefaultPostModel> Default() => Client.Default(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);
 
-        protected override void SetRequiredProperties(CreditNotePostModel postModel)
+        protected override void SetRequiredProperties(CreditNoteDefaultPostModel postModel)
         {
             postModel.CreditNoteReason = "Some reason";
             postModel.Description = "Test credit note";
