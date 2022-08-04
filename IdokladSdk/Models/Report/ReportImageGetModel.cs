@@ -1,7 +1,7 @@
 ﻿namespace IdokladSdk.Models.Report
 {
     /// <summary>
-    /// ReportImageGetModel
+    /// ReportImageGetModel.
     /// </summary>
     public class ReportImageGetModel
     {

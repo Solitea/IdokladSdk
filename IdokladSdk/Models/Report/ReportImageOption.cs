@@ -3,7 +3,7 @@
 namespace IdokladSdk.Models.Report
 {
     /// <summary>
-    /// ReportImageOption
+    /// ReportImageOption.
     /// </summary>
     public class ReportImageOption
     {
