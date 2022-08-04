@@ -20,7 +20,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Model
         public int? Rating { get; set; }
 
         [NullableRange(0.0, 99.99)]
-        public NullableProperty<int> DiscountPercentage { get; set; }
+        public NullableProperty<decimal> DiscountPercentage { get; set; }
 
         public DateTime NonNullableDate { get; set; }
 

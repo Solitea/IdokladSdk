@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.SalesOrder
@@ -12,5 +13,11 @@ namespace IdokladSdk.Models.SalesOrder
         /// Gets or sets item type.
         /// </summary>
         public SalesOrderItemType ItemType { get; set; }
+
+        /// <summary>
+        /// Gets or sets price type.
+        /// </summary>
+        [Required]
+        public PriceType? PriceType { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using IdokladSdk.Requests.Core.Extensions;
 using IdokladSdk.UnitTests.Tests.Validation.Model;
@@ -79,7 +80,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation
 
         [TestCase(null)]
         [TestCase(10)]
-        public void ApiValidator_NullableRange_ValidValues_ReturnsTrue(int? discount)
+        public void ApiValidator_NullableRange_ValidValues_ReturnsTrue(decimal? discount)
         {
             // Arrange
             var entity = new TestEntity
@@ -107,7 +108,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation
                 IdentificationNumber = "something",
                 Name = "something",
                 NonNullableDate = DateTime.Now.SetKindUtc(),
-                DiscountPercentage = 1000
+                DiscountPercentage = 1000m
             };
 
             // Act
@@ -118,6 +119,82 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             Assert.AreEqual(1, errors.Count);
             var memberNames = errors.SelectMany(error => error.MemberNames).ToList();
             Assert.Contains(nameof(TestEntity.DiscountPercentage), memberNames);
+        }
+
+        [Test]
+        public void ApiValidator_NestedEntities_ValidValues_ReturnsTrue()
+        {
+            // Arrange
+            var entity = new TestEntityWithNestedEntities
+            {
+                Entity = new TestEntity
+                {
+                    IdentificationNumber = "nested",
+                    Name = "nested",
+                    NonNullableDate = DateTime.Now.SetKindUtc(),
+                    DiscountPercentage = 5m
+                },
+                Entities = new List<TestEntity>
+                {
+                    new TestEntity
+                    {
+                        IdentificationNumber = "nestedInCollection1",
+                        Name = "nestedInCollection1",
+                        NonNullableDate = DateTime.Now.SetKindUtc(),
+                        DiscountPercentage = 5m
+                    },
+                    new TestEntity
+                    {
+                        IdentificationNumber = "nestedInCollection2",
+                        Name = "nestedInCollection2",
+                        NonNullableDate = DateTime.Now.SetKindUtc(),
+                        DiscountPercentage = 5m
+                    },
+                }
+            };
+
+            // Act
+            var result = ApiValidator.ValidateObject(entity, out var errors);
+
+            // Assert
+            Assert.True(result);
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ApiValidator_NestedEntities_InvalidValues_ReturnsFalse()
+        {
+            // Arrange
+            var entity = new TestEntityWithNestedEntities
+            {
+                Entity = new TestEntity(),
+                Entities = new List<TestEntity>
+                {
+                    new TestEntity
+                    {
+                        Name = "nestedInCollection1",
+                        NonNullableDate = DateTime.Now.SetKindUtc(),
+                        DiscountPercentage = 1000m
+                    },
+                    new TestEntity
+                    {
+                        Name = "nestedInCollection2",
+                    },
+                }
+            };
+
+            // Act
+            var result = ApiValidator.ValidateObject(entity, out var errors);
+
+            // Assert
+            Assert.False(result);
+            Assert.AreEqual(7, errors.Count);
+
+            var memberNames = errors.SelectMany(error => error.MemberNames).ToList();
+            Assert.AreEqual(1, memberNames.Count(x => x == nameof(TestEntity.Name)));
+            Assert.AreEqual(1, memberNames.Count(x => x == nameof(TestEntity.DiscountPercentage)));
+            Assert.AreEqual(2, memberNames.Count(x => x == nameof(TestEntity.NonNullableDate)));
+            Assert.AreEqual(3, memberNames.Count(x => x == nameof(TestEntity.IdentificationNumber)));
         }
     }
 }

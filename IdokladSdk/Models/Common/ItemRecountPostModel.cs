@@ -24,12 +24,6 @@ namespace IdokladSdk.Models.Common
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets price type.
-        /// </summary>
-        [Required]
-        public PriceType? PriceType { get; set; }
-
-        /// <summary>
         /// Gets or sets unit price.
         /// </summary>
         [Required]
