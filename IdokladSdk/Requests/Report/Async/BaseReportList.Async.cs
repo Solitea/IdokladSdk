@@ -1,7 +1,9 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Report;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.Report
@@ -23,6 +25,19 @@ namespace IdokladSdk.Requests.Report
             var queryParams = GetQueryParameters();
             var resource = $"{_client.ResourceUrl}{_documentType}/Pdf/List/{language}";
             return _client.GetAsync<TGetModel>(resource, queryParams, cancellationToken);
+        }
+
+        /// <summary>
+        /// Call Get endpoint.
+        /// </summary>
+        /// <param name="language">Language.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>API result.</returns>
+        public Task<ApiResult<List<ReportImageGetModel>>> GetImageAsync(Language language, CancellationToken cancellationToken = default)
+        {
+            var queryParams = GetQueryParameters();
+            var resource = $"{_client.ResourceUrl}{_documentType}/Image/List/{language}";
+            return _client.GetAsync<List<ReportImageGetModel>>(resource, queryParams, cancellationToken);
         }
     }
 }

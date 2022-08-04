@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients;
+﻿using System.Collections.Generic;
+using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Report;
 using IdokladSdk.Response;
@@ -40,6 +41,27 @@ namespace IdokladSdk.Requests.Report.CashVoucher
             }
 
             return GetBase(resource, new ExtendedReportOption { Language = option.Language, Compressed = option.Compressed });
+        }
+
+        /// <summary>
+        /// Get report.
+        /// </summary>
+        /// <param name="option">Option.</param>
+        /// <returns>API result.</returns>
+        public ApiResult<List<ReportImageGetModel>> GetImage(ReportImageOption option = null)
+        {
+            var resource = GetImageResource();
+            if (option == null)
+            {
+                return GetImageBase(resource, null);
+            }
+
+            return GetImageBase(resource, new ExtendedReportImageOption { Language = option.Language });
+        }
+
+        private string GetImageResource()
+        {
+            return $"{Client.ResourceUrl}{_invoiceDocumentType}/{_invoiceId}/CashVoucherImage";
         }
 
         private string GetResource()

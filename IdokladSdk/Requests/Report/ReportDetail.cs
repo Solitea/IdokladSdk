@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
@@ -39,6 +40,21 @@ namespace IdokladSdk.Requests.Report
         }
 
         /// <summary>
+        /// Get image report.
+        /// </summary>
+        /// <param name="option">Option.</param>
+        /// <returns>API result.</returns>
+        public ApiResult<List<ReportImageGetModel>> GetImage(ReportImageOption option = null)
+        {
+            if (option == null)
+            {
+                return GetImageBase(null);
+            }
+
+            return GetImageBase(new ExtendedReportImageOption { Language = option.Language, });
+        }
+
+        /// <summary>
         /// Get report async.
         /// </summary>
         /// <param name="option">Option.</param>
@@ -52,6 +68,22 @@ namespace IdokladSdk.Requests.Report
             }
 
             return GetBaseAsync(new ExtendedReportOption { Language = option.Language, Compressed = option.Compressed }, cancellationToken);
+        }
+
+        /// <summary>
+        /// Get image report async.
+        /// </summary>
+        /// <param name="option">Option.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>API result.</returns>
+        public Task<ApiResult<List<ReportImageGetModel>>> GetImageAsync(ReportImageOption option = null, CancellationToken cancellationToken = default)
+        {
+            if (option == null)
+            {
+                return GetImageBaseAsync(null, cancellationToken);
+            }
+
+            return GetImageBaseAsync(new ExtendedReportImageOption { Language = option.Language }, cancellationToken);
         }
     }
 }

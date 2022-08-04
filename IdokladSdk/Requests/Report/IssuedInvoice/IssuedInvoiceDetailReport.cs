@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients;
+﻿using System.Collections.Generic;
+using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Report;
 using IdokladSdk.Response;
@@ -29,6 +30,16 @@ namespace IdokladSdk.Requests.Report.IssuedInvoice
         public ApiResult<string> Get(ExtendedReportOption option = null)
         {
             return GetBase(option);
+        }
+
+        /// <summary>
+        /// Get image report.
+        /// </summary>
+        /// <param name="option">Option.</param>
+        /// <returns>API result.</returns>
+        public ApiResult<List<ReportImageGetModel>> GetImage(ExtendedReportImageOption option = null)
+        {
+            return GetImageBase(option);
         }
     }
 }
