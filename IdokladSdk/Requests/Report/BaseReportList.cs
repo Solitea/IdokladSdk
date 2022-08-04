@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Report;
 using IdokladSdk.Requests.Core.Extensions;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 using IdokladSdk.Requests.Core.Modifiers.Sort.Common;
@@ -86,6 +87,18 @@ namespace IdokladSdk.Requests.Report
             var queryParams = GetQueryParameters();
             var resource = $"{_client.ResourceUrl}{_documentType}/Pdf/List/{language}";
             return _client.Get<TGetModel>(resource, queryParams);
+        }
+
+        /// <summary>
+        /// Call Get endpoint.
+        /// </summary>
+        /// <param name="language">Language.</param>
+        /// <returns>API result.</returns>
+        public ApiResult<List<ReportImageGetModel>> GetImage(Language language)
+        {
+            var queryParams = GetQueryParameters();
+            var resource = $"{_client.ResourceUrl}{_documentType}/Image/List/{language}";
+            return _client.Get<List<ReportImageGetModel>>(resource, queryParams);
         }
 
         /// <summary>

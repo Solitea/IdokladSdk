@@ -57,6 +57,49 @@ namespace IdokladSdk.Requests.Report
             return Client.Get<string>(resource, queryParams);
         }
 
+        /// <summary>
+        /// Get report.
+        /// </summary>
+        /// <param name="option">Option.</param>
+        /// <returns>API result.</returns>
+        protected ApiResult<List<ReportImageGetModel>> GetImageBase(ExtendedReportImageOption option)
+        {
+            var resource = GetImageResource(option);
+            return GetImageBase(resource, option);
+        }
+
+        /// <summary>
+        /// Get image report.
+        /// </summary>
+        /// <param name="resource">Resource.</param>
+        /// <param name="option">Option.</param>
+        /// <returns>API result.</returns>
+        protected ApiResult<List<ReportImageGetModel>> GetImageBase(string resource, ExtendedReportImageOption option)
+        {
+            var queryParams = CreateImageQueryParams(option);
+
+            return Client.Get<List<ReportImageGetModel>>(resource, queryParams);
+        }
+
+        private Dictionary<string, string> CreateImageQueryParams(ExtendedReportImageOption option)
+        {
+            var queryParams = new Dictionary<string, string>();
+            if (option != null)
+            {
+                if (option.Language != null)
+                {
+                    queryParams.Add("language", option.Language.ToString());
+                }
+
+                if (option.PaymentOption == PaymentOption.WithOnlyEetPayment)
+                {
+                    queryParams.Add("onlyEetPayments", "true");
+                }
+            }
+
+            return queryParams;
+        }
+
         private Dictionary<string, string> CreateQueryParams(ExtendedReportOption option)
         {
             var queryParams = new Dictionary<string, string>();
@@ -75,6 +118,14 @@ namespace IdokladSdk.Requests.Report
             }
 
             return queryParams;
+        }
+
+        private string GetImageResource(ExtendedReportImageOption option)
+        {
+            var pdfType = option == null ? "Image" :
+                option.PaymentOption == PaymentOption.WithoutPayment ? "Image" : "ImageWithPayments";
+            var resource = $"{Client.ResourceUrl}{_documentType}/{_id}/{pdfType}";
+            return resource;
         }
 
         private string GetResource(ExtendedReportOption option)
