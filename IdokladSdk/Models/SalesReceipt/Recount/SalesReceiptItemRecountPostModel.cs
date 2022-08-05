@@ -18,6 +18,6 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets price type.
         /// </summary>
         [Required]
-        public new PriceTypeWithoutOnlyBase? PriceType { get; set; }
+        public PriceTypeWithoutOnlyBase? PriceType { get; set; }
     }
 }
