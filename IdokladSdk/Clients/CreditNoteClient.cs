@@ -1,5 +1,6 @@
 ﻿using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Requests.CreditNote;
 using IdokladSdk.Response;
@@ -14,7 +15,7 @@ namespace IdokladSdk.Clients
         IDeleteRequest,
         IEntityDetail<CreditNoteDetail>,
         IEntityList<CreditNoteList>,
-        IDefaultWithIdRequest<CreditNotePostModel>,
+        IDefaultWithIdRequest<CreditNoteDefaultPostModel>,
         IPostRequest<CreditNotePostModel, CreditNoteGetModel>,
         IPatchRequest<CreditNotePatchModel, CreditNoteGetModel>,
         IRecountRequest<CreditNoteRecountPostModel, CreditNoteRecountGetModel>
@@ -32,9 +33,9 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/CreditNotes";
 
         /// <inheritdoc />
-        public ApiResult<CreditNotePostModel> Default(int id)
+        public ApiResult<CreditNoteDefaultPostModel> Default(int id)
         {
-            return Default<CreditNotePostModel>(id);
+            return Default<CreditNoteDefaultPostModel>(id);
         }
 
         /// <inheritdoc />

@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Response;
 
@@ -9,9 +10,9 @@ namespace IdokladSdk.Clients
     public partial class CreditNoteClient
     {
         /// <inheritdoc/>
-        public Task<ApiResult<CreditNotePostModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<CreditNoteDefaultPostModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DefaultAsync<CreditNotePostModel>(id, cancellationToken);
+            return DefaultAsync<CreditNoteDefaultPostModel>(id, cancellationToken);
         }
 
         /// <inheritdoc/>

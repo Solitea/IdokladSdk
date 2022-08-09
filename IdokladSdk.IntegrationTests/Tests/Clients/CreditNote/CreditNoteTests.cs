@@ -7,6 +7,7 @@ using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.CreditNote;
+using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
@@ -29,7 +30,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 
         private const int DeliveryAddressId2 = 12;
 
-        private CreditNotePostModel _creditNotePostModel;
+        private CreditNoteDefaultPostModel _creditNotePostModel;
 
         private CreditNotePostModel _creditNoteToOffsetPostModel;
 
