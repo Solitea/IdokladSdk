@@ -91,6 +91,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// Gets or sets iBAN.
         /// </summary>
         [StringLength(50)]
+        [Iban]
         public string Iban { get; set; }
 
         /// <summary>
