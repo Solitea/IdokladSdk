@@ -125,6 +125,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// Gets or sets variable symbol.
         /// </summary>
         [StringLength(10)]
+        [RequiredIf(nameof(IsConstantVariableSymbol), true)]
         public string VariableSymbol { get; set; }
 
         /// <summary>

@@ -20,5 +20,11 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or sets item type.
         /// </summary>
         public IssuedInvoiceItemType ItemType { get; set; }
+
+        /// <summary>
+        /// Gets or sets price type.
+        /// </summary>
+        [Required]
+        public PriceType? PriceType { get; set; }
     }
 }
