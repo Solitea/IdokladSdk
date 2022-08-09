@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.CreditNote;
-using IdokladSdk.Models.CreditNote.Get;
+using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Response;
 

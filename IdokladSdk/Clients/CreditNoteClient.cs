@@ -1,6 +1,6 @@
 ﻿using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.CreditNote;
-using IdokladSdk.Models.CreditNote.Get;
+using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Requests.CreditNote;
 using IdokladSdk.Response;

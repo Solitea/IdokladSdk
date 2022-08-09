@@ -5,7 +5,7 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Core.Tags;
 using IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice;
 using IdokladSdk.Models.CreditNote;
-using IdokladSdk.Models.CreditNote.Get;
+using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Requests.Core.Modifiers.Expand.Structure;
 using IdokladSdk.Requests.CreditNote;
 using IdokladSdk.Requests.CreditNote.Filter;

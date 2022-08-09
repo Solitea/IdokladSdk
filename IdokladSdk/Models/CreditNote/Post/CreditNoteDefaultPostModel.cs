@@ -1,6 +1,6 @@
 ﻿using IdokladSdk.Enums;
 
-namespace IdokladSdk.Models.CreditNote.Get
+namespace IdokladSdk.Models.CreditNote.Post
 {
     /// <summary>
     /// CreditNoteDefaultPostModel.
