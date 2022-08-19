@@ -45,6 +45,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Common
             Assert.NotZero(model.Id);
             Assert.IsNotEmpty(model.Name);
             Assert.IsNotEmpty(model.NameEnglish);
+            Assert.IsNotEmpty(model.NameGerman);
+            Assert.IsNotEmpty(model.NameSlovak);
         }
 
         public static void AssertDetail(CurrencyListGetModel model)
