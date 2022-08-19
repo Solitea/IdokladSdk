@@ -11,7 +11,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
         public async Task List_SuccessfullyGetAsync()
         {
             // Act
-            var data = (await _client.List().GetAsync()).AssertResult();
+            var data = (await _client.List().Sort(x => x.DateOfPayment.Asc()).GetAsync()).AssertResult();
 
             // Assert
             Assert.GreaterOrEqual(data.TotalItems, 1);
