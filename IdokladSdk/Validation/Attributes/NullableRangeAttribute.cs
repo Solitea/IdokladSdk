@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using IdokladSdk.Models.Common;
+using IdokladSdk.Models.Common.Extensions;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -23,17 +23,15 @@ namespace IdokladSdk.Validation.Attributes
 
         public override bool IsValid(object value)
         {
-            if (value != null)
+            if (value.IsTypeOfNullableProperty(out var type))
             {
-                var type = value.GetType();
-                if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(NullableProperty<>))
+                var nullableValue = type.GetValueOfNullableProperty(value);
+                if (nullableValue == null)
                 {
-                    var nullableValue = type.GetProperty("Value").GetValue(value);
-                    if (nullableValue == null)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
+
+                return base.IsValid(nullableValue);
             }
 
             return base.IsValid(value);

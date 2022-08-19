@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Common.Extensions;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -24,6 +25,22 @@ namespace IdokladSdk.Validation.Attributes
         public DateTimeAttribute(Type type, string minimum, string maximum)
             : base(type, minimum, maximum)
         {
+        }
+
+        public override bool IsValid(object value)
+        {
+            if (value.IsTypeOfNullableProperty(out var type))
+            {
+                var nullableValue = type.GetValueOfNullableProperty(value);
+                if (nullableValue == null)
+                {
+                    return true;
+                }
+
+                return base.IsValid(nullableValue);
+            }
+
+            return base.IsValid(value);
         }
     }
 }

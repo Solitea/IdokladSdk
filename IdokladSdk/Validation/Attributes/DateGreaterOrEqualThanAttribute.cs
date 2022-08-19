@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.Common.Helpers;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -24,7 +25,7 @@ namespace IdokladSdk.Validation.Attributes
                 return true;
             }
 
-            var propertyValue = GetNullablePropertyValue(value);
+            var propertyValue = NullablePropertyHelper.GetValue(value);
 
             if (propertyValue == null && AllowNull)
             {
@@ -52,7 +53,7 @@ namespace IdokladSdk.Validation.Attributes
                 return ValidationResult.Success;
             }
 
-            var propertyValue = GetNullablePropertyValue(value);
+            var propertyValue = NullablePropertyHelper.GetValue(value);
 
             if (propertyValue == null && AllowNull)
             {
@@ -72,11 +73,6 @@ namespace IdokladSdk.Validation.Attributes
 
             return new ValidationResult(
                 $"The field {propertyName} is invalid. Must be greater or equal {MinDateTime}");
-        }
-
-        private object GetNullablePropertyValue(object value)
-        {
-            return value is NullableProperty<DateTime> propertyValue ? propertyValue.Value : value;
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using IdokladSdk.Models.Common.Extensions;
+using IdokladSdk.Models.Common.Helpers;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -17,18 +20,34 @@ namespace IdokladSdk.Validation.Attributes
             _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
 
             var containerType = validationContext.ObjectInstance.GetType();
-            var field = containerType.GetProperty(DependentProperty);
+            var dependentPropertyInfo = containerType.GetProperty(DependentProperty);
 
-            if (field != null)
+            if (dependentPropertyInfo != null)
             {
-                var dependentValue = field.GetValue(validationContext.ObjectInstance, null);
-                if (dependentValue != null && value == null)
+                var dependentPropertyValue = GetDependentPropertyValue(dependentPropertyInfo, validationContext.ObjectInstance);
+                var propertyValue = NullablePropertyHelper.GetValue(value);
+
+                if (dependentPropertyValue != null && propertyValue == null)
                 {
                     return new ValidationResult(ErrorMessage, new[] { validationContext.MemberName });
                 }
             }
 
             return null;
+        }
+
+        private object GetDependentPropertyValue(PropertyInfo dependentPropertyInfo, object objectInstance)
+        {
+            var type = dependentPropertyInfo.PropertyType;
+
+            if (type.IsNullablePropertyType())
+            {
+                var nullableProperty = dependentPropertyInfo.GetValue(objectInstance, null);
+
+                return type.GetValueOfNullableProperty(nullableProperty);
+            }
+
+            return dependentPropertyInfo.GetValue(objectInstance, null);
         }
     }
 }
