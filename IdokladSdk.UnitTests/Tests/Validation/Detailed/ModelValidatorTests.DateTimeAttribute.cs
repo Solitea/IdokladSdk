@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Reflection;
 using IdokladSdk.Enums;
 using IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
 using IdokladSdk.Validation.Attributes;
@@ -15,11 +13,17 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         public void DateTimeAttribute_ExpectedRange()
         {
             // Arrange
+            var minimum = new DateTime(1753, 1, 1);
+            var maximum = new DateTime(9999, 12, 31);
+
+            // Act
             var attribute = new DateTimeAttribute();
 
             // Assert
-            Assert.That(attribute.Minimum, Is.EqualTo(new DateTime(1753, 1, 1).ToString("yyyy-MM-dd")));
-            Assert.That(attribute.Maximum, Is.EqualTo(new DateTime(9999, 12, 31).ToString("yyyy-MM-dd")));
+            var attributeMax = Convert.ToDateTime(attribute.Maximum);
+            var attributeMin = Convert.ToDateTime(attribute.Minimum);
+            Assert.That(attributeMin, Is.EqualTo(minimum));
+            Assert.That(attributeMax, Is.EqualTo(maximum));
         }
 
         [TestCaseSource(nameof(GetValidModelsWithDateTimeAttribute))]
