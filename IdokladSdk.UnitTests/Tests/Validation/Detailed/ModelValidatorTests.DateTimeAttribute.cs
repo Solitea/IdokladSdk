@@ -10,7 +10,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
     public partial class ModelValidatorTests
     {
         [Test]
-        public void DateTimeAttribute_ExpectedRange()
+        public void DateTimeAttribute_DefaultRange_Expected()
         {
             // Arrange
             var minimum = new DateTime(1753, 1, 1);
