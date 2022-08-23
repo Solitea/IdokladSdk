@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Requests.Contact;
 using IdokladSdk.Response;
@@ -42,27 +43,31 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<ContactGetModel> Post(ContactPostModel model)
         {
-            return Post<ContactPostModel, ContactGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<ContactGetModel> Update(ContactPatchModel model)
         {
-            return Patch<ContactPatchModel, ContactGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<ContactPostModel> Default()
         {
-            return Default<ContactPostModel>();
+            return DefaultAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
     }
 }

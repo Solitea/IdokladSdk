@@ -99,25 +99,7 @@ namespace IdokladSdk
         /// <returns>Tokenizer.</returns>
         public Tokenizer GetToken()
         {
-            if (_authentication.UseRefreshToken)
-            {
-                _token = _authentication.RefreshAccessToken();
-                _authentication.UseRefreshToken = false;
-            }
-
-            if (_token is null)
-            {
-                _token = _authentication.GetToken();
-            }
-
-            if (_token.ShouldBeRefreshedNow(RefreshTokenLimit))
-            {
-                _token = _authentication.RefreshAccessToken();
-            }
-
-            TokenClaims = new TokenClaims(_token.Claims);
-
-            return _token;
+            return GetTokenAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>

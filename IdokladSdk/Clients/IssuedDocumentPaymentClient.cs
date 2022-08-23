@@ -33,15 +33,17 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/IssuedDocumentPayments";
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedDocumentPaymentPostModel> Default(int id)
         {
-            return Default<IssuedDocumentPaymentPostModel>(id);
+            return DefaultAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -51,10 +53,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> FullyUnpay(int invoiceId)
         {
-            var resourceUrl = $"{ResourceUrl}/FullyUnpay/{invoiceId}";
-            return Put<bool>(resourceUrl);
+            return FullyUnpayAsync(invoiceId).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -64,11 +66,10 @@ namespace IdokladSdk.Clients
         /// <param name="dateOfPayment">Date of payment.</param>
         /// <param name="salesPosEquipmentId">Sales pos equipment id.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if full pay was successful, otherwise <c>false</c>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> FullyPay(int invoiceId, DateTime? dateOfPayment = null, int? salesPosEquipmentId = null)
         {
-            var queryParams = GetQueryParamsForFullyPay(dateOfPayment, salesPosEquipmentId);
-            var resourceUrl = $"{ResourceUrl}/FullyPay/{invoiceId}";
-            return Put<bool>(resourceUrl, queryParams);
+            return FullyPayAsync(invoiceId, dateOfPayment, salesPosEquipmentId).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -87,9 +88,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedDocumentPaymentGetModel> Post(IssuedDocumentPaymentPostModel model)
         {
-            return Post<IssuedDocumentPaymentPostModel, IssuedDocumentPaymentGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         private Dictionary<string, string> GetQueryParamsForFullyPay(DateTime? dateOfPayment, int? salesPosEquipmentId)

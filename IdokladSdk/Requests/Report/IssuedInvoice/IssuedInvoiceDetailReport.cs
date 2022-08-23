@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Report;
@@ -27,9 +28,10 @@ namespace IdokladSdk.Requests.Report.IssuedInvoice
         /// </summary>
         /// <param name="option">Option.</param>
         /// <returns>API result.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<string> Get(ExtendedReportOption option = null)
         {
-            return GetBase(option);
+            return GetAsync(option).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -37,9 +39,10 @@ namespace IdokladSdk.Requests.Report.IssuedInvoice
         /// </summary>
         /// <param name="option">Option.</param>
         /// <returns>API result.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<List<ReportImageGetModel>> GetImage(ExtendedReportImageOption option = null)
         {
-            return GetImageBase(option);
+            return GetImageAsync(option).GetAwaiter().GetResult();
         }
     }
 }

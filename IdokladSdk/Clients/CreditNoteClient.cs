@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.CreditNote;
 using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Models.CreditNote.Put;
@@ -33,15 +34,17 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/CreditNotes";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<CreditNoteDefaultPostModel> Default(int id)
         {
-            return Default<CreditNoteDefaultPostModel>(id);
+            return DefaultAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
@@ -61,10 +64,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="model">Credit note to be created.</param>
         /// <returns><see cref="ApiResult{CreditNoteGetModel}"/> instance.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<CreditNoteGetModel> Offset(CreditNotePostModel model)
         {
-            var resource = $"{ResourceUrl}/Offset";
-            return Post<CreditNotePostModel, CreditNoteGetModel>(resource, model);
+            return OffsetAsync(model).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -73,29 +76,31 @@ namespace IdokladSdk.Clients
         /// <param name="id">Entity Id.</param>
         /// <param name="model">Credit note offset parameters.</param>
         /// <returns><see cref="ApiResult{CreditNoteGetModel}"/> instance.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<CreditNoteGetModel> Offset(int id, CreditNoteOffsetPutModel model = null)
         {
-            var resource = $"{ResourceUrl}/{id}/Offset";
-            return Put<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model ?? new CreditNoteOffsetPutModel());
+            return OffsetAsync(id, model ?? new CreditNoteOffsetPutModel()).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<CreditNoteGetModel> Post(CreditNotePostModel model)
         {
-            return Post<CreditNotePostModel, CreditNoteGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<CreditNoteRecountGetModel> Recount(CreditNoteRecountPostModel model)
         {
-            var resource = $"{ResourceUrl}/Recount";
-            return Post<CreditNoteRecountPostModel, CreditNoteRecountGetModel>(resource, model);
+            return RecountAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<CreditNoteGetModel> Update(CreditNotePatchModel model)
         {
-            return Patch<CreditNotePatchModel, CreditNoteGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

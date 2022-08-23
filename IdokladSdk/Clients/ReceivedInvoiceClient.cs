@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.ReceivedInvoice;
 using IdokladSdk.Requests.ReceivedInvoice;
 using IdokladSdk.Response;
@@ -32,22 +33,24 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/ReceivedInvoices";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ReceivedInvoicePostModel> Copy(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<ReceivedInvoicePostModel>(resource);
+            return CopyAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ReceivedInvoicePostModel> Default()
         {
-            return Default<ReceivedInvoicePostModel>();
+            return DefaultAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
@@ -63,22 +66,24 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ReceivedInvoiceGetModel> Post(ReceivedInvoicePostModel model)
         {
-            return Post<ReceivedInvoicePostModel, ReceivedInvoiceGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<ReceivedInvoiceRecountGetModel> Recount(ReceivedInvoiceRecountPostModel model)
         {
-            var resource = $"{ResourceUrl}/Recount";
-            return Post<ReceivedInvoiceRecountPostModel, ReceivedInvoiceRecountGetModel>(resource, model);
+            return RecountAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ReceivedInvoiceGetModel> Update(ReceivedInvoicePatchModel model)
         {
-            return Patch<ReceivedInvoicePatchModel, ReceivedInvoiceGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

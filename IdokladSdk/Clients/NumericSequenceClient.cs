@@ -51,17 +51,17 @@ namespace IdokladSdk.Clients
         /// <param name="documentSerialNumber">Serial number.</param>
         /// <param name="numericSequenceId">Numeric sequence id.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="DocumentNumbersGetModel"/>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<DocumentNumbersGetModel> GetDocumentNumber(NumericSequenceDocumentType documentType,  DateTime? date = null, int? documentSerialNumber = null, int? numericSequenceId = null)
         {
-            var resource = $"{ResourceUrl}/DocumentNumbers/{documentType}";
-            var queryParams = QueryParams(date, documentSerialNumber, numericSequenceId);
-            return Get<DocumentNumbersGetModel>(resource, queryParams);
+            return GetDocumentNumberAsync(documentType, date, documentSerialNumber).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<NumericSequenceGetModel> Update(NumericSequencePatchModel model)
         {
-            return Patch<NumericSequencePatchModel, NumericSequenceGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
 
         private Dictionary<string, string> QueryParams(DateTime? date, int? documentSerialNumber, int? numericSequenceId)

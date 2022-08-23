@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Exceptions;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.ReadOnly.Bank;
 using IdokladSdk.Models.ReadOnly.Country;
+using IdokladSdk.Response.Extensions;
 
 namespace IdokladSdk.NetCore.TestApp.Examples
 {
@@ -22,14 +24,14 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             _api = api;
         }
 
-        public List<BankListGetModel> Banks => _banks ?? (_banks = GetBanks());
+        public List<BankListGetModel> Banks => _banks ?? (_banks = GetBanksAsync().GetAwaiter().GetResult());
 
-        public List<CountryListGetModel> Countries => _countries ?? (_countries = GetCountries());
+        public List<CountryListGetModel> Countries => _countries ?? (_countries = GetCountriesAsync().GetAwaiter().GetResult());
 
-        public int CreateContact_ResponseChecking()
+        public async Task<int> CreateContact_ResponseCheckingAsync()
         {
             // Get default contact values
-            var defaultResponse = _api.ContactClient.Default();
+            var defaultResponse = await _api.ContactClient.DefaultAsync();
 
             // Check API response
             if (!defaultResponse.IsSuccess)
@@ -48,7 +50,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             contactToCreate.PostalCode = "602 00";
 
             // Create new contact
-            var postResponse = _api.ContactClient.Post(contactToCreate);
+            var postResponse = await _api.ContactClient.PostAsync(contactToCreate);
 
             // Check API response
             if (!postResponse.IsSuccess)
@@ -61,19 +63,19 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             return createdContact.Id;
         }
 
-        public int CreateContact_ExceptionHandling()
+        public async Task<int> CreateContact_ExceptionHandlingAsync()
         {
             try
             {
                 // Get default contact values - throws an exception if not successful
-                var contactToCreate = _api.ContactClient.Default().CheckResult();
+                var contactToCreate = await _api.ContactClient.DefaultAsync().CheckResult();
 
                 // Modify default contact values
                 contactToCreate.CompanyName = "company 2";
                 contactToCreate.IdentificationNumber = "87654321";
 
                 // Create new contact - throws an exception if not successful
-                var createdContact = _api.ContactClient.Post(contactToCreate).CheckResult();
+                var createdContact = await _api.ContactClient.PostAsync(contactToCreate).CheckResult();
 
                 return createdContact.Id;
             }
@@ -84,7 +86,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             }
         }
 
-        public ContactGetModel UpdateContact(int id, string firstName, string surname)
+        public async Task<ContactGetModel> UpdateContactAsync(int id, string firstName, string surname)
         {
             // Create update model containing id (required) and only properties to be updated
             var contactUpdate = new ContactPatchModel
@@ -95,24 +97,24 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             };
 
             // Update contact - throws an exception if not successful
-            var updatedContact = _api.ContactClient.Update(contactUpdate).CheckResult();
+            var updatedContact = await _api.ContactClient.UpdateAsync(contactUpdate).CheckResult();
             return updatedContact;
         }
 
-        private List<BankListGetModel> GetBanks()
+        private async Task<List<BankListGetModel>> GetBanksAsync()
         {
-            return _api.BankClient
+            return (await _api.BankClient
                 .List()
-                .Get()
+                .GetAsync())
                 .Data.Items
                 .ToList();
         }
 
-        private List<CountryListGetModel> GetCountries()
+        private async Task<List<CountryListGetModel>> GetCountriesAsync()
         {
-            return _api.CountryClient
+            return (await _api.CountryClient
                 .List()
-                .Get()
+                .GetAsync())
                 .Data.Items
                 .ToList();
         }

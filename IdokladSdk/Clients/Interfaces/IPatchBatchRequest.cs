@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
@@ -19,6 +20,7 @@ namespace IdokladSdk.Clients.Interfaces
         /// </summary>
         /// <param name="models">List of entities to be updated.</param>
         /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
+        [Obsolete("Use async method instead.")]
         ApiBatchResult<TGetModel> Update(List<TPatchModel> models);
 
         /// <summary>

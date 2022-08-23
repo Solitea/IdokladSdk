@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.BankAccount;
 using IdokladSdk.Requests.BankAccount;
 using IdokladSdk.Response;
@@ -28,9 +29,10 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/BankAccounts";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
@@ -46,15 +48,16 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<BankAccountGetModel> Post(BankAccountPostModel model)
         {
-            return Post<BankAccountPostModel, BankAccountGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
         public ApiResult<BankAccountGetModel> Update(BankAccountPatchModel model)
         {
-            return Patch<BankAccountPatchModel, BankAccountGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

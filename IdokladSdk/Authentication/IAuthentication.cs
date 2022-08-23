@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿using System;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,6 +30,7 @@ namespace IdokladSdk.Authentication
         /// </summary>
         /// <returns>Token.</returns>
         /// <exception cref="AuthenticationException">Authentication is unsuccessful.</exception>
+        [Obsolete("Use async method instead.")]
         Tokenizer GetToken();
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace IdokladSdk.Authentication
         /// </summary>
         /// <returns>Token.</returns>
         /// <exception cref="AuthenticationException">Authentication is unsuccessful.</exception>
+        [Obsolete("Use async method instead.")]
         Tokenizer RefreshAccessToken();
 
         /// <summary>

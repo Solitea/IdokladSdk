@@ -98,35 +98,25 @@ namespace IdokladSdk.Requests.Core
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<Page<TGetModel>> Get()
         {
-            var queryParams = GetQueryParameters();
-
-            return _client.Get<Page<TGetModel>>(ResourceUrl, queryParams);
+            return GetAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<Page<TCustomResult>> Get<TCustomResult>()
             where TCustomResult : new()
         {
-            _select.Select<TCustomResult>();
-            var queryParams = GetQueryParameters();
-
-            return _client.Get<Page<TCustomResult>>(ResourceUrl, queryParams);
+            return GetAsync<TCustomResult>().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public virtual ApiResult<Page<TResult>> Get<TResult>(Expression<Func<TGetModel, TResult>> selector)
         {
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
-
-            _select.Select(selector);
-            var queryParams = GetQueryParameters();
-            var apiResult = _client.Get<Page<TGetModel>>(ResourceUrl, queryParams);
-            return ApplySelectorFunction(apiResult, selector);
+            return GetAsync<TResult>(selector).GetAwaiter().GetResult();
         }
 
         /// <summary>

@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using IdokladSdk.Clients;
+﻿using IdokladSdk.Clients;
 using IdokladSdk.Models.NumericSequence;
 using IdokladSdk.Requests.Core;
-using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.NumericSequence
 {
@@ -26,11 +24,5 @@ namespace IdokladSdk.Requests.NumericSequence
         }
 
         private string DetailUrl => $"{ResourceUrl}/{Id}?year={_year}";
-
-        /// <inheritdoc />
-        protected override ApiResult<TResult> GetCore<TResult>(Dictionary<string, string> queryParams)
-        {
-            return Client.Get<TResult>(DetailUrl, queryParams);
-        }
     }
 }

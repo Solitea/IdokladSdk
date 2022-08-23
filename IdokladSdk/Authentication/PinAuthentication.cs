@@ -1,7 +1,5 @@
 ﻿using System;
-using IdokladSdk.Authentication.Extensions;
 using IdokladSdk.Authentication.Models;
-using RestSharp;
 
 namespace IdokladSdk.Authentication
 {
@@ -56,25 +54,17 @@ namespace IdokladSdk.Authentication
         public DokladConfiguration Configuration { get; set; }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public Tokenizer GetToken()
         {
-            var client = new RestClient(Configuration.IdentityServerTokenUrl);
-            var request = PrepareTokenRequest();
-
-            var response = client.RequestPinToken(request);
-
-            return CopyCredentials(response);
+            return GetTokenAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public Tokenizer RefreshAccessToken()
         {
-            var client = new RestClient(Configuration.IdentityServerTokenUrl);
-            var request = PrepareRefreshTokenRequest();
-
-            var response = client.RequestRefreshToken(request);
-
-            return CopyCredentials(response);
+            return RefreshAccessTokenAsync().GetAwaiter().GetResult();
         }
 
         private Tokenizer CopyCredentials(Tokenizer token)

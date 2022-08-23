@@ -38,22 +38,24 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/IssuedInvoices";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoiceCopyGetModel> Copy(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<IssuedInvoiceCopyGetModel>(resource);
+            return CopyAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoicePostModel> Default()
         {
-            return Default<IssuedInvoicePostModel>();
+            return DefaultAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
@@ -69,30 +71,31 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoiceGetModel> Post(IssuedInvoicePostModel model)
         {
-            ValidatePost(model);
-            return Post<IssuedInvoicePostModel, IssuedInvoiceGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoiceRecountGetModel> Recount(IssuedInvoiceRecountPostModel model)
         {
-            var resource = $"{ResourceUrl}/Recount";
-            return Post<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>(resource, model);
+            return RecountAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<RecurringInvoicePostModel> Recurrence(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Recurrence";
-            return Get<RecurringInvoicePostModel>(resource);
+            return RecurrenceAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoiceGetModel> Update(IssuedInvoicePatchModel model)
         {
-            return Patch<IssuedInvoicePatchModel, IssuedInvoiceGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
 
         private void ValidatePost(IssuedInvoicePostModel model)

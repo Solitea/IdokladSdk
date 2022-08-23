@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 
@@ -26,11 +27,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="models">Models to update.</param>
         /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiBatchResult<UpdateExportedModel> Update(IList<UpdateExportedModel> models)
         {
-            var resource = ResourceUrl + "/Exported";
-
-            return Put<UpdateExportedModel, UpdateExportedModel>(resource, models);
+            return UpdateAsync(models).GetAwaiter().GetResult();
         }
     }
 }

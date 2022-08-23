@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.BankStatement;
 using IdokladSdk.Requests.BankStatement;
 using IdokladSdk.Response;
@@ -42,16 +43,17 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="model">Model.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing pairing result.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<BankStatementPairingResult> Pair(BankStatementPairingPostModel model)
         {
-            var resource = $"{ResourceUrl}/Pair";
-            return Post<BankStatementPairingPostModel, BankStatementPairingResult>(resource, model);
+            return PairAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
     }
 }

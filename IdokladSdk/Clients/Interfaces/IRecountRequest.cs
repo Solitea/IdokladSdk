@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
 
@@ -16,6 +17,7 @@ namespace IdokladSdk.Clients.Interfaces
         /// </summary>
         /// <param name="model">Entity to recount.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
+        [Obsolete("Use async method instead.")]
         ApiResult<TGetModel> Recount(TRecountPostModel model);
 
         /// <summary>

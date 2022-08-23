@@ -198,9 +198,9 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             AssertHasTags(GetTags(result), new List<int> { Tag1Id });
         }
 
-        protected virtual ApiResult<TPostModel> Default() => (ApiResult<TPostModel>)((IDefaultRequest<TPostModel>)Client).Default();
+        protected virtual ApiResult<TPostModel> Default() => ((IDefaultRequest<TPostModel>)Client).Default();
 
-        protected virtual ApiResult<bool> Delete(int id) => (ApiResult<bool>)((IDeleteRequest)Client).Delete(id);
+        protected virtual ApiResult<bool> Delete(int id) => ((IDeleteRequest)Client).Delete(id);
 
         protected List<TagDocumentGetModel> GetTags(TGetModel getModel)
         {
@@ -214,7 +214,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             return (List<int>)tagsProperty.GetValue(postModel);
         }
 
-        protected virtual ApiResult<TGetModel> Post(TPostModel postModel) => (ApiResult<TGetModel>)((IPostRequest<TPostModel, TGetModel>)Client).Post(postModel);
+        protected virtual ApiResult<TGetModel> Post(TPostModel postModel) => ((IPostRequest<TPostModel, TGetModel>)Client).Post(postModel);
 
         protected abstract void SetRequiredProperties(TPostModel postModel);
 
@@ -230,7 +230,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             tagsProperty.SetValue(postModel, tagIds);
         }
 
-        protected virtual ApiResult<TGetModel> Update(TPatchModel patchModel) => (ApiResult<TGetModel>)((IPatchRequest<TPatchModel, TGetModel>)Client).Update(patchModel);
+        protected virtual ApiResult<TGetModel> Update(TPatchModel patchModel) => ((IPatchRequest<TPatchModel, TGetModel>)Client).Update(patchModel);
 
         private void MarkForDelete(int id)
         {

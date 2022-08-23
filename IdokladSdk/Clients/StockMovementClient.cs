@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.StockMovement;
 using IdokladSdk.Requests.StockMovement;
@@ -31,15 +32,17 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/StockMovements";
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<StockMovementPostModel> Default(int priceListItemId)
         {
-            return Get<StockMovementPostModel>(ResourceUrl + $"/Default/{priceListItemId}");
+            return DefaultAsync(priceListItemId).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
@@ -55,21 +58,24 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<StockMovementGetModel> Post(StockMovementPostModel model)
         {
-            return Post<StockMovementPostModel, StockMovementGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiBatchResult<StockMovementGetModel> Post(List<StockMovementPostModel> models)
         {
-            return Post<StockMovementPostModel, StockMovementGetModel>(models);
+            return PostAsync(models).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<StockMovementGetModel> Update(StockMovementPatchModel model)
         {
-            return Patch<StockMovementPatchModel, StockMovementGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

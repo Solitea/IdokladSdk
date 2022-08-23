@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
 
@@ -14,6 +15,7 @@ namespace IdokladSdk.Clients.Interfaces
         /// </summary>
         /// <param name="invoiceId">Id of invoice.</param>
         /// <returns><c>true</c> if full unpay was successful, otherwise <c>false</c>.</returns>
+        [Obsolete("Use async method instead.")]
         ApiResult<bool> FullyUnpay(int invoiceId);
 
         /// <summary>

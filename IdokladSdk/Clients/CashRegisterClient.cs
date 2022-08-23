@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.CashRegister;
 using IdokladSdk.Requests.CashRegister;
 using IdokladSdk.Response;
@@ -28,9 +29,10 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/CashRegisters";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -46,15 +48,17 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<CashRegisterGetModel> Post(CashRegisterPostModel model)
         {
-            return Post<CashRegisterPostModel, CashRegisterGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<CashRegisterGetModel> Update(CashRegisterPatchModel model)
         {
-            return Patch<CashRegisterPatchModel, CashRegisterGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

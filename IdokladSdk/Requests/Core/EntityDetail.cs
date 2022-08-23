@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using IdokladSdk.Clients;
-using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.Core
 {
@@ -41,11 +39,5 @@ namespace IdokladSdk.Requests.Core
         /// Gets Id.
         /// </summary>
         protected int Id { get; }
-
-        /// <inheritdoc />
-        protected override ApiResult<TResult> GetCore<TResult>(Dictionary<string, string> queryParams)
-        {
-            return Client.Get<TResult>($"{ResourceUrl}/{Id}", queryParams);
-        }
     }
 }

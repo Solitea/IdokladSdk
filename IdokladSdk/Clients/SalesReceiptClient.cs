@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.SalesReceipt;
 using IdokladSdk.Requests.SalesReceipt;
@@ -34,15 +35,17 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesReceipts";
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesReceiptPostModel> Default()
         {
-            return Default<SalesReceiptPostModel>();
+            return DefaultAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -58,35 +61,38 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesReceiptPostModel> Copy(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<SalesReceiptPostModel>(resource);
+            return CopyAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesReceiptGetModel> Post(SalesReceiptPostModel model)
         {
-            return Post<SalesReceiptPostModel, SalesReceiptGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiBatchResult<SalesReceiptGetModel> Post(List<SalesReceiptPostModel> models)
         {
-            return Post<SalesReceiptPostModel, SalesReceiptGetModel>(models);
+            return PostAsync(models).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesReceiptRecountGetModel> Recount(SalesReceiptRecountPostModel model)
         {
-            var resource = $"{ResourceUrl}/Recount";
-            return Post<SalesReceiptRecountPostModel, SalesReceiptRecountGetModel>(resource, model);
+            return RecountAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesReceiptGetModel> Update(SalesReceiptPatchModel model)
         {
-            return Patch<SalesReceiptPatchModel, SalesReceiptGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

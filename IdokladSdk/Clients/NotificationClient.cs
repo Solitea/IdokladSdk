@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Notification.Get;
 using IdokladSdk.Models.Notification.Put;
@@ -28,9 +29,10 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/Notifications";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
@@ -43,9 +45,10 @@ namespace IdokladSdk.Clients
         /// Gives count of notifications with status New.
         /// </summary>
         /// <returns>Count of notifications with status New.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<NewNotificationsCountGetModel> GetNewNotificationCount()
         {
-            return Get<NewNotificationsCountGetModel>(ResourceUrl + "/New");
+            return GetNewNotificationCountAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -53,9 +56,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="model">Notification Put Model.</param>
         /// <returns>Notification Change Status Get Model.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiBatchResult<NotificationChangeStatusGetModel> ChangeStatus(List<NotificationPutModel> model)
         {
-            return Put<NotificationPutModel, NotificationChangeStatusGetModel>(ResourceUrl + "/Status", model);
+            return ChangeStatusAsync(model, default).GetAwaiter().GetResult();
         }
     }
 }

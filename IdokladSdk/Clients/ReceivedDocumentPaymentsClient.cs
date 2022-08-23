@@ -33,15 +33,17 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl => "/ReceivedDocumentPayments";
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<ReceivedDocumentPaymentPostModel> Default(int id)
         {
-            return Default<ReceivedDocumentPaymentPostModel>(id);
+            return DefaultAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -56,18 +58,17 @@ namespace IdokladSdk.Clients
         /// <param name="invoiceId">Id of invoice.</param>
         /// <param name="dateOfPayment">Date of payment.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if full pay was successful, otherwise <c>false</c>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> FullyPay(int invoiceId, DateTime? dateOfPayment = null)
         {
-            var queryParams = GetQueryParamsForFullyPay(dateOfPayment);
-            var resourceUrl = $"{ResourceUrl}/FullyPay/{invoiceId}";
-            return Put<bool>(resourceUrl, queryParams);
+            return FullyPayAsync(invoiceId, dateOfPayment).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> FullyUnpay(int invoiceId)
         {
-            var resourceUrl = $"{ResourceUrl}/FullyUnpay/{invoiceId}";
-            return Put<bool>(resourceUrl);
+            return FullyUnpayAsync(invoiceId).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -77,9 +78,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<ReceivedDocumentPaymentGetModel> Post(ReceivedDocumentPaymentPostModel model)
         {
-            return Post<ReceivedDocumentPaymentPostModel, ReceivedDocumentPaymentGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         private Dictionary<string, string> GetQueryParamsForFullyPay(DateTime? dateOfPayment)

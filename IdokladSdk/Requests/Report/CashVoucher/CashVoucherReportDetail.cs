@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Report;
@@ -32,15 +33,10 @@ namespace IdokladSdk.Requests.Report.CashVoucher
         /// </summary>
         /// <param name="option">Option.</param>
         /// <returns>API result.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<string> Get(ReportOption option = null)
         {
-            var resource = GetResource();
-            if (option == null)
-            {
-                return GetBase(resource, null);
-            }
-
-            return GetBase(resource, new ExtendedReportOption { Language = option.Language, Compressed = option.Compressed });
+            return GetAsync(option).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -48,15 +44,10 @@ namespace IdokladSdk.Requests.Report.CashVoucher
         /// </summary>
         /// <param name="option">Option.</param>
         /// <returns>API result.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<List<ReportImageGetModel>> GetImage(ReportImageOption option = null)
         {
-            var resource = GetImageResource();
-            if (option == null)
-            {
-                return GetImageBase(resource, null);
-            }
-
-            return GetImageBase(resource, new ExtendedReportImageOption { Language = option.Language });
+            return GetImageAsync(option).GetAwaiter().GetResult();
         }
 
         private string GetImageResource()

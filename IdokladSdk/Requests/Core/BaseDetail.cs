@@ -55,33 +55,25 @@ namespace IdokladSdk.Requests.Core
         protected TDetail This => this as TDetail;
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<TGetModel> Get()
         {
-            var queryParams = GetQueryParams();
-            return GetCore<TGetModel>(queryParams);
+            return GetAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public virtual ApiResult<TCustomModel> Get<TCustomModel>()
             where TCustomModel : new()
         {
-            _select.Select<TCustomModel>();
-            var queryParams = GetQueryParams();
-            return GetCore<TCustomModel>(queryParams);
+            return GetAsync<TCustomModel>().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public virtual ApiResult<TResult> Get<TResult>(Expression<Func<TGetModel, TResult>> selector)
         {
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
-
-            _select.Select(selector);
-            var queryParams = GetQueryParams();
-            var apiResult = GetCore<TGetModel>(queryParams);
-            return ApplySelectorFunction(apiResult, selector);
+            return GetAsync(selector).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -105,18 +97,6 @@ namespace IdokladSdk.Requests.Core
             };
 
             return result;
-        }
-
-        /// <summary>
-        /// Calls GET endpoint.
-        /// </summary>
-        /// <typeparam name="TCustomModel">Result model type.</typeparam>
-        /// <param name="queryParams">Query string parameters.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        protected virtual ApiResult<TCustomModel> GetCore<TCustomModel>(Dictionary<string, string> queryParams)
-            where TCustomModel : new()
-        {
-            return Client.Get<TCustomModel>(ResourceUrl, queryParams);
         }
 
         /// <summary>

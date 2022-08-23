@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Statistics;
@@ -44,38 +45,40 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="yearType">Type of year.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="InvoicingForYearGetModel"/>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<InvoicingForYearGetModel> InvoicingForYear(YearType yearType)
         {
-            var queryParams = new Dictionary<string, string> { { nameof(YearType), yearType.ToString() } };
-
-            return Get<InvoicingForYearGetModel>($"{ResourceUrl}/InvoicingForYear", queryParams);
+            return InvoicingForYearAsync(yearType).GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// Statistics for issued and received invoices.
         /// </summary>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="List{QuarterSummaryGetModel}"/>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<List<QuarterSummaryGetModel>> QuarterSummary()
         {
-            return Get<List<QuarterSummaryGetModel>>($"{ResourceUrl}/QuarterSummary");
+            return QuarterSummaryAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// Statistics for top partners.
         /// </summary>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="List{TopPartnerGetModel}"/>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<List<TopPartnerGetModel>> TopPartners()
         {
-            return Get<List<TopPartnerGetModel>>($"{ResourceUrl}/TopPartners");
+            return TopPartnersAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// Count of documents.
         /// </summary>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="AgendaSummaryGetModel"/>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<AgendaSummaryGetModel> AgendaSummary()
         {
-            return Get<AgendaSummaryGetModel>($"{ResourceUrl}/AgendaSummary");
+            return AgendaSummaryAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -83,9 +86,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="id">Id of contact.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="ContactStatisticGetModel"/>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<ContactStatisticGetModel> StatisticForContact(int id)
         {
-            return Get<ContactStatisticGetModel>($"{ResourceUrl}/StatisticForContact/{id}");
+            return StatisticForContactAsync(id).GetAwaiter().GetResult();
         }
     }
 }

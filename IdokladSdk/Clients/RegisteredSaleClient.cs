@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.RegisteredSale;
 using IdokladSdk.Requests.RegisteredSale;
@@ -27,9 +28,10 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/RegisteredSales";
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<RegisteredSalePostModel> Default()
         {
-            return Default<RegisteredSalePostModel>();
+            return DefaultAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc cref="IEntityDetail{TDetail}.Detail"/>
@@ -50,10 +52,10 @@ namespace IdokladSdk.Clients
         /// <param name="type">Type of document for register new sale.</param>
         /// <param name="id">Id of document for register new sale.</param>
         /// <param name="model">Model of registered sale.</param>
+        [Obsolete("Use async method instead.")]
         public ApiResult<RegisteredSaleGetModel> Post(RegisteredSaleType type, int id, RegisteredSalePostModel model)
         {
-            var resource = $"{ResourceUrl}/{type}/{id}";
-            return Post<RegisteredSalePostModel, RegisteredSaleGetModel>(resource, model);
+            return PostAsync(type, id, model).GetAwaiter().GetResult();
         }
     }
 }

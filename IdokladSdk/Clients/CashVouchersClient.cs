@@ -1,9 +1,9 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.Requests.CashVoucher;
 using IdokladSdk.Response;
-using RestSharp;
 
 namespace IdokladSdk.Clients
 {
@@ -33,12 +33,10 @@ namespace IdokladSdk.Clients
         /// <inheritdoc cref="IDefaultRequest{TPostModel}.Default"/>
         /// <param name="movementType">Movement type.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherPostModel"/>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<CashVoucherPostModel> Default(MovementType movementType)
         {
-            var resource = $"{ResourceUrl}/Default/{movementType}";
-            var request = CreateRequest(resource, Method.GET);
-
-            return Execute<CashVoucherPostModel>(request);
+            return DefaultAsync(movementType).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc cref="IDefaultRequest{TPostModel}.Default"/>
@@ -46,18 +44,17 @@ namespace IdokladSdk.Clients
         /// <param name="invoiceType">Invoice type.</param>
         /// <param name="invoiceId">Id of invoice.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherPostModel"/>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<CashVoucherPostModel> Default(MovementType movementType, InvoiceType invoiceType, int invoiceId)
         {
-            var resource = $"{ResourceUrl}/Default/{movementType}/{invoiceType}/{invoiceId}";
-            var request = CreateRequest(resource, Method.GET);
-
-            return Execute<CashVoucherPostModel>(request);
+            return DefaultAsync(movementType, invoiceType, invoiceId).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -81,22 +78,21 @@ namespace IdokladSdk.Clients
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if pairing was successful, otherwise <c>false</c>.</returns>
         public ApiResult<bool> Pair(int cashVoucherId, InvoiceType invoiceType, int invoiceId)
         {
-            var resource = $"{ResourceUrl}/Pair/{cashVoucherId}/{invoiceType}/{invoiceId}";
-            var request = CreateRequest(resource, Method.POST);
-
-            return Execute<bool>(request);
+            return PairAsync(cashVoucherId, invoiceType, invoiceId).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<CashVoucherGetModel> Post(CashVoucherPostModel model)
         {
-            return Post<CashVoucherPostModel, CashVoucherGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<CashVoucherGetModel> Update(CashVoucherPatchModel model)
         {
-            return Patch<CashVoucherPatchModel, CashVoucherGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

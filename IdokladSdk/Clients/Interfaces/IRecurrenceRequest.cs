@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
 
@@ -15,6 +16,7 @@ namespace IdokladSdk.Clients.Interfaces
         /// </summary>
         /// <param name="id">Invoice Id.</param>
         /// <returns>Resource of recurring invoice for creation.</returns>
+        [Obsolete("Use async method instead.")]
         ApiResult<TGetModel> Recurrence(int id);
 
         /// <summary>

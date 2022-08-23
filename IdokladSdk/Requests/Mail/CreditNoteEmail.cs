@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients;
+﻿using System;
+using IdokladSdk.Clients;
 using IdokladSdk.Models.Email;
 using IdokladSdk.Requests.Mail.Interfaces;
 using IdokladSdk.Response;
@@ -21,9 +22,10 @@ namespace IdokladSdk.Requests.Mail
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<EmailSendResult> Send(CreditNoteEmailSettings settings)
         {
-            return Send<CreditNoteEmailSettings>(settings);
+            return SendAsync(settings).GetAwaiter().GetResult();
         }
     }
 }

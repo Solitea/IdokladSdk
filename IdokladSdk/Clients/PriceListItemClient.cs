@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Clients.Interfaces;
-using IdokladSdk.Models.Batch;
 using IdokladSdk.Models.PriceListItem;
 using IdokladSdk.Requests.PriceListItem;
 using IdokladSdk.Response;
-using RestSharp;
 
 namespace IdokladSdk.Clients
 {
@@ -34,19 +32,19 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/PriceListItems";
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<PriceListItemPostModel> Default()
         {
-            return Default<PriceListItemPostModel>();
+            return DefaultAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc cref="IDeleteRequest.Delete"/>
         /// <param name="id">Entity id.</param>
         /// <param name="deleteIfReferenced">Indicates whether item referenced on invoices or exported item will be deleted.</param>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id, bool deleteIfReferenced = true)
         {
-            var resource = $"{ResourceUrl}/{id}/{deleteIfReferenced.ToString(CultureInfo.InvariantCulture)}";
-
-            return Delete<bool>(resource);
+            return DeleteAsync(id, deleteIfReferenced).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -55,14 +53,10 @@ namespace IdokladSdk.Clients
         /// <param name="idBatch">List of entity ids.</param>
         /// <param name="deleteIfReferenced">Indicates whether items referenced on invoices or exported items will be deleted.</param>
         /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiBatchResult<bool> Delete(List<int> idBatch, bool deleteIfReferenced)
         {
-            var batch = new BatchModel<int>(idBatch);
-            var resource = $"{BatchUrl}/{deleteIfReferenced.ToString(CultureInfo.InvariantCulture)}";
-            var request = CreateRequest(resource, Method.DELETE);
-            request.AddJsonBody(batch);
-
-            return ExecuteBatch<bool>(request);
+            return DeleteAsync(idBatch, deleteIfReferenced).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -78,27 +72,31 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<PriceListItemGetModel> Post(PriceListItemPostModel model)
         {
-            return Post<PriceListItemPostModel, PriceListItemGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiBatchResult<PriceListItemGetModel> Post(List<PriceListItemPostModel> models)
         {
-            return Post<PriceListItemPostModel, PriceListItemGetModel>(models);
+            return PostAsync(models).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<PriceListItemGetModel> Update(PriceListItemPatchModel model)
         {
-            return Patch<PriceListItemPatchModel, PriceListItemGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiBatchResult<PriceListItemGetModel> Update(List<PriceListItemPatchModel> models)
         {
-            return Patch<PriceListItemPatchModel, PriceListItemGetModel>(models);
+            return UpdateAsync(models).GetAwaiter().GetResult();
         }
     }
 }

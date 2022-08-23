@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients;
+﻿using System;
+using IdokladSdk.Clients;
 using IdokladSdk.Requests.Mail.Interfaces;
 using IdokladSdk.Response;
 
@@ -20,9 +21,10 @@ namespace IdokladSdk.Requests.Mail
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Send(int id)
         {
-            return Client.Post<bool>(GetResourceUrl(id));
+            return SendAsync(id).GetAwaiter().GetResult();
         }
 
         private string GetResourceUrl(int id) => $"{Client.ResourceUrl}/{DocumentType}/SendConfirmation/{id}";

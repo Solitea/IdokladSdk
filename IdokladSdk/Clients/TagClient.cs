@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Tag;
 using IdokladSdk.Requests.Tag;
 using IdokladSdk.Response;
@@ -27,9 +28,10 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/Tags";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
@@ -39,15 +41,17 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<TagGetModel> Post(TagPostModel model)
         {
-            return Post<TagPostModel, TagGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<TagGetModel> Update(TagPatchModel model)
         {
-            return Patch<TagPatchModel, TagGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

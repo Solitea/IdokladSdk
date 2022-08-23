@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Response;
-using RestSharp;
 
 namespace IdokladSdk.Clients
 {
@@ -49,10 +47,10 @@ namespace IdokladSdk.Clients
         /// <param name="documentType">Type of a document.</param>
         /// <param name="compressed"><c>true</c> if attachments should be compressed, otherwise <c>false</c>.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing list of attachments.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<List<AttachmentGetModel>> Get(int documentId, AttachmentDocumentType documentType, bool compressed = false)
         {
-            var resource = ResourceUrl + $"{documentId}/{documentType}/{compressed}";
-            return Get<List<AttachmentGetModel>>(resource);
+            return GetAsync(documentId, documentType, compressed).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -62,21 +60,7 @@ namespace IdokladSdk.Clients
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if upload of an attachment was successful, otherwise <c>false</c>.</returns>
         public ApiResult<bool> Upload(AttachmentUploadModel model)
         {
-            if (model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            if (!IsAttachmentNameValid(model))
-            {
-                throw new ValidationException("File name contains one or more unsupported characters");
-            }
-
-            var resource = ResourceUrl + $"{model.DocumentId}/{model.DocumentType}";
-            var request = CreateRequest(resource, Method.PUT);
-            request.AddFile(model.FileName, model.FileBytes, model.FileName);
-            request.AlwaysMultipartFormData = true;
-            return Client.Execute<ApiResult<bool>>(request).Data;
+            return UploadAsync(model).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -98,8 +82,7 @@ namespace IdokladSdk.Clients
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if deletion of all attachments was successful, otherwise <c>false</c>.</returns>
         public ApiResult<bool> Delete(int documentId, AttachmentDocumentType documentType)
         {
-            var resource = ResourceUrl + $"{documentId}/{documentType}";
-            return Delete<bool>(resource);
+            return DeleteAsync(documentId, documentType).GetAwaiter().GetResult();
         }
 
         private bool IsAttachmentNameValid(AttachmentUploadModel attachment)

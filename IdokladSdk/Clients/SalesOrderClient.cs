@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.SalesOrder;
@@ -34,22 +35,24 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesOrders";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesOrderPostModel> Copy(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<SalesOrderPostModel>(resource);
+            return CopyAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesOrderPostModel> Default()
         {
-            return Default<SalesOrderPostModel>();
+            return DefaultAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -63,10 +66,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="salesOrderId">Sales order id.</param>
         /// <returns>Method return issued invoice post model.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoicePostModel> GetIssuedInvoice(int salesOrderId)
         {
-            var resource = $"{ResourceUrl}/{salesOrderId}/IssuedInvoice";
-            return Get<IssuedInvoicePostModel>(resource);
+            return GetIssuedInvoiceAsync(salesOrderId).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -74,10 +77,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="salesOrderId">Sales order id.</param>
         /// <returns>Method return proforma invoice post model.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<ProformaInvoicePostModel> GetProformaInvoice(int salesOrderId)
         {
-            var resource = $"{ResourceUrl}/{salesOrderId}/ProformaInvoice";
-            return Get<ProformaInvoicePostModel>(resource);
+            return GetProformaInvoiceAsync(salesOrderId).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -87,22 +90,24 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesOrderGetModel> Post(SalesOrderPostModel model)
         {
-            return Post<SalesOrderPostModel, SalesOrderGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesOrderRecountGetModel> Recount(SalesOrderRecountPostModel model)
         {
-            var resource = $"{ResourceUrl}/Recount";
-            return Post<SalesOrderRecountPostModel, SalesOrderRecountGetModel>(resource, model);
+            return RecountAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<SalesOrderGetModel> Update(SalesOrderPatchModel model)
         {
-            return Patch<SalesOrderPatchModel, SalesOrderGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

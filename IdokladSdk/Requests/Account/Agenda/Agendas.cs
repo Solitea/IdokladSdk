@@ -3,8 +3,6 @@ using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Account;
 using IdokladSdk.Response;
-using IdokladSdk.Validation;
-using RestSharp;
 
 namespace IdokladSdk.Requests.Account.Agenda
 {
@@ -48,9 +46,10 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// Deletes agenda's logo.
         /// </summary>
         /// <returns><c>true</c>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> DeleteLogo()
         {
-            return _client.Delete<bool>(LogoUrl);
+            return DeleteLogoAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -58,9 +57,10 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// </summary>
         /// <param name="model">Reasons for deleting the agenda.</param>
         /// <returns><c>true</c>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> DeleteRequest(AgendaDeleteRequestPostModel model)
         {
-            return _client.Post<AgendaDeleteRequestPostModel, bool>(DeleteRequestUrl, model);
+            return DeleteRequestAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -73,18 +73,20 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// Generation of an e-mail address to which the bank will send bank movements messages.
         /// </summary>
         /// <returns>E-mail address.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<string> GenerateBankStatementMail()
         {
-            return _client.Post<string>(GenerateBankStatementMailUrl);
+            return GenerateBankStatementMailAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// Returns agenda's logo.
         /// </summary>
         /// <returns>Agenda's logo.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<LogoGetModel> GetLogo()
         {
-            return _client.Get<LogoGetModel>(LogoUrl);
+            return GetLogoAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -94,27 +96,21 @@ namespace IdokladSdk.Requests.Account.Agenda
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<AgendaGetModel> Update(AgendaPatchModel model)
         {
-            return _client.Patch<AgendaPatchModel, AgendaGetModel>(CurrentAgendaUrl, model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// Sets agenda logo. Existing logo will be replaced. Optimal size is 280 x 100 (96 DPI) or 900 x 300 (300 DPI). Max. file size is 5 MB.
         /// </summary>
-       /// <param name="model">New logo.</param>
-       /// <returns><c>true</c>.</returns>
+        /// <param name="model">New logo.</param>
+        /// <returns><c>true</c>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> UploadLogo(LogoPostModel model)
         {
-            if (model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var request = _client.CreateRequest(LogoUrl, Method.PUT);
-            request.AddFile(model.FileName, model.FileBytes, model.FileName);
-            request.AlwaysMultipartFormData = true;
-            return _client.Execute<bool>(request);
+            return UploadLogoAsync(model).GetAwaiter().GetResult();
         }
     }
 }

@@ -31,10 +31,10 @@ namespace IdokladSdk.NetCore.TestApp
                 LoadConfiguration();
                 SetIdokladApi();
 
-                SyncFlow();
+                await AsyncComplexFlow();
                 await AsyncFlow();
 
-                CleanUp();
+                await CleanUpAsync();
             }
             catch (Exception ex)
             {
@@ -57,33 +57,33 @@ namespace IdokladSdk.NetCore.TestApp
             await batchExample.SetExportedStateAsync(_issuedInvoiceId, _partner1Id, ExportedState.NotExported);
         }
 
-        private static void SyncFlow()
+        private static async Task AsyncComplexFlow()
         {
             var contacts = new ContactExamples(_api);
-            _partner1Id = contacts.CreateContact_ResponseChecking();
-            _partner2Id = contacts.CreateContact_ExceptionHandling();
-            contacts.UpdateContact(_partner1Id, "Jan", "Novák");
+            _partner1Id = await contacts.CreateContact_ResponseCheckingAsync();
+            _partner2Id = await contacts.CreateContact_ExceptionHandlingAsync();
+            await contacts.UpdateContactAsync(_partner1Id, "Jan", "Novák");
 
             var select = new SelectExamples(_api);
-            select.List_DefaultGetMethod_ReturnsDefaultModel();
-            select.List_GetWithGenericType_ReturnsCustomModel();
-            select.List_GetWithLambda_SpecificType();
-            select.List_FilteringSortingPaging();
-            select.List_Filtering_Obsolete();
-            select.Detail_DefaultGetMethod_ReturnsDefaultModel(_partner1Id);
-            select.Detail_GetWithGenericType_ReturnsCustomModel(_partner1Id);
-            select.Detail_WithLambda_ReturningAnonymousType(_partner1Id);
+            await select.List_DefaultGetMethod_ReturnsDefaultModelAsync();
+            await select.List_GetWithGenericType_ReturnsCustomModelAsync();
+            await select.List_GetWithLambda_SpecificTypeAsync();
+            await select.List_FilteringSortingPagingAsync();
+            await select.List_Filtering_ObsoleteAsync();
+            await select.Detail_DefaultGetMethod_ReturnsDefaultModelAsync(_partner1Id);
+            await select.Detail_GetWithGenericType_ReturnsCustomModelAsync(_partner1Id);
+            await select.Detail_WithLambda_ReturningAnonymousTypeAsync(_partner1Id);
 
             var invoices = new IssuedInvoiceExamples(_api);
-            _priceListItemId = invoices.CreatePriceListItem();
-            _issuedInvoiceId = invoices.CreateNewInvoice(_partner1Id);
-            (_proformaInvoice1Id, _accountingInvoice1Id) = invoices.AccountProforma_WithIssuedInvoiceDetail(_partner2Id, _priceListItemId);
-            (_proformaInvoice2Id, _accountingInvoice2Id) = invoices.AccountProforma_WithoutIssuedInvoiceDetail(_partner2Id);
-            invoices.UpdateInvoice_AddItemFromPriceList(_issuedInvoiceId, _priceListItemId);
-            invoices.UpdateInvoice_NullableProperties(_issuedInvoiceId);
+            _priceListItemId = await invoices.CreatePriceListItemAsync();
+            _issuedInvoiceId = await invoices.CreateNewInvoiceAsync(_partner1Id);
+            (_proformaInvoice1Id, _accountingInvoice1Id) = await invoices.AccountProforma_WithIssuedInvoiceDetailAsync(_partner2Id, _priceListItemId);
+            (_proformaInvoice2Id, _accountingInvoice2Id) = await invoices.AccountProforma_WithoutIssuedInvoiceDetailAsync(_partner2Id);
+            await invoices.UpdateInvoice_AddItemFromPriceListAsync(_issuedInvoiceId, _priceListItemId);
+            await invoices.UpdateInvoice_NullablePropertiesAsync(_issuedInvoiceId);
 
             var validation = new ValidationExamples(_api);
-            validation.ValidateOnClient();
+            await validation.ValidateOnClientAsync();
         }
 
         /// <summary>
@@ -108,16 +108,16 @@ namespace IdokladSdk.NetCore.TestApp
             _clientSecret = configuration.GetValue<string>("ClientSecret");
         }
 
-        private static void CleanUp()
+        private static async Task CleanUpAsync()
         {
-            _api.IssuedInvoiceClient.Delete(_issuedInvoiceId);
-            _api.IssuedInvoiceClient.Delete(_accountingInvoice1Id);
-            _api.IssuedInvoiceClient.Delete(_accountingInvoice2Id);
-            _api.ProformaInvoiceClient.Delete(_proformaInvoice1Id);
-            _api.ProformaInvoiceClient.Delete(_proformaInvoice2Id);
-            _api.ContactClient.Delete(_partner1Id);
-            _api.ContactClient.Delete(_partner2Id);
-            _api.PriceListItemClient.Delete(_priceListItemId);
+            await _api.IssuedInvoiceClient.DeleteAsync(_issuedInvoiceId);
+            await _api.IssuedInvoiceClient.DeleteAsync(_accountingInvoice1Id);
+            await _api.IssuedInvoiceClient.DeleteAsync(_accountingInvoice2Id);
+            await _api.ProformaInvoiceClient.DeleteAsync(_proformaInvoice1Id);
+            await _api.ProformaInvoiceClient.DeleteAsync(_proformaInvoice2Id);
+            await _api.ContactClient.DeleteAsync(_partner1Id);
+            await _api.ContactClient.DeleteAsync(_partner2Id);
+            await _api.PriceListItemClient.DeleteAsync(_priceListItemId);
         }
     }
 }

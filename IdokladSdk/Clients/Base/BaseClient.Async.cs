@@ -128,7 +128,7 @@ namespace IdokladSdk.Clients
         /// <param name="models">Models.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal Task<ApiBatchResult<TGetModel>> PatchAsync<TPatchModel, TGetModel>(
+        protected internal async Task<ApiBatchResult<TGetModel>> PatchAsync<TPatchModel, TGetModel>(
             string resource,
             IList<TPatchModel> models,
             CancellationToken cancellationToken)
@@ -138,11 +138,11 @@ namespace IdokladSdk.Clients
             var batch = new BatchModel<TPatchModel>(models);
 
             ValidateModel(batch);
-            var request = CreateRequest(resource, Method.PATCH);
+            var request = await CreateRequestAsync(resource, Method.PATCH, cancellationToken);
             request.JsonSerializer = new PatchRequestJsonSerializer();
             request.AddJsonBody(batch);
 
-            return ExecuteBatchAsync<TGetModel>(request, cancellationToken);
+            return await ExecuteBatchAsync<TGetModel>(request, cancellationToken);
         }
 
         /// <summary>
@@ -266,15 +266,15 @@ namespace IdokladSdk.Clients
         /// <param name="queryParams">Query params.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal Task<ApiResult<TGetModel>> PutAsync<TGetModel>(
+        protected internal async Task<ApiResult<TGetModel>> PutAsync<TGetModel>(
             string resource,
             Dictionary<string, string> queryParams,
             CancellationToken cancellationToken)
         {
-            var request = CreateRequest(resource, Method.PUT);
+            var request = await CreateRequestAsync(resource, Method.PUT, cancellationToken);
             ProcessQueryParameters(request, queryParams);
 
-            return ExecuteAsync<TGetModel>(request, cancellationToken);
+            return await ExecuteAsync<TGetModel>(request, cancellationToken);
         }
 
         /// <summary>

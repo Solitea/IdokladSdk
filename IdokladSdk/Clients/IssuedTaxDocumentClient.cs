@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedTaxDocument.Get;
 using IdokladSdk.Models.IssuedTaxDocument.Patch;
 using IdokladSdk.Models.IssuedTaxDocument.Post;
@@ -32,15 +33,17 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/IssuedTaxDocuments";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedTaxDocumentGetModel> Default(int id)
         {
-            return Default<IssuedTaxDocumentGetModel>(id);
+            return DefaultAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -60,22 +63,24 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="id">Payment id.</param>
         /// <returns>New issued tax document.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedTaxDocumentGetModel> Post(int id)
         {
-            var resource = $"{ResourceUrl}/{id}";
-            return Post<IssuedTaxDocumentGetModel>(resource);
+            return PostAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedTaxDocumentGetModel> Post(IssuedTaxDocumentPostModel model)
         {
-            return Post<IssuedTaxDocumentPostModel, IssuedTaxDocumentGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedTaxDocumentGetModel> Update(IssuedTaxDocumentPatchModel model)
         {
-            return Patch<IssuedTaxDocumentPatchModel, IssuedTaxDocumentGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
     }
 }

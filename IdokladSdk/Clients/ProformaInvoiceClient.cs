@@ -1,10 +1,10 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.RecurringInvoice;
 using IdokladSdk.Requests.ProformaInvoice;
 using IdokladSdk.Response;
-using RestSharp;
 
 namespace IdokladSdk.Clients
 {
@@ -35,22 +35,24 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/ProformaInvoices";
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ProformaInvoiceCopyGetModel> Copy(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<ProformaInvoiceCopyGetModel>(resource);
+            return CopyAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ProformaInvoicePostModel> Default()
         {
-            return Default<ProformaInvoicePostModel>();
+            return DefaultAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return Delete<bool>(id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
@@ -66,29 +68,30 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ProformaInvoiceGetModel> Post(ProformaInvoicePostModel model)
         {
-            return Post<ProformaInvoicePostModel, ProformaInvoiceGetModel>(model);
+            return PostAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
         public ApiResult<ProformaInvoiceRecountGetModel> Recount(ProformaInvoiceRecountPostModel model)
         {
-            var resource = $"{ResourceUrl}/Recount";
-            return Post<ProformaInvoiceRecountPostModel, ProformaInvoiceRecountGetModel>(resource, model);
+            return RecountAsync(model).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<RecurringInvoicePostModel> Recurrence(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Recurrence";
-            return Get<RecurringInvoicePostModel>(resource);
+            return RecurrenceAsync(id).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ProformaInvoiceGetModel> Update(ProformaInvoicePatchModel model)
         {
-            return Patch<ProformaInvoicePatchModel, ProformaInvoiceGetModel>(model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -96,10 +99,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="id">Proforma invoice id.</param>
         /// <returns>Method return issued invoice post model for account proforma invoice.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoicePostModel> GetInvoiceForAccount(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Account";
-            return Get<IssuedInvoicePostModel>(resource);
+            return GetInvoiceForAccountAsync(id).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -107,11 +110,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="id">Proforma invoice id.</param>
         /// <returns>Method account proforma invoice and return created issued invoice model.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoiceGetModel> Account(int id)
         {
-            var resource = $"{ResourceUrl}/{id}/Account";
-            var request = CreateRequest(resource, Method.PUT);
-            return Execute<IssuedInvoiceGetModel>(request);
+            return AccountAsync(id).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -119,10 +121,10 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="model">Model containing proforma invoices id.</param>
         /// <returns>Get model of accounting invoice.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<IssuedInvoiceGetModel> AccountMultipleProformaInvoices(AccountProformaInvoicesPutModel model)
         {
-            var resource = $"{ResourceUrl}/Account";
-            return Put<AccountProformaInvoicesPutModel, IssuedInvoiceGetModel>(resource, model);
+            return AccountMultipleProformaInvoicesAsync(model).GetAwaiter().GetResult();
         }
     }
 }

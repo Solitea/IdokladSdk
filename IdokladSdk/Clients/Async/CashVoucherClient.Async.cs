@@ -15,12 +15,12 @@ namespace IdokladSdk.Clients
         /// <param name="movementType">Movement type.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherPostModel"/>.</returns>
-        public Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, CancellationToken cancellationToken = default)
+        public async Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Default/{movementType}";
-            var request = CreateRequest(resource, Method.GET);
+            var request = await CreateRequestAsync(resource, Method.GET, cancellationToken);
 
-            return ExecuteAsync<CashVoucherPostModel>(request, cancellationToken);
+            return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken);
         }
 
         /// <summary>
@@ -31,12 +31,12 @@ namespace IdokladSdk.Clients
         /// <param name="invoiceId">Id of invoice.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherPostModel"/>.</returns>
-        public Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
+        public async Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Default/{movementType}/{invoiceType}/{invoiceId}";
-            var request = CreateRequest(resource, Method.GET);
+            var request = await CreateRequestAsync(resource, Method.GET, cancellationToken);
 
-            return ExecuteAsync<CashVoucherPostModel>(request, cancellationToken);
+            return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -53,12 +53,12 @@ namespace IdokladSdk.Clients
         /// <param name="invoiceId">Id of invoice.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if pairing was successful, otherwise <c>false</c>.</returns>
-        public Task<ApiResult<bool>> PairAsync(int cashVoucherId, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
+        public async Task<ApiResult<bool>> PairAsync(int cashVoucherId, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Pair/{cashVoucherId}/{invoiceType}/{invoiceId}";
-            var request = CreateRequest(resource, Method.POST);
+            var request = await CreateRequestAsync(resource, Method.POST, cancellationToken);
 
-            return ExecuteAsync<bool>(request, cancellationToken);
+            return await ExecuteAsync<bool>(request, cancellationToken);
         }
 
         /// <inheritdoc/>

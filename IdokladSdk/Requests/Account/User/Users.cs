@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients;
+﻿using System;
+using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Account;
 using IdokladSdk.Response;
@@ -48,9 +49,10 @@ namespace IdokladSdk.Requests.Account.User
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<UserGetModel> Update(UserPatchModel model)
         {
-            return _client.Patch<UserPatchModel, UserGetModel>(CurrentUserUrl, model);
+            return UpdateAsync(model).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -58,9 +60,10 @@ namespace IdokladSdk.Requests.Account.User
         /// </summary>
         /// <param name="id">User id.</param>
         /// <returns>Returns true if user deletion was successfull, false otherwise.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Delete(int id)
         {
-            return _client.Delete<bool>($"{_client.ResourceUrl}/Users/" + id);
+            return DeleteAsync(id).GetAwaiter().GetResult();
         }
     }
 }
