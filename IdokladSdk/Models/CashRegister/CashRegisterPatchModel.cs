@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashRegister
@@ -21,7 +22,7 @@ namespace IdokladSdk.Models.CashRegister
         /// </summary>
         [RequiredIfHasValue(nameof(InitialState))]
         [DateTime]
-        public DateTime? DateInitialState { get; set; }
+        public NullableProperty<DateTime> DateInitialState { get; set; }
 
         /// <inheritdoc/>
         [Required]
@@ -30,9 +31,9 @@ namespace IdokladSdk.Models.CashRegister
         /// <summary>
         /// Gets or sets initial amount of money in the cash register.
         /// </summary>
-        [Range(0.0, double.MaxValue)]
+        [NullableRange(0.0, double.MaxValue)]
         [RequiredIfHasValue(nameof(DateInitialState))]
-        public decimal? InitialState { get; set; }
+        public NullableProperty<decimal> InitialState { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether cash register is default.

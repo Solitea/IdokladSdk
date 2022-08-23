@@ -26,7 +26,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
         public void List_SuccessfullyGet()
         {
             // Act
-            var data = _client.List().Get().AssertResult();
+            var data = _client.List().Sort(x => x.DateOfPayment.Asc()).Get().AssertResult();
 
             // Assert
             Assert.GreaterOrEqual(data.TotalItems, 1);

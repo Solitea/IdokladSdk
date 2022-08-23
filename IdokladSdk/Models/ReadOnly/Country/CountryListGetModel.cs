@@ -31,7 +31,7 @@ namespace IdokladSdk.Models.ReadOnly.Country
         public bool IsEuMember { get; set; }
 
         /// <summary>
-        /// Gets or sets name of country.
+        /// Gets or sets czech name of country.
         /// </summary>
         public string Name { get; set; }
 
@@ -39,5 +39,15 @@ namespace IdokladSdk.Models.ReadOnly.Country
         /// Gets or sets english name of country.
         /// </summary>
         public string NameEnglish { get; set; }
+
+        /// <summary>
+        /// Gets or sets german name of country.
+        /// </summary>
+        public string NameGerman { get; set; }
+
+        /// <summary>
+        /// Gets or sets slovak name of country.
+        /// </summary>
+        public string NameSlovak { get; set; }
     }
 }

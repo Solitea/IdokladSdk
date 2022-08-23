@@ -1,8 +1,8 @@
 ﻿using IdokladSdk.Clients;
 using IdokladSdk.Models.ReceivedDocumentPayments;
 using IdokladSdk.Requests.Core;
-using IdokladSdk.Requests.Core.Modifiers.Sort.BasicSorts;
 using IdokladSdk.Requests.ReceivedDocumentPayments.Filter;
+using IdokladSdk.Requests.ReceivedDocumentPayments.Sort;
 
 namespace IdokladSdk.Requests.ReceivedDocumentPayments
 {
@@ -10,7 +10,7 @@ namespace IdokladSdk.Requests.ReceivedDocumentPayments
     /// List of received document payments.
     /// </summary>
     public class ReceivedDocumentPaymentList :
-        BaseList<ReceivedDocumentPaymentList, ReceivedDocumentPaymentsClient, ReceivedDocumentPaymentListGetModel, ReceivedDocumentPaymentFilter, IdSort>
+        BaseList<ReceivedDocumentPaymentList, ReceivedDocumentPaymentsClient, ReceivedDocumentPaymentListGetModel, ReceivedDocumentPaymentFilter, ReceivedDocumentPaymentSort>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReceivedDocumentPaymentList"/> class.

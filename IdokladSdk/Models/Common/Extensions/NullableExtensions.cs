@@ -4,19 +4,24 @@ namespace IdokladSdk.Models.Common.Extensions
 {
     internal static class NullableExtensions
     {
-        public static bool IsAnyNullableType(this Type type, out Type underlyingType)
+        internal static object GetValueOfNullableProperty(this Type type, object value)
+        {
+            return type.GetProperty("Value").GetValue(value, null);
+        }
+
+        internal static bool IsAnyNullableType(this Type type, out Type underlyingType)
         {
             return type.IsNullableType(out underlyingType) || type.IsNullablePropertyType(out underlyingType);
         }
 
-        public static bool IsNullablePropertyType(this Type type)
+        internal static bool IsNullablePropertyType(this Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(NullableProperty<>);
         }
 
-        public static bool IsNullablePropertyType(this Type type, out Type underlyingType)
+        internal static bool IsNullablePropertyType(this Type type, out Type underlyingType)
         {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(NullableProperty<>))
+            if (type.IsNullablePropertyType())
             {
                 underlyingType = type.GetGenericArguments()[0];
             }
@@ -28,15 +33,21 @@ namespace IdokladSdk.Models.Common.Extensions
             return underlyingType != null;
         }
 
-        public static bool IsNullableType(this Type type)
+        internal static bool IsNullableType(this Type type)
         {
             return Nullable.GetUnderlyingType(type) != null;
         }
 
-        public static bool IsNullableType(this Type type, out Type underlyingType)
+        internal static bool IsNullableType(this Type type, out Type underlyingType)
         {
             underlyingType = Nullable.GetUnderlyingType(type);
             return underlyingType != null;
+        }
+
+        internal static bool IsTypeOfNullableProperty(this object value, out Type type)
+        {
+            type = value?.GetType();
+            return type != null && type.IsNullablePropertyType();
         }
     }
 }

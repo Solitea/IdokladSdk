@@ -92,9 +92,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
         private void AssertData(CashRegisterPatchModel patchModel, CashRegisterGetModel getModel)
         {
             Assert.AreEqual(patchModel.CurrencyId, getModel.CurrencyId);
-            Assert.AreEqual(patchModel.DateInitialState, getModel.DateInitialState);
+            Assert.AreEqual(patchModel.DateInitialState.Value, getModel.DateInitialState);
             Assert.AreEqual(patchModel.Id, getModel.Id);
-            Assert.AreEqual(patchModel.InitialState, getModel.InitialState);
+            Assert.AreEqual(patchModel.InitialState.Value, getModel.InitialState);
             Assert.AreEqual(patchModel.IsDefault, getModel.IsDefault);
             Assert.AreEqual(patchModel.Name, getModel.Name);
         }
@@ -113,9 +113,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
             return new CashRegisterPatchModel()
             {
                 CurrencyId = 2,
-                DateInitialState = new DateTime(2019, 6, 2).SetKindUtc(),
+                DateInitialState = null,
                 Id = _newCashRegisterId,
-                InitialState = 99m,
+                InitialState = null,
                 IsDefault = false,
                 Name = "My updated cash register"
             };

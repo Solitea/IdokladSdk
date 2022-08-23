@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Common.Extensions;
+using IdokladSdk.Models.Common.Helpers;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -22,7 +22,7 @@ namespace IdokladSdk.Validation.Attributes
         {
             _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
             var invalidValue = ConvertInvalidValueToPropertyType(validationContext);
-            value = GetValueFromNullableProperty(value);
+            value = NullablePropertyHelper.GetValue(value);
 
             if (invalidValue.Equals(value))
             {
@@ -45,20 +45,6 @@ namespace IdokladSdk.Validation.Attributes
             }
 
             return InvalidValue;
-        }
-
-        private dynamic GetValueFromNullableProperty(object value)
-        {
-            if (value != null)
-            {
-                var type = value.GetType();
-                if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(NullableProperty<>))
-                {
-                    return type.GetProperty("Value").GetValue(value);
-                }
-            }
-
-            return value;
         }
 
         private Type GetValidatedPropertyType(ValidationContext validationContext)
