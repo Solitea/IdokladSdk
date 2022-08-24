@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
@@ -21,6 +22,8 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets item name.
         /// </summary>
+        [Required(AllowEmptyStrings = false)]
+        [StringLength(200)]/// 
         public string Name { get; set; }
 
         /// <summary>
