@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IdokladSdk.Builders;
 using IdokladSdk.Enums;
@@ -47,6 +48,7 @@ namespace IdokladSdk.NetCore.TestApp
         {
             _api = new DokladApiBuilder("Test", "1.0")
                 .AddClientCredentialsAuthentication(_clientId, _clientSecret)
+                .AddHttpClientForApi(new HttpClient())
                 .Build();
         }
 

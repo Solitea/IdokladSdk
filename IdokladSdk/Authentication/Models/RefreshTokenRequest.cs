@@ -8,9 +8,9 @@ namespace IdokladSdk.Authentication.Models
 
         internal string RefreshToken { get; set; }
 
-        internal override IRestRequest ToRestRequest()
+        internal override RestRequest ToRestRequest()
         {
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest(IdentityServerTokenUrl, Method.Post);
 
             request.AddParameter("content-type", ContentType);
             request.AddParameter("grant_type", "refresh_token");

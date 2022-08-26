@@ -2,7 +2,6 @@
 using System.IO;
 using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Deserializers;
 using RestSharp.Serializers;
 
 namespace IdokladSdk.Clients
@@ -10,7 +9,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Common serializer for iDoklad API requests.
     /// </summary>
-    public class CommonJsonSerializer : ISerializer, IDeserializer
+    public class CommonJsonSerializer : IRestSerializer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommonJsonSerializer" /> class.
@@ -34,6 +33,18 @@ namespace IdokladSdk.Clients
         /// Gets instance of Newtonsoft JSON serializer used for actual serialization.
         /// </summary>
         protected JsonSerializer Serializer { get; }
+
+        /// <inheritdoc/>
+        ISerializer IRestSerializer.Serializer { get; }
+
+        /// <inheritdoc/>
+        public IDeserializer Deserializer { get; }
+
+        /// <inheritdoc/>
+        public string[] SupportedContentTypes { get; } = new[] { "application/json" };
+
+        /// <inheritdoc/>
+        public DataFormat DataFormat => DataFormat.Json;
 
         /// <summary>
         /// Serialize the object as JSON.
@@ -60,7 +71,7 @@ namespace IdokladSdk.Clients
         /// <typeparam name="T">Expected response type.</typeparam>
         /// <param name="response">Response in JSON format.</param>
         /// <returns>Deserialized object of <typeparamref name="T"/> type.</returns>
-        public T Deserialize<T>(IRestResponse response)
+        public T Deserialize<T>(RestResponse response)
         {
             var content = response?.Content ?? throw new ArgumentException();
 
@@ -71,6 +82,12 @@ namespace IdokladSdk.Clients
                     return Serializer.Deserialize<T>(jsonTextReader);
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        public string Serialize(Parameter parameter)
+        {
+            return Serialize(parameter.Value);
         }
     }
 }

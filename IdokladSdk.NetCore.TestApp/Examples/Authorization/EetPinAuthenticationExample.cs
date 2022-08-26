@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using IdokladSdk.Authentication;
 using IdokladSdk.Builders;
 
@@ -13,8 +14,14 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         // Values specific to your application
         private const string AppName = "application name";
         private const string AppVersion = "application version";
+        private readonly HttpClient _httpClient;
 
         private DokladApi _api;
+
+        public EetPinAuthenticationExample(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
 
         public async Task PinAuthorization_Authorize_UseApi_SaveRefreshToken_AuthorizeAgain()
         {
@@ -63,6 +70,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         {
             _api = new DokladApiBuilder(AppName, AppVersion)
                 .AddPinAuthentication(ClientId, ClientSecret, pin, refreshToken)
+                .AddHttpClientForApi(_httpClient)
                 .Build();
         }
     }

@@ -13,9 +13,9 @@ namespace IdokladSdk.Authentication.Models
 
         internal string RedirectUri { get; set; }
 
-        internal override IRestRequest ToRestRequest()
+        internal override RestRequest ToRestRequest()
         {
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest(IdentityServerTokenUrl, Method.Post);
 
             request.AddParameter("content-type", ContentType);
             request.AddParameter("grant_type", "authorization_code");

@@ -56,7 +56,7 @@ namespace IdokladSdk.Clients
         protected internal async Task<ApiResult<T>> DeleteAsync<T>(string resource, CancellationToken cancellationToken)
             where T : new()
         {
-            var request = await CreateRequestAsync(resource, Method.DELETE, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, Method.Delete, cancellationToken).ConfigureAwait(false);
 
             return await ExecuteAsync<T>(request, cancellationToken).ConfigureAwait(false);
         }
@@ -74,7 +74,7 @@ namespace IdokladSdk.Clients
             Dictionary<string, string> queryParams,
             CancellationToken cancellationToken)
         {
-            var request = await CreateRequestAsync(resource, Method.GET, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, Method.Get, cancellationToken).ConfigureAwait(false);
             ProcessQueryParameters(request, queryParams);
 
             return await ExecuteAsync<T>(request, cancellationToken).ConfigureAwait(false);
@@ -96,7 +96,7 @@ namespace IdokladSdk.Clients
             where TGetModel : new()
         {
             ValidateModel(model);
-            var request = await CreateRequestAsync(resource, Method.PATCH, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, Method.Patch, cancellationToken).ConfigureAwait(false);
             request.JsonSerializer = new PatchRequestJsonSerializer();
             request.AddJsonBody(model);
 
@@ -138,7 +138,7 @@ namespace IdokladSdk.Clients
             var batch = new BatchModel<TPatchModel>(models);
 
             ValidateModel(batch);
-            var request = await CreateRequestAsync(resource, Method.PATCH, cancellationToken);
+            var request = await CreateRequestAsync(resource, Method.Patch, cancellationToken);
             request.JsonSerializer = new PatchRequestJsonSerializer();
             request.AddJsonBody(batch);
 
@@ -178,7 +178,7 @@ namespace IdokladSdk.Clients
             where TGetModel : new()
         {
             ValidateModel(model);
-            var request = await CreateRequestAsync(resource, Method.POST, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, Method.Post, cancellationToken).ConfigureAwait(false);
             request.JsonSerializer = new CommonJsonSerializer();
             request.AddJsonBody(model);
 
@@ -219,7 +219,7 @@ namespace IdokladSdk.Clients
         {
             var batch = new BatchModel<TPostModel>(models);
             ValidateModel(batch);
-            var request = await CreateRequestAsync(resource, Method.POST, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, Method.Post, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
             return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
@@ -236,7 +236,7 @@ namespace IdokladSdk.Clients
             string resource,
             CancellationToken cancellationToken)
         {
-            var request = await CreateRequestAsync(resource, Method.POST, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, Method.Post, cancellationToken).ConfigureAwait(false);
 
             return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
@@ -271,7 +271,7 @@ namespace IdokladSdk.Clients
             Dictionary<string, string> queryParams,
             CancellationToken cancellationToken)
         {
-            var request = await CreateRequestAsync(resource, Method.PUT, cancellationToken);
+            var request = await CreateRequestAsync(resource, Method.Put, cancellationToken);
             ProcessQueryParameters(request, queryParams);
 
             return await ExecuteAsync<TGetModel>(request, cancellationToken);
@@ -293,7 +293,7 @@ namespace IdokladSdk.Clients
             where TGetModel : new()
         {
             ValidateModel(model);
-            var request = await CreateRequestAsync(resource, Method.PUT, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, Method.Put, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(model);
 
             return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
@@ -316,7 +316,7 @@ namespace IdokladSdk.Clients
         {
             var batch = new BatchModel<TPutModel>(models);
             ValidateModel(batch);
-            var request = await CreateRequestAsync(resource, Method.PUT, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, Method.Put, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
             return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);

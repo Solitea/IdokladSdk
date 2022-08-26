@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using IdokladSdk.Authentication;
 using IdokladSdk.Builders;
 
@@ -13,8 +14,13 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         // Values specific to your application
         private const string AppName = "application name";
         private const string AppVersion = "application version";
-
+        private readonly HttpClient _httpClient;
         private DokladApi _api;
+
+        public AuthorizationCodeExample(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
 
         public async Task AuthorizationCode_Authorize_SaveRefreshToken_AuthorizeAgain(string authorizationCode, string redirectUri)
         {
@@ -59,7 +65,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
 
         private void InitializeApi(string authorizationCode, string redirectUri, string refreshToken)
         {
-            var builder = new DokladApiBuilder(AppName, AppVersion);
+            var builder = new DokladApiBuilder(AppName, AppVersion).AddHttpClientForApi(_httpClient);
 
             if (string.IsNullOrEmpty(refreshToken))
             {

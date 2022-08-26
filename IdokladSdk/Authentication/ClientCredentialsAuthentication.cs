@@ -64,7 +64,8 @@ namespace IdokladSdk.Authentication
             return new ClientCredentialsTokenRequest
             {
                 ClientId = _clientId,
-                ClientSecret = _clientSecret
+                ClientSecret = _clientSecret,
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
     }

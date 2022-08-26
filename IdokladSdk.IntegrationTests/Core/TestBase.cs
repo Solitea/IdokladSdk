@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using IdokladSdk.Builders;
 using IdokladSdk.IntegrationTests.Core.AuthProviders;
 using IdokladSdk.IntegrationTests.Core.Builder;
@@ -14,6 +15,10 @@ namespace IdokladSdk.IntegrationTests.Core
         public DokladApi DokladApi { get; set; }
 
         public TestConfiguration Configuration { get; set; }
+
+        protected HttpClient ApiHttpClient { get; set; }
+
+        protected HttpClient IdentityHttpClient { get; set; }
 
         public void InitDokladApi(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
         {
@@ -51,7 +56,8 @@ namespace IdokladSdk.IntegrationTests.Core
         {
             return new DokladApiTestBuilder("Tests", "1.0")
                 .AddAuthorizationProvider<TAuthProvider>(Configuration)
-                .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl);
+                .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl)
+                .AddHttpClientForApi(ApiHttpClient);
         }
     }
 }

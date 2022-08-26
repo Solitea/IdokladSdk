@@ -38,7 +38,7 @@ namespace IdokladSdk.Exceptions
         /// Initializes a new instance of the <see cref="IdokladUnavailableException"/> class.
         /// </summary>
         /// <param name="response">RestResponse.</param>
-        public IdokladUnavailableException(IRestResponse response)
+        public IdokladUnavailableException(RestResponse response)
             : base("iDoklad is unavailable.")
         {
             Response = response;
@@ -47,6 +47,6 @@ namespace IdokladSdk.Exceptions
         /// <summary>
         /// Gets response.
         /// </summary>
-        public IRestResponse Response { get; private set; }
+        public RestResponse Response { get; private set; }
     }
 }

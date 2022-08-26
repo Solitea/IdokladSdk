@@ -21,8 +21,10 @@ namespace IdokladSdk.Clients
         {
             _apiContext = apiContext ??
                           throw new ArgumentNullException(nameof(apiContext), "API context cannot be null.");
-            Client = new RestClient(_apiContext.Configuration.ApiUrl);
-            Client.AddHandler("application/json", () => new CommonJsonSerializer());
+            //Client = new RestClient(_apiContext.Configuration.ApiUrl);
+            Client = _apiContext.ApiRestClient;
+            //Client.AddHandler("application/json", () => new CommonJsonSerializer());
+            Client.UseSerializer<CommonJsonSerializer>();
         }
 
         /// <summary>

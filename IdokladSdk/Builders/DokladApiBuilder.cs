@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using IdokladSdk.Authentication;
 using IdokladSdk.Builders.Options;
 using IdokladSdk.Enums;
@@ -11,6 +12,9 @@ namespace IdokladSdk.Builders
     /// </summary>
     public class DokladApiBuilder : BaseDokladApiBuilder<DokladApiBuilder, DokladApi>
     {
+        private HttpClient _apiHttpClient;
+        private HttpClient _identityHttpClient;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DokladApiBuilder"/> class.
         /// </summary>
@@ -142,6 +146,64 @@ namespace IdokladSdk.Builders
         }
 
         /// <summary>
+        /// Add HttpClient instance for Doklad API.
+        /// </summary>
+        /// <param name="httpClient">HttpClient.</param>
+        /// <returns>Current instance of DokladApiBuilder.</returns>
+        public DokladApiBuilder AddHttpClientForApi(HttpClient httpClient)
+        {
+            _apiHttpClient = httpClient;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add HttpClient for Doklad IdentityServer.
+        /// </summary>
+        /// <param name="httpClient">HttpClient.</param>
+        /// <returns>Current instance of DokladApiBuilder.</returns>
+        public DokladApiBuilder AddHttpClientForIdentityServer(HttpClient httpClient)
+        {
+            _identityHttpClient = httpClient;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add authentication for iDoklad API.
+        /// </summary>
+        /// <param name="options">AuthenticationOptions.</param>
+        /// <returns>Current instance of DokladApiBuilder.</returns>
+        protected DokladApiBuilder AddAuthentication(Action<AuthenticationOptions> options)
+        {
+            AuthenticationOptionsProvider = () =>
+            {
+                var authenticationOptions = new AuthenticationOptions();
+                options(authenticationOptions);
+                return authenticationOptions;
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add custom URLs for iDoklad API.
+        /// </summary>
+        /// <param name="options">UrlOptions.</param>
+        /// <returns>Current instance of DokladApiBuilder.</returns>
+        protected DokladApiBuilder AddCustomApiUrls(Action<UrlOptions> options)
+        {
+            UrlOptionsProvider = () =>
+            {
+                var urlOptions = new UrlOptions();
+                options(urlOptions);
+                return urlOptions;
+            };
+
+            return this;
+        }
+
+        /// <summary>
         /// Get specific authentication.
         /// </summary>
         /// <returns>Instance of IAuthentication.</returns>
@@ -173,7 +235,17 @@ namespace IdokladSdk.Builders
 
         private ApiContext GetApicontext(IAuthentication auth, DokladConfiguration configuration)
         {
-            var context = new ApiContext(AppName, AppVersion, auth, configuration);
+            var contextConfiguration = new ApiContextConfiguration
+            {
+                AppName = AppName,
+                AppVersion = AppVersion,
+                ApiHttpClient = _apiHttpClient ?? new HttpClient(),
+                IdentityHttpClient = _identityHttpClient ?? new HttpClient(),
+                Authentication = auth,
+                Configuration = configuration
+            };
+
+            var context = new ApiContext(contextConfiguration);
 
             if (ApiContextOptionsProvider != null)
             {

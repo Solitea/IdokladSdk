@@ -11,35 +11,35 @@ namespace IdokladSdk.Authentication.Extensions
 {
     internal static partial class RestClientExtensions
     {
-        internal static Tokenizer RequestAuthorizationCodeToken(this IRestClient client, AuthorizationCodeTokenRequest tokenRequest)
-        {
-            return Execute(client, tokenRequest, GrantType.AuthorizationCode);
-        }
+        //internal static Tokenizer RequestAuthorizationCodeToken(this RestClient client, AuthorizationCodeTokenRequest tokenRequest)
+        //{
+        //    return Execute(client, tokenRequest, GrantType.AuthorizationCode);
+        //}
 
-        internal static Tokenizer RequestClientCredentialsToken(this IRestClient client, ClientCredentialsTokenRequest tokenRequest)
-        {
-            return Execute(client, tokenRequest, GrantType.ClientCredentials);
-        }
+        //internal static Tokenizer RequestClientCredentialsToken(this RestClient client, ClientCredentialsTokenRequest tokenRequest)
+        //{
+        //    return Execute(client, tokenRequest, GrantType.ClientCredentials);
+        //}
 
-        internal static Tokenizer RequestPinToken(this IRestClient client, PinTokenRequest tokenRequest)
-        {
-            return Execute(client, tokenRequest, GrantType.Pin);
-        }
+        //internal static Tokenizer RequestPinToken(this RestClient client, PinTokenRequest tokenRequest)
+        //{
+        //    return Execute(client, tokenRequest, GrantType.Pin);
+        //}
 
-        internal static Tokenizer RequestRefreshToken(this IRestClient client, RefreshTokenRequest tokenRequest)
-        {
-            return Execute(client, tokenRequest, tokenRequest.GrantType);
-        }
+        //internal static Tokenizer RequestRefreshToken(this RestClient client, RefreshTokenRequest tokenRequest)
+        //{
+        //    return Execute(client, tokenRequest, tokenRequest.GrantType);
+        //}
 
-        private static Tokenizer Execute(IRestClient client, TokenRequest tokenRequest, GrantType grantType)
-        {
-            var request = tokenRequest.ToRestRequest();
-            var response = client.Execute(request);
+        //private static Tokenizer Execute(RestClient client, TokenRequest tokenRequest, GrantType grantType)
+        //{
+        //    var request = tokenRequest.ToRestRequest();
+        //    var response = client.Execute(request);
 
-            return ProcessResponse(response, grantType);
-        }
+        //    return ProcessResponse(response, grantType);
+        //}
 
-        private static Tokenizer ProcessResponse(IRestResponse response, GrantType grantType)
+        private static Tokenizer ProcessResponse(RestResponse response, GrantType grantType)
         {
             if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
             {

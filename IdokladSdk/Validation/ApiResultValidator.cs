@@ -17,7 +17,7 @@ namespace IdokladSdk.Validation
         /// <typeparam name="T">Result type.</typeparam>
         /// <param name="response">Response from RestSharp.</param>
         /// <param name="handler">Custom API result handler.</param>
-        public static void ValidateResponse<T>(IRestResponse<T> response, Action<T> handler)
+        public static void ValidateResponse<T>(RestResponse<T> response, Action<T> handler)
         {
             if (response == null)
             {

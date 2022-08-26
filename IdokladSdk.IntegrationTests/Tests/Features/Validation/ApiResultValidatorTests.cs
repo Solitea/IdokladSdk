@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
+using IdokladSdk.Builders;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
-using IdokladSdk.IntegrationTests.Core.AuthProviders;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using NUnit.Framework;
@@ -18,6 +19,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
+            ApiHttpClient = new HttpClient();
+            IdentityHttpClient = new HttpClient();
             InitDokladApi(ApiResultHandler, ApiBatchResultHandler);
 
             void ApiResultHandler(ApiResult apiresult)
@@ -45,11 +48,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
         [Test]
         public void InvalidConfiguration_ThrowsException()
         {
-            var auth = new ClientCredentialsAuthProvider().GetAuthentication(Configuration);
             var invalidApiUrl = Configuration.Urls.ApiUrl + "/dev/v3";
-            var dokladConfig = new DokladConfiguration(invalidApiUrl, Configuration.Urls.IdentityServerTokenUrl);
-            var context = new ApiContext("Tests", "1.0", auth, dokladConfig);
-            var api = new DokladApi(context);
+            var api = new DokladApiBuilder("Tests", "1.0")
+                .AddClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret)
+                .AddCustomApiUrls(invalidApiUrl, Configuration.Urls.IdentityServerTokenUrl)
+                .AddHttpClientForApi(ApiHttpClient)
+                .AddHttpClientForIdentityServer(IdentityHttpClient)
+                .Build();
 
             Assert.Throws<ValidationException>(() => api.ContactClient.List().Get());
         }

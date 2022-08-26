@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using IdokladSdk.Builders;
 using IdokladSdk.Enums;
 using IdokladSdk.Response;
@@ -13,6 +14,13 @@ namespace IdokladSdk.UnitTests.Tests.Builder
         private const string AppVersion = "1.0";
         private const string ClientId = "clientId";
         private const string ClientSecret = "clientSecret";
+        private HttpClient _httpClient;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            _httpClient = new HttpClient();
+        }
 
         [Test]
         public void MissingAuthentication_Throws()
@@ -31,6 +39,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             var defaultConfiguration = new DokladConfiguration();
             var api = new DokladApiBuilder(AppName, AppVersion)
                 .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddHttpClientForApi(_httpClient)
                 .Build();
 
             // Assert
@@ -48,6 +57,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             var api = new DokladApiBuilder(AppName, AppVersion)
                 .AddClientCredentialsAuthentication(ClientId, ClientSecret)
                 .AddCustomApiUrls(apiUrl, identityServerUrl)
+                .AddHttpClientForApi(_httpClient)
                 .Build();
 
             // Assert
@@ -70,6 +80,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                 {
                     options.Language = language;
                 })
+                .AddHttpClientForApi(_httpClient)
                 .Build();
 
             // Assert
@@ -91,6 +102,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                     options.ApiResultHandler = apiResultHandler;
                     options.ApiBatchResultHandler = apiBatchResultHandler;
                 })
+                .AddHttpClientForApi(_httpClient)
                 .Build();
 
             // Assert

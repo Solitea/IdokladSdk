@@ -9,9 +9,9 @@ namespace IdokladSdk.Authentication.Models
             Scope = "idoklad_api";
         }
 
-        internal override IRestRequest ToRestRequest()
+        internal override RestRequest ToRestRequest()
         {
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest(IdentityServerTokenUrl, Method.Post);
 
             request.AddParameter("content-type", ContentType);
             request.AddParameter("grant_type", "client_credentials");

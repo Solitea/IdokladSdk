@@ -11,7 +11,7 @@ namespace IdokladSdk.Authentication
         /// <inheritdoc/>
         public async Task<Tokenizer> GetTokenAsync(CancellationToken cancellationToken = default)
         {
-            var client = new RestClient(Configuration.IdentityServerTokenUrl);
+            var client = new RestClient();
             var request = PrepareRequest();
 
             return await client.RequestClientCredentialsTokenAsync(request, cancellationToken).ConfigureAwait(false);

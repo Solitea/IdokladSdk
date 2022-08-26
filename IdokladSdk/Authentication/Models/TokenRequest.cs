@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using System;
+using RestSharp;
 
 namespace IdokladSdk.Authentication.Models
 {
@@ -10,8 +11,10 @@ namespace IdokladSdk.Authentication.Models
 
         internal string ClientSecret { get; set; }
 
+        internal Uri IdentityServerTokenUrl { get; set; }
+
         internal string Scope { get; set; }
 
-        internal abstract IRestRequest ToRestRequest();
+        internal abstract RestRequest ToRestRequest();
     }
 }
