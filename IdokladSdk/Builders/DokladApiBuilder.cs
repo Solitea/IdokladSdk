@@ -9,36 +9,17 @@ namespace IdokladSdk.Builders
     /// <summary>
     /// Builder for iDoklad API.
     /// </summary>
-    public class DokladApiBuilder
+    public class DokladApiBuilder : BaseDokladApiBuilder<DokladApiBuilder, DokladApi>
     {
-        private readonly string _appName;
-        private readonly string _appVersion;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DokladApiBuilder"/> class.
         /// </summary>
         /// <param name="appName">Your application name.</param>
         /// <param name="appVersion">Your application version.</param>
         public DokladApiBuilder(string appName, string appVersion)
+            : base(appName, appVersion)
         {
-            _appName = appName;
-            _appVersion = appVersion;
         }
-
-        /// <summary>
-        /// Gets or sets provider of AuthenticationOptions.
-        /// </summary>
-        protected Func<AuthenticationOptions> AuthenticationOptionsProvider { get; set; }
-
-        /// <summary>
-        /// Gets or sets provider of ApiContextOptionsProvider.
-        /// </summary>
-        protected Func<ApiContextOptions> ApiContextOptionsProvider { get; set; }
-
-        /// <summary>
-        /// Gets or sets provider of UrlOptions.
-        /// </summary>
-        protected Func<UrlOptions> UrlOptionsProvider { get; set; }
 
         /// <summary>
         /// Add api context options for iDoklad API.
@@ -150,7 +131,7 @@ namespace IdokladSdk.Builders
         /// Build iDoklad API.
         /// </summary>
         /// <returns>Instance of DokladApi.</returns>
-        public virtual DokladApi Build()
+        public override DokladApi Build()
         {
             var configuration = GetConfiguration();
             var auth = GetAuthentication();
@@ -158,40 +139,6 @@ namespace IdokladSdk.Builders
             var context = GetApicontext(auth, configuration);
 
             return new DokladApi(context);
-        }
-
-        /// <summary>
-        /// Add authentication for iDoklad API.
-        /// </summary>
-        /// <param name="options">AuthenticationOptions.</param>
-        /// <returns>Current instance of DokladApiBuilder.</returns>
-        protected DokladApiBuilder AddAuthentication(Action<AuthenticationOptions> options)
-        {
-            AuthenticationOptionsProvider = () =>
-            {
-                var authenticationOptions = new AuthenticationOptions();
-                options(authenticationOptions);
-                return authenticationOptions;
-            };
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add custom URLs for iDoklad API.
-        /// </summary>
-        /// <param name="options">UrlOptions.</param>
-        /// <returns>Current instance of DokladApiBuilder.</returns>
-        protected DokladApiBuilder AddCustomApiUrls(Action<UrlOptions> options)
-        {
-            UrlOptionsProvider = () =>
-            {
-                var urlOptions = new UrlOptions();
-                options(urlOptions);
-                return urlOptions;
-            };
-
-            return this;
         }
 
         /// <summary>
@@ -224,24 +171,9 @@ namespace IdokladSdk.Builders
             }
         }
 
-        /// <summary>
-        /// Create configuration for iDoklad API.
-        /// </summary>
-        /// <returns>Instance of Dokladconfiguration.</returns>
-        protected DokladConfiguration GetConfiguration()
-        {
-            var urlOptions = UrlOptionsProvider?.Invoke();
-            if (urlOptions == null || (string.IsNullOrWhiteSpace(urlOptions.ApiUrl) && string.IsNullOrWhiteSpace(urlOptions.IdentityServerTokenUrl)))
-            {
-                return new DokladConfiguration();
-            }
-
-            return new DokladConfiguration(urlOptions.ApiUrl, urlOptions.IdentityServerTokenUrl);
-        }
-
         private ApiContext GetApicontext(IAuthentication auth, DokladConfiguration configuration)
         {
-            var context = new ApiContext(_appName, _appVersion, auth, configuration);
+            var context = new ApiContext(AppName, AppVersion, auth, configuration);
 
             if (ApiContextOptionsProvider != null)
             {
