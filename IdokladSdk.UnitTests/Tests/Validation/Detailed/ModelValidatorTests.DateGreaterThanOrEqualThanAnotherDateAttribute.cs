@@ -43,6 +43,23 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             AssertIsNotValid(result, nameof(model.DateOfVatClaim), typeof(DateGreaterThanOrEqualThanAnotherDateAttribute), ValidationType.DateGreaterOrEqualThanAnotherDate);
         }
 
+        [Test]
+        public void ModelNullableDateGreaterOrEqualThanAnotherNullableDate_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithNullableDateGreaterOrEqualThanAnotherNullableDateAttribute()
+            {
+                DateOfIssue = new DateTime(2020, 10, 10),
+            };
+            model.DateOfVatClaim = model.DateOfIssue.Value.AddDays(-1);
+
+            // Act
+            var result = _modelValidator.Validate(model);
+
+            // Assert
+            AssertIsNotValid(result, nameof(model.DateOfVatClaim), typeof(DateGreaterThanOrEqualThanAnotherDateAttribute), ValidationType.DateGreaterOrEqualThanAnotherDate);
+        }
+
         [TestCaseSource(nameof(GetValidModelsWithNullableDateGreaterOrEqualThanAnotherDateAttribute))]
         public void ModelNullableDateGreaterOrEqualThanAnotherDate_ValidModel_ReturnsExpectedResults(ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute model)
         {
