@@ -33,6 +33,11 @@ namespace IdokladSdk.Models.RecurringInvoice
         public DateTime? DateOfLastIssue { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether is active.
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
         /// Gets or sets date of last activation of recurring invoice. Same as DateOfLastIssue with exception for reactivating after new subscription bought.
         /// </summary>
         [JsonConverter(typeof(DateTimeConverter))]
