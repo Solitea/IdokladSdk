@@ -30,6 +30,7 @@ namespace IdokladSdk.Models.SalesOrder
         /// Gets or sets date of expiration.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
         public DateTime? DateOfExpiration { get; set; }
 
         /// <summary>
