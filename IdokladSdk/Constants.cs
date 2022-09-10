@@ -35,19 +35,22 @@
         /// </summary>
         public const int MaxDocumentNumberLength = 10;
 
-        internal struct Header
+        /// <summary>
+        /// Constants for header.
+        /// </summary>
+        public partial struct Header
         {
-            internal const string SecureToken = "SecureToken";
+            public const string SecureToken = "SecureToken";
 
-            internal const string Authorization = "Authorization";
+            public const string Authorization = "Authorization";
 
-            internal const string App = "X-App";
+            public const string App = "X-App";
 
-            internal const string AppVersion = "X-App-Version";
+            public const string AppVersion = "X-App-Version";
 
-            internal const string ApiVersion = "X-Api-Version";
+            public const string ApiVersion = "X-Api-Version";
 
-            internal const string SdkVersion = "X-Sdk-Version";
+            public const string SdkVersion = "X-Sdk-Version";
         }
     }
 }
