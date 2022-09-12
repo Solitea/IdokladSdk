@@ -40,16 +40,34 @@
         /// </summary>
         public partial struct Header
         {
+            /// <summary>
+            /// Secure token.
+            /// </summary>
             public const string SecureToken = "SecureToken";
 
+            /// <summary>
+            /// Authorization.
+            /// </summary>
             public const string Authorization = "Authorization";
 
+            /// <summary>
+            /// Application.
+            /// </summary>
             public const string App = "X-App";
 
+            /// <summary>
+            /// Application version.
+            /// </summary>
             public const string AppVersion = "X-App-Version";
 
+            /// <summary>
+            /// Api version.
+            /// </summary>
             public const string ApiVersion = "X-Api-Version";
 
+            /// <summary>
+            /// Sdk version.
+            /// </summary>
             public const string SdkVersion = "X-Sdk-Version";
         }
     }
