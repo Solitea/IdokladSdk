@@ -170,40 +170,6 @@ namespace IdokladSdk.Builders
         }
 
         /// <summary>
-        /// Add authentication for iDoklad API.
-        /// </summary>
-        /// <param name="options">AuthenticationOptions.</param>
-        /// <returns>Current instance of DokladApiBuilder.</returns>
-        protected DokladApiBuilder AddAuthentication(Action<AuthenticationOptions> options)
-        {
-            AuthenticationOptionsProvider = () =>
-            {
-                var authenticationOptions = new AuthenticationOptions();
-                options(authenticationOptions);
-                return authenticationOptions;
-            };
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add custom URLs for iDoklad API.
-        /// </summary>
-        /// <param name="options">UrlOptions.</param>
-        /// <returns>Current instance of DokladApiBuilder.</returns>
-        protected DokladApiBuilder AddCustomApiUrls(Action<UrlOptions> options)
-        {
-            UrlOptionsProvider = () =>
-            {
-                var urlOptions = new UrlOptions();
-                options(urlOptions);
-                return urlOptions;
-            };
-
-            return this;
-        }
-
-        /// <summary>
         /// Get specific authentication.
         /// </summary>
         /// <returns>Instance of IAuthentication.</returns>

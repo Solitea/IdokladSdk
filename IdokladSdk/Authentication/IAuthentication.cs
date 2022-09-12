@@ -2,7 +2,7 @@
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
-using RestSharp;
+using IdokladSdk.Authentication.Models;
 
 namespace IdokladSdk.Authentication
 {
@@ -45,8 +45,14 @@ namespace IdokladSdk.Authentication
         /// <summary>
         /// Get token request.
         /// </summary>
-        /// <returns>RestRequest.</returns>
-        RestRequest GetTokenRequest();
+        /// <returns>AuthorizationCodeTokenRequest.</returns>
+        TokenRequest GetTokenRequest();
+
+        /// <summary>
+        /// Get refresh access token request.
+        /// </summary>
+        /// <returns>RefreshTokenRequest.</returns>
+        TokenRequest GetRefreshAccessTokenRequest();
 
         /// <summary>
         /// Refresh existing token using refresh token.
@@ -63,11 +69,5 @@ namespace IdokladSdk.Authentication
         /// <returns>Token.</returns>
         /// <exception cref="AuthenticationException">Authentication is unsuccessful.</exception>
         Task<Tokenizer> RefreshAccessTokenAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Get refresh access token request.
-        /// </summary>
-        /// <returns>RestRequest.</returns>
-        RestRequest GetRefreshAccessTokenRequest();
     }
 }

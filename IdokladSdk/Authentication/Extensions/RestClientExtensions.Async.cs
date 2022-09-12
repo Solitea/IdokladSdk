@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Authentication.Models;
@@ -28,12 +29,13 @@ namespace IdokladSdk.Authentication.Extensions
             return ExecuteAsync(client, tokenRequest, tokenRequest.GrantType, cancellationToken);
         }
 
-        private static async Task<Tokenizer> ExecuteAsync(RestClient client, TokenRequest tokenRequest, GrantType grantType, CancellationToken cancellationToken = default)
+        private static Task<Tokenizer> ExecuteAsync(RestClient client, TokenRequest tokenRequest, GrantType grantType, CancellationToken cancellationToken = default)
         {
-            var request = tokenRequest.ToRestRequest();
-            var response = await client.ExecuteAsync(request, request.Method, cancellationToken).ConfigureAwait(false);
+            //var request = tokenRequest.ToRestRequest();
+            //var response = await client.ExecuteAsync(request, request.Method, cancellationToken).ConfigureAwait(false);
 
-            return ProcessResponse(response, grantType);
+            //return ProcessResponse(response, grantType);
+            throw new NotImplementedException();
         }
     }
 }

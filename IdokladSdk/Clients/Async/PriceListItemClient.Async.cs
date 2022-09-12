@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.Batch;
@@ -30,7 +31,7 @@ namespace IdokladSdk.Clients
         {
             var batch = new BatchModel<int>(idBatch);
             var resource = $"{BatchUrl}/{deleteIfReferenced.ToString(CultureInfo.InvariantCulture)}";
-            var request = await CreateRequestAsync(resource, method: Method.DELETE, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, method: HttpMethod.Delete, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
             return await ExecuteBatchAsync<bool>(request, cancellationToken).ConfigureAwait(false);

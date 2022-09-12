@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
@@ -18,7 +19,7 @@ namespace IdokladSdk.Clients
         public async Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Default/{movementType}";
-            var request = await CreateRequestAsync(resource, Method.GET, cancellationToken);
+            var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken);
 
             return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken);
         }
@@ -34,7 +35,7 @@ namespace IdokladSdk.Clients
         public async Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Default/{movementType}/{invoiceType}/{invoiceId}";
-            var request = await CreateRequestAsync(resource, Method.GET, cancellationToken);
+            var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken);
 
             return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken);
         }
@@ -56,7 +57,7 @@ namespace IdokladSdk.Clients
         public async Task<ApiResult<bool>> PairAsync(int cashVoucherId, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Pair/{cashVoucherId}/{invoiceType}/{invoiceId}";
-            var request = await CreateRequestAsync(resource, Method.POST, cancellationToken);
+            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken);
 
             return await ExecuteAsync<bool>(request, cancellationToken);
         }

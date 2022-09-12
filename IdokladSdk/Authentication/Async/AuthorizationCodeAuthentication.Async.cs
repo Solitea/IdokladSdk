@@ -19,7 +19,7 @@ namespace IdokladSdk.Authentication
         }
 
         /// <inheritdoc/>
-        public async Task<Tokenizer> RefreshAccessTokenAsync(RestClient restClient, CancellationToken cancellationToken = default)
+        public async Task<Tokenizer> RefreshAccessTokenAsync(CancellationToken cancellationToken = default)
         {
             var client = new RestClient(Configuration.IdentityServerTokenUrl);
             var authRequest = PrepareRefreshTokenRequest();

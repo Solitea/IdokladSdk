@@ -60,45 +60,12 @@ namespace IdokladSdk
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
-        /// </summary>
-        /// <param name="httpClient">HttpClient.</param>
-        /// <param name="appName">Your application name.</param>
-        /// <param name="appVersion">Your application version.</param>
-        /// <param name="authentication">Authentication configuration.</param>
-        /// <param name="configuration">Custom configuration for iDoklad API.</param>
-        public ApiContext(HttpClient httpClient, string appName, string appVersion, IAuthentication authentication, DokladConfiguration configuration)
-        {
-            if (httpClient is null)
-            {
-                throw new ArgumentNullException(nameof(httpClient), "HttpClient cannot be null.");
-            }
-
-            if (string.IsNullOrWhiteSpace(appName))
-            {
-                throw new ArgumentException("AppName has to be supplied.", nameof(appName));
-            }
-
-            if (string.IsNullOrWhiteSpace(appVersion))
-            {
-                throw new ArgumentException("AppVersion has to be supplied.", nameof(appVersion));
-            }
-
-            ApiRestClient = new RestClient(httpClient);
-            AppName = appName;
-            AppVersion = appVersion;
-            _authentication = authentication ?? throw new ArgumentNullException(nameof(authentication), "Authentication cannot be null.");
-            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration), "Configuration cannot be null.");
-            _authentication.Configuration = configuration;
-        }
-
         internal ApiContext(ApiContextConfiguration apiContextConfiguration)
         {
             ValidateApiContextConfiguration(apiContextConfiguration);
 
             ApiRestClient = new RestClient(apiContextConfiguration.ApiHttpClient);
-            IdentityRestClient = new RestClient(apiContextConfiguration.IdentityHttpClient);
+            IdentityHttpClient = apiContextConfiguration.IdentityHttpClient;
             AppName = apiContextConfiguration.AppName;
             AppVersion = apiContextConfiguration.AppVersion;
             Configuration = apiContextConfiguration.Configuration;
@@ -148,9 +115,9 @@ namespace IdokladSdk
         public RestClient ApiRestClient { get; }
 
         /// <summary>
-        /// Gets RestClient for IdentityRestClient.
+        /// Gets HttpClient for IdentityHttpClient.
         /// </summary>
-        public RestClient IdentityRestClient { get; }
+        public HttpClient IdentityHttpClient { get; set; }
 
         /// <summary>
         /// Gets claims from token.
@@ -175,18 +142,24 @@ namespace IdokladSdk
         {
             if (_authentication.UseRefreshToken)
             {
-                _token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+                var refreshTokenRequest = _authentication.GetRefreshAccessTokenRequest();
+                _token = await IdentityHttpClient.SendRequestAsync(refreshTokenRequest, cancellationToken).ConfigureAwait(false);
+                //_token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
                 _authentication.UseRefreshToken = false;
             }
 
             if (_token is null)
             {
-                _token = await _authentication.GetTokenAsync(cancellationToken).ConfigureAwait(false);
+                var tokenRequest = _authentication.GetTokenRequest();
+                _token = await IdentityHttpClient.SendRequestAsync(tokenRequest, cancellationToken).ConfigureAwait(false);
+                //_token = await _authentication.GetTokenAsync(cancellationToken).ConfigureAwait(false);
             }
 
             if (_token.ShouldBeRefreshedNow(RefreshTokenLimit))
             {
-                _token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+                //_token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+                var refreshTokenRequest = _authentication.GetRefreshAccessTokenRequest();
+                _token = await IdentityHttpClient.SendRequestAsync(refreshTokenRequest, cancellationToken).ConfigureAwait(false);
             }
 
             TokenClaims = new TokenClaims(_token.Claims);

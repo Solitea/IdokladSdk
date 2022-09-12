@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Enums;
@@ -58,7 +59,7 @@ namespace IdokladSdk.Clients
             }
 
             var resource = ResourceUrl + $"{model.DocumentId}/{model.DocumentType}";
-            var request = await CreateRequestAsync(resource, Method.PUT, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
             request.AddFile(model.FileName, model.FileBytes, model.FileName);
             request.AlwaysMultipartFormData = true;
             return (await Client.ExecuteAsync<ApiResult<bool>>(request, cancellationToken).ConfigureAwait(false)).Data;

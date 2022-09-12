@@ -1,5 +1,5 @@
 ﻿using System;
-using RestSharp;
+using System.Net.Http;
 
 namespace IdokladSdk.Exceptions
 {
@@ -38,7 +38,7 @@ namespace IdokladSdk.Exceptions
         /// Initializes a new instance of the <see cref="IdokladUnavailableException"/> class.
         /// </summary>
         /// <param name="response">RestResponse.</param>
-        public IdokladUnavailableException(RestResponse response)
+        public IdokladUnavailableException(HttpResponseMessage response)
             : base("iDoklad is unavailable.")
         {
             Response = response;
@@ -47,6 +47,11 @@ namespace IdokladSdk.Exceptions
         /// <summary>
         /// Gets response.
         /// </summary>
-        public RestResponse Response { get; private set; }
+        //public RestResponse Response { get; private set; }
+
+        /// <summary>
+        /// Gets response.
+        /// </summary>
+        public HttpResponseMessage Response { get; private set; }
     }
 }

@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using IdokladSdk.Validation;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace IdokladSdk.Clients
@@ -19,6 +22,18 @@ namespace IdokladSdk.Clients
             return response.Data;
         }
 
+        internal async Task<ApiResult<T>> ExecuteAsync<T>(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            ApiResultValidator.ValidateResponse(response);
+
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonConvert.DeserializeObject<ApiResult<T>>(responseContent);
+            _apiContext.ApiResultHandler?.Invoke(result);
+
+            return result;
+        }
+
         internal async Task<ApiBatchResult<T>> ExecuteBatchAsync<T>(
             RestRequest request,
             CancellationToken cancellationToken)
@@ -30,6 +45,11 @@ namespace IdokladSdk.Clients
             ApiResultValidator.ValidateResponse(response, _apiContext.ApiBatchResultHandler);
 
             return response.Data;
+        }
+
+        protected internal void AddRequestBody<TSerializer, TModel>(HttpRequestMessage request, TModel model)
+        {
+
         }
 
         /// <summary>
@@ -56,7 +76,7 @@ namespace IdokladSdk.Clients
         protected internal async Task<ApiResult<T>> DeleteAsync<T>(string resource, CancellationToken cancellationToken)
             where T : new()
         {
-            var request = await CreateRequestAsync(resource, Method.Delete, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Delete, cancellationToken).ConfigureAwait(false);
 
             return await ExecuteAsync<T>(request, cancellationToken).ConfigureAwait(false);
         }
@@ -74,8 +94,8 @@ namespace IdokladSdk.Clients
             Dictionary<string, string> queryParams,
             CancellationToken cancellationToken)
         {
-            var request = await CreateRequestAsync(resource, Method.Get, cancellationToken).ConfigureAwait(false);
-            ProcessQueryParameters(request, queryParams);
+            var request = await CreateRequestWithQueryParamsAsync(resource, HttpMethod.Get, queryParams, cancellationToken).ConfigureAwait(false);
+            //ProcessQueryParameters(request, queryParams);
 
             return await ExecuteAsync<T>(request, cancellationToken).ConfigureAwait(false);
         }
@@ -94,9 +114,10 @@ namespace IdokladSdk.Clients
             TPatchModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPatchModel : class
         {
             ValidateModel(model);
-            var request = await CreateRequestAsync(resource, Method.Patch, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, new HttpMethod("PATCH"), cancellationToken).ConfigureAwait(false);
             request.JsonSerializer = new PatchRequestJsonSerializer();
             request.AddJsonBody(model);
 
@@ -115,6 +136,7 @@ namespace IdokladSdk.Clients
             TPatchModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPatchModel : class
         {
             return PatchAsync<TPatchModel, TGetModel>(ResourceUrl, model, cancellationToken);
         }
@@ -138,7 +160,7 @@ namespace IdokladSdk.Clients
             var batch = new BatchModel<TPatchModel>(models);
 
             ValidateModel(batch);
-            var request = await CreateRequestAsync(resource, Method.Patch, cancellationToken);
+            var request = await CreateRequestAsync(resource, HttpMethod.Patch, cancellationToken);
             request.JsonSerializer = new PatchRequestJsonSerializer();
             request.AddJsonBody(batch);
 
@@ -176,9 +198,10 @@ namespace IdokladSdk.Clients
             TPostModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPostModel : class
         {
             ValidateModel(model);
-            var request = await CreateRequestAsync(resource, Method.Post, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
             request.JsonSerializer = new CommonJsonSerializer();
             request.AddJsonBody(model);
 
@@ -197,6 +220,7 @@ namespace IdokladSdk.Clients
             TPostModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPostModel : class
         {
             return PostAsync<TPostModel, TGetModel>(ResourceUrl, model, cancellationToken);
         }
@@ -219,7 +243,7 @@ namespace IdokladSdk.Clients
         {
             var batch = new BatchModel<TPostModel>(models);
             ValidateModel(batch);
-            var request = await CreateRequestAsync(resource, Method.Post, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
             return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
@@ -236,7 +260,7 @@ namespace IdokladSdk.Clients
             string resource,
             CancellationToken cancellationToken)
         {
-            var request = await CreateRequestAsync(resource, Method.Post, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
 
             return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
@@ -271,7 +295,7 @@ namespace IdokladSdk.Clients
             Dictionary<string, string> queryParams,
             CancellationToken cancellationToken)
         {
-            var request = await CreateRequestAsync(resource, Method.Put, cancellationToken);
+            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken);
             ProcessQueryParameters(request, queryParams);
 
             return await ExecuteAsync<TGetModel>(request, cancellationToken);
@@ -291,9 +315,10 @@ namespace IdokladSdk.Clients
             TPutModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPutModel : class
         {
             ValidateModel(model);
-            var request = await CreateRequestAsync(resource, Method.Put, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(model);
 
             return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
@@ -316,38 +341,93 @@ namespace IdokladSdk.Clients
         {
             var batch = new BatchModel<TPutModel>(models);
             ValidateModel(batch);
-            var request = await CreateRequestAsync(resource, Method.Put, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
             return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <inheritdoc cref="CreateRequest"/>
-        protected internal async Task<RestRequest> CreateRequestAsync(
+        /// <summary>
+        /// Create request.
+        /// </summary>
+        /// <param name="resource">Resource URL.</param>
+        /// <param name="method">HTTP method.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>New RestRequest instance.</returns>
+        protected internal Task<HttpRequestMessage> CreateRequestAsync(
             string resource,
-            Method method,
+            HttpMethod method,
             CancellationToken cancellationToken)
         {
-            var request = new RestRequest(resource, method);
-            var token = await _apiContext.GetTokenAsync(cancellationToken).ConfigureAwait(false);
+            //var request = new RestRequest(resource, method);
+            //var token = await _apiContext.GetTokenAsync(cancellationToken).ConfigureAwait(false);
 
-            request.AddHeader(Constants.Header.Authorization, "Bearer " + token.AccessToken);
-            request.AddHeader(Constants.Header.App, _apiContext.AppName);
-            request.AddHeader(Constants.Header.AppVersion, _apiContext.AppVersion);
-            request.AddHeader(Constants.Header.SdkVersion, GetSdkVersion());
-            request.AddHeaders(_apiContext.Headers);
+            //request.AddHeader(Constants.Header.Authorization, "Bearer " + token.AccessToken);
+            //request.AddHeader(Constants.Header.App, _apiContext.AppName);
+            //request.AddHeader(Constants.Header.AppVersion, _apiContext.AppVersion);
+            //request.AddHeader(Constants.Header.SdkVersion, GetSdkVersion());
+            //request.AddHeaders(_apiContext.Headers);
+
+            //return request;
+
+            return CreateRequestWithQueryParamsAsync(resource, method, null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Create request.
+        /// </summary>
+        /// <param name="resource">Resource URL.</param>
+        /// <param name="method">HTTP method.</param>
+        /// <param name="queryParams">Query parameters.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>New RestRequest instance.</returns>
+        protected internal async Task<HttpRequestMessage> CreateRequestWithQueryParamsAsync(
+            string resource,
+            HttpMethod method,
+            Dictionary<string, string> queryParams,
+            CancellationToken cancellationToken)
+        {
+            if (queryParams != null && queryParams.Any())
+            {
+                var query = string.Join("&", queryParams.Select(x => $"{x.Key}={x.Value}"));
+                resource += $"?{query}";
+            }
+
+            var token = await _apiContext.GetTokenAsync(cancellationToken).ConfigureAwait(false);
+            var request = new HttpRequestMessage(method, resource);
+
+            request.Headers.Add(Constants.Header.Authorization, $"Bearer {token.AccessToken}");
+            request.Headers.Add(Constants.Header.App, _apiContext.AppName);
+            request.Headers.Add(Constants.Header.AppVersion, _apiContext.AppVersion);
+            request.Headers.Add(Constants.Header.SdkVersion, GetSdkVersion());
+
+            foreach (var header in _apiContext.Headers)
+            {
+                request.Headers.Add(header.Key, header.Value);
+            }
 
             return request;
         }
 
-        /// <inheritdoc cref="Default{T}()"/>
+        /// <summary>
+        /// Returns new default entity suitable for editing and storing.
+        /// </summary>
+        /// <typeparam name="T">POST data type.</typeparam>
+        /// <param name="cancellationToken">CancellationToken.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
         protected Task<ApiResult<T>> DefaultAsync<T>(CancellationToken cancellationToken)
             where T : new()
         {
             return GetAsync<T>(ResourceUrl + "/Default", null, cancellationToken);
         }
 
-        /// <inheritdoc cref="Default{T}(int)"/>
+        /// <summary>
+        /// Returns new default entity suitable for editing and storing for specified document.
+        /// </summary>
+        /// <typeparam name="T">POST data type.</typeparam>
+        /// <param name="id">Id.</param>
+        /// <param name="cancellationToken">CancellationToken.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
         protected Task<ApiResult<T>> DefaultAsync<T>(int id, CancellationToken cancellationToken)
             where T : new()
         {

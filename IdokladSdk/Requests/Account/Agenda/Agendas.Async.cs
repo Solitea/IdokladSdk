@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.Account;
@@ -69,7 +70,7 @@ namespace IdokladSdk.Requests.Account.Agenda
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var request = await _client.CreateRequestAsync(LogoUrl, Method.PUT, cancellationToken).ConfigureAwait(false);
+            var request = await _client.CreateRequestAsync(LogoUrl, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
             request.AddFile(model.FileName, model.FileBytes, model.FileName);
             request.AlwaysMultipartFormData = true;
             return await _client.ExecuteAsync<bool>(request, cancellationToken).ConfigureAwait(false);

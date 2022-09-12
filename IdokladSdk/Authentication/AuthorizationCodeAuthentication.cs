@@ -87,15 +87,29 @@ namespace IdokladSdk.Authentication
         public DokladConfiguration Configuration { get; set; }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public Tokenizer GetToken()
         {
             return GetTokenAsync().GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public Tokenizer RefreshAccessToken()
         {
             return RefreshAccessTokenAsync().GetAwaiter().GetResult();
+        }
+
+        /// <inheritdoc/>
+        public TokenRequest GetTokenRequest()
+        {
+            return PrepareTokenRequest();
+        }
+
+        /// <inheritdoc/>
+        public TokenRequest GetRefreshAccessTokenRequest()
+        {
+            return PrepareRefreshTokenRequest();
         }
 
         private Tokenizer CopyCredentials(Tokenizer token)

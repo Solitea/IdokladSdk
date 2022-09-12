@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Net.Http;
 using IdokladSdk.Exceptions;
 using RestSharp;
 
@@ -24,10 +25,10 @@ namespace IdokladSdk.Validation
                 throw new ArgumentNullException(nameof(response), "Response cannot be null.");
             }
 
-            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
-            {
-                throw new IdokladUnavailableException(response);
-            }
+            //if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            //{
+            //    throw new IdokladUnavailableException(response);
+            //}
 
             if (response.ErrorException != null)
             {
@@ -35,6 +36,19 @@ namespace IdokladSdk.Validation
             }
 
             handler?.Invoke(response.Data);
+        }
+
+        public static void ValidateResponse(HttpResponseMessage response)
+        {
+            if (response == null)
+            {
+                throw new ArgumentNullException(nameof(response), "Response cannot be null.");
+            }
+
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new IdokladUnavailableException(response);
+            }
         }
     }
 }

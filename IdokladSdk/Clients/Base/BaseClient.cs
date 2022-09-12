@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
 using System.Reflection;
 using RestSharp;
 
@@ -41,6 +42,11 @@ namespace IdokladSdk.Clients
         /// Gets RestClient.
         /// </summary>
         protected RestClient Client { get; }
+
+        /// <summary>
+        /// Gets HttpClient.
+        /// </summary>
+        protected HttpClient HttpClient { get; }
 
         private static bool IsValidObject(object obj, out List<ValidationMessage> results)
         {

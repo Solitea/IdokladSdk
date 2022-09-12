@@ -50,10 +50,22 @@ namespace IdokladSdk.Authentication
         public DokladConfiguration Configuration { get; set; }
 
         /// <inheritdoc/>
+        public TokenRequest GetRefreshAccessTokenRequest()
+        {
+            throw new NotSupportedException(AuthenticationMessageConstants.ClientCredetialsRefreshTokenNotSupported);
+        }
+
+        /// <inheritdoc/>
         [Obsolete("Use async method instead.")]
         public Tokenizer GetToken()
         {
             return GetTokenAsync().GetAwaiter().GetResult();
+        }
+
+        /// <inheritdoc/>
+        public TokenRequest GetTokenRequest()
+        {
+            return PrepareRequest();
         }
 
         /// <inheritdoc/>

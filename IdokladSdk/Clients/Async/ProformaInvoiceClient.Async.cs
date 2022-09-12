@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
@@ -66,7 +67,7 @@ namespace IdokladSdk.Clients
         public async Task<ApiResult<IssuedInvoiceGetModel>> AccountAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Account";
-            var request = await CreateRequestAsync(resource, Method.PUT, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync<IssuedInvoiceGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
