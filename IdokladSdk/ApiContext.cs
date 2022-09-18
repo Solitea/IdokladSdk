@@ -128,6 +128,7 @@ namespace IdokladSdk
         /// Access token.
         /// </summary>
         /// <returns>Tokenizer.</returns>
+        [Obsolete("Use async method instead.")]
         public Tokenizer GetToken()
         {
             return GetTokenAsync().GetAwaiter().GetResult();

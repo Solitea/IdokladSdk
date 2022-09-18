@@ -76,6 +76,7 @@ namespace IdokladSdk.Clients
         /// <param name="invoiceType">Invoice type.</param>
         /// <param name="invoiceId">Id of invoice.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if pairing was successful, otherwise <c>false</c>.</returns>
+        [Obsolete("Use async method instead.")]
         public ApiResult<bool> Pair(int cashVoucherId, InvoiceType invoiceType, int invoiceId)
         {
             return PairAsync(cashVoucherId, invoiceType, invoiceId).GetAwaiter().GetResult();

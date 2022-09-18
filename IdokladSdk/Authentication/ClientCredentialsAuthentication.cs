@@ -69,6 +69,7 @@ namespace IdokladSdk.Authentication
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use async method instead.")]
         public Tokenizer RefreshAccessToken() => throw new NotSupportedException(AuthenticationMessageConstants.ClientCredetialsRefreshTokenNotSupported);
 
         private ClientCredentialsTokenRequest PrepareRequest()

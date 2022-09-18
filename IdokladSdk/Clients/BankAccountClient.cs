@@ -55,6 +55,7 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<BankAccountGetModel> Update(BankAccountPatchModel model)
         {
             return UpdateAsync(model).GetAwaiter().GetResult();

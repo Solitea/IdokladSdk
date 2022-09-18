@@ -75,6 +75,7 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
+        [Obsolete("Use async method instead.")]
         public ApiResult<ProformaInvoiceRecountGetModel> Recount(ProformaInvoiceRecountPostModel model)
         {
             return RecountAsync(model).GetAwaiter().GetResult();
