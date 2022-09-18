@@ -49,6 +49,10 @@ var issuedInvoice2 = issuedInvoiceResult.CheckResult();
 
 // Using the same DokladApi instance, you can access all available endpoints, no need to create separate instances.
 var contact = (await api.ContactClient.List().GetAsync()).Data;
+
+// In order to change language and send it in requests you have to set it first.
+// The default is Language.Cz
+_api.ApiContext.SetLanguage(Language.En);
 ```
 
 ## Advanced
