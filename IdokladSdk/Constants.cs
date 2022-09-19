@@ -35,19 +35,40 @@
         /// </summary>
         public const int MaxDocumentNumberLength = 10;
 
-        internal struct Header
+        /// <summary>
+        /// Constants for header.
+        /// </summary>
+        public partial struct Header
         {
-            internal const string SecureToken = "SecureToken";
+            /// <summary>
+            /// Secure token.
+            /// </summary>
+            public const string SecureToken = "SecureToken";
 
-            internal const string Authorization = "Authorization";
+            /// <summary>
+            /// Authorization.
+            /// </summary>
+            public const string Authorization = "Authorization";
 
-            internal const string App = "X-App";
+            /// <summary>
+            /// Application.
+            /// </summary>
+            public const string App = "X-App";
 
-            internal const string AppVersion = "X-App-Version";
+            /// <summary>
+            /// Application version.
+            /// </summary>
+            public const string AppVersion = "X-App-Version";
 
-            internal const string ApiVersion = "X-Api-Version";
+            /// <summary>
+            /// Api version.
+            /// </summary>
+            public const string ApiVersion = "X-Api-Version";
 
-            internal const string SdkVersion = "X-Sdk-Version";
+            /// <summary>
+            /// Sdk version.
+            /// </summary>
+            public const string SdkVersion = "X-Sdk-Version";
         }
     }
 }
