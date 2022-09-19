@@ -168,28 +168,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void AgendaUpdate_InValidIdentification_UpdateFailed()
-        {
-            // Arrange
-            var model = new AgendaPatchModel
-            {
-                Contact = new AgendaContactPatchModel
-                {
-                    IdentificationNumber = "invalid",
-                    HasNoIdentificationNumber = false
-                }
-            };
-
-            // Act
-            var result = _accountClient.Agendas.Update(model);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(DokladErrorCode.InvalidIdentificationNumber, result.ErrorCode);
-            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
-        }
-
-        [Test]
         public void Agenda_GenerateBankStatementMail_ReturnsEmailAddress()
         {
             // Act
