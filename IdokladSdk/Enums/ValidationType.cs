@@ -104,7 +104,7 @@ namespace IdokladSdk.Enums
         RequiredNonDefault = 19,
 
         /// <summary>
-        /// Property value has to contain valid identification number. <see cref="IdentificationNumberAttribute"/>
+        /// Property value has to contain valid identification number. <see cref="IdentificationNumberPatchAttribute"/>
         /// </summary>
         IdentificationNumber = 20,
 

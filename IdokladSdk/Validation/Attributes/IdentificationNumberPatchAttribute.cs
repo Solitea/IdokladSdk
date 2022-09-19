@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Enums;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -19,23 +20,31 @@ namespace IdokladSdk.Validation.Attributes
             var identificationNumber = (string)value;
             var hasNoIdentificationNumber = GetHasNoIdentificationNumber(validationContext);
 
-            if (identificationNumber != null && hasNoIdentificationNumber != null)
-            {
-                if (!string.IsNullOrEmpty(identificationNumber) && hasNoIdentificationNumber.Value)
-                {
-                    return new ValidationResult("Cannot update IdentificationNumber if HasNoIdentificationNumber field is set to true");
-                }
-
-                if (string.IsNullOrEmpty(identificationNumber) && !hasNoIdentificationNumber.Value)
-                {
-                    return new ValidationResult("IdentificationNumber is required if HasNoIdentificationNumber field is set to false");
-                }
-            }
-
             if ((identificationNumber != null && hasNoIdentificationNumber == null) ||
                 (identificationNumber == null && hasNoIdentificationNumber != null))
             {
                 return new ValidationResult("Both or neither fields HasNoIdentificationNumber and IdentificationNumber must be filled");
+            }
+
+            if (identificationNumber != null)
+            {
+                if (identificationNumber != string.Empty && hasNoIdentificationNumber.Value)
+                {
+                    return new ValidationResult("Cannot update IdentificationNumber if HasNoIdentificationNumber field is set to true");
+                }
+
+                if (!hasNoIdentificationNumber.Value)
+                {
+                    if (identificationNumber == string.Empty)
+                    {
+                        return new ValidationResult("IdentificationNumber is required if HasNoIdentificationNumber field is set to false");
+                    }
+
+                    if (IdentificationNumberValidator.IdentificationNumberValidation(identificationNumber) != IdentificationValidationResult.Ok)
+                    {
+                        return new ValidationResult("IdentificationNumber is not valid");
+                    }
+                }
             }
 
             return ValidationResult.Success;
