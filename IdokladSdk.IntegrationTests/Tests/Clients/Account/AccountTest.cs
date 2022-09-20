@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -165,6 +166,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.NotNull(data.Contact);
             Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
             Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+        }
+
+        [Test]
+        public void AgendaUpdate_InValidIdentification_UpdateFailed()
+        {
+            // Arrange
+            var model = new AgendaPatchModel
+            {
+                Contact = new AgendaContactPatchModel
+                {
+                    IdentificationNumber = "invalid",
+                    HasNoIdentificationNumber = false
+                }
+            };
+
+            // Assert
+            Assert.Throws<ValidationException>(() => _accountClient.Agendas.Update(model));
         }
 
         [Test]
