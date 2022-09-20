@@ -7,18 +7,20 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 {
     public partial class ModelValidatorTests
     {
+        [TestCase("x", false)]
         [TestCase("x", true)]
         [TestCase("x", null)]
         [TestCase("25568736", true)]
         [TestCase(null, false)]
         [TestCase(null, true)]
         [TestCase("", false)]
+        [TestCase(" ", false)]
         [TestCase(" ", true)]
         [TestCase(" ", null)]
-        public void ModelWithNullableHasNoIdentificationNumber_InvalidModel_ReturnsExpectedResults(string identificationNumber, bool? hasNoIdentificationNumber)
+        public void PatchModelWithIdentificationNumber_InvalidModel_ReturnsIsNotValid(string identificationNumber, bool? hasNoIdentificationNumber)
         {
             // Arrange
-            var model = new ModelWithNullableHasNoIdentificationNumber()
+            var model = new PatchModelWithIdentificationNumberAttribute()
             {
                 IdentificationNumber = identificationNumber,
                 HasNoIdentificationNumber = hasNoIdentificationNumber
@@ -32,12 +34,12 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [TestCase("25568736", false)]
-        [TestCase(null, null)]
         [TestCase("", true)]
-        public void ModelWithNullableHasNoIdentificationNumber_ValidModel_ReturnsExpectedResults(string identificationNumber, bool? hasNoIdentificationNumber)
+        [TestCase(null, null)]
+        public void PatchModelWithIdentificationNumberAttribute_ValidModel_ReturnsIsValid(string identificationNumber, bool? hasNoIdentificationNumber)
         {
             // Arrange
-            var model = new ModelWithNullableHasNoIdentificationNumber()
+            var model = new PatchModelWithIdentificationNumberAttribute()
             {
                 IdentificationNumber = identificationNumber,
                 HasNoIdentificationNumber = hasNoIdentificationNumber

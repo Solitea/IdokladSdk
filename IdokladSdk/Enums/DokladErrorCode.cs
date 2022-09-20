@@ -108,11 +108,6 @@
         /// <summary>
         /// Sending of email failed.
         /// </summary>
-        SendMailFailed = 116,
-
-        /// <summary>
-        /// IdentificationNumber conditions not met
-        /// </summary>
-        InvalidIdentificationNumber = 118,
+        SendMailFailed = 116
     }
 }

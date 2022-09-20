@@ -25,12 +25,14 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets the company's ID.
         /// </summary>
         [StringLength(20)]
+        [RequiredIf(nameof(HasNoIdentificationNumber), false)]
         [IdentificationNumberPatch(nameof(HasNoIdentificationNumber))]
         public string IdentificationNumber { get; set; }
 
         /// <summary xml:lang="en">
         /// Gets or sets a value indicating whether the company has an ID.
         /// </summary>
+        [RequiredIfHasValue(nameof(IdentificationNumber))]
         public bool? HasNoIdentificationNumber { get; set; }
 
         /// <summary>

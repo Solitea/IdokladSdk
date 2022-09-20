@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -180,13 +181,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
                 }
             };
 
-            // Act
-            var result = _accountClient.Agendas.Update(model);
-
             // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(DokladErrorCode.InvalidIdentificationNumber, result.ErrorCode);
-            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+            Assert.Throws<ValidationException>(() => _accountClient.Agendas.Update(model));
         }
 
         [Test]
