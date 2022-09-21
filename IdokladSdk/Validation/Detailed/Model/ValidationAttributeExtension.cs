@@ -53,6 +53,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(RequiredNonDefaultAttribute): return ValidationType.RequiredNonDefault;
 
+                case nameof(IdentificationNumberPostAttribute): return ValidationType.IdentificationNumber;
+
                 case nameof(IdentificationNumberPatchAttribute): return ValidationType.IdentificationNumber;
 
                 case nameof(NumericSequenceNumberFormatAttribute): return ValidationType.NumericSequenceNumberFormat;
