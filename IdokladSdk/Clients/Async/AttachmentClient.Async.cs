@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Enums;
@@ -24,6 +25,11 @@ namespace IdokladSdk.Clients
             if (model is null)
             {
                 throw new ArgumentNullException(nameof(model));
+            }
+
+            if (!IsAttachmentNameValid(model))
+            {
+                throw new ValidationException("File name contains one or more unsupported characters");
             }
 
             var resource = ResourceUrl + $"{model.DocumentId}/{model.DocumentType}";
