@@ -36,6 +36,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets date of maturity.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
         public DateTime? DateOfMaturity { get; set; }
 
         /// <summary>
