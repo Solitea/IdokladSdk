@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
@@ -99,6 +100,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets order number.
         /// </summary>
+        [StringLength(25)]
         public string OrderNumber { get; set; }
 
         /// <summary>
@@ -126,6 +128,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
+        [StringLength(10)]
         [RequiredIf(nameof(IsConstantVariableSymbol), true)]
         public string VariableSymbol { get; set; }
 
