@@ -52,6 +52,12 @@ var contact = (await api.ContactClient.List().GetAsync()).Data;
 
 // In order to change language and send it in requests you have to set it first.
 // The default is Language.Cz
+// First possibility is to set it in builder
+builder.AddApiContextOptions(options =>
+{
+    options.Language = Language.En;
+})
+// or set it afterwards directly
 _api.ApiContext.SetLanguage(Language.En);
 ```
 
