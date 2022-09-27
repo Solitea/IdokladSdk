@@ -58,7 +58,7 @@ builder.AddApiContextOptions(options =>
     options.Language = Language.En;
 })
 // or set it afterwards directly
-_api.ApiContext.SetLanguage(Language.En);
+api.ApiContext.SetLanguage(Language.En);
 ```
 
 ## Advanced
