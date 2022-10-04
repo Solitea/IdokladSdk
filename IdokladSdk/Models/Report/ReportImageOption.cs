@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Enums;
 
 namespace IdokladSdk.Models.Report
 {
@@ -11,5 +12,11 @@ namespace IdokladSdk.Models.Report
         /// Gets or sets language.
         /// </summary>
         public Language? Language { get; set; }
+
+        /// <summary>
+        /// Gets or sets resolution.
+        /// </summary>
+        [Range(96, 500)]
+        public int? Resolution { get; set; }
     }
 }
