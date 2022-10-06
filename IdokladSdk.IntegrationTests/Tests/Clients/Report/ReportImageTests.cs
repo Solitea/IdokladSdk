@@ -132,7 +132,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public void Get_IssuedInvoiceList_SuccessfullyGetReport()
         {
             // Act
-            var data = _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).GetImage(Language.En).AssertResult();
+            var data = _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).GetImage(new ReportImageOption { Language = Language.En }).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -154,7 +154,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public void Get_ProformaInvoiceList_SuccessfullyGetReport()
         {
             // Act
-            var data = _reportClient.ProformaInvoice.List().GetImage(Language.En).AssertResult();
+            var data = _reportClient.ProformaInvoice.List().GetImage(new ReportImageOption { Language = Language.En })
+                .AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -165,7 +166,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public void Get_CreditNoteList_SuccessfullyGetReport()
         {
             // Act
-            var data = _reportClient.CreditNote.List().GetImage(Language.Cz).AssertResult();
+            var data = _reportClient.CreditNote.List().GetImage(new ReportImageOption { Language = Language.Cz }).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -176,7 +177,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public void Get_CashVoucherList_SuccessfullyGetReport()
         {
             // Act
-            var data = _reportClient.CashVoucher.List().GetImage(Language.Cz).AssertResult();
+            var data = _reportClient.CashVoucher.List().GetImage(new ReportImageOption { Language = Language.Cz }).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -198,7 +199,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public void Get_SalesReceiptList_SuccessfullyGetReport()
         {
             // Act
-            var data = _reportClient.SalesReceipt.List().GetImage(Language.Cz).AssertResult();
+            var data = _reportClient.SalesReceipt.List().GetImage(new ReportImageOption { Language = Language.Cz }).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -209,7 +210,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public void Get_ReceivedInvoiceList_SuccessfullyGetReport()
         {
             // Act
-            var data = _reportClient.ReceivedInvoice.List().GetImage(Language.Cz).AssertResult();
+            var data = _reportClient.ReceivedInvoice.List().GetImage(new ReportImageOption { Language = Language.Cz }).AssertResult();
 
             // Assert
             Assert.NotNull(data);

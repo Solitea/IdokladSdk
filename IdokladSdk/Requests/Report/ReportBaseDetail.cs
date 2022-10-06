@@ -91,6 +91,11 @@ namespace IdokladSdk.Requests.Report
                     queryParams.Add("language", option.Language.ToString());
                 }
 
+                if (option.Resolution != null)
+                {
+                    queryParams.Add("resolution", option.Resolution.ToString());
+                }
+
                 if (option.PaymentOption == PaymentOption.WithOnlyEetPayment)
                 {
                     queryParams.Add("onlyEetPayments", "true");
