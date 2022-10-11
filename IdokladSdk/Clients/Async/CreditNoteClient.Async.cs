@@ -43,7 +43,7 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<CreditNoteGetModel>> OffsetAsync(int id, CreditNoteOffsetPutModel model = null, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Offset";
-            return PutAsync<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model, cancellationToken);
+            return PutAsync<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model ?? new CreditNoteOffsetPutModel(), cancellationToken);
         }
 
         /// <inheritdoc/>

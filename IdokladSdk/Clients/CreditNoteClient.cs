@@ -73,10 +73,10 @@ namespace IdokladSdk.Clients
         /// <param name="id">Entity Id.</param>
         /// <param name="model">Credit note offset parameters.</param>
         /// <returns><see cref="ApiResult{CreditNoteGetModel}"/> instance.</returns>
-        public ApiResult<CreditNoteGetModel> Offset(int id, CreditNoteOffsetPutModel model)
+        public ApiResult<CreditNoteGetModel> Offset(int id, CreditNoteOffsetPutModel model = null)
         {
             var resource = $"{ResourceUrl}/{id}/Offset";
-            return Put<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model);
+            return Put<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model ?? new CreditNoteOffsetPutModel());
         }
 
         /// <inheritdoc />

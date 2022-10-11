@@ -8,7 +8,6 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.CreditNote;
 using IdokladSdk.Models.CreditNote.Post;
-using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Requests.Core.Extensions;
@@ -181,7 +180,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.True(result);
 
             // Act
-            var offsetCreditNote = CreditNoteClient.Offset(_offsetCreditNoteId, new CreditNoteOffsetPutModel()).AssertResult();
+            var offsetCreditNote = CreditNoteClient.Offset(_offsetCreditNoteId).AssertResult();
 
             // Assert
             Assert.AreEqual(_offsetCreditNoteId, offsetCreditNote.Id);
