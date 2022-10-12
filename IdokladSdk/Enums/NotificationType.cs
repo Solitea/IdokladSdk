@@ -46,16 +46,6 @@
         RemindedInvoice = 10,
 
         /// <summary>
-        /// News in application (not available via iDoklad API)
-        /// </summary>
-        NewsInApplication = 11,
-
-        /// <summary>
-        /// Payment of the subscription (not available via iDoklad API)
-        /// </summary>
-        OfflinePayment = 12,
-
-        /// <summary>
         /// Referral points expiration
         /// </summary>
         ReferralExpiredSoon = 13,
@@ -84,11 +74,6 @@
         /// Documents not registered in the EET
         /// </summary>
         EetUnregisteredSales = 18,
-
-        /// <summary>
-        /// General message (not available via iDoklad API)
-        /// </summary>
-        CustomMessage = 19,
 
         /// <summary>
         /// Non accounted payment of proforma invoice
