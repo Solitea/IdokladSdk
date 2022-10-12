@@ -15,6 +15,12 @@ namespace IdokladSdk.Models.SalesReceipt
     public class SalesReceiptPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
+        /// Gets or sets currency Id.
+        /// </summary>
+        [NullableForeignKey]
+        public int? CurrencyId { get; set; }
+
+        /// <summary>
         /// Gets or sets Date of issue.
         /// </summary>
         public DateTime? DateOfIssue { get; set; }
@@ -24,6 +30,16 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Only for Cz legislation.
         /// </summary>
         public ElectronicRecordsOfSalesPostModel ElectronicRecordsOfSales { get; set; }
+
+        /// <summary>
+        /// Gets or sets exchange rate.
+        /// </summary>
+        public decimal? ExchangeRate { get; set; }
+
+        /// <summary>
+        /// Gets or sets exchange rate amount.
+        /// </summary>
+        public decimal? ExchangeRateAmount { get; set; }
 
         /// <summary>
         /// Gets or sets Number assigned by external application.
@@ -36,13 +52,7 @@ namespace IdokladSdk.Models.SalesReceipt
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets currency Id.
-        /// </summary>
-        [NullableForeignKey]
-        public int? CurrencyId { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicationg whether document is used for income tax.
+        /// Gets or sets a value indication whether document is used for income tax.
         /// </summary>
         public bool? IsIncomeTax { get; set; }
 
@@ -65,15 +75,15 @@ namespace IdokladSdk.Models.SalesReceipt
         public string Note { get; set; }
 
         /// <summary>
+        /// Gets or sets partner address.
+        /// </summary>
+        public DocumentAddressPatchModel PartnerAddress { get; set; }
+
+        /// <summary>
         /// Gets or sets partner id.
         /// </summary>
         [NullableForeignKey]
         public NullableProperty<int> PartnerId { get; set; }
-
-        /// <summary>
-        /// Gets or sets partner address.
-        /// </summary>
-        public DocumentAddressPatchModel PartnerAddress { get; set; }
 
         /// <summary>
         /// Gets or sets List of payments.
