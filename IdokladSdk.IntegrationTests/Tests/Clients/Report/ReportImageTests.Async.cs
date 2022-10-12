@@ -104,7 +104,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public void GetImageAsync_IssuedInvoiceList_SuccessfullyGetAsyncReport()
         {
-            var data = _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).GetImageAsync(Language.En).Result.AssertResult();
+            var data = _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).GetImageAsync(new ReportImageOption { Language = Language.En }).Result.AssertResult();
 
             Assert.NotNull(data);
             Assert.IsNotEmpty(data);
@@ -113,7 +113,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public void GetImageAsync_ProformaInvoiceList_SuccessfullyGetAsyncReport()
         {
-            var data = _reportClient.ProformaInvoice.List().GetImageAsync(Language.En).Result.AssertResult();
+            var data = _reportClient.ProformaInvoice.List().GetImageAsync(new ReportImageOption { Language = Language.En }).Result.AssertResult();
 
             Assert.NotNull(data);
             Assert.IsNotEmpty(data);
@@ -122,7 +122,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public void GetImageAsync_CreditNoteList_SuccessfullyGetAsyncReport()
         {
-            var data = _reportClient.CreditNote.List().GetImageAsync(Language.Cz).Result.AssertResult();
+            var data = _reportClient.CreditNote.List().GetImageAsync(new ReportImageOption { Language = Language.Cz }).Result.AssertResult();
 
             Assert.NotNull(data);
             Assert.IsNotEmpty(data);
@@ -131,7 +131,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public void GetImageAsync_CashVoucherList_SuccessfullyGetAsyncReport()
         {
-            var data = _reportClient.CashVoucher.List().GetImageAsync(Language.Cz).Result.AssertResult();
+            var data = _reportClient.CashVoucher.List().GetImageAsync(new ReportImageOption { Language = Language.Cz }).Result.AssertResult();
 
             Assert.NotNull(data);
             Assert.IsNotEmpty(data);
@@ -140,7 +140,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public void GetImageAsync_SalesReceiptList_SuccessfullyGetAsyncReport()
         {
-            var data = _reportClient.SalesReceipt.List().GetImageAsync(Language.Cz).Result.AssertResult();
+            var data = _reportClient.SalesReceipt.List().GetImageAsync(new ReportImageOption { Language = Language.Cz }).Result.AssertResult();
 
             Assert.NotNull(data);
             Assert.IsNotEmpty(data);
@@ -149,7 +149,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public void GetImageAsync_ReceivedInvoiceList_SuccessfullyGetAsyncReport()
         {
-            var data = _reportClient.ReceivedInvoice.List().GetImageAsync(Language.Cz).Result.AssertResult();
+            var data = _reportClient.ReceivedInvoice.List().GetImageAsync(new ReportImageOption { Language = Language.Cz }).Result.AssertResult();
 
             Assert.NotNull(data);
             Assert.IsNotEmpty(data);

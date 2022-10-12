@@ -92,12 +92,22 @@ namespace IdokladSdk.Requests.Report
         /// <summary>
         /// Call Get endpoint.
         /// </summary>
-        /// <param name="language">Language.</param>
+        /// <param name="options">Options.</param>
         /// <returns>API result.</returns>
-        public ApiResult<List<ReportImageGetModel>> GetImage(Language language)
+        public ApiResult<List<ReportImageGetModel>> GetImage(ReportImageOption options)
         {
             var queryParams = GetQueryParameters();
-            var resource = $"{_client.ResourceUrl}{_documentType}/Image/List/{language}";
+            if (options.Language != null)
+            {
+                queryParams.Add("language", options.Language.ToString());
+            }
+
+            if (options.Resolution != null)
+            {
+                queryParams.Add("resolution", options.Resolution.ToString());
+            }
+
+            var resource = $"{_client.ResourceUrl}{_documentType}/Image/List/";
             return _client.Get<List<ReportImageGetModel>>(resource, queryParams);
         }
 

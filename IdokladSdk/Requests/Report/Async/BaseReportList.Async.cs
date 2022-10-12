@@ -30,13 +30,23 @@ namespace IdokladSdk.Requests.Report
         /// <summary>
         /// Call Get endpoint.
         /// </summary>
-        /// <param name="language">Language.</param>
+        /// <param name="options">Options.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>API result.</returns>
-        public Task<ApiResult<List<ReportImageGetModel>>> GetImageAsync(Language language, CancellationToken cancellationToken = default)
+        public Task<ApiResult<List<ReportImageGetModel>>> GetImageAsync(ReportImageOption options, CancellationToken cancellationToken = default)
         {
             var queryParams = GetQueryParameters();
-            var resource = $"{_client.ResourceUrl}{_documentType}/Image/List/{language}";
+            if (options.Language != null)
+            {
+                queryParams.Add("language", options.Language.ToString());
+            }
+
+            if (options.Resolution != null)
+            {
+                queryParams.Add("resolution", options.Resolution.ToString());
+            }
+
+            var resource = $"{_client.ResourceUrl}{_documentType}/Image/List/";
             return _client.GetAsync<List<ReportImageGetModel>>(resource, queryParams, cancellationToken);
         }
     }
