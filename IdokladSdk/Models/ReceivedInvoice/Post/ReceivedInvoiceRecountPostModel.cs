@@ -38,8 +38,8 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// Gets or sets date of taxing.
         /// </summary>
         [RequiredIf(nameof(DateOfReceiving), null)]
-        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
-        public DateTime DateOfTaxing { get; set; }
+        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
+        public DateTime? DateOfTaxing { get; set; }
 
         /// <summary xml:lang="en">
         /// Gets or sets date of receiving.
