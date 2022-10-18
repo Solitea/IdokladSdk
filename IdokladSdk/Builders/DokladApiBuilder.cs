@@ -180,7 +180,7 @@ namespace IdokladSdk.Builders
                 var resultHandlers = ApiContextOptionsProvider();
                 context.ApiResultHandler = resultHandlers.ApiResultHandler;
                 context.ApiBatchResultHandler = resultHandlers.ApiBatchResultHandler;
-                context.SetLanguage(resultHandlers.Language ?? Language.En);
+                context.SetLanguage(resultHandlers.Language ?? Language.Cz);
             }
 
             return context;
