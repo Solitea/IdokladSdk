@@ -13,13 +13,14 @@ namespace IdokladSdk.Clients
         /// Statistics of issued and received invoices for given period of time.
         /// </summary>
         /// <param name="periodType">Type of time period.</param>
+        /// <param name="filterModel">Filter model.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="InvoicingForPeriodGetModel"/>.</returns>
-        public Task<ApiResult<InvoicingForPeriodGetModel>> InvoicingForPeriodAsync(PeriodType periodType, CancellationToken cancellationToken = default)
+        public Task<ApiResult<InvoicingForPeriodGetModel>> InvoicingForPeriodAsync(PeriodType periodType, StatisticsFilterModel filterModel = null,  CancellationToken cancellationToken = default)
         {
             var queryParams = new Dictionary<string, string> { { nameof(PeriodType), periodType.ToString() } };
 
-            return GetAsync<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", queryParams, cancellationToken);
+            return GetAsync<StatisticsFilterModel, InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", filterModel, queryParams, cancellationToken);
         }
 
         /// <summary>

@@ -26,12 +26,13 @@ namespace IdokladSdk.Clients
         /// Statistics of issued and received invoices for given period of time.
         /// </summary>
         /// <param name="periodType">Type of time period.</param>
+        /// <param name="filterModel">Filter model.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="InvoicingForPeriodGetModel"/>.</returns>
-        public ApiResult<InvoicingForPeriodGetModel> InvoicingForPeriod(PeriodType periodType)
+        public ApiResult<InvoicingForPeriodGetModel> InvoicingForPeriod(PeriodType periodType, StatisticsFilterModel filterModel = null)
         {
             var queryParams = new Dictionary<string, string> { { nameof(PeriodType), periodType.ToString() } };
 
-            return Get<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", queryParams);
+            return Get<StatisticsFilterModel, InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", filterModel, queryParams);
         }
 
         /// <summary>

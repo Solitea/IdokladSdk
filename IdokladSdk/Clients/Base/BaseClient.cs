@@ -5,6 +5,7 @@ using System.Reflection;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using IdokladSdk.Validation;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace IdokladSdk.Clients
@@ -102,6 +103,30 @@ namespace IdokladSdk.Clients
             ProcessQueryParameters(request, queryParams);
 
             return Execute<T>(request);
+        }
+
+        /// <summary>
+        /// Get with body.
+        /// </summary>
+        /// <typeparam name="TModel">Body type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="model">Body model.</param>
+        /// <param name="queryParams">Query params.</param>
+        /// <returns>Api result.</returns>
+        protected internal ApiResult<TGetModel> Get<TModel, TGetModel>(string resource, TModel model, Dictionary<string, string> queryParams = null)
+            where TGetModel : new()
+        {
+            ValidateModel(model);
+            var request = CreateRequest(resource, Method.GET);
+            foreach (var property in model.GetType().GetProperties())
+            {
+                queryParams.Add(property.Name, property.GetValue(model).ToString());
+            }
+
+            ProcessQueryParameters(request, queryParams);
+
+            return Execute<TGetModel>(request);
         }
 
         /// <summary>
