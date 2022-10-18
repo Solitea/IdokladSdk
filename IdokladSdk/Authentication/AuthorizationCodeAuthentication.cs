@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Authentication.Extensions;
 using IdokladSdk.Authentication.Models;
 
 namespace IdokladSdk.Authentication
@@ -87,29 +91,21 @@ namespace IdokladSdk.Authentication
         public DokladConfiguration Configuration { get; set; }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public Tokenizer GetToken()
+        public async Task<Tokenizer> GetTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
         {
-            return GetTokenAsync().GetAwaiter().GetResult();
+            var request = PrepareTokenRequest();
+            var tokenizer = await httpClient.SendRequestAsync(request, cancellationToken).ConfigureAwait(false);
+
+            return CopyCredentials(tokenizer);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public Tokenizer RefreshAccessToken()
+        public async Task<Tokenizer> RefreshAccessTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
         {
-            return RefreshAccessTokenAsync().GetAwaiter().GetResult();
-        }
+            var request = PrepareRefreshTokenRequest();
+            var tokenizer = await httpClient.SendRequestAsync(request, cancellationToken).ConfigureAwait(false);
 
-        /// <inheritdoc/>
-        public TokenRequest GetTokenRequest()
-        {
-            return PrepareTokenRequest();
-        }
-
-        /// <inheritdoc/>
-        public TokenRequest GetRefreshAccessTokenRequest()
-        {
-            return PrepareRefreshTokenRequest();
+            return CopyCredentials(tokenizer);
         }
 
         private Tokenizer CopyCredentials(Tokenizer token)

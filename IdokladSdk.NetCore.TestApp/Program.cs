@@ -6,6 +6,7 @@ using IdokladSdk.Builders;
 using IdokladSdk.Enums;
 using IdokladSdk.NetCore.TestApp.Examples;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdokladSdk.NetCore.TestApp
 {
@@ -15,6 +16,7 @@ namespace IdokladSdk.NetCore.TestApp
         private static string _clientSecret;
 
         private static DokladApi _api;
+        private static ServiceProvider _serviceProvider;
 
         private static int _partner1Id;
         private static int _partner2Id;
@@ -29,6 +31,7 @@ namespace IdokladSdk.NetCore.TestApp
         {
             try
             {
+                InitializeServiceProvider();
                 LoadConfiguration();
                 SetIdokladApi();
 
@@ -44,11 +47,21 @@ namespace IdokladSdk.NetCore.TestApp
             }
         }
 
+        private static void InitializeServiceProvider()
+        {
+            _serviceProvider = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+        }
+
         private static void SetIdokladApi()
         {
+            var httpClientFactory = _serviceProvider.GetService<IHttpClientFactory>();
+            var apiHttpClient = httpClientFactory.CreateClient("IdokladApi");
+            var identityHttpClient = httpClientFactory.CreateClient("IdokladIdentity");
+
             _api = new DokladApiBuilder("Test", "1.0")
                 .AddClientCredentialsAuthentication(_clientId, _clientSecret)
-                .AddHttpClientForApi(new HttpClient())
+                .AddHttpClientForApi(apiHttpClient)
+                .AddHttpClientForIdentityServer(identityHttpClient)
                 .Build();
         }
 

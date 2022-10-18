@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Authentication;
 using IdokladSdk.Builders;
@@ -14,13 +15,14 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         // Values specific to your application
         private const string AppName = "application name";
         private const string AppVersion = "application version";
-        private readonly HttpClient _httpClient;
-
+        private readonly HttpClient _apiHttpClient;
+        private readonly HttpClient _identityHttpClient;
         private DokladApi _api;
 
-        public EetPinAuthenticationExample(HttpClient httpClient)
+        public EetPinAuthenticationExample(HttpClient apiHttpClient, HttpClient identityHttpClient)
         {
-            _httpClient = httpClient;
+            _apiHttpClient = apiHttpClient;
+            _identityHttpClient = identityHttpClient;
         }
 
         public async Task PinAuthorization_Authorize_UseApi_SaveRefreshToken_AuthorizeAgain()
@@ -45,13 +47,13 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             var issuedInvoice = await _api.IssuedInvoiceClient.DefaultAsync();
         }
 
-        public async Task PinAuthorization_RetrieveAndSaveRefreshToken()
+        public async Task PinAuthorization_RetrieveAndSaveRefreshToken(CancellationToken cancellationToken = default)
         {
             // Create instance of authentication using one-time pin, which you retreived before this step from iDoklad Web
             var initialAuthentication = new PinAuthentication(ClientId, ClientSecret, "pin");
 
             // Request access token, with this call refresh token will be requested as well
-            var tokenizer = await initialAuthentication.GetTokenAsync();
+            var tokenizer = await initialAuthentication.GetTokenAsync(_identityHttpClient, cancellationToken);
 
             // Retrieve refresh token (both values are the same) and save it
             var refreshToken1 = tokenizer.RefreshToken;
@@ -70,7 +72,8 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         {
             _api = new DokladApiBuilder(AppName, AppVersion)
                 .AddPinAuthentication(ClientId, ClientSecret, pin, refreshToken)
-                .AddHttpClientForApi(_httpClient)
+                .AddHttpClientForApi(_apiHttpClient)
+                .AddHttpClientForIdentityServer(_identityHttpClient)
                 .Build();
         }
     }

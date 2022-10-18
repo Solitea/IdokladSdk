@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Authentication.Extensions;
 using IdokladSdk.Authentication.Models;
 
 namespace IdokladSdk.Authentication
@@ -50,27 +54,19 @@ namespace IdokladSdk.Authentication
         public DokladConfiguration Configuration { get; set; }
 
         /// <inheritdoc/>
-        public TokenRequest GetRefreshAccessTokenRequest()
+        public async Task<Tokenizer> GetTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
+        {
+            var request = PrepareRequest();
+            var tokenizer = await httpClient.SendRequestAsync(request, cancellationToken).ConfigureAwait(false);
+
+            return tokenizer;
+        }
+
+        /// <inheritdoc/>
+        public Task<Tokenizer> RefreshAccessTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
         {
             throw new NotSupportedException(AuthenticationMessageConstants.ClientCredetialsRefreshTokenNotSupported);
         }
-
-        /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public Tokenizer GetToken()
-        {
-            return GetTokenAsync().GetAwaiter().GetResult();
-        }
-
-        /// <inheritdoc/>
-        public TokenRequest GetTokenRequest()
-        {
-            return PrepareRequest();
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public Tokenizer RefreshAccessToken() => throw new NotSupportedException(AuthenticationMessageConstants.ClientCredetialsRefreshTokenNotSupported);
 
         private ClientCredentialsTokenRequest PrepareRequest()
         {

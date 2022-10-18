@@ -8,9 +8,19 @@ using Newtonsoft.Json;
 
 namespace IdokladSdk.Authentication.Extensions
 {
-    internal static class HttpClientExtensions
+    /// <summary>
+    /// IdokladSdk extensions for HttpClient.
+    /// </summary>
+    public static class HttpClientExtensions
     {
-        internal static Task<Tokenizer> SendRequestAsync(this HttpClient client, TokenRequest tokenRequest, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Send request.
+        /// </summary>
+        /// <param name="client">HttpClient.</param>
+        /// <param name="tokenRequest">Token request for execution.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Instance of <see cref="Tokenizer"/>.</returns>
+        public static Task<Tokenizer> SendRequestAsync(this HttpClient client, TokenRequest tokenRequest, CancellationToken cancellationToken = default)
         {
             return ExecuteAsync(client, tokenRequest, cancellationToken);
         }

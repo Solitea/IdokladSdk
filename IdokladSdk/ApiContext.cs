@@ -4,10 +4,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Authentication;
-using IdokladSdk.Authentication.Extensions;
 using IdokladSdk.Enums;
 using IdokladSdk.Response;
-using RestSharp;
 
 namespace IdokladSdk
 {
@@ -64,7 +62,7 @@ namespace IdokladSdk
         {
             ValidateApiContextConfiguration(apiContextConfiguration);
 
-            ApiRestClient = new RestClient(apiContextConfiguration.ApiHttpClient);
+            ApiHttpClient = apiContextConfiguration.ApiHttpClient;
             IdentityHttpClient = apiContextConfiguration.IdentityHttpClient;
             AppName = apiContextConfiguration.AppName;
             AppVersion = apiContextConfiguration.AppVersion;
@@ -78,6 +76,11 @@ namespace IdokladSdk
         /// Gets refresh token before expiration limit (in seconds).
         /// </summary>
         public static int RefreshTokenLimit => 600;
+
+        /// <summary>
+        /// Gets HttpClient for API.
+        /// </summary>
+        public HttpClient ApiHttpClient { get; }
 
         /// <summary>
         /// Gets your application name.
@@ -110,14 +113,9 @@ namespace IdokladSdk
         public Dictionary<string, string> Headers { get; } = new Dictionary<string, string>();
 
         /// <summary>
-        /// Gets RestClient for ApiRestClient.
+        /// Gets HttpClient for Identity.
         /// </summary>
-        public RestClient ApiRestClient { get; }
-
-        /// <summary>
-        /// Gets HttpClient for IdentityHttpClient.
-        /// </summary>
-        public HttpClient IdentityHttpClient { get; set; }
+        public HttpClient IdentityHttpClient { get; }
 
         /// <summary>
         /// Gets claims from token.
@@ -143,24 +141,18 @@ namespace IdokladSdk
         {
             if (_authentication.UseRefreshToken)
             {
-                var refreshTokenRequest = _authentication.GetRefreshAccessTokenRequest();
-                _token = await IdentityHttpClient.SendRequestAsync(refreshTokenRequest, cancellationToken).ConfigureAwait(false);
-                //_token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+                _token = await _authentication.RefreshAccessTokenAsync(IdentityHttpClient, cancellationToken).ConfigureAwait(false);
                 _authentication.UseRefreshToken = false;
             }
 
             if (_token is null)
             {
-                var tokenRequest = _authentication.GetTokenRequest();
-                _token = await IdentityHttpClient.SendRequestAsync(tokenRequest, cancellationToken).ConfigureAwait(false);
-                //_token = await _authentication.GetTokenAsync(cancellationToken).ConfigureAwait(false);
+                _token = await _authentication.GetTokenAsync(IdentityHttpClient, cancellationToken).ConfigureAwait(false);
             }
 
             if (_token.ShouldBeRefreshedNow(RefreshTokenLimit))
             {
-                //_token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
-                var refreshTokenRequest = _authentication.GetRefreshAccessTokenRequest();
-                _token = await IdentityHttpClient.SendRequestAsync(refreshTokenRequest, cancellationToken).ConfigureAwait(false);
+                _token = await _authentication.RefreshAccessTokenAsync(IdentityHttpClient, cancellationToken).ConfigureAwait(false);
             }
 
             TokenClaims = new TokenClaims(_token.Claims);
