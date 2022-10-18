@@ -132,5 +132,10 @@ namespace IdokladSdk.Enums
         /// Property has to contain date earlier than given dependent date. <see cref="DateGreaterThanOrEqualThanAnotherDateAttribute"/>
         /// </summary>
         DateGreaterOrEqualThanAnotherDate = 25,
+
+        /// <summary>
+        /// Property has to be greater or equal to certain value. <see cref="MinValueAttribute"/>
+        /// </summary>
+        MinValue = 26,
     }
 }
