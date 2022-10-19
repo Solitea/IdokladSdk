@@ -10,22 +10,22 @@ namespace IdokladSdk.Models.Statistics
         /// <summary>
         /// Gets or sets a value indicating whether to include Credit Note Statistics.
         /// </summary>
-        public bool IncludeCreditNote { get; set; } = false;
+        public bool IncludeCreditNote { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether to include Issued Invoice Statistics.
         /// </summary>
-        public bool IncludeIssuedInvoice { get; set; } = false;
+        public bool IncludeIssuedInvoice { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether to include Received Invoice Statistics.
         /// </summary>
-        public bool IncludeReceivedInvoice { get; set; } = false;
+        public bool IncludeReceivedInvoice { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether to include Sales Receipt Statistics.
         /// </summary>
-        public bool IncludeSalesReceipt { get; set; } = false;
+        public bool IncludeSalesReceipt { get; set; } = true;
 
         /// <summary>
         /// Gets or sets number of periods.
