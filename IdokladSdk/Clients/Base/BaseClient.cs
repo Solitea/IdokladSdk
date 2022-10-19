@@ -5,7 +5,6 @@ using System.Reflection;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using IdokladSdk.Validation;
-using Newtonsoft.Json;
 using RestSharp;
 
 namespace IdokladSdk.Clients
