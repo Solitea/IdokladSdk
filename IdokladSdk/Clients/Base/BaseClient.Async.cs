@@ -81,33 +81,6 @@ namespace IdokladSdk.Clients
         }
 
         /// <summary>
-        /// GetAsync with body.
-        /// </summary>
-        /// <typeparam name="TModel">Body type.</typeparam>
-        /// <typeparam name="TGetModel">Return type.</typeparam>
-        /// <param name="resource">Resource url.</param>
-        /// <param name="model">Body model.</param>
-        /// <param name="queryParams">Query params.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Api result.</returns>
-        protected internal async Task<ApiResult<TGetModel>> GetAsync<TModel, TGetModel>(
-            string resource,
-            TModel model,
-            Dictionary<string, string> queryParams,
-            CancellationToken cancellationToken)
-        {
-            var request = await CreateRequestAsync(resource, Method.GET, cancellationToken).ConfigureAwait(false);
-            foreach (var property in model.GetType().GetProperties())
-            {
-                queryParams.Add(property.Name, property.GetValue(model).ToString());
-            }
-
-            ProcessQueryParameters(request, queryParams);
-
-            return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
         /// PatchAsync.
         /// </summary>
         /// <typeparam name="TPatchModel">Patch type.</typeparam>

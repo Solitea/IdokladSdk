@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Statistics;
+using IdokladSdk.Requests.Core.Extensions;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Clients
@@ -31,8 +33,9 @@ namespace IdokladSdk.Clients
         public ApiResult<InvoicingForPeriodGetModel> InvoicingForPeriod(PeriodType periodType, StatisticsFilterModel filterModel = null)
         {
             var queryParams = new Dictionary<string, string> { { nameof(PeriodType), periodType.ToString() } };
+            var withFilterParams = queryParams.Concat(filterModel?.AsDictionary()).ToDictionary(pair => pair.Key, pair => pair.Value);
 
-            return Get<StatisticsFilterModel, InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", filterModel, queryParams);
+            return Get<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", withFilterParams);
         }
 
         /// <summary>
