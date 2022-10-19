@@ -21,7 +21,8 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<InvoicingForPeriodGetModel>> InvoicingForPeriodAsync(PeriodType periodType, StatisticsFilterModel filterModel = null,  CancellationToken cancellationToken = default)
         {
             var queryParams = new Dictionary<string, string> { { nameof(PeriodType), periodType.ToString() } };
-            var withFilterParams = queryParams.Concat(filterModel?.AsDictionary()).ToDictionary(pair => pair.Key, pair => pair.Value);
+            var withFilterParams = queryParams.Concat(filterModel?.AsDictionary() ?? new Dictionary<string, string>())
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             return GetAsync<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", withFilterParams, cancellationToken);
         }

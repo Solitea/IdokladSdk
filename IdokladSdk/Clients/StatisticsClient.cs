@@ -33,7 +33,8 @@ namespace IdokladSdk.Clients
         public ApiResult<InvoicingForPeriodGetModel> InvoicingForPeriod(PeriodType periodType, StatisticsFilterModel filterModel = null)
         {
             var queryParams = new Dictionary<string, string> { { nameof(PeriodType), periodType.ToString() } };
-            var withFilterParams = queryParams.Concat(filterModel?.AsDictionary()).ToDictionary(pair => pair.Key, pair => pair.Value);
+            var withFilterParams = queryParams.Concat(filterModel?.AsDictionary() ?? new Dictionary<string, string>())
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             return Get<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", withFilterParams);
         }
