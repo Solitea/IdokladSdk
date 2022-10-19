@@ -67,6 +67,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(DateGreaterThanOrEqualThanAnotherDateAttribute): return ValidationType.DateGreaterOrEqualThanAnotherDate;
 
+                case nameof(MinValueAttribute): return ValidationType.MinValue;
+
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
             }
