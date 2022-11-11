@@ -1,11 +1,12 @@
 ﻿using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.Attachment
 {
     /// <summary>
     /// Model for uploading attachments.
     /// </summary>
-    public class AttachmentUploadModel
+    public class AttachmentUploadModel : IFile
     {
         /// <summary>
         /// Gets or sets filename.

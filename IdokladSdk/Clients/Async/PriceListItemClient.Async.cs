@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Models.PriceListItem;
+using IdokladSdk.Requests.Extensions;
 using IdokladSdk.Response;
-using RestSharp;
 
 namespace IdokladSdk.Clients
 {
@@ -31,7 +31,7 @@ namespace IdokladSdk.Clients
         {
             var batch = new BatchModel<int>(idBatch);
             var resource = $"{BatchUrl}/{deleteIfReferenced.ToString(CultureInfo.InvariantCulture)}";
-            var request = await CreateRequestAsync(resource, method: HttpMethod.Delete, cancellationToken).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resource, HttpMethod.Delete, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
             return await ExecuteBatchAsync<bool>(request, cancellationToken).ConfigureAwait(false);
