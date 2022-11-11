@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using IdokladSdk.Exceptions;
 
 namespace IdokladSdk.Validation
@@ -21,6 +23,23 @@ namespace IdokladSdk.Validation
             {
                 throw new IdokladUnavailableException(response);
             }
+        }
+
+        public static async Task<TData> ValidateAndDeserializeResponse<TData>(HttpResponseMessage response, Func<HttpResponseMessage, Task<TData>> deserialize, Action<TData> handler)
+        {
+            ValidateResponse(response);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new ValidationException($"Response is not valid: {content}");
+            }
+
+            var data = await deserialize(response);
+
+            handler?.Invoke(data);
+
+            return data;
         }
     }
 }

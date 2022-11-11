@@ -52,10 +52,7 @@ namespace IdokladSdk.Clients
         {
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-            ApiResultValidator.ValidateResponse(response);
-            var data = await GetDataAsync<ApiResult<T>>(response);
-
-            _apiContext.ApiResultHandler?.Invoke(data);
+            var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<T>>, _apiContext.ApiResultHandler);
 
             return data;
         }
@@ -65,10 +62,7 @@ namespace IdokladSdk.Clients
         {
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-            ApiResultValidator.ValidateResponse(response);
-            var data = await GetDataAsync<ApiBatchResult<T>>(response);
-
-            _apiContext.ApiBatchResultHandler?.Invoke(data);
+            var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<T>>, _apiContext.ApiBatchResultHandler);
 
             return data;
         }
