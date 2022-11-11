@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.Response;
-using RestSharp;
 
 namespace IdokladSdk.Clients
 {

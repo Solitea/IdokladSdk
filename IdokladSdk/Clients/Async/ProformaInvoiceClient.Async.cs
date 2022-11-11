@@ -5,7 +5,6 @@ using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.RecurringInvoice;
 using IdokladSdk.Response;
-using RestSharp;
 
 namespace IdokladSdk.Clients
 {
