@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Readonly;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -26,12 +27,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [TestCaseSource(nameof(TestData))]
-        public void Detail_SuccessfullyGet(DateTime lastCheck, bool expectedWasChanged)
+        public async Task DetailAsync_SuccessfullyGet(DateTime lastCheck, bool expectedWasChanged)
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .CodeBooksChanges(lastCheck)
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert

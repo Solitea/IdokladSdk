@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
 
@@ -12,14 +11,6 @@ namespace IdokladSdk.Clients.Interfaces
     /// <typeparam name="TGetModel">Get model type.</typeparam>
     public interface IPatchRequest<in TPatchModel, TGetModel>
     {
-        /// <summary>
-        /// Updates entity.
-        /// </summary>
-        /// <param name="model">Updated entity.</param>
-        /// <returns><see cref="ApiResult{T}"/> instance.</returns>
-        [Obsolete("Use async method instead.")]
-        ApiResult<TGetModel> Update(TPatchModel model);
-
         /// <summary>
         /// Updates entity.
         /// </summary>

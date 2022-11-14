@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
 
@@ -14,14 +13,6 @@ namespace IdokladSdk.Clients.Interfaces
         where TPostModel : class
         where TGetModel : new()
     {
-        /// <summary>
-        /// Posts new entity.
-        /// </summary>
-        /// <param name="model">Entity to be created.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        [Obsolete("Use async method instead.")]
-        ApiResult<TGetModel> Post(TPostModel model);
-
         /// <summary>
         /// Posts new entity.
         /// </summary>

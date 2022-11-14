@@ -1,14 +1,18 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Models.Email;
+using IdokladSdk.Requests.Mail.Interfaces;
+using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.Mail
 {
     /// <summary>
     /// Base class for emails.
     /// </summary>
-    public abstract partial class Email
+    public abstract class Email
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Email"/> class.
@@ -28,6 +32,16 @@ namespace IdokladSdk.Requests.Mail
         /// Gets or sets email resource URL.
         /// </summary>
         protected string DocumentType { get; set; }
+
+        /// <inheritdoc cref="IEmail{TResult, TSettings}.SendAsync"/>
+        protected Task<ApiResult<EmailSendResult>> SendAsync<TSettings>(TSettings settings, CancellationToken cancellationToken)
+            where TSettings : EmailSettings, new()
+        {
+            Validate(settings);
+
+            var url = $"{Client.ResourceUrl}/{DocumentType}/Send";
+            return Client.PostAsync<TSettings, EmailSendResult>(url, settings, cancellationToken);
+        }
 
         private void Validate(EmailSettings settings)
         {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.ReceivedDocumentPayments;
 using IdokladSdk.Requests.ReceivedDocumentPayments;
@@ -11,7 +13,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with received document payment endpoints.
     /// </summary>
-    public partial class ReceivedDocumentPaymentsClient :
+    public class ReceivedDocumentPaymentsClient :
         BaseClient,
         IDefaultWithIdRequest<ReceivedDocumentPaymentPostModel>,
         IDeleteRequest,
@@ -33,17 +35,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl => "/ReceivedDocumentPayments";
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ReceivedDocumentPaymentPostModel> Default(int id)
+        public Task<ApiResult<ReceivedDocumentPaymentPostModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DefaultAsync(id).GetAwaiter().GetResult();
+            return DefaultAsync<ReceivedDocumentPaymentPostModel>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -57,18 +57,20 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="invoiceId">Id of invoice.</param>
         /// <param name="dateOfPayment">Date of payment.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if full pay was successful, otherwise <c>false</c>.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> FullyPay(int invoiceId, DateTime? dateOfPayment = null)
+        public Task<ApiResult<bool>> FullyPayAsync(int invoiceId, DateTime? dateOfPayment = null, CancellationToken cancellationToken = default)
         {
-            return FullyPayAsync(invoiceId, dateOfPayment).GetAwaiter().GetResult();
+            var queryParams = GetQueryParamsForFullyPay(dateOfPayment);
+            var resourceUrl = $"{ResourceUrl}/FullyPay/{invoiceId}";
+            return PutAsync<bool>(resourceUrl, queryParams, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> FullyUnpay(int invoiceId)
+        public Task<ApiResult<bool>> FullyUnpayAsync(int invoiceId, CancellationToken cancellationToken = default)
         {
-            return FullyUnpayAsync(invoiceId).GetAwaiter().GetResult();
+            var resourceUrl = $"{ResourceUrl}/FullyUnpay/{invoiceId}";
+            return PutAsync<bool>(resourceUrl, null, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -78,10 +80,9 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ReceivedDocumentPaymentGetModel> Post(ReceivedDocumentPaymentPostModel model)
+        public Task<ApiResult<ReceivedDocumentPaymentGetModel>> PostAsync(ReceivedDocumentPaymentPostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<ReceivedDocumentPaymentPostModel, ReceivedDocumentPaymentGetModel>(model, cancellationToken);
         }
 
         private Dictionary<string, string> GetQueryParamsForFullyPay(DateTime? dateOfPayment)

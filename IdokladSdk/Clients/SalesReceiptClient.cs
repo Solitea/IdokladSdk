@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.SalesReceipt;
 using IdokladSdk.Requests.SalesReceipt;
@@ -10,7 +11,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with sales receipt endpoints.
     /// </summary>
-    public partial class SalesReceiptClient
+    public class SalesReceiptClient
         : BaseClient,
         ICopyRequest<SalesReceiptPostModel>,
         IDeleteRequest,
@@ -35,17 +36,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesReceipts";
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesReceiptPostModel> Default()
+        public Task<ApiResult<SalesReceiptPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync().GetAwaiter().GetResult();
+            return DefaultAsync<SalesReceiptPostModel>(cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -61,38 +60,35 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesReceiptPostModel> Copy(int id)
+        public Task<ApiResult<SalesReceiptPostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
-            return CopyAsync(id).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return GetAsync<SalesReceiptPostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesReceiptGetModel> Post(SalesReceiptPostModel model)
+        public Task<ApiResult<SalesReceiptGetModel>> PostAsync(SalesReceiptPostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<SalesReceiptPostModel, SalesReceiptGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiBatchResult<SalesReceiptGetModel> Post(List<SalesReceiptPostModel> models)
+        public Task<ApiBatchResult<SalesReceiptGetModel>> PostAsync(List<SalesReceiptPostModel> models, CancellationToken cancellationToken = default)
         {
-            return PostAsync(models).GetAwaiter().GetResult();
+            return PostAsync<SalesReceiptPostModel, SalesReceiptGetModel>(models, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesReceiptRecountGetModel> Recount(SalesReceiptRecountPostModel model)
+        public Task<ApiResult<SalesReceiptRecountGetModel>> RecountAsync(SalesReceiptRecountPostModel model, CancellationToken cancellationToken = default)
         {
-            return RecountAsync(model).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/Recount";
+            return PostAsync<SalesReceiptRecountPostModel, SalesReceiptRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesReceiptGetModel> Update(SalesReceiptPatchModel model)
+        public Task<ApiResult<SalesReceiptGetModel>> UpdateAsync(SalesReceiptPatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<SalesReceiptPatchModel, SalesReceiptGetModel>(model, cancellationToken);
         }
     }
 }

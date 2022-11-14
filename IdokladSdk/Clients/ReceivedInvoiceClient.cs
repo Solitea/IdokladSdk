@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.ReceivedInvoice;
 using IdokladSdk.Requests.ReceivedInvoice;
@@ -9,7 +10,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with received invoice endpoints.
     /// </summary>
-    public partial class ReceivedInvoiceClient :
+    public class ReceivedInvoiceClient :
         BaseClient,
         ICopyRequest<ReceivedInvoicePostModel>,
         IDeleteRequest,
@@ -33,24 +34,22 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/ReceivedInvoices";
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ReceivedInvoicePostModel> Copy(int id)
+        public Task<ApiResult<ReceivedInvoicePostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
-            return CopyAsync(id).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return GetAsync<ReceivedInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ReceivedInvoicePostModel> Default()
+        public Task<ApiResult<ReceivedInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync().GetAwaiter().GetResult();
+            return DefaultAsync<ReceivedInvoicePostModel>(cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -66,24 +65,22 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ReceivedInvoiceGetModel> Post(ReceivedInvoicePostModel model)
+        public Task<ApiResult<ReceivedInvoiceGetModel>> PostAsync(ReceivedInvoicePostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<ReceivedInvoicePostModel, ReceivedInvoiceGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ReceivedInvoiceRecountGetModel> Recount(ReceivedInvoiceRecountPostModel model)
+        public Task<ApiResult<ReceivedInvoiceRecountGetModel>> RecountAsync(ReceivedInvoiceRecountPostModel model, CancellationToken cancellationToken = default)
         {
-            return RecountAsync(model).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/Recount";
+            return PostAsync<ReceivedInvoiceRecountPostModel, ReceivedInvoiceRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ReceivedInvoiceGetModel> Update(ReceivedInvoicePatchModel model)
+        public Task<ApiResult<ReceivedInvoiceGetModel>> UpdateAsync(ReceivedInvoicePatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<ReceivedInvoicePatchModel, ReceivedInvoiceGetModel>(model, cancellationToken);
         }
     }
 }

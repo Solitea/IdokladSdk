@@ -60,17 +60,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
         }
 
         [Test]
-        public void ApiResult_CallsHandler_ThrowsException()
+        public void ApiResult_CallsHandler_ThrowsExceptionAsync()
         {
             // Arrange
             var issuedInvoiceClient = DokladApi.IssuedInvoiceClient;
 
             // Assert
-            Assert.Throws<ArgumentException>(() => issuedInvoiceClient.Delete(NotFoundIssuedInvoiceId));
+            Assert.ThrowsAsync<ArgumentException>(async () => await issuedInvoiceClient.DeleteAsync(NotFoundIssuedInvoiceId));
         }
 
         [Test]
-        public void ApiBatchResult_CallsHandler_ThrowsException()
+        public void ApiBatchResult_CallsHandler_ThrowsExceptionAsync()
         {
             // Arrange
             var batchClient = DokladApi.BatchClient;
@@ -91,7 +91,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
             };
 
             // Assert
-            Assert.Throws<ArgumentException>(() => batchClient.Update(modelsToUpdate));
+            Assert.ThrowsAsync<ArgumentException>(async () => await batchClient.UpdateAsync(modelsToUpdate));
         }
     }
 }

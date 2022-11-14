@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 
@@ -8,7 +9,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for batch operations.
     /// </summary>
-    public partial class BatchClient : BaseClient
+    public class BatchClient : BaseClient
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchClient"/> class.
@@ -26,11 +27,13 @@ namespace IdokladSdk.Clients
         /// Updates an entity's Exported property.
         /// </summary>
         /// <param name="models">Models to update.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiBatchResult<UpdateExportedModel> Update(IList<UpdateExportedModel> models)
+        public Task<ApiBatchResult<UpdateExportedModel>> UpdateAsync(IList<UpdateExportedModel> models, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(models).GetAwaiter().GetResult();
+            var resource = ResourceUrl + "/Exported";
+
+            return PutAsync<UpdateExportedModel, UpdateExportedModel>(resource, models, cancellationToken);
         }
     }
 }

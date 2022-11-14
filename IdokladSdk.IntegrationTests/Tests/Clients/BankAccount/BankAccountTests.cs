@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -8,7 +9,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
 {
     [TestFixture]
-    public partial class BankAccountTests : TestBase
+    public class BankAccountTests : TestBase
     {
         private int _newBankAccountId = 0;
 
@@ -23,13 +24,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyPosted()
+        public async Task PostAsync_SuccessfullyPosted()
         {
             // Arrange
             var model = CreatePostModel();
 
             // Act
-            var data = BankAccountClient.Post(model).AssertResult();
+            var data = (await BankAccountClient.PostAsync(model)).AssertResult();
             _newBankAccountId = data.Id;
 
             // Assert
@@ -39,10 +40,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
 
         [Test]
         [Order(2)]
-        public void GetDetail_ReturnsDetail()
+        public async Task GetDetailAsync_ReturnsDetail()
         {
             // Act
-            var data = BankAccountClient.Detail(_newBankAccountId).Include(a => a.Bank).Get().AssertResult();
+            var data = (await BankAccountClient.Detail(_newBankAccountId).Include(a => a.Bank).GetAsync()).AssertResult();
 
             // Assert
             Assert.AreEqual(_newBankAccountId, data.Id);
@@ -52,13 +53,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
 
         [Test]
         [Order(3)]
-        public void Update_SuccessfullyUpdated()
+        public async Task UpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
             var model = CreatePatchModel();
 
             // Act
-            var data = BankAccountClient.Update(model).AssertResult();
+            var data = await BankAccountClient.UpdateAsync(model).AssertResult();
 
             // Assert
             AssertData(model, data);
@@ -66,10 +67,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
 
         [Test]
         [Order(4)]
-        public void GetList_ReturnsList()
+        public async Task GetListAsync_ReturnsList()
         {
             // Act
-            var data = BankAccountClient.List().Filter(a => a.CurrencyId.IsNotEqual(0)).Get().AssertResult();
+            var data = (await BankAccountClient.List().Filter(a => a.CurrencyId.IsNotEqual(0)).GetAsync()).AssertResult();
 
             // Assert
             Assert.Greater(data.Items.Count(), 0);
@@ -77,10 +78,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
 
         [Test]
         [Order(5)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = BankAccountClient.Delete(_newBankAccountId).AssertResult();
+            var data = (await BankAccountClient.DeleteAsync(_newBankAccountId)).AssertResult();
 
             // Assert
             Assert.True(data);

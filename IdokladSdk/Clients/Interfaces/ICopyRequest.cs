@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
 
@@ -11,14 +10,6 @@ namespace IdokladSdk.Clients.Interfaces
     /// <typeparam name="TCopyModel">Copy model type.</typeparam> name=""/>
     public interface ICopyRequest<TCopyModel>
     {
-        /// <summary>
-        /// Copies entity.
-        /// </summary>
-        /// <param name="id">Entity id.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        [Obsolete("Use async method instead.")]
-        ApiResult<TCopyModel> Copy(int id);
-
         /// <summary>
         /// Copies entity.
         /// </summary>

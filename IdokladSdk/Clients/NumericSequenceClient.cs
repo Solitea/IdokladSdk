@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.NumericSequence;
@@ -12,7 +14,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with numeric sequence endpoints.
     /// </summary>
-    public partial class NumericSequenceClient :
+    public class NumericSequenceClient :
         BaseClient,
         IEntityList<NumericSequenceList>,
         IPatchRequest<NumericSequencePatchModel, NumericSequenceGetModel>
@@ -50,18 +52,19 @@ namespace IdokladSdk.Clients
         /// <param name="date">Date.</param>
         /// <param name="documentSerialNumber">Serial number.</param>
         /// <param name="numericSequenceId">Numeric sequence id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="DocumentNumbersGetModel"/>.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<DocumentNumbersGetModel> GetDocumentNumber(NumericSequenceDocumentType documentType,  DateTime? date = null, int? documentSerialNumber = null, int? numericSequenceId = null)
+        public Task<ApiResult<DocumentNumbersGetModel>> GetDocumentNumberAsync(NumericSequenceDocumentType documentType, DateTime? date = null, int? documentSerialNumber = null, int? numericSequenceId = null, CancellationToken cancellationToken = default)
         {
-            return GetDocumentNumberAsync(documentType, date, documentSerialNumber).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/DocumentNumbers/{documentType}";
+            var queryParams = QueryParams(date, documentSerialNumber, numericSequenceId);
+            return GetAsync<DocumentNumbersGetModel>(resource, queryParams, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<NumericSequenceGetModel> Update(NumericSequencePatchModel model)
+        public Task<ApiResult<NumericSequenceGetModel>> UpdateAsync(NumericSequencePatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<NumericSequencePatchModel, NumericSequenceGetModel>(model, cancellationToken);
         }
 
         private Dictionary<string, string> QueryParams(DateTime? date, int? documentSerialNumber, int? numericSequenceId)

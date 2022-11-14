@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Account;
@@ -9,7 +10,7 @@ namespace IdokladSdk.Requests.Account.User
     /// <summary>
     /// User.
     /// </summary>
-    public partial class Users :
+    public class Users :
         IEntityDetail<UserDetail>,
         IEntityList<UserList>,
         IPatchRequest<UserPatchModel, UserGetModel>
@@ -49,21 +50,20 @@ namespace IdokladSdk.Requests.Account.User
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<UserGetModel> Update(UserPatchModel model)
+        public Task<ApiResult<UserGetModel>> UpdateAsync(UserPatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return _client.PatchAsync<UserPatchModel, UserGetModel>(CurrentUserUrl, model, cancellationToken);
         }
 
         /// <summary>
         /// Delets user with given id.
         /// </summary>
         /// <param name="id">User id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Returns true if user deletion was successfull, false otherwise.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return _client.DeleteAsync<bool>($"{_client.ResourceUrl}/Users/{id}", cancellationToken);
         }
     }
 }

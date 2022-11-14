@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Account;
@@ -9,7 +11,7 @@ namespace IdokladSdk.Requests.Account.Agenda
     /// <summary>
     /// Agenda.
     /// </summary>
-    public partial class Agendas :
+    public class Agendas :
         IEntityDetail<AgendaDetail>,
         IEntityList<AgendaList>,
         IPatchRequest<AgendaPatchModel, AgendaGetModel>
@@ -45,22 +47,22 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// <summary>
         /// Deletes agenda's logo.
         /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><c>true</c>.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> DeleteLogo()
+        public Task<ApiResult<bool>> DeleteLogoAsync(CancellationToken cancellationToken = default)
         {
-            return DeleteLogoAsync().GetAwaiter().GetResult();
+            return _client.DeleteAsync<bool>(LogoUrl, cancellationToken);
         }
 
         /// <summary>
         /// Request to delete the agenda. Deletion of the agenda has to be confirmed by clicking on the link in the email.
         /// </summary>
         /// <param name="model">Reasons for deleting the agenda.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><c>true</c>.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> DeleteRequest(AgendaDeleteRequestPostModel model)
+        public Task<ApiResult<bool>> DeleteRequestAsync(AgendaDeleteRequestPostModel model, CancellationToken cancellationToken = default)
         {
-            return DeleteRequestAsync(model).GetAwaiter().GetResult();
+            return _client.PostAsync<AgendaDeleteRequestPostModel, bool>(DeleteRequestUrl, model, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -72,21 +74,21 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// <summary>
         /// Generation of an e-mail address to which the bank will send bank movements messages.
         /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>E-mail address.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<string> GenerateBankStatementMail()
+        public Task<ApiResult<string>> GenerateBankStatementMailAsync(CancellationToken cancellationToken = default)
         {
-            return GenerateBankStatementMailAsync().GetAwaiter().GetResult();
+            return _client.PostAsync<string>(GenerateBankStatementMailUrl, cancellationToken);
         }
 
         /// <summary>
-        /// Returns agenda's logo.
+        /// Gets agenda's logo.
         /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Agenda's logo.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<LogoGetModel> GetLogo()
+        public Task<ApiResult<LogoGetModel>> GetLogoAsync(CancellationToken cancellationToken = default)
         {
-            return GetLogoAsync().GetAwaiter().GetResult();
+            return _client.GetAsync<LogoGetModel>(LogoUrl, null, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -96,21 +98,25 @@ namespace IdokladSdk.Requests.Account.Agenda
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<AgendaGetModel> Update(AgendaPatchModel model)
+        public Task<ApiResult<AgendaGetModel>> UpdateAsync(AgendaPatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return _client.PatchAsync<AgendaPatchModel, AgendaGetModel>(CurrentAgendaUrl, model, cancellationToken);
         }
 
         /// <summary>
         /// Sets agenda logo. Existing logo will be replaced. Optimal size is 280 x 100 (96 DPI) or 900 x 300 (300 DPI). Max. file size is 5 MB.
         /// </summary>
         /// <param name="model">New logo.</param>
-        /// <returns><c>true</c>.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> UploadLogo(LogoPostModel model)
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Agenda's logo.</returns>
+        public async Task<ApiResult<bool>> UploadLogoAsync(LogoPostModel model, CancellationToken cancellationToken = default)
         {
-            return UploadLogoAsync(model).GetAwaiter().GetResult();
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            return await _client.PutFileAsync<bool>(LogoUrl, model, cancellationToken).ConfigureAwait(false);
         }
     }
 }

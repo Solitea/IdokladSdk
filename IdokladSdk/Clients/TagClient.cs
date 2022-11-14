@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Tag;
 using IdokladSdk.Requests.Tag;
@@ -9,7 +10,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// TagClient.
     /// </summary>
-    public partial class TagClient : BaseClient,
+    public class TagClient : BaseClient,
         IDeleteRequest,
         IEntityList<TagList>,
         IPatchRequest<TagPatchModel, TagGetModel>,
@@ -28,10 +29,9 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/Tags";
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -41,17 +41,15 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<TagGetModel> Post(TagPostModel model)
+        public Task<ApiResult<TagGetModel>> PostAsync(TagPostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<TagPostModel, TagGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<TagGetModel> Update(TagPatchModel model)
+        public Task<ApiResult<TagGetModel>> UpdateAsync(TagPatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<TagPatchModel, TagGetModel>(model, cancellationToken);
         }
     }
 }

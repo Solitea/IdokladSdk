@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Requests.Core.Extensions;
 using IdokladSdk.Requests.Core.Interfaces;
@@ -21,7 +23,7 @@ namespace IdokladSdk.Requests.Core
     /// <typeparam name="TGetModel">GetModel type.</typeparam>
     /// <typeparam name="TFilter">Filter type.</typeparam>
     /// <typeparam name="TSort">Sort type.</typeparam>
-    public abstract partial class BaseList<TList, TClient, TGetModel, TFilter, TSort> : IGetListRequest<TGetModel>,
+    public abstract class BaseList<TList, TClient, TGetModel, TFilter, TSort> : IGetListRequest<TGetModel>,
         IFilterable<TList, TFilter>, ISortable<TList, TSort>, IPageable<TList>
         where TList : BaseList<TList, TClient, TGetModel, TFilter, TSort>
         where TClient : BaseClient
@@ -98,25 +100,35 @@ namespace IdokladSdk.Requests.Core
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<Page<TGetModel>> Get()
+        public Task<ApiResult<Page<TGetModel>>> GetAsync(CancellationToken cancellationToken = default)
         {
-            return GetAsync().GetAwaiter().GetResult();
+            var queryParams = GetQueryParameters();
+
+            return _client.GetAsync<Page<TGetModel>>(ResourceUrl, queryParams, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<Page<TCustomResult>> Get<TCustomResult>()
+        public Task<ApiResult<Page<TCustomResult>>> GetAsync<TCustomResult>(CancellationToken cancellationToken = default)
             where TCustomResult : new()
         {
-            return GetAsync<TCustomResult>().GetAwaiter().GetResult();
+            _select.Select<TCustomResult>();
+            var queryParams = GetQueryParameters();
+
+            return _client.GetAsync<Page<TCustomResult>>(ResourceUrl, queryParams, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public virtual ApiResult<Page<TResult>> Get<TResult>(Expression<Func<TGetModel, TResult>> selector)
+        public async Task<ApiResult<Page<TResult>>> GetAsync<TResult>(Expression<Func<TGetModel, TResult>> selector, CancellationToken cancellationToken = default)
         {
-            return GetAsync<TResult>(selector).GetAwaiter().GetResult();
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            _select.Select(selector);
+            var queryParams = GetQueryParameters();
+            var apiResult = await _client.GetAsync<Page<TGetModel>>(ResourceUrl, queryParams, cancellationToken).ConfigureAwait(false);
+            return ApplySelectorFunction(apiResult, selector);
         }
 
         /// <summary>

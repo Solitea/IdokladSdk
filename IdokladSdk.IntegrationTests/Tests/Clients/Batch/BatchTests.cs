@@ -25,7 +25,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
         }
 
         [Test]
-        public void Update_SucessfullySetExportedState_Exported()
+        public async Task UpdateAsync_SucessfullySetExportedState_Exported()
         {
             // Arrange
             var modelsToUpdate = new List<UpdateExportedModel>();
@@ -42,7 +42,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             }
 
             // Act
-            var results = DokladApi.BatchClient.Update(modelsToUpdate).AssertResult();
+            var results = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate).AssertResult();
 
             // Assert
             Assert.Multiple(() =>
@@ -93,7 +93,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             var modelsToUpdate = new List<UpdateExportedModel>();
 
             // Act + Assert
-            Assert.Throws<ValidationException>(() => DokladApi.BatchClient.Update(modelsToUpdate));
+            Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             }
 
             // Act + Assert
-            Assert.Throws<ValidationException>(() => DokladApi.BatchClient.Update(modelsToUpdate));
+            Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
         }
     }
 }

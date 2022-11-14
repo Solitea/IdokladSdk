@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Requests.Contact;
@@ -9,7 +10,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with contact endpoints.
     /// </summary>
-    public partial class ContactClient :
+    public class ContactClient :
         BaseClient,
         IDeleteRequest,
         IDefaultRequest<ContactPostModel>,
@@ -43,31 +44,27 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ContactGetModel> Post(ContactPostModel model)
+        public Task<ApiResult<ContactGetModel>> PostAsync(ContactPostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<ContactPostModel, ContactGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ContactGetModel> Update(ContactPatchModel model)
+        public Task<ApiResult<ContactGetModel>> UpdateAsync(ContactPatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<ContactPatchModel, ContactGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ContactPostModel> Default()
+        public Task<ApiResult<ContactPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync().GetAwaiter().GetResult();
+            return DefaultAsync<ContactPostModel>(cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
     }
 }

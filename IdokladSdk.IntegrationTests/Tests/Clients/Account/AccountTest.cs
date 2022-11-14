@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -12,7 +12,7 @@ using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
 {
-    public partial class AccountTest : TestBase
+    public class AccountTest : TestBase
     {
         private const int AgendaId = 187854;
         private const string LogoFileName = "Solitea.png";
@@ -30,10 +30,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void AgendaList_SuccessfullyGetAgendaList()
+        public async Task AgendaListAsync_SuccessfullyGetAgendaList()
         {
             // Act
-            var data = _accountClient.Agendas.List().Get().AssertResult();
+            var data = (await _accountClient.Agendas.List().GetAsync()).AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -45,32 +45,32 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void SubscriptionsList_FilteredByDateFromSuccessfullyGetSubscription()
+        public async Task SubscriptionsListAsync_FilteredByDateFromSuccessfullyGetSubscription()
         {
             // Act
-            var data = _accountClient.Subscriptions.List()
-                .Filter(f => f.DateFrom.IsGreaterThan(new DateTime(2020, 3, 1))).Get().AssertResult();
+            var data = (await _accountClient.Subscriptions.List()
+                .Filter(f => f.DateFrom.IsGreaterThan(new DateTime(2020, 3, 1))).GetAsync()).AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.GreaterThan(2));
         }
 
         [Test]
-        public void SubscriptionsList_FilteredByIsCanceledSuccessfullyGetSubscription()
+        public async Task SubscriptionsListAsync_FilteredByIsCanceledSuccessfullyGetSubscription()
         {
             // Act
-            var data = _accountClient.Subscriptions.List()
-                .Filter(f => f.IsCanceled.IsEqual(true)).Get().AssertResult();
+            var data = (await _accountClient.Subscriptions.List()
+                .Filter(f => f.IsCanceled.IsEqual(true)).GetAsync()).AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.EqualTo(0));
         }
 
         [Test]
-        public void AgendaDetail_SuccessfullyGetAgendaDetail()
+        public async Task AgendaDetailAsync_SuccessfullyGetAgendaDetail()
         {
             // Act
-            var data = _accountClient.Agendas.Detail(AgendaId).Get().AssertResult();
+            var data = (await _accountClient.Agendas.Detail(AgendaId).GetAsync()).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -78,18 +78,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.AreEqual("Solitea Česká republika, a.s.", data.Name);
             Assert.NotNull(data.Contact);
             Assert.AreEqual(Street, data.Contact.Street);
-            Assert.IsNotEmpty(data.CswCustomerPin);
-            Assert.AreNotEqual(Guid.Empty, data.CswCustomerGuid);
             Assert.That(data.HasVatRegimeOss, Is.True);
-            Assert.That(data.DeleteStatus, Is.EqualTo(AgendaDeleteStatus.RequestSent));
-            Assert.That(data.IsActiveStorePayment, Is.False);
         }
 
         [Test]
-        public void AgendaCurrent_SuccessfullyGetAgendaCurrentDetail()
+        public async Task AgendaCurrentAsync_SuccessfullyGetAgendaCurrentDetail()
         {
             // Act
-            var data = _accountClient.Agendas.Current().Get().AssertResult();
+            var data = (await _accountClient.Agendas.Current().GetAsync()).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -97,30 +93,29 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.AreEqual("Solitea Česká republika, a.s.", data.Name);
             Assert.NotNull(data.Contact);
             Assert.AreEqual(Street, data.Contact.Street);
-            Assert.True(data.BankAccounts.Count(a => a.IsDefault) == 1);
         }
 
         [Test]
-        public void AgendaDeleteRequest_DoesNotFail()
+        public async Task AgendaDeleteRequestAsync_DoesNotFail()
         {
             // Arrange
             var model = new AgendaDeleteRequestPostModel();
 
             // Act
-            var data = _accountClient.Agendas.DeleteRequest(model).AssertResult();
+            var data = (await _accountClient.Agendas.DeleteRequestAsync(model)).AssertResult();
 
             // Assert
             Assert.True(data);
         }
 
         [Test]
-        public void AgendaUpdate_DoesNotFail()
+        public async Task AgendaUpdateAsync_DoesNotFail()
         {
             // Arrange
             var model = new AgendaPatchModel();
 
             // Act
-            var data = _accountClient.Agendas.Update(model).AssertResult();
+            var data = (await _accountClient.Agendas.UpdateAsync(model)).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -135,7 +130,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void AgendaUpdate_ValidIdentification_DoesNotFail()
+        public async Task AgendaUpdateAsync_ValidIdentification_DoesNotFail()
         {
             // Arrange
             var model = new AgendaPatchModel
@@ -148,7 +143,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             };
 
             // Act
-            var hasIdentificationData = _accountClient.Agendas.Update(model).AssertResult().Contact;
+            var hasIdentificationData = (await _accountClient.Agendas.UpdateAsync(model)).AssertResult().Contact;
 
             // Assert
             Assert.That(hasIdentificationData.IdentificationNumber, Is.Empty);
@@ -159,7 +154,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             model.Contact.HasNoIdentificationNumber = false;
 
             // Act
-            var data = _accountClient.Agendas.Update(model).AssertResult();
+            var data = (await _accountClient.Agendas.UpdateAsync(model)).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -169,7 +164,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void AgendaUpdate_InValidIdentification_UpdateFailed()
+        public void AgendaUpdateAsync_InValidIdentification_UpdateFailed()
         {
             // Arrange
             var model = new AgendaPatchModel
@@ -182,24 +177,24 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             };
 
             // Assert
-            Assert.Throws<ValidationException>(() => _accountClient.Agendas.Update(model));
+            Assert.ThrowsAsync<ValidationException>(async () => await _accountClient.Agendas.UpdateAsync(model));
         }
 
         [Test]
-        public void Agenda_GenerateBankStatementMail_ReturnsEmailAddress()
+        public async Task Agenda_GenerateBankStatementMailAsync_ReturnsEmailAddress()
         {
             // Act
-            var data = _accountClient.Agendas.GenerateBankStatementMail().AssertResult();
+            var data = (await _accountClient.Agendas.GenerateBankStatementMailAsync()).AssertResult();
 
             // Assert
             Assert.That(data, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
-        public void LogoGet_SuccessfullyGet()
+        public async Task LogoGetAsync_SuccessfullyGet()
         {
             // Act
-            var data = _accountClient.Agendas.GetLogo().AssertResult();
+            var data = (await _accountClient.Agendas.GetLogoAsync()).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -207,17 +202,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void LogoDelete_SuccessfullyDeleted()
+        public async Task LogoDeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = _accountClient.Agendas.DeleteLogo().AssertResult();
+            var data = (await _accountClient.Agendas.DeleteLogoAsync()).AssertResult();
 
             // Assert
             Assert.True(data);
         }
 
         [Test]
-        public void LogoUpdate_SuccessfullyUpdated()
+        public async Task LogoUpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
             var model = new LogoPostModel
@@ -228,17 +223,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             };
 
             // Act
-            var data = _accountClient.Agendas.UploadLogo(model).AssertResult();
+            var data = (await _accountClient.Agendas.UploadLogoAsync(model)).AssertResult();
 
             // Assert
             Assert.True(data);
         }
 
         [Test]
-        public void UserList_SuccessfullyGetUserList()
+        public async Task UserListAsync_SuccessfullyGetUserList()
         {
             // Act
-            var data = _accountClient.Users.List().Get().AssertResult();
+            var data = (await _accountClient.Users.List().GetAsync()).AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -248,10 +243,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void UserDetail_SuccessfullyGetUserDetail()
+        public async Task UserDetailAsync_SuccessfullyGetUserDetail()
         {
             // Act
-            var data = _accountClient.Users.Detail(UserId).Get().AssertResult();
+            var data = (await _accountClient.Users.Detail(UserId).GetAsync()).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -261,10 +256,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void UserCurrent_SuccessfullyGetUserCurrentDetail()
+        public async Task UserCurrentAsync_SuccessfullyGetUserCurrentDetail()
         {
             // Act
-            var data = _accountClient.Users.Current().Get().AssertResult();
+            var data = (await _accountClient.Users.Current().GetAsync()).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -274,25 +269,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public void UserUpdate_DoesNotFail()
+        public async Task UserUpdateAsync_DoesNotFail()
         {
             // Arrange
             var model = new UserPatchModel();
 
             // Act
-            var data = _accountClient.Users.Update(model).AssertResult();
+            var data = (await _accountClient.Users.UpdateAsync(model)).AssertResult();
 
             // Assert
             Assert.NotNull(data);
         }
 
         [Test]
-        public void GetSubscriptionList_SubscriptionListGotSuccessfully()
+        public async Task GetSubscriptionListAsync_SubscriptionListGotSuccessfully()
         {
             // Act
-            var result = _accountClient.Subscriptions.List()
+            var result = (await _accountClient.Subscriptions.List()
                 .Sort(x => x.DateOfIssue.Desc())
-                .Get().AssertResult();
+                .GetAsync()).AssertResult();
 
             // Assert
             Assert.NotNull(result);

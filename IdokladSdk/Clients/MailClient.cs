@@ -5,7 +5,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with mail endpoints.
     /// </summary>
-    public partial class MailClient : BaseClient
+    public class MailClient : BaseClient
     {
         private CreditNoteEmail _creditNoteEmail;
         private IssuedInvoiceEmail _issuedInvoiceEmail;

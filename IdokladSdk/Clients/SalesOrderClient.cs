@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
@@ -11,7 +12,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with sales order endpoints.
     /// </summary>
-    public partial class SalesOrderClient :
+    public class SalesOrderClient :
         BaseClient,
         ICopyRequest<SalesOrderPostModel>,
         IDeleteRequest,
@@ -35,24 +36,22 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesOrders";
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesOrderPostModel> Copy(int id)
+        public Task<ApiResult<SalesOrderPostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
-            return CopyAsync(id).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return GetAsync<SalesOrderPostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesOrderPostModel> Default()
+        public Task<ApiResult<SalesOrderPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync().GetAwaiter().GetResult();
+            return DefaultAsync<SalesOrderPostModel>(cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -65,22 +64,24 @@ namespace IdokladSdk.Clients
         /// Returns new issued invoice created from given sales order.
         /// </summary>
         /// <param name="salesOrderId">Sales order id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method return issued invoice post model.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<IssuedInvoicePostModel> GetIssuedInvoice(int salesOrderId)
+        public Task<ApiResult<IssuedInvoicePostModel>> GetIssuedInvoiceAsync(int salesOrderId, CancellationToken cancellationToken = default)
         {
-            return GetIssuedInvoiceAsync(salesOrderId).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{salesOrderId}/IssuedInvoice";
+            return GetAsync<IssuedInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <summary>
         /// Returns new proforma invoice created from given sales order.
         /// </summary>
         /// <param name="salesOrderId">Sales order id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method return proforma invoice post model.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ProformaInvoicePostModel> GetProformaInvoice(int salesOrderId)
+        public Task<ApiResult<ProformaInvoicePostModel>> GetProformaInvoiceAsync(int salesOrderId, CancellationToken cancellationToken = default)
         {
-            return GetProformaInvoiceAsync(salesOrderId).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{salesOrderId}/ProformaInvoice";
+            return GetAsync<ProformaInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -90,24 +91,22 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesOrderGetModel> Post(SalesOrderPostModel model)
+        public Task<ApiResult<SalesOrderGetModel>> PostAsync(SalesOrderPostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<SalesOrderPostModel, SalesOrderGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesOrderRecountGetModel> Recount(SalesOrderRecountPostModel model)
+        public Task<ApiResult<SalesOrderRecountGetModel>> RecountAsync(SalesOrderRecountPostModel model, CancellationToken cancellationToken = default)
         {
-            return RecountAsync(model).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/Recount";
+            return PostAsync<SalesOrderRecountPostModel, SalesOrderRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<SalesOrderGetModel> Update(SalesOrderPatchModel model)
+        public Task<ApiResult<SalesOrderGetModel>> UpdateAsync(SalesOrderPatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<SalesOrderPatchModel, SalesOrderGetModel>(model, cancellationToken);
         }
     }
 }

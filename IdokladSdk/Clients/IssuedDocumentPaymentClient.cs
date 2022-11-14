@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
+using System.Threading;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedDocumentPayment;
 using IdokladSdk.Requests.IssuedDocumentPayment;
@@ -11,7 +13,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with issued document payment endpoints.
     /// </summary>
-    public partial class IssuedDocumentPaymentClient :
+    public class IssuedDocumentPaymentClient :
         BaseClient,
         IDefaultWithIdRequest<IssuedDocumentPaymentPostModel>,
         IDeleteRequest,
@@ -33,17 +35,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/IssuedDocumentPayments";
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<IssuedDocumentPaymentPostModel> Default(int id)
+        public Task<ApiResult<IssuedDocumentPaymentPostModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DefaultAsync(id).GetAwaiter().GetResult();
+            return DefaultAsync<IssuedDocumentPaymentPostModel>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -53,10 +53,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> FullyUnpay(int invoiceId)
+        public Task<ApiResult<bool>> FullyUnpayAsync(int invoiceId, CancellationToken cancellationToken = default)
         {
-            return FullyUnpayAsync(invoiceId).GetAwaiter().GetResult();
+            var resourceUrl = $"{ResourceUrl}/FullyUnpay/{invoiceId}";
+            return PutAsync<bool>(resourceUrl, null, cancellationToken);
         }
 
         /// <summary>
@@ -65,11 +65,13 @@ namespace IdokladSdk.Clients
         /// <param name="invoiceId">Id of invoice.</param>
         /// <param name="dateOfPayment">Date of payment.</param>
         /// <param name="salesPosEquipmentId">Sales pos equipment id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if full pay was successful, otherwise <c>false</c>.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> FullyPay(int invoiceId, DateTime? dateOfPayment = null, int? salesPosEquipmentId = null)
+        public Task<ApiResult<bool>> FullyPayAsync(int invoiceId, DateTime? dateOfPayment = null, int? salesPosEquipmentId = null, CancellationToken cancellationToken = default)
         {
-            return FullyPayAsync(invoiceId, dateOfPayment, salesPosEquipmentId).GetAwaiter().GetResult();
+            var queryParams = GetQueryParamsForFullyPay(dateOfPayment, salesPosEquipmentId);
+            var resourceUrl = $"{ResourceUrl}/FullyPay/{invoiceId}";
+            return PutAsync<bool>(resourceUrl, queryParams, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -88,10 +90,9 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<IssuedDocumentPaymentGetModel> Post(IssuedDocumentPaymentPostModel model)
+        public Task<ApiResult<IssuedDocumentPaymentGetModel>> PostAsync(IssuedDocumentPaymentPostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<IssuedDocumentPaymentPostModel, IssuedDocumentPaymentGetModel>(model, cancellationToken);
         }
 
         private Dictionary<string, string> GetQueryParamsForFullyPay(DateTime? dateOfPayment, int? salesPosEquipmentId)

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Report;
@@ -18,7 +20,7 @@ namespace IdokladSdk.Requests.Report
     /// <typeparam name="TGetModel">GetModel type.</typeparam>
     /// <typeparam name="TFilter">Filter type.</typeparam>
     /// <typeparam name="TSort">Sort type.</typeparam>
-    public abstract partial class BaseReportList<TList, TClient, TGetModel, TFilter, TSort>
+    public abstract class BaseReportList<TList, TClient, TGetModel, TFilter, TSort>
         where TList : BaseReportList<TList, TClient, TGetModel, TFilter, TSort>
         where TClient : BaseClient
         where TFilter : new()
@@ -81,22 +83,36 @@ namespace IdokladSdk.Requests.Report
         /// Call Get endpoint.
         /// </summary>
         /// <param name="language">Language.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>API result.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<TGetModel> Get(Language language)
+        public Task<ApiResult<TGetModel>> GetAsync(Language language, CancellationToken cancellationToken = default)
         {
-            return GetAsync(language).GetAwaiter().GetResult();
+            var queryParams = GetQueryParameters();
+            var resource = $"{_client.ResourceUrl}{_documentType}/Pdf/List/{language}";
+            return _client.GetAsync<TGetModel>(resource, queryParams, cancellationToken);
         }
 
         /// <summary>
         /// Call Get endpoint.
         /// </summary>
         /// <param name="options">Options.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>API result.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<List<ReportImageGetModel>> GetImage(ReportImageOption options)
+        public Task<ApiResult<List<ReportImageGetModel>>> GetImageAsync(ReportImageOption options, CancellationToken cancellationToken = default)
         {
-            return GetImageAsync(options).GetAwaiter().GetResult();
+            var queryParams = GetQueryParameters();
+            if (options.Language != null)
+            {
+                queryParams.Add("language", options.Language.ToString());
+            }
+
+            if (options.Resolution != null)
+            {
+                queryParams.Add("resolution", options.Resolution.ToString());
+            }
+
+            var resource = $"{_client.ResourceUrl}{_documentType}/Image/List/";
+            return _client.GetAsync<List<ReportImageGetModel>>(resource, queryParams, cancellationToken);
         }
 
         /// <summary>

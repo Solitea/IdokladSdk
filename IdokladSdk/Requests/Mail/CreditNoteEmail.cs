@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Models.Email;
 using IdokladSdk.Requests.Mail.Interfaces;
@@ -9,7 +10,7 @@ namespace IdokladSdk.Requests.Mail
     /// <summary>
     /// CreditNote email.
     /// </summary>
-    public partial class CreditNoteEmail : Email, IEmail<EmailSendResult, CreditNoteEmailSettings>
+    public class CreditNoteEmail : Email, IEmail<EmailSendResult, CreditNoteEmailSettings>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreditNoteEmail"/> class.
@@ -22,10 +23,9 @@ namespace IdokladSdk.Requests.Mail
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<EmailSendResult> Send(CreditNoteEmailSettings settings)
+        public Task<ApiResult<EmailSendResult>> SendAsync(CreditNoteEmailSettings settings, CancellationToken cancellationToken = default)
         {
-            return SendAsync(settings).GetAwaiter().GetResult();
+            return SendAsync<CreditNoteEmailSettings>(settings, cancellationToken);
         }
     }
 }

@@ -1,7 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Models.Batch;
 using IdokladSdk.Models.PriceListItem;
+using IdokladSdk.Requests.Extensions;
 using IdokladSdk.Requests.PriceListItem;
 using IdokladSdk.Response;
 
@@ -10,7 +15,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with price list item endpoints.
     /// </summary>
-    public partial class PriceListItemClient : BaseClient,
+    public class PriceListItemClient : BaseClient,
         IDefaultRequest<PriceListItemPostModel>,
         IEntityDetail<PriceListItemDetail>,
         IEntityList<PriceListItemList>,
@@ -32,19 +37,23 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/PriceListItems";
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<PriceListItemPostModel> Default()
+        public Task<ApiResult<PriceListItemPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync().GetAwaiter().GetResult();
+            return DefaultAsync<PriceListItemPostModel>(cancellationToken);
         }
 
-        /// <inheritdoc cref="IDeleteRequest.Delete"/>
+        /// <summary>
+        /// Deletes entity.
+        /// </summary>
         /// <param name="id">Entity id.</param>
         /// <param name="deleteIfReferenced">Indicates whether item referenced on invoices or exported item will be deleted.</param>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id, bool deleteIfReferenced = true)
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
+        public Task<ApiResult<bool>> DeleteAsync(int id, bool deleteIfReferenced = true, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id, deleteIfReferenced).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{id}/{deleteIfReferenced.ToString(CultureInfo.InvariantCulture)}";
+
+            return DeleteAsync<bool>(resource, cancellationToken);
         }
 
         /// <summary>
@@ -52,11 +61,16 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="idBatch">List of entity ids.</param>
         /// <param name="deleteIfReferenced">Indicates whether items referenced on invoices or exported items will be deleted.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiBatchResult<bool> Delete(List<int> idBatch, bool deleteIfReferenced)
+        public async Task<ApiBatchResult<bool>> DeleteAsync(List<int> idBatch, bool deleteIfReferenced, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(idBatch, deleteIfReferenced).GetAwaiter().GetResult();
+            var batch = new BatchModel<int>(idBatch);
+            var resource = $"{BatchUrl}/{deleteIfReferenced.ToString(CultureInfo.InvariantCulture)}";
+            var request = await CreateRequestAsync(resource, HttpMethod.Delete, cancellationToken).ConfigureAwait(false);
+            request.AddJsonBody(batch);
+
+            return await ExecuteBatchAsync<bool>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -72,31 +86,27 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<PriceListItemGetModel> Post(PriceListItemPostModel model)
+        public Task<ApiResult<PriceListItemGetModel>> PostAsync(PriceListItemPostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<PriceListItemPostModel, PriceListItemGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiBatchResult<PriceListItemGetModel> Post(List<PriceListItemPostModel> models)
+        public Task<ApiBatchResult<PriceListItemGetModel>> PostAsync(List<PriceListItemPostModel> models, CancellationToken cancellationToken = default)
         {
-            return PostAsync(models).GetAwaiter().GetResult();
+            return PostAsync<PriceListItemPostModel, PriceListItemGetModel>(models, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<PriceListItemGetModel> Update(PriceListItemPatchModel model)
+        public Task<ApiResult<PriceListItemGetModel>> UpdateAsync(PriceListItemPatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<PriceListItemPatchModel, PriceListItemGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiBatchResult<PriceListItemGetModel> Update(List<PriceListItemPatchModel> models)
+        public Task<ApiBatchResult<PriceListItemGetModel>> UpdateAsync(List<PriceListItemPatchModel> models, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(models).GetAwaiter().GetResult();
+            return PatchAsync<PriceListItemPatchModel, PriceListItemGetModel>(models, cancellationToken);
         }
     }
 }

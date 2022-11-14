@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.RegisteredSale;
@@ -10,7 +11,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with registered sale endpoints.
     /// </summary>
-    public partial class RegisteredSaleClient :
+    public class RegisteredSaleClient :
         BaseClient,
         IDefaultRequest<RegisteredSalePostModel>,
         IEntityList<RegisteredSaleList>
@@ -28,10 +29,9 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/RegisteredSales";
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<RegisteredSalePostModel> Default()
+        public Task<ApiResult<RegisteredSalePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync().GetAwaiter().GetResult();
+            return DefaultAsync<RegisteredSalePostModel>(cancellationToken);
         }
 
         /// <inheritdoc cref="IEntityDetail{TDetail}.Detail"/>
@@ -48,14 +48,18 @@ namespace IdokladSdk.Clients
             return new RegisteredSaleList(this);
         }
 
-        /// <inheritdoc cref="IPostRequest{TPostModel,TGetModel}.Post"/>
+        /// <summary>
+        /// Posts new entity.
+        /// </summary>
         /// <param name="type">Type of document for register new sale.</param>
         /// <param name="id">Id of document for register new sale.</param>
-        /// <param name="model">Model of registered sale.</param>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<RegisteredSaleGetModel> Post(RegisteredSaleType type, int id, RegisteredSalePostModel model)
+        /// <param name="model">Entity to be created.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
+        public Task<ApiResult<RegisteredSaleGetModel>> PostAsync(RegisteredSaleType type, int id, RegisteredSalePostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(type, id, model).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{type}/{id}";
+            return PostAsync<RegisteredSalePostModel, RegisteredSaleGetModel>(resource, model, cancellationToken);
         }
     }
 }

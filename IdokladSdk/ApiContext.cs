@@ -17,47 +17,6 @@ namespace IdokladSdk
         private readonly IAuthentication _authentication;
         private Tokenizer _token;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
-        /// </summary>
-        /// <param name="appName">Your application name.</param>
-        /// <param name="appVersion">Your application version.</param>
-        /// <param name="authentication">Authentication configuration.</param>
-        [Obsolete("Use DokladApiBuilder instead.")]
-        public ApiContext(string appName, string appVersion, IAuthentication authentication)
-            : this(new ApiContextConfiguration
-            {
-                AppName = appName,
-                AppVersion = appVersion,
-                Authentication = authentication,
-                Configuration = new DokladConfiguration(),
-                ApiHttpClient = new HttpClient(),
-                IdentityHttpClient = new HttpClient()
-            })
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
-        /// </summary>
-        /// <param name="appName">Your application name.</param>
-        /// <param name="appVersion">Your application version.</param>
-        /// <param name="authentication">Authentication configuration.</param>
-        /// <param name="configuration">Custom configuration for iDoklad API.</param>
-        [Obsolete("Use DokladApiBuilder instead.")]
-        public ApiContext(string appName, string appVersion, IAuthentication authentication, DokladConfiguration configuration)
-            : this(new ApiContextConfiguration
-            {
-                AppName = appName,
-                AppVersion = appVersion,
-                Authentication = authentication,
-                Configuration = configuration,
-                ApiHttpClient = new HttpClient(),
-                IdentityHttpClient = new HttpClient()
-            })
-        {
-        }
-
         internal ApiContext(ApiContextConfiguration apiContextConfiguration)
         {
             ValidateApiContextConfiguration(apiContextConfiguration);
@@ -121,16 +80,6 @@ namespace IdokladSdk
         /// Gets claims from token.
         /// </summary>
         public TokenClaims TokenClaims { get; private set; }
-
-        /// <summary>
-        /// Access token.
-        /// </summary>
-        /// <returns>Tokenizer.</returns>
-        [Obsolete("Use async method instead.")]
-        public Tokenizer GetToken()
-        {
-            return GetTokenAsync().GetAwaiter().GetResult();
-        }
 
         /// <summary>
         /// Returns existing Tokenizer and if necessary, refreshes it.

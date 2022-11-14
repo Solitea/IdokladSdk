@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -9,7 +10,7 @@ using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
 {
-    public partial class CashRegisterTests : TestBase
+    public class CashRegisterTests : TestBase
     {
         private int _newCashRegisterId = 0;
         private CashRegisterClient _cashRegisterClient;
@@ -23,13 +24,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyPosted()
+        public async Task PostAsync_SuccessfullyPosted()
         {
             // Arrange
             var model = CreatePostModel();
 
             // Act
-            var data = _cashRegisterClient.Post(model).AssertResult();
+            var data = (await _cashRegisterClient.PostAsync(model)).AssertResult();
             _newCashRegisterId = data.Id;
 
             // Assert
@@ -39,10 +40,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
 
         [Test]
         [Order(2)]
-        public void Detail_SuccessfullyGetDetail()
+        public async Task DetailAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = _cashRegisterClient.Detail(_newCashRegisterId).Include(c => c.Currency).Get().AssertResult();
+            var data = (await _cashRegisterClient.Detail(_newCashRegisterId).Include(c => c.Currency).GetAsync()).AssertResult();
 
             // Assert
             Assert.AreEqual(_newCashRegisterId, data.Id);
@@ -53,12 +54,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
 
         [Test]
         [Order(3)]
-        public void Update_SuccessfullyUpdated()
+        public async Task UpdateAsync_SuccessfullyUpdated()
         {
             var model = CreatePatchModel();
 
             // Act
-            var data = _cashRegisterClient.Update(model).AssertResult();
+            var data = (await _cashRegisterClient.UpdateAsync(model)).AssertResult();
 
             // Assert
             AssertData(model, data);
@@ -66,10 +67,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
 
         [Test]
         [Order(4)]
-        public void List_SuccessfullyGetList()
+        public async Task ListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = _cashRegisterClient.List().Filter(f => f.CurrencyId.IsNotEqual(0)).Get().AssertResult();
+            var data = (await _cashRegisterClient.List().GetAsync()).AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -80,10 +81,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
 
         [Test]
         [Order(5)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = _cashRegisterClient.Delete(_newCashRegisterId).AssertResult();
+            var data = (await _cashRegisterClient.DeleteAsync(_newCashRegisterId)).AssertResult();
 
             // Assert
             Assert.True(data);

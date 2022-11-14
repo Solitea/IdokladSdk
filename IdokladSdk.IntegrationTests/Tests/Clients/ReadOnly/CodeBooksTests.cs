@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Readonly;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -21,12 +22,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void Detail_SuccessfullyGet()
+        public async Task DetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .CodeBooks()
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert

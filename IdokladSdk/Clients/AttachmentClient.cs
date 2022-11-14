@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Response;
@@ -9,7 +12,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with attachment endpoints.
     /// </summary>
-    public partial class AttachmentClient : BaseClient
+    public class AttachmentClient : BaseClient
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AttachmentClient"/> class.
@@ -45,22 +48,36 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="documentId">Id of a document.</param>
         /// <param name="documentType">Type of a document.</param>
-        /// <param name="compressed"><c>true</c> if attachments should be compressed, otherwise <c>false</c>.</param>
+        /// <param name="compressed"><c>true</c> if attachment should be compressed, otherwise <c>false</c>.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing list of attachments.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<List<AttachmentGetModel>> Get(int documentId, AttachmentDocumentType documentType, bool compressed = false)
+        public Task<ApiResult<List<AttachmentGetModel>>> GetAsync(int documentId, AttachmentDocumentType documentType, bool compressed = false, CancellationToken cancellationToken = default)
         {
-            return GetAsync(documentId, documentType, compressed).GetAwaiter().GetResult();
+            var resource = ResourceUrl + $"{documentId}/{documentType}/{compressed}";
+            return GetAsync<List<AttachmentGetModel>>(resource, null, cancellationToken);
         }
 
         /// <summary>
         /// Uploads attachment to document. Maximum attachment count is five.
         /// </summary>
         /// <param name="model">File to upload.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if upload of an attachment was successful, otherwise <c>false</c>.</returns>
-        public ApiResult<bool> Upload(AttachmentUploadModel model)
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if upload of a document was successful, otherwise <c>false</c>.</returns>
+        public async Task<ApiResult<bool>> UploadAsync(AttachmentUploadModel model, CancellationToken cancellationToken = default)
         {
-            return UploadAsync(model).GetAwaiter().GetResult();
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            if (!IsAttachmentNameValid(model))
+            {
+                throw new ValidationException("File name contains one or more unsupported characters");
+            }
+
+            var resource = ResourceUrl + $"{model.DocumentId}/{model.DocumentType}";
+
+            return await PutFileAsync<bool>(resource, model, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -79,10 +96,12 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="documentId">Id of a document.</param>
         /// <param name="documentType">Type of a document.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if deletion of all attachments was successful, otherwise <c>false</c>.</returns>
-        public ApiResult<bool> Delete(int documentId, AttachmentDocumentType documentType)
+        public Task<ApiResult<bool>> DeleteAsync(int documentId, AttachmentDocumentType documentType, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(documentId, documentType).GetAwaiter().GetResult();
+            var resource = ResourceUrl + $"{documentId}/{documentType}";
+            return DeleteAsync<bool>(resource, cancellationToken);
         }
 
         private bool IsAttachmentNameValid(AttachmentUploadModel attachment)

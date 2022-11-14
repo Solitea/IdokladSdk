@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -29,7 +30,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
         [Test]
         [Order(1)]
-        public void Upload_SuccessfullyUploaded()
+        public async Task UploadAsync_SuccessfullyUpdated()
         {
             // Arrange
             var model1 = GetAttachmentUploadModel(1);
@@ -49,10 +50,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
         [Test]
         [Order(2)]
-        public void Get_SuccessfullyGetAllAttachments()
+        public async Task GetAsync_SuccessfullyGetAttachment()
         {
             // Act
-            var data = _attachmentClient.Get(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
+            var data = await _attachmentClient.GetAsync(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
             // Assert
             Assert.Multiple(() =>
@@ -115,7 +116,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
                 FileName = "Wr<>ng“F|leNam?.docx"
             };
 
-            TestDelegate action = () => _attachmentClient.Upload(model).AssertResult();
+            TestDelegate action = async () => await _attachmentClient.UploadAsync(model).AssertResult();
 
             // Assert
             Assert.That(action, Throws.Exception.TypeOf<ValidationException>()

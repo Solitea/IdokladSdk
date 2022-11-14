@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
 
@@ -10,14 +9,6 @@ namespace IdokladSdk.Clients.Interfaces
     /// </summary>
     public interface IDeleteRequest
     {
-        /// <summary>
-        /// Deletes entity.
-        /// </summary>
-        /// <param name="id">Entity id.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        [Obsolete("Use async method instead.")]
-        ApiResult<bool> Delete(int id);
-
         /// <summary>
         /// Deletes entity.
         /// </summary>

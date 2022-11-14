@@ -26,28 +26,6 @@ namespace IdokladSdk.Requests.Report
         }
 
         /// <summary>
-        /// Get report.
-        /// </summary>
-        /// <param name="option">Option.</param>
-        /// <returns>API result.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<string> Get(ReportOption option = null)
-        {
-            return GetAsync(option).GetAwaiter().GetResult();
-        }
-
-        /// <summary>
-        /// Get image report.
-        /// </summary>
-        /// <param name="option">Option.</param>
-        /// <returns>API result.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<List<ReportImageGetModel>> GetImage(ReportImageOption option = null)
-        {
-            return GetImageAsync(option).GetAwaiter().GetResult();
-        }
-
-        /// <summary>
         /// Get report async.
         /// </summary>
         /// <param name="option">Option.</param>

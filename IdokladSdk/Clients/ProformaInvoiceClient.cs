@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
@@ -11,7 +13,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with proforma invoice endpoints.
     /// </summary>
-    public partial class ProformaInvoiceClient : BaseClient,
+    public class ProformaInvoiceClient : BaseClient,
         ICopyRequest<ProformaInvoiceCopyGetModel>,
         IDefaultRequest<ProformaInvoicePostModel>,
         IDeleteRequest,
@@ -35,24 +37,22 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/ProformaInvoices";
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ProformaInvoiceCopyGetModel> Copy(int id)
+        public Task<ApiResult<ProformaInvoiceCopyGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
-            return CopyAsync(id).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{id}/Copy";
+            return GetAsync<ProformaInvoiceCopyGetModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ProformaInvoicePostModel> Default()
+        public Task<ApiResult<ProformaInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync().GetAwaiter().GetResult();
+            return DefaultAsync<ProformaInvoicePostModel>(cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -68,64 +68,67 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ProformaInvoiceGetModel> Post(ProformaInvoicePostModel model)
+        public Task<ApiResult<ProformaInvoiceGetModel>> PostAsync(ProformaInvoicePostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<ProformaInvoicePostModel, ProformaInvoiceGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ProformaInvoiceRecountGetModel> Recount(ProformaInvoiceRecountPostModel model)
+        public Task<ApiResult<ProformaInvoiceRecountGetModel>> RecountAsync(ProformaInvoiceRecountPostModel model, CancellationToken cancellationToken = default)
         {
-            return RecountAsync(model).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/Recount";
+            return PostAsync<ProformaInvoiceRecountPostModel, ProformaInvoiceRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<RecurringInvoicePostModel> Recurrence(int id)
+        public Task<ApiResult<RecurringInvoicePostModel>> RecurrenceAsync(int id, CancellationToken cancellationToken = default)
         {
-            return RecurrenceAsync(id).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{id}/Recurrence";
+            return GetAsync<RecurringInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<ProformaInvoiceGetModel> Update(ProformaInvoicePatchModel model)
+        public Task<ApiResult<ProformaInvoiceGetModel>> UpdateAsync(ProformaInvoicePatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<ProformaInvoicePatchModel, ProformaInvoiceGetModel>(model, cancellationToken);
         }
 
         /// <summary>
         /// Returns new issued invoice for accounting of proforma invoice with given id. The proforma invoice must be fully paid.
         /// </summary>
         /// <param name="id">Proforma invoice id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method return issued invoice post model for account proforma invoice.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<IssuedInvoicePostModel> GetInvoiceForAccount(int id)
+        public Task<ApiResult<IssuedInvoicePostModel>> GetInvoiceForAccountAsync(int id, CancellationToken cancellationToken = default)
         {
-            return GetInvoiceForAccountAsync(id).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{id}/Account";
+            return GetAsync<IssuedInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <summary>
         /// Accounts the proforma invoice with given id. The invoice must be fully paid.
         /// </summary>
         /// <param name="id">Proforma invoice id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method account proforma invoice and return created issued invoice model.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<IssuedInvoiceGetModel> Account(int id)
+        public async Task<ApiResult<IssuedInvoiceGetModel>> AccountAsync(int id, CancellationToken cancellationToken = default)
         {
-            return AccountAsync(id).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/{id}/Account";
+            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
+            return await ExecuteAsync<IssuedInvoiceGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Accounts proforma invoices with ids given in the model.
         /// </summary>
         /// <param name="model">Model containing proforma invoices id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Get model of accounting invoice.</returns>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<IssuedInvoiceGetModel> AccountMultipleProformaInvoices(AccountProformaInvoicesPutModel model)
+        public async Task<ApiResult<IssuedInvoiceGetModel>> AccountMultipleProformaInvoicesAsync(
+            AccountProformaInvoicesPutModel model, CancellationToken cancellationToken = default)
         {
-            return AccountMultipleProformaInvoicesAsync(model).GetAwaiter().GetResult();
+            var resource = $"{ResourceUrl}/Account";
+            return await PutAsync<AccountProformaInvoicesPutModel, IssuedInvoiceGetModel>(resource, model, cancellationToken).ConfigureAwait(false);
         }
     }
 }

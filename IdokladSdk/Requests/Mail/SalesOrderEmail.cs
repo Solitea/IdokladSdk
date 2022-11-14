@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Threading;
 using IdokladSdk.Clients;
 using IdokladSdk.Models.Email;
 using IdokladSdk.Requests.Mail.Interfaces;
@@ -22,10 +24,9 @@ namespace IdokladSdk.Requests.Mail
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<EmailSendResult> Send(SalesOrderEmailSettings settings)
+        public Task<ApiResult<EmailSendResult>> SendAsync(SalesOrderEmailSettings settings, CancellationToken cancellationToken = default)
         {
-            return SendAsync(settings).GetAwaiter().GetResult();
+            return SendAsync<SalesOrderEmailSettings>(settings, cancellationToken);
         }
     }
 }

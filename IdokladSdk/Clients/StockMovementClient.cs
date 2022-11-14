@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.StockMovement;
 using IdokladSdk.Requests.StockMovement;
@@ -10,7 +11,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with stock movement endpoints.
     /// </summary>
-    public partial class StockMovementClient : BaseClient,
+    public class StockMovementClient : BaseClient,
         IDefaultWithIdRequest<StockMovementPostModel>,
         IDeleteRequest,
         IEntityDetail<StockMovementDetail>,
@@ -32,17 +33,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/StockMovements";
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<StockMovementPostModel> Default(int priceListItemId)
+        public Task<ApiResult<StockMovementPostModel>> DefaultAsync(int priceListItemId, CancellationToken cancellationToken = default)
         {
-            return DefaultAsync(priceListItemId).GetAwaiter().GetResult();
+            return GetAsync<StockMovementPostModel>(ResourceUrl + $"/Default/{priceListItemId}", null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use async method instead.")]
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(id).GetAwaiter().GetResult();
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -58,24 +57,21 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<StockMovementGetModel> Post(StockMovementPostModel model)
+        public Task<ApiResult<StockMovementGetModel>> PostAsync(StockMovementPostModel model, CancellationToken cancellationToken = default)
         {
-            return PostAsync(model).GetAwaiter().GetResult();
+            return PostAsync<StockMovementPostModel, StockMovementGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiBatchResult<StockMovementGetModel> Post(List<StockMovementPostModel> models)
+        public Task<ApiBatchResult<StockMovementGetModel>> PostAsync(List<StockMovementPostModel> models, CancellationToken cancellationToken = default)
         {
-            return PostAsync(models).GetAwaiter().GetResult();
+            return PostAsync<StockMovementPostModel, StockMovementGetModel>(models, cancellationToken);
         }
 
         /// <inheritdoc />
-        [Obsolete("Use async method instead.")]
-        public ApiResult<StockMovementGetModel> Update(StockMovementPatchModel model)
+        public Task<ApiResult<StockMovementGetModel>> UpdateAsync(StockMovementPatchModel model, CancellationToken cancellationToken = default)
         {
-            return UpdateAsync(model).GetAwaiter().GetResult();
+            return PatchAsync<StockMovementPatchModel, StockMovementGetModel>(model, cancellationToken);
         }
     }
 }

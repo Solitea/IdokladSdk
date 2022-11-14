@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Response;
 
@@ -11,14 +10,6 @@ namespace IdokladSdk.Clients.Interfaces
     /// <typeparam name="TPostModel">POST data type.</typeparam>
     public interface IDefaultWithIdRequest<TPostModel>
     {
-        /// <summary>
-        /// Returns new default entity suitable for editing and storing for specified document.
-        /// </summary>
-        /// <param name="id">Entity Id.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        [Obsolete("Use async method instead.")]
-        ApiResult<TPostModel> Default(int id);
-
         /// <summary>
         /// Returns new default entity suitable for editing and storing for specified document.
         /// </summary>

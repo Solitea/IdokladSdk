@@ -1,14 +1,37 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
+using IdokladSdk.Requests.CashVoucher;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Clients
 {
-    public partial class CashVoucherClient
+    /// <summary>
+    /// Client for communication with cash voucher endpoints.
+    /// </summary>
+    public class CashVoucherClient :
+        BaseClient,
+        IDeleteRequest,
+        IEntityDetail<CashVoucherDetail>,
+        IEntityList<CashVoucherList>,
+        IPatchRequest<CashVoucherPatchModel, CashVoucherGetModel>,
+        IPostRequest<CashVoucherPostModel, CashVoucherGetModel>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CashVoucherClient"/> class.
+        /// </summary>
+        /// <param name="context">API context.</param>
+        public CashVoucherClient(ApiContext context)
+            : base(context)
+        {
+        }
+
+        /// <inheritdoc/>
+        public override string ResourceUrl => "/CashVouchers";
+
         /// <summary>
         /// Returns new entity with default property values suitable for subsequent editing and storing.
         /// </summary>
@@ -43,6 +66,18 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
             return DeleteAsync<bool>(id, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public CashVoucherDetail Detail(int id)
+        {
+            return new CashVoucherDetail(id, this);
+        }
+
+        /// <inheritdoc/>
+        public CashVoucherList List()
+        {
+            return new CashVoucherList(this);
         }
 
         /// <summary>

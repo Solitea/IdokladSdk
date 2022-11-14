@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Text;
+using IdokladSdk.Serialization;
 using Newtonsoft.Json;
 
 namespace IdokladSdk.Requests.Extensions
@@ -8,7 +9,7 @@ namespace IdokladSdk.Requests.Extensions
     {
         internal static void AddJsonBody(this HttpRequestMessage request, object model)
         {
-            var json = JsonConvert.SerializeObject(model);
+            var json = JsonConvert.SerializeObject(model, new CommonJsonSerializerSettings());
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");
         }
 
