@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -14,82 +15,82 @@ using IdokladSdk.Requests.Core.Modifiers.Expand.Structure;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Core.Tags
+namespace IdokladSdk.IntegrationTests.Core.Tags;
+
+public abstract class TaggableDocumentGetTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TExpandModel, TFilterModel> : TestBase
+    where TClient : BaseClient, IEntityDetail<TDetail>, IEntityList<TList>
+    where TDetail : class, IGetDetailRequest<TGetModel>, IExpandable<TDetail, TExpandModel>
+    where TList : class, IGetListRequest<TGetListModel>, IFilterable<TList, TFilterModel>
+    where TGetModel : IEntityId, new()
+    where TGetListModel : IEntityId, new()
 {
-    public abstract class TaggableDocumentGetTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TExpandModel, TFilterModel> : TestBase
-        where TClient : BaseClient, IEntityDetail<TDetail>, IEntityList<TList>
-        where TDetail : class, IGetDetailRequest<TGetModel>, IExpandable<TDetail, TExpandModel>
-        where TList : class, IGetListRequest<TGetListModel>, IFilterable<TList, TFilterModel>
-        where TGetModel : IEntityId, new()
-        where TGetListModel : IEntityId, new()
+    protected const string TagsPropertyName = "Tags";
+    protected const string TagIdsFilterPropertyName = "TagIds";
+
+    protected const int Tag1Id = 990;
+    protected const int Tag2Id = 991;
+    protected const int Tag3Id = 992;
+
+    protected TClient Client { get; private set; }
+
+    protected abstract int EntityWithoutTagsId { get; }
+
+    protected abstract int EntityWithTags1Id { get; }
+
+    protected abstract int EntityWithTags2Id { get; }
+
+    [OneTimeSetUp]
+    public void OneTimeSetup()
     {
-        protected const string TagsPropertyName = "Tags";
-        protected const string TagIdsFilterPropertyName = "TagIds";
+        InitDokladApi();
+        Client = (TClient)Activator.CreateInstance(typeof(TClient), DokladApi.ApiContext);
+    }
 
-        protected const int Tag1Id = 990;
-        protected const int Tag2Id = 991;
-        protected const int Tag3Id = 992;
+    [Test]
+    public async Task GetDetail_Expand_ReturnsExpandedTagsAsync()
+    {
+        // Act
+        var result = await ExpandableDetail(EntityWithTags1Id)
+            .Include(TagIncludeExpression())
+            .GetAsync<EntityTagDetails>()
+            .AssertResult();
 
-        protected TClient Client { get; private set; }
+        // Assert
+        AssertHasTags(result.Tags, new List<int> { Tag1Id, Tag2Id }, true);
+    }
 
-        protected abstract int EntityWithoutTagsId { get; }
+    [Test]
+    public async Task GetDetail_WithoutTags_ReturnsEmptyTagsAsync()
+    {
+        // Act
+        var result = await Detail(EntityWithoutTagsId)
+            .GetAsync<EntityTagDetails>()
+            .AssertResult();
 
-        protected abstract int EntityWithTags1Id { get; }
+        // Assert
+        AssertHasEmptyTags(result.Tags);
+    }
 
-        protected abstract int EntityWithTags2Id { get; }
+    [Test]
+    public async Task GetDetail_WithTags_ReturnsTagsAsync()
+    {
+        // Act
+        var result = await Detail(EntityWithTags1Id)
+            .GetAsync<EntityTagDetails>()
+            .AssertResult();
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
-        {
-            InitDokladApi();
-            Client = (TClient)Activator.CreateInstance(typeof(TClient), DokladApi.ApiContext);
-        }
+        // Assert
+        AssertHasTags(result.Tags, new List<int> { Tag1Id, Tag2Id });
+    }
 
-        [Test]
-        public void GetDetail_Expand_ReturnsExpandedTags()
-        {
-            // Act
-            var result = ExpandableDetail(EntityWithTags1Id)
-                .Include(TagIncludeExpression())
-                .Get<EntityTagDetails>()
-                .AssertResult();
-
-            // Assert
-            AssertHasTags(result.Tags, new List<int> { Tag1Id, Tag2Id }, true);
-        }
-
-        [Test]
-        public void GetDetail_WithoutTags_ReturnsEmptyTags()
-        {
-            // Act
-            var result = Detail(EntityWithoutTagsId)
-                .Get<EntityTagDetails>()
-                .AssertResult();
-
-            // Assert
-            AssertHasEmptyTags(result.Tags);
-        }
-
-        [Test]
-        public void GetDetail_WithTags_ReturnsTags()
-        {
-            // Act
-            var result = Detail(EntityWithTags1Id)
-                .Get<EntityTagDetails>()
-                .AssertResult();
-
-            // Assert
-            AssertHasTags(result.Tags, new List<int> { Tag1Id, Tag2Id });
-        }
-
-        [Test]
-        public void GetList_MultipleTagsFilter_ReturnsEntitiesWithTags()
-        {
-            // Act
-            var result = FilterableList()
-                .Filter(f => TagIdsFilterItem(f).Contains(new int[] { Tag1Id, Tag2Id }))
-                .Get<EntityTags>()
-                .AssertResult();
+    [Test]
+    public async Task GetList_MultipleTagsFilter_ReturnsEntitiesWithTagsAsync()
+    {
+        // Act
+        var result = await FilterableList()
+            .Filter(f => TagIdsFilterItem(f).Contains(new int[] { Tag1Id, Tag2Id }))
+            .GetAsync<EntityTags>()
+            .AssertResult();
 
             // Assert
             var items = result.Items.ToList();
@@ -98,47 +99,47 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
-        [Test]
-        public void GetList_NonExistingTagsCombinationFilter_ReturnsEmptyList()
-        {
-            // Act
-            var result = FilterableList()
-                .Filter(f => TagIdsFilterItem(f).Contains(new int[] { Tag1Id, Tag3Id }))
-                .Get<EntityTags>()
-                .AssertResult();
+    [Test]
+    public async Task GetList_NonExistingTagsCombinationFilter_ReturnsEmptyListAsync()
+    {
+        // Act
+        var result = await FilterableList()
+            .Filter(f => TagIdsFilterItem(f).Contains(new int[] { Tag1Id, Tag3Id }))
+            .GetAsync<EntityTags>()
+            .AssertResult();
 
-            // Assert
-            Assert.That(result.Items.Count(), Is.Zero);
-        }
+        // Assert
+        Assert.That(result.Items.Count(), Is.Zero);
+    }
 
-        [Test]
-        public void GetList_ReturnsAllEntities()
-        {
-            // Act
-            var result = PageableList()
-                .PageSize(50)
-                .Get<EntityTags>()
-                .AssertResult();
+    [Test]
+    public async Task GetList_ReturnsAllEntitiesAsync()
+    {
+        // Act
+        var result = await PageableList()
+            .PageSize(50)
+            .GetAsync<EntityTags>()
+            .AssertResult();
 
-            // Assert
-            var items = result.Items.ToList();
-            Assert.That(items.Count, Is.GreaterThanOrEqualTo(3));
-            var entity = items.FirstOrDefault(i => i.Id == EntityWithoutTagsId);
-            AssertHasEmptyTags(entity.Tags);
-            entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
-            AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
-            entity = items.FirstOrDefault(i => i.Id == EntityWithTags2Id);
-            AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
-        }
+        // Assert
+        var items = result.Items.ToList();
+        Assert.That(items.Count, Is.GreaterThanOrEqualTo(3));
+        var entity = items.FirstOrDefault(i => i.Id == EntityWithoutTagsId);
+        AssertHasEmptyTags(entity.Tags);
+        entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
+        AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
+        entity = items.FirstOrDefault(i => i.Id == EntityWithTags2Id);
+        AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
+    }
 
-        [Test]
-        public void GetList_SingleTagFilter_ReturnsEntitiesWithTag()
-        {
-            // Act
-            var result = FilterableList()
-                .Filter(f => TagIdsFilterItem(f).Contains(Tag2Id))
-                .Get<EntityTags>()
-                .AssertResult();
+    [Test]
+    public async Task GetList_SingleTagFilter_ReturnsEntitiesWithTagAsync()
+    {
+        // Act
+        var result = await FilterableList()
+            .Filter(f => TagIdsFilterItem(f).Contains(Tag2Id))
+            .GetAsync<EntityTags>()
+            .AssertResult();
 
             // Assert
             var items = result.Items;
@@ -149,76 +150,75 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
         }
 
-        protected void AssertHasEmptyTagIds(IEnumerable<int> tagIds)
-        {
-            Assert.That(tagIds, Is.Not.Null.And.Empty);
-        }
+    protected void AssertHasEmptyTagIds(IEnumerable<int> tagIds)
+    {
+        Assert.That(tagIds, Is.Not.Null.And.Empty);
+    }
 
-        protected void AssertHasEmptyTags(IEnumerable<TagDocumentListGetModel> tags)
-        {
-            Assert.That(tags, Is.Not.Null.And.Empty);
-        }
+    protected void AssertHasEmptyTags(IEnumerable<TagDocumentListGetModel> tags)
+    {
+        Assert.That(tags, Is.Not.Null.And.Empty);
+    }
 
-        protected void AssertHasTagIds(IEnumerable<int> returnedIds, List<int> expectedIds)
+    protected void AssertHasTagIds(IEnumerable<int> returnedIds, List<int> expectedIds)
+    {
+        Assert.That(returnedIds, Is.Not.Null.And.Count.EqualTo(expectedIds.Count));
+        for (int i = 0; i < returnedIds.Count(); i++)
         {
-            Assert.That(returnedIds, Is.Not.Null.And.Count.EqualTo(expectedIds.Count));
-            for (int i = 0; i < returnedIds.Count(); i++)
+            var returnedId = returnedIds.ElementAt(i);
+            var expectedId = expectedIds.ElementAt(i);
+            Assert.That(returnedId, Is.EqualTo(expectedId));
+        }
+    }
+
+    protected void AssertHasTags(IEnumerable<TagDocumentGetModel> returnedTags, List<int> expectedIds, bool isExpand = false)
+    {
+        AssertHasTags(returnedTags.Cast<TagDocumentListGetModel>(), expectedIds, isExpand);
+    }
+
+    protected void AssertHasTags(IEnumerable<TagDocumentListGetModel> returnedTags, List<int> expectedIds, bool isExpand = false)
+    {
+        Assert.That(returnedTags, Is.Not.Null.And.Count.EqualTo(expectedIds.Count));
+        for (int i = 0; i < returnedTags.Count(); i++)
+        {
+            var returnedTag = returnedTags.ElementAt(i);
+            Assert.Contains(returnedTag.TagId, expectedIds);
+            var expandedTag = returnedTag as TagDocumentGetModel;
+
+            if (isExpand)
             {
-                var returnedId = returnedIds.ElementAt(i);
-                var expectedId = expectedIds.ElementAt(i);
-                Assert.That(returnedId, Is.EqualTo(expectedId));
+                Assert.That(expandedTag.Tag, Is.Not.Null);
+                Assert.That(expandedTag.Tag.Name, Is.Not.Null.And.Not.Empty);
+                Assert.That(expandedTag.Tag.Color, Is.Not.Null.And.Not.Empty);
+            }
+            else if (expandedTag != null)
+            {
+                Assert.That(expandedTag.Tag, Is.Null);
             }
         }
+    }
 
-        protected void AssertHasTags(IEnumerable<TagDocumentGetModel> returnedTags, List<int> expectedIds, bool isExpand = false)
-        {
-            AssertHasTags(returnedTags.Cast<TagDocumentListGetModel>(), expectedIds, isExpand);
-        }
+    protected IGetDetailRequest<TGetModel> Detail(int id) => (IGetDetailRequest<TGetModel>)((IEntityDetail<TDetail>)Client).Detail(id);
 
-        protected void AssertHasTags(IEnumerable<TagDocumentListGetModel> returnedTags, List<int> expectedIds, bool isExpand = false)
-        {
-            Assert.That(returnedTags, Is.Not.Null.And.Count.EqualTo(expectedIds.Count));
-            for (int i = 0; i < returnedTags.Count(); i++)
-            {
-                var returnedTag = returnedTags.ElementAt(i);
-                Assert.Contains(returnedTag.TagId, expectedIds);
-                var expandedTag = returnedTag as TagDocumentGetModel;
+    protected IExpandable<TDetail, TExpandModel> ExpandableDetail(int id) => (IExpandable<TDetail, TExpandModel>)((IEntityDetail<TDetail>)Client).Detail(id);
 
-                if (isExpand)
-                {
-                    Assert.That(expandedTag.Tag, Is.Not.Null);
-                    Assert.That(expandedTag.Tag.Name, Is.Not.Null.And.Not.Empty);
-                    Assert.That(expandedTag.Tag.Color, Is.Not.Null.And.Not.Empty);
-                }
-                else if (expandedTag != null)
-                {
-                    Assert.That(expandedTag.Tag, Is.Null);
-                }
-            }
-        }
+    protected IFilterable<TList, TFilterModel> FilterableList() => (IFilterable<TList, TFilterModel>)((IEntityList<TList>)Client).List();
 
-        protected IGetDetailRequest<TGetModel> Detail(int id) => (IGetDetailRequest<TGetModel>)((IEntityDetail<TDetail>)Client).Detail(id);
+    protected IPageable<TList> PageableList() => (IPageable<TList>)((IEntityList<TList>)Client).List();
 
-        protected IExpandable<TDetail, TExpandModel> ExpandableDetail(int id) => (IExpandable<TDetail, TExpandModel>)((IEntityDetail<TDetail>)Client).Detail(id);
+    protected IGetListRequest<TGetListModel> List() => (IGetListRequest<TGetListModel>)((IEntityList<TList>)Client).List();
 
-        protected IFilterable<TList, TFilterModel> FilterableList() => (IFilterable<TList, TFilterModel>)((IEntityList<TList>)Client).List();
+    protected ContainIdFilterItem TagIdsFilterItem(TFilterModel filterModel)
+    {
+        var tagIdsProperty = typeof(TFilterModel).GetProperty(TagIdsFilterPropertyName);
+        return (ContainIdFilterItem)tagIdsProperty.GetValue(filterModel);
+    }
 
-        protected IPageable<TList> PageableList() => (IPageable<TList>)((IEntityList<TList>)Client).List();
-
-        protected IGetListRequest<TGetListModel> List() => (IGetListRequest<TGetListModel>)((IEntityList<TList>)Client).List();
-
-        protected ContainIdFilterItem TagIdsFilterItem(TFilterModel filterModel)
-        {
-            var tagIdsProperty = typeof(TFilterModel).GetProperty(TagIdsFilterPropertyName);
-            return (ContainIdFilterItem)tagIdsProperty.GetValue(filterModel);
-        }
-
-        protected Expression<Func<TExpandModel, ExpandableEntity>> TagIncludeExpression()
-        {
-            var parameter = Expression.Parameter(typeof(TExpandModel), "x");
-            Expression body = Expression.PropertyOrField(parameter, TagsPropertyName);
-            body = Expression.PropertyOrField(body, nameof(TagsExpand.Tag));
-            return Expression.Lambda<Func<TExpandModel, ExpandableEntity>>(body, parameter);
-        }
+    protected Expression<Func<TExpandModel, ExpandableEntity>> TagIncludeExpression()
+    {
+        var parameter = Expression.Parameter(typeof(TExpandModel), "x");
+        Expression body = Expression.PropertyOrField(parameter, TagsPropertyName);
+        body = Expression.PropertyOrField(body, nameof(TagsExpand.Tag));
+        return Expression.Lambda<Func<TExpandModel, ExpandableEntity>>(body, parameter);
     }
 }

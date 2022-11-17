@@ -1,219 +1,191 @@
-﻿using IdokladSdk.Clients;
+﻿using System.Threading.Tasks;
+using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Report;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
+namespace IdokladSdk.IntegrationTests.Tests.Clients.Report;
+
+/// <summary>
+/// ReportTests.
+/// </summary>
+public class ReportTests : TestBase
 {
-    /// <summary>
-    /// ReportTests.
-    /// </summary>
-    public partial class ReportTests : TestBase
+    private ReportClient _reportClient;
+
+    [OneTimeSetUp]
+    public void OneTimeSetUp()
     {
-        private ReportClient _reportClient;
+        InitDokladApi();
+        _reportClient = DokladApi.ReportClient;
+    }
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+    [Test]
+    public async Task GetAsync_IssuedInvoiceDetail_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.IssuedInvoice.Detail(913255).GetAsync(new ExtendedReportOption
         {
-            InitDokladApi();
-            _reportClient = DokladApi.ReportClient;
-        }
+            Language = Language.En,
+            PaymentOption = PaymentOption.WithPayment,
+        }).AssertResult();
 
-        [Test]
-        public void Get_IssuedInvoiceDetail_SuccessfullyGetReport()
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
+
+    [Test]
+    public async Task GetAsync_IssuedInvoiceDetail_WithoutSpecificLanguage_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.IssuedInvoice.Detail(913255).GetAsync(new ExtendedReportOption
         {
-            // Act
-            var data = _reportClient.IssuedInvoice.Detail(913255).Get(new ExtendedReportOption
-            {
-                Language = Language.En,
-                PaymentOption = PaymentOption.WithPayment,
-            }).AssertResult();
+            PaymentOption = PaymentOption.WithPayment,
+        }).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_IssuedInvoiceDetail_WithoutSpecificLanguage_SuccessfullyGetReport()
+    [Test]
+    public async Task GetAsync_ProformaInvoiceDetail_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.ProformaInvoice.Detail(913250).GetAsync().AssertResult();
+
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
+
+    [Test]
+    public async Task GetAsync_CreditNoteDetail_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.CreditNote.Detail(913257).GetAsync().AssertResult();
+
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
+
+    [Test]
+    public async Task GetAsync_SalesReceiptDetail_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.SalesReceipt.Detail(224356).GetAsync(new ReportOption
         {
-            // Act
-            var data = _reportClient.IssuedInvoice.Detail(913255).Get(new ExtendedReportOption
-            {
-                PaymentOption = PaymentOption.WithPayment,
-            }).AssertResult();
+            Language = Language.Cz
+        }).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_ProformaInvoiceDetail_SuccessfullyGetReport()
+    [Test]
+    public async Task GetAsync_ReceivedInvoiceDetail_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.ReceivedInvoice.Detail(165292).GetAsync(new ReportOption
         {
-            // Act
-            var data = _reportClient.ProformaInvoice.Detail(913250).Get().AssertResult();
+            Language = Language.Cz
+        }).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_CreditNoteDetail_SuccessfullyGetReport()
+    [Test]
+    public async Task GetAsync_CashVoucherDetail_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.CashVoucher.Detail(587154).GetAsync(new ReportOption
         {
-            // Act
-            var data = _reportClient.CreditNote.Detail(913257).Get().AssertResult();
+            Language = Language.Cz
+        }).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_SalesReceiptDetail_SuccessfullyGetReport()
+    [Test]
+    public void GetAsync_CashVoucherDetail_ForInvoice_SuccessfullyGetAsyncReport()
+    {
+        var data = _reportClient.CashVoucher.DetailForInvoice(913318, InvoiceReportDocumentType.IssuedInvoice).GetAsync(new ReportOption
         {
-            // Act
-            var data = _reportClient.SalesReceipt.Detail(224356).Get(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+            Language = Language.Cz
+        }).Result.AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_ReceivedInvoiceDetail_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.ReceivedInvoice.Detail(165292).Get(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+    [Test]
+    public async Task GetAsync_IssuedInvoiceList_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).GetAsync(Language.En).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_CashVoucherDetail_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.CashVoucher.Detail(587154).Get(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+    [Test]
+    public async Task Get_IssuedTaxDocumentDetail_SuccessfullyGetReport()
+    {
+        // Act
+        var data = await _reportClient.IssuedTaxDocument.Detail(1542).GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        // Assert
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_CashVoucherDetail_ForInvoice_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.CashVoucher.DetailForInvoice(913318, InvoiceReportDocumentType.IssuedInvoice).Get(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+    [Test]
+    public async Task GetAsync_ProformaInvoiceList_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.ProformaInvoice.List().GetAsync(Language.En).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_IssuedInvoiceList_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).Get(Language.En).AssertResult();
+    [Test]
+    public async Task GetAsync_CreditNoteList_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.CreditNote.List().GetAsync(Language.Cz).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_IssuedTaxDocumentDetail_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.IssuedTaxDocument.Detail(1542).Get(new ReportOption { Language = Language.Cz }).AssertResult();
+    [Test]
+    public async Task GetAsync_CashVoucherList_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.CashVoucher.List().GetAsync(Language.Cz).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_ProformaInvoiceList_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.ProformaInvoice.List().Get(Language.En).AssertResult();
+    [Test]
+    public async Task Get_SalesOrderDetail_SuccessfullyGetReport()
+    {
+        // Act
+        var data = await _reportClient.SalesOrder.Detail(1009).GetAsync(new ReportOption { Language = Language.Sk }).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        // Assert
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_CreditNoteList_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.CreditNote.List().Get(Language.Cz).AssertResult();
+    [Test]
+    public async Task GetAsync_SalesReceiptList_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.SalesReceipt.List().GetAsync(Language.Cz).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
+    }
 
-        [Test]
-        public void Get_CashVoucherList_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.CashVoucher.List().Get(Language.Cz).AssertResult();
+    [Test]
+    public async Task GetAsync_ReceivedInvoiceList_SuccessfullyGetAsyncReport()
+    {
+        var data = await _reportClient.ReceivedInvoice.List().GetAsync(Language.Cz).AssertResult();
 
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
-
-        [Test]
-        public void Get_SalesOrderDetail_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.SalesOrder.Detail(1009).Get(new ReportOption { Language = Language.Sk }).AssertResult();
-
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
-
-        [Test]
-        public void Get_SalesReceiptList_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.SalesReceipt.List().Get(Language.Cz).AssertResult();
-
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
-
-        [Test]
-        public void Get_ReceivedInvoiceList_SuccessfullyGetReport()
-        {
-            // Act
-            var data = _reportClient.ReceivedInvoice.List().Get(Language.Cz).AssertResult();
-
-            // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
-        }
+        Assert.NotNull(data);
+        Assert.IsNotEmpty(data);
     }
 }

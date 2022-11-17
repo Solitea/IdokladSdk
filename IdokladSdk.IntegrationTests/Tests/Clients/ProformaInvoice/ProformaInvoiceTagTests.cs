@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Core.Tags;
@@ -9,43 +10,42 @@ using IdokladSdk.Requests.ProformaInvoice;
 using IdokladSdk.Requests.ProformaInvoice.Filter;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
+namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice;
+
+[TestFixture]
+public class ProformaInvoiceTagTests : TaggableDocumentTestsBase<ProformaInvoiceClient, ProformaInvoiceDetail, ProformaInvoiceList, ProformaInvoiceGetModel,
+    ProformaInvoiceListGetModel, ProformaInvoicePostModel, ProformaInvoicePatchModel, ProformaInvoiceExpand, ProformaInvoiceFilter>
 {
-    [TestFixture]
-    public class ProformaInvoiceTagTests : TaggableDocumentTestsBase<ProformaInvoiceClient, ProformaInvoiceDetail, ProformaInvoiceList, ProformaInvoiceGetModel,
-        ProformaInvoiceListGetModel, ProformaInvoicePostModel, ProformaInvoicePatchModel, ProformaInvoiceExpand, ProformaInvoiceFilter>
+    protected override int EntityWithoutTagsId => 921865;
+
+    protected override int EntityWithTags1Id => 921853;
+
+    protected override int EntityWithTags2Id => 921859;
+
+    [Test]
+    public async Task Account_ProformaWithTags_CopiesTagsAsync()
     {
-        protected override int EntityWithoutTagsId => 921865;
+        // Act
+        var result = await Client.GetInvoiceForAccountAsync(EntityWithTags1Id).AssertResult();
 
-        protected override int EntityWithTags1Id => 921853;
+        // Assert
+        AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+    }
 
-        protected override int EntityWithTags2Id => 921859;
+    [Test]
+    public async Task Copy_SourceWithTags_CopiesTagsAsync()
+    {
+        // Act
+        var result = await Client.CopyAsync(EntityWithTags1Id).AssertResult();
 
-        [Test]
-        public void Account_ProformaWithTags_CopiesTags()
-        {
-            // Act
-            var result = Client.GetInvoiceForAccount(EntityWithTags1Id).AssertResult();
+        // Assert
+        AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+    }
 
-            // Assert
-            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
-        }
-
-        [Test]
-        public void Copy_SourceWithTags_CopiesTags()
-        {
-            // Act
-            var result = Client.Copy(EntityWithTags1Id).AssertResult();
-
-            // Assert
-            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
-        }
-
-        protected override void SetRequiredProperties(ProformaInvoicePostModel postModel)
-        {
-            postModel.Description = "Test proforma invoice";
-            postModel.PartnerId = PartnerId;
-            postModel.Items.First().Name = "Item name";
-        }
+    protected override void SetRequiredProperties(ProformaInvoicePostModel postModel)
+    {
+        postModel.Description = "Test proforma invoice";
+        postModel.PartnerId = PartnerId;
+        postModel.Items.First().Name = "Item name";
     }
 }

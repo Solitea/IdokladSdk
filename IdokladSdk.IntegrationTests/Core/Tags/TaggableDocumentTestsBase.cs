@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -10,238 +11,237 @@ using IdokladSdk.Requests.Core.Interfaces;
 using IdokladSdk.Response;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Core.Tags
+namespace IdokladSdk.IntegrationTests.Core.Tags;
+
+public abstract class TaggableDocumentTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TPostModel, TPatchModel, TExpandModel, TFilterModel>
+    : TaggableDocumentGetTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TExpandModel, TFilterModel>
+    where TClient : BaseClient, IEntityDetail<TDetail>, IEntityList<TList>
+    where TDetail : class, IGetDetailRequest<TGetModel>, IExpandable<TDetail, TExpandModel>
+    where TList : class, IGetListRequest<TGetListModel>, IFilterable<TList, TFilterModel>
+    where TGetModel : IEntityId, new()
+    where TGetListModel : IEntityId, new()
+    where TPostModel : class, new()
+    where TPatchModel : IEntityId, new()
 {
-    public abstract class TaggableDocumentTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TPostModel, TPatchModel, TExpandModel, TFilterModel>
-        : TaggableDocumentGetTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TExpandModel, TFilterModel>
-        where TClient : BaseClient, IEntityDetail<TDetail>, IEntityList<TList>
-        where TDetail : class, IGetDetailRequest<TGetModel>, IExpandable<TDetail, TExpandModel>
-        where TList : class, IGetListRequest<TGetListModel>, IFilterable<TList, TFilterModel>
-        where TGetModel : IEntityId, new()
-        where TGetListModel : IEntityId, new()
-        where TPostModel : class, new()
-        where TPatchModel : IEntityId, new()
+    protected const int PartnerId = 323824;
+
+    private readonly List<int> _entityIdsToDelete = new List<int>();
+
+    [SetUp]
+    public void SetUp()
     {
-        protected const int PartnerId = 323824;
+        _entityIdsToDelete.Clear();
+    }
 
-        private readonly List<int> _entityIdsToDelete = new List<int>();
-
-        [SetUp]
-        public void SetUp()
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (var id in _entityIdsToDelete)
         {
-            _entityIdsToDelete.Clear();
+            DeleteAsync(id);
         }
+    }
 
-        [TearDown]
-        public void TearDown()
-        {
-            foreach (var id in _entityIdsToDelete)
-            {
-                Delete(id);
-            }
-        }
+    [Test]
+    public async Task Default_ReturnsEmptyTagsAsync()
+    {
+        // Act
+        var result = await DefaultAsync().AssertResult();
 
-        [Test]
-        public void Default_ReturnsEmptyTags()
-        {
-            // Act
-            var result = Default().AssertResult();
+        // Assert
+        AssertHasEmptyTagIds(GetTags(result));
+    }
 
-            // Assert
-            AssertHasEmptyTagIds(GetTags(result));
-        }
+    [Test]
+    public async Task Patch_DuplicateTagIds_FailsAsync()
+    {
+        // Arrange
+        var patchModel = new TPatchModel { Id = EntityWithTags1Id };
+        SetTags(patchModel, new List<int> { Tag1Id, Tag1Id });
 
-        [Test]
-        public void Patch_DuplicateTagIds_Fails()
-        {
-            // Arrange
-            var patchModel = new TPatchModel { Id = EntityWithTags1Id };
-            SetTags(patchModel, new List<int> { Tag1Id, Tag1Id });
+        // Act
+        var result = await UpdateAsync(patchModel);
 
-            // Act
-            var result = Update(patchModel);
+        // Assert
+        Assert.That(result.IsSuccess, Is.False);
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+    }
 
-            // Assert
-            Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-        }
+    [Test]
+    public async Task Patch_EmptyTags_RemovesTagsAsync()
+    {
+        // Arrange
+        var postModel = await DefaultAsync().AssertResult();
+        SetRequiredProperties(postModel);
+        var id = PostAndMarkForDelete(postModel);
+        var patchModel = new TPatchModel { Id = id };
+        SetTags(patchModel, new List<int>());
 
-        [Test]
-        public void Patch_EmptyTags_RemovesTags()
-        {
-            // Arrange
-            var postModel = Default().AssertResult();
-            SetRequiredProperties(postModel);
-            var id = PostAndMarkForDelete(postModel);
-            var patchModel = new TPatchModel { Id = id };
-            SetTags(patchModel, new List<int>());
+        // Act
+        var result = await UpdateAsync(patchModel).AssertResult();
 
-            // Act
-            var result = Update(patchModel).AssertResult();
+        // Assert
+        AssertHasEmptyTags(GetTags(result));
+    }
 
-            // Assert
-            AssertHasEmptyTags(GetTags(result));
-        }
+    [Test]
+    public async Task Patch_NullTags_DoesNotModifyTagsAsync()
+    {
+        // Arrange
+        var postModel = await DefaultAsync().AssertResult();
+        SetRequiredProperties(postModel);
+        GetTags(postModel).Add(Tag1Id);
+        GetTags(postModel).Add(Tag2Id);
+        var id = PostAndMarkForDelete(postModel);
+        var patchModel = new TPatchModel { Id = id };
 
-        [Test]
-        public void Patch_NullTags_DoesNotModifyTags()
-        {
-            // Arrange
-            var postModel = Default().AssertResult();
-            SetRequiredProperties(postModel);
-            GetTags(postModel).Add(Tag1Id);
-            GetTags(postModel).Add(Tag2Id);
-            var id = PostAndMarkForDelete(postModel);
-            var patchModel = new TPatchModel { Id = id };
+        // Act
+        var result = await UpdateAsync(patchModel).AssertResult();
 
-            // Act
-            var result = Update(patchModel).AssertResult();
+        // Assert
+        AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
+    }
 
-            // Assert
-            AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
-        }
+    [Test]
+    public async Task Patch_SomeTags_AssignsTagsAsync()
+    {
+        // Arrange
+        var postModel = await DefaultAsync().AssertResult();
+        SetRequiredProperties(postModel);
+        var id = PostAndMarkForDelete(postModel);
+        var patchModel = new TPatchModel { Id = id };
+        SetTags(patchModel, new List<int> { Tag1Id, Tag3Id });
 
-        [Test]
-        public void Patch_SomeTags_AssignsTags()
-        {
-            // Arrange
-            var postModel = Default().AssertResult();
-            SetRequiredProperties(postModel);
-            var id = PostAndMarkForDelete(postModel);
-            var patchModel = new TPatchModel { Id = id };
-            SetTags(patchModel, new List<int> { Tag1Id, Tag3Id });
+        // Act
+        var result = await UpdateAsync(patchModel).AssertResult();
 
-            // Act
-            var result = Update(patchModel).AssertResult();
+        // Assert
+        AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag3Id });
+    }
 
-            // Assert
-            AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag3Id });
-        }
+    [Test]
+    public async Task Post_EmptyTags_DoesNotAssignTagsAsync()
+    {
+        // Arrange
+        var postModel = await DefaultAsync().AssertResult();
+        SetRequiredProperties(postModel);
 
-        [Test]
-        public void Post_EmptyTags_DoesNotAssignTags()
-        {
-            // Arrange
-            var postModel = Default().AssertResult();
-            SetRequiredProperties(postModel);
+        // Act
+        var result = await PostAsync(postModel).AssertResult();
+        MarkForDelete(result.Id);
 
-            // Act
-            var result = Post(postModel).AssertResult();
-            MarkForDelete(result.Id);
+        // Assert
+        AssertHasEmptyTags(GetTags(result));
+    }
 
-            // Assert
-            AssertHasEmptyTags(GetTags(result));
-        }
+    [Test]
+    public async Task Post_MultipleTags_AssignsTagsAsync()
+    {
+        // Arrange
+        var postModel = await DefaultAsync().AssertResult();
+        SetRequiredProperties(postModel);
+        GetTags(postModel).Add(Tag1Id);
+        GetTags(postModel).Add(Tag2Id);
 
-        [Test]
-        public void Post_MultipleTags_AssignsTags()
-        {
-            // Arrange
-            var postModel = Default().AssertResult();
-            SetRequiredProperties(postModel);
-            GetTags(postModel).Add(Tag1Id);
-            GetTags(postModel).Add(Tag2Id);
+        // Act
+        var result = await PostAsync(postModel).AssertResult();
+        MarkForDelete(result.Id);
 
-            // Act
-            var result = Post(postModel).AssertResult();
-            MarkForDelete(result.Id);
+        // Assert
+        AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
+    }
 
-            // Assert
-            AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
-        }
+    [Test]
+    public async Task Post_NonExistingTagId_FailsAsync()
+    {
+        // Arrange
+        var postModel = await DefaultAsync().AssertResult();
+        SetRequiredProperties(postModel);
+        GetTags(postModel).Add(1);
 
-        [Test]
-        public void Post_NonExistingTagId_Fails()
-        {
-            // Arrange
-            var postModel = Default().AssertResult();
-            SetRequiredProperties(postModel);
-            GetTags(postModel).Add(1);
+        // Act
+        var result = await PostAsync(postModel);
 
-            // Act
-            var result = Post(postModel);
+        // Assert
+        Assert.That(result.IsSuccess, Is.False);
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+    }
 
-            // Assert
-            Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-        }
+    [Test]
+    public async Task Post_NullTags_DoesNotAssignTagsAsync()
+    {
+        // Arrange
+        var postModel = await DefaultAsync().AssertResult();
+        SetRequiredProperties(postModel);
+        SetTags(postModel, null);
 
-        [Test]
-        public void Post_NullTags_DoesNotAssignTags()
-        {
-            // Arrange
-            var postModel = Default().AssertResult();
-            SetRequiredProperties(postModel);
-            SetTags(postModel, null);
+        // Act
+        var result = await PostAsync(postModel).AssertResult();
+        MarkForDelete(result.Id);
 
-            // Act
-            var result = Post(postModel).AssertResult();
-            MarkForDelete(result.Id);
+        // Assert
+        AssertHasEmptyTags(GetTags(result));
+    }
 
-            // Assert
-            AssertHasEmptyTags(GetTags(result));
-        }
+    [Test]
+    public async Task Post_SingleTag_AssignsTagAsync()
+    {
+        // Arrange
+        var postModel = await DefaultAsync().AssertResult();
+        SetRequiredProperties(postModel);
+        GetTags(postModel).Add(Tag1Id);
 
-        [Test]
-        public void Post_SingleTag_AssignsTag()
-        {
-            // Arrange
-            var postModel = Default().AssertResult();
-            SetRequiredProperties(postModel);
-            GetTags(postModel).Add(Tag1Id);
+        // Act
+        var result = await PostAsync(postModel).AssertResult();
+        MarkForDelete(result.Id);
 
-            // Act
-            var result = Post(postModel).AssertResult();
-            MarkForDelete(result.Id);
+        // Assert
+        AssertHasTags(GetTags(result), new List<int> { Tag1Id });
+    }
 
-            // Assert
-            AssertHasTags(GetTags(result), new List<int> { Tag1Id });
-        }
+    protected virtual Task<ApiResult<TPostModel>> DefaultAsync() => ((IDefaultRequest<TPostModel>)Client).DefaultAsync();
 
-        protected virtual ApiResult<TPostModel> Default() => ((IDefaultRequest<TPostModel>)Client).Default();
+    protected virtual Task<ApiResult<bool>> DeleteAsync(int id) => ((IDeleteRequest)Client).DeleteAsync(id);
 
-        protected virtual ApiResult<bool> Delete(int id) => ((IDeleteRequest)Client).Delete(id);
+    protected List<TagDocumentGetModel> GetTags(TGetModel getModel)
+    {
+        var tagsProperty = typeof(TGetModel).GetProperties().First(p => p.Name == TagsPropertyName && p.DeclaringType == typeof(TGetModel));
+        return (List<TagDocumentGetModel>)tagsProperty.GetValue(getModel);
+    }
 
-        protected List<TagDocumentGetModel> GetTags(TGetModel getModel)
-        {
-            var tagsProperty = typeof(TGetModel).GetProperties().First(p => p.Name == TagsPropertyName && p.DeclaringType == typeof(TGetModel));
-            return (List<TagDocumentGetModel>)tagsProperty.GetValue(getModel);
-        }
+    protected List<int> GetTags(TPostModel postModel)
+    {
+        var tagsProperty = typeof(TPostModel).GetProperty(TagsPropertyName);
+        return (List<int>)tagsProperty.GetValue(postModel);
+    }
 
-        protected List<int> GetTags(TPostModel postModel)
-        {
-            var tagsProperty = typeof(TPostModel).GetProperty(TagsPropertyName);
-            return (List<int>)tagsProperty.GetValue(postModel);
-        }
+    protected virtual Task<ApiResult<TGetModel>> PostAsync(TPostModel postModel) => ((IPostRequest<TPostModel, TGetModel>)Client).PostAsync(postModel);
 
-        protected virtual ApiResult<TGetModel> Post(TPostModel postModel) => ((IPostRequest<TPostModel, TGetModel>)Client).Post(postModel);
+    protected abstract void SetRequiredProperties(TPostModel postModel);
 
-        protected abstract void SetRequiredProperties(TPostModel postModel);
+    protected void SetTags(TPatchModel patchModel, List<int> tagIds)
+    {
+        var tagsProperty = typeof(TPatchModel).GetProperty(TagsPropertyName);
+        tagsProperty.SetValue(patchModel, tagIds);
+    }
 
-        protected void SetTags(TPatchModel patchModel, List<int> tagIds)
-        {
-            var tagsProperty = typeof(TPatchModel).GetProperty(TagsPropertyName);
-            tagsProperty.SetValue(patchModel, tagIds);
-        }
+    protected void SetTags(TPostModel postModel, List<int> tagIds)
+    {
+        var tagsProperty = typeof(TPostModel).GetProperty(TagsPropertyName);
+        tagsProperty.SetValue(postModel, tagIds);
+    }
 
-        protected void SetTags(TPostModel postModel, List<int> tagIds)
-        {
-            var tagsProperty = typeof(TPostModel).GetProperty(TagsPropertyName);
-            tagsProperty.SetValue(postModel, tagIds);
-        }
+    protected virtual Task<ApiResult<TGetModel>> UpdateAsync(TPatchModel patchModel) => ((IPatchRequest<TPatchModel, TGetModel>)Client).UpdateAsync(patchModel);
 
-        protected virtual ApiResult<TGetModel> Update(TPatchModel patchModel) => ((IPatchRequest<TPatchModel, TGetModel>)Client).Update(patchModel);
+    private void MarkForDelete(int id)
+    {
+        _entityIdsToDelete.Add(id);
+    }
 
-        private void MarkForDelete(int id)
-        {
-            _entityIdsToDelete.Add(id);
-        }
-
-        private int PostAndMarkForDelete(TPostModel postModel)
-        {
-            var tagGetModel = Post(postModel).AssertResult();
-            MarkForDelete(tagGetModel.Id);
-            return tagGetModel.Id;
-        }
+    private int PostAndMarkForDelete(TPostModel postModel)
+    {
+        var tagGetModel = PostAsync(postModel).AssertResult();
+        MarkForDelete(tagGetModel.Id);
+        return tagGetModel.Id;
     }
 }

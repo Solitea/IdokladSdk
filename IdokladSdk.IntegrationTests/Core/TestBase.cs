@@ -8,56 +8,55 @@ using IdokladSdk.IntegrationTests.Core.Configuration;
 using IdokladSdk.Response;
 using Microsoft.Extensions.Configuration;
 
-namespace IdokladSdk.IntegrationTests.Core
+namespace IdokladSdk.IntegrationTests.Core;
+
+public class TestBase
 {
-    public class TestBase
+    public DokladApi DokladApi { get; set; }
+
+    public TestConfiguration Configuration { get; set; }
+
+    protected HttpClient ApiHttpClient { get; set; }
+
+    protected HttpClient IdentityHttpClient { get; set; }
+
+    public void InitDokladApi(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
     {
-        public DokladApi DokladApi { get; set; }
+        InitDokladApi<ClientCredentialsAuthProvider>(apiResultHandler, apiBatchResultHandler);
+    }
 
-        public TestConfiguration Configuration { get; set; }
+    public void InitDokladApi<TAuthProvider>(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
+     where TAuthProvider : IAuthorizationProvider, new()
+    {
+        LoadConfiguration();
 
-        protected HttpClient ApiHttpClient { get; set; }
-
-        protected HttpClient IdentityHttpClient { get; set; }
-
-        public void InitDokladApi(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
+        var builder = CreateBuilder<TAuthProvider>();
+        builder.AddApiContextOptions(options =>
         {
-            InitDokladApi<ClientCredentialsAuthProvider>(apiResultHandler, apiBatchResultHandler);
-        }
+            options.ApiResultHandler = apiResultHandler;
+            options.ApiBatchResultHandler = apiBatchResultHandler;
+        });
 
-        public void InitDokladApi<TAuthProvider>(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
-         where TAuthProvider : IAuthorizationProvider, new()
-        {
-            LoadConfiguration();
+        DokladApi = builder.Build();
+    }
 
-            var builder = CreateBuilder<TAuthProvider>();
-            builder.AddApiContextOptions(options =>
-            {
-                options.ApiResultHandler = apiResultHandler;
-                options.ApiBatchResultHandler = apiBatchResultHandler;
-            });
+    protected void LoadConfiguration()
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("testsettings.json")
+            .AddJsonFile("localsettings.json", true)
+            .Build();
 
-            DokladApi = builder.Build();
-        }
+        Configuration = configuration.Get<TestConfiguration>();
+    }
 
-        protected void LoadConfiguration()
-        {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("testsettings.json")
-                .AddJsonFile("localsettings.json", true)
-                .Build();
-
-            Configuration = configuration.Get<TestConfiguration>();
-        }
-
-        private DokladApiBuilder CreateBuilder<TAuthProvider>()
-            where TAuthProvider : IAuthorizationProvider, new()
-        {
-            return new DokladApiTestBuilder("Tests", "1.0")
-                .AddAuthorizationProvider<TAuthProvider>(Configuration)
-                .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl)
-                .AddHttpClientForApi(ApiHttpClient);
-        }
+    private DokladApiBuilder CreateBuilder<TAuthProvider>()
+        where TAuthProvider : IAuthorizationProvider, new()
+    {
+        return new DokladApiTestBuilder("Tests", "1.0")
+            .AddAuthorizationProvider<TAuthProvider>(Configuration)
+            .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl)
+            .AddHttpClientForApi(ApiHttpClient);
     }
 }

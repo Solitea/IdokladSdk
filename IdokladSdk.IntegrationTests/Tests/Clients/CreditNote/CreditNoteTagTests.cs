@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Core.Tags;
@@ -12,36 +13,35 @@ using IdokladSdk.Requests.CreditNote.Filter;
 using IdokladSdk.Response;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
+namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote;
+
+[TestFixture]
+public class CreditNoteTagTests : TaggableDocumentTestsBase<CreditNoteClient, CreditNoteDetail, CreditNoteList, CreditNoteGetModel,
+    CreditNoteListGetModel, CreditNoteDefaultPostModel, CreditNotePatchModel, CreditNoteExpand, CreditNoteFilter>
 {
-    [TestFixture]
-    public class CreditNoteTagTests : TaggableDocumentTestsBase<CreditNoteClient, CreditNoteDetail, CreditNoteList, CreditNoteGetModel,
-        CreditNoteListGetModel, CreditNoteDefaultPostModel, CreditNotePatchModel, CreditNoteExpand, CreditNoteFilter>
+    protected override int EntityWithoutTagsId => 921789;
+
+    protected override int EntityWithTags1Id => 921787;
+
+    protected override int EntityWithTags2Id => 921788;
+
+    [Test]
+    public async Task Default_SourceWithTags_CopiesTags_BaseAsync()
     {
-        protected override int EntityWithoutTagsId => 921789;
+        // Act
+        var result = await Client.DefaultAsync(IssuedInvoiceTagTests.IssuedInvoiceWithTags1Id).AssertResult();
 
-        protected override int EntityWithTags1Id => 921787;
+        // Assert
+        AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+    }
 
-        protected override int EntityWithTags2Id => 921788;
+    protected override Task<ApiResult<CreditNoteDefaultPostModel>> DefaultAsync() => Client.DefaultAsync(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);
 
-        [Test]
-        public void Default_SourceWithTags_CopiesTags_Base()
-        {
-            // Act
-            var result = Client.Default(IssuedInvoiceTagTests.IssuedInvoiceWithTags1Id).AssertResult();
-
-            // Assert
-            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
-        }
-
-        protected override ApiResult<CreditNoteDefaultPostModel> Default() => Client.Default(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);
-
-        protected override void SetRequiredProperties(CreditNoteDefaultPostModel postModel)
-        {
-            postModel.CreditNoteReason = "Some reason";
-            postModel.Description = "Test credit note";
-            postModel.PartnerId = PartnerId;
-            postModel.Items.First().Name = "Item name";
-        }
+    protected override void SetRequiredProperties(CreditNoteDefaultPostModel postModel)
+    {
+        postModel.CreditNoteReason = "Some reason";
+        postModel.Description = "Test credit note";
+        postModel.PartnerId = PartnerId;
+        postModel.Items.First().Name = "Item name";
     }
 }
