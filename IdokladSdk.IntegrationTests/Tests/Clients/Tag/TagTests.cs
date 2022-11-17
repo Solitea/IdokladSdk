@@ -3,327 +3,327 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Tag;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
+namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag;
+
+[TestFixture]
+public class TagTests : TestBase
 {
-    [TestFixture]
-    public partial class TagTests : TestBase
+    private const string Tag1Color = "#123456";
+    private const string Tag2Color = "#654321";
+
+    private readonly List<int> _tagIdsToDelete = new List<int>();
+
+    public TagClient TagClient { get; set; }
+
+    private string Tag1Name { get; set; }
+
+    private string Tag2Name { get; set; }
+
+    [OneTimeSetUp]
+    public void OneTimeSetUp()
     {
-        private const string Tag1Color = "#123456";
-        private const string Tag2Color = "#654321";
+        InitDokladApi();
+        TagClient = DokladApi.TagClient;
+    }
 
-        private readonly List<int> _tagIdsToDelete = new List<int>();
+    [SetUp]
+    public void SetUp()
+    {
+        _tagIdsToDelete.Clear();
+        var suffixToAvoidDuplicates = (long)DateTime.Now.TimeOfDay.TotalMilliseconds;
+        Tag1Name = $"Tag 1 ({suffixToAvoidDuplicates})";
+        Tag2Name = $"Tag 2 ({suffixToAvoidDuplicates})";
+    }
 
-        public TagClient TagClient { get; set; }
-
-        private string Tag1Name { get; set; }
-
-        private string Tag2Name { get; set; }
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+    [TearDown]
+    public async Task TearDownAsync()
+    {
+        foreach (var id in _tagIdsToDelete)
         {
-            InitDokladApi();
-            TagClient = DokladApi.TagClient;
+            await TagClient.DeleteAsync(id);
         }
+    }
 
-        [SetUp]
-        public void SetUp()
+    [Test]
+    public async Task AddTagAsync_DuplicitName_Fails()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            _tagIdsToDelete.Clear();
-            var suffixToAvoidDuplicates = (long)DateTime.Now.TimeOfDay.TotalMilliseconds;
-            Tag1Name = $"Tag 1 ({suffixToAvoidDuplicates})";
-            Tag2Name = $"Tag 2 ({suffixToAvoidDuplicates})";
-        }
-
-        [TearDown]
-        public void TearDown()
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
+        await PostAndMarkForDeleteAsync(tagPostModel);
+        tagPostModel = new TagPostModel
         {
-            foreach (var id in _tagIdsToDelete)
-            {
-                TagClient.Delete(id);
-            }
-        }
+            Name = Tag1Name,
+            Color = Tag2Color
+        };
 
-        [Test]
-        public void AddTag_DuplicitName_Fails()
+        // Act
+        var result = await TagClient.PostAsync(tagPostModel);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+    }
+
+    [Test]
+    public async Task AddTagAsync_SuccessfullyAdded()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            PostAndMarkForDelete(tagPostModel);
-            tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag2Color
-            };
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
 
-            // Act
-            var result = TagClient.Post(tagPostModel);
+        // Act
+        var tagGetModel = (await TagClient.PostAsync(tagPostModel)).AssertResult();
+        MarkForDelete(tagGetModel.Id);
 
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
-        }
+        // Assert
+        Assert.NotZero(tagGetModel.Id);
+        Assert.AreEqual(Lowercase(tagPostModel.Color), tagGetModel.Color);
+        Assert.AreEqual(tagPostModel.Name, tagGetModel.Name);
+    }
 
-        [Test]
-        public void AddTag_SuccessfullyAdded()
+    [Test]
+    public async Task DeleteTagAsync_NonExistingId_Fails()
+    {
+        // Arrange
+        var tagId = 0;
+
+        // Act
+        var result = await TagClient.DeleteAsync(tagId);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+    }
+
+    [Test]
+    public async Task DeleteTagAsync_SuccessfullyDeleted()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
+        var id = await PostAndMarkForDeleteAsync(tagPostModel);
 
-            // Act
-            var tagGetModel = TagClient.Post(tagPostModel).AssertResult();
-            MarkForDelete(tagGetModel.Id);
+        // Act
+        var result = (await TagClient.DeleteAsync(id)).AssertResult();
 
-            // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPostModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPostModel.Name, tagGetModel.Name);
-        }
+        // Assert
+        Assert.True(result);
+    }
 
-        [Test]
-        public void DeleteTag_NonExistingId_Fails()
+    [Test]
+    public async Task Get_ReturnsListAsync()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagId = 0;
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
+        var id = await PostAndMarkForDeleteAsync(tagPostModel);
 
-            // Act
-            var result = TagClient.Delete(tagId);
+        // Act
+        var data = await TagClient.List().GetAsync().AssertResult();
 
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
-        }
+        // Assert
+        Assert.Greater(data.TotalItems, 0);
+        Assert.Greater(data.TotalPages, 0);
+        Assert.NotNull(data.Items);
+        Assert.NotZero(data.Items.Count());
+        var tag = data.Items.First(t => t.Id == id);
+        Assert.AreEqual(id, tag.Id);
+        Assert.AreEqual(tagPostModel.Color, tag.Color);
+        Assert.AreEqual(tagPostModel.Name, tag.Name);
+    }
 
-        [Test]
-        public void DeleteTag_SuccessfullyDeleted()
+    [Test]
+    public async Task Get_WithFilter_ReturnsFilteredListAsync()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
-
-            // Act
-            var result = TagClient.Delete(id).AssertResult();
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Test]
-        public void Get_ReturnsList()
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
+        await PostAndMarkForDeleteAsync(tagPostModel);
+        tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
+            Name = Tag2Name,
+            Color = Tag2Color
+        };
+        var id = await PostAndMarkForDeleteAsync(tagPostModel);
 
-            // Act
-            var data = TagClient.List().Get().AssertResult();
+        // Act
+        var data = await TagClient.List()
+            .Filter(t => t.Name.IsEqual(Tag2Name))
+            .GetAsync().AssertResult();
 
-            // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
-            Assert.NotNull(data.Items);
-            Assert.NotZero(data.Items.Count());
-            var tag = data.Items.First(t => t.Id == id);
-            Assert.AreEqual(id, tag.Id);
-            Assert.AreEqual(tagPostModel.Color, tag.Color);
-            Assert.AreEqual(tagPostModel.Name, tag.Name);
-        }
+        // Assert
+        Assert.AreEqual(1, data.TotalItems);
+        Assert.AreEqual(1, data.TotalPages);
+        Assert.NotNull(data.Items);
+        Assert.NotZero(data.Items.Count());
+        var tag = data.Items.First(t => t.Id == id);
+        Assert.AreEqual(id, tag.Id);
+        Assert.AreEqual(tagPostModel.Color, tag.Color);
+        Assert.AreEqual(tagPostModel.Name, tag.Name);
+    }
 
-        [Test]
-        public void Get_WithFilter_ReturnsFilteredList()
+    [Test]
+    public async Task UpdateTagAsync_ColorOnlyUpdate_SuccessfullyUpdated()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            PostAndMarkForDelete(tagPostModel);
-            tagPostModel = new TagPostModel
-            {
-                Name = Tag2Name,
-                Color = Tag2Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
-
-            // Act
-            var data = TagClient.List()
-                .Filter(t => t.Name.IsEqual(Tag2Name))
-                .Get().AssertResult();
-
-            // Assert
-            Assert.AreEqual(1, data.TotalItems);
-            Assert.AreEqual(1, data.TotalPages);
-            Assert.NotNull(data.Items);
-            Assert.NotZero(data.Items.Count());
-            var tag = data.Items.First(t => t.Id == id);
-            Assert.AreEqual(id, tag.Id);
-            Assert.AreEqual(tagPostModel.Color, tag.Color);
-            Assert.AreEqual(tagPostModel.Name, tag.Name);
-        }
-
-        [Test]
-        public void UpdateTag_ColorOnlyUpdate_SuccessfullyUpdated()
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
+        var id = await PostAndMarkForDeleteAsync(tagPostModel);
+        var tagPatchModel = new TagPatchModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
-            var tagPatchModel = new TagPatchModel
-            {
-                Id = id,
-                Color = Tag2Color
-            };
+            Id = id,
+            Color = Tag2Color
+        };
 
-            // Act
-            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
+        // Act
+        var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
 
-            // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPatchModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPostModel.Name, tagGetModel.Name);
-        }
+        // Assert
+        Assert.NotZero(tagGetModel.Id);
+        Assert.AreEqual(Lowercase(tagPatchModel.Color), tagGetModel.Color);
+        Assert.AreEqual(tagPostModel.Name, tagGetModel.Name);
+    }
 
-        [Test]
-        public void UpdateTag_DuplicitName_ThrowsException()
+    [Test]
+    public async Task UpdateTagAsync_DuplicitName_ThrowsException()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            PostAndMarkForDelete(tagPostModel);
-            tagPostModel = new TagPostModel
-            {
-                Name = Tag2Color,
-                Color = Tag2Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
-            var tagPatchModel = new TagPatchModel
-            {
-                Id = id,
-                Name = Tag1Name
-            };
-
-            // Act
-            var result = TagClient.Update(tagPatchModel);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
-        }
-
-        [Test]
-        public void UpdateTag_FullUpdate_SuccessfullyUpdated()
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
+        await PostAndMarkForDeleteAsync(tagPostModel);
+        tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
-            var tagPatchModel = new TagPatchModel
-            {
-                Id = id,
-                Name = Tag2Name,
-                Color = Tag2Color
-            };
-
-            // Act
-            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
-
-            // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPatchModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
-        }
-
-        [Test]
-        public void UpdateTag_NameOnlyUpdate_Name_SuccessfullyUpdated()
+            Name = Tag2Color,
+            Color = Tag2Color
+        };
+        var id = await PostAndMarkForDeleteAsync(tagPostModel);
+        var tagPatchModel = new TagPatchModel
         {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            var id = PostAndMarkForDelete(tagPostModel);
-            var tagPatchModel = new TagPatchModel
-            {
-                Id = id,
-                Name = Tag2Name
-            };
+            Id = id,
+            Name = Tag1Name
+        };
 
-            // Act
-            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
+        // Act
+        var result = await TagClient.UpdateAsync(tagPatchModel);
 
-            // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPostModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
-        }
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+    }
 
-        [Test]
-        public void UpdateTag_NonExistingId_ThrowsException()
+    [Test]
+    public async Task UpdateTagAsync_FullUpdate_SuccessfullyUpdated()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            // Arrange
-            var tagId = 0;
-            var tagPatchModel = new TagPatchModel
-            {
-                Id = tagId
-            };
-
-            // Act
-            var result = TagClient.Update(tagPatchModel);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
-        }
-
-        private string Lowercase(string str)
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
+        var id = await PostAndMarkForDeleteAsync(tagPostModel);
+        var tagPatchModel = new TagPatchModel
         {
-            var cultureInfo = CultureInfo.InvariantCulture;
-            return str.ToLower(cultureInfo);
-        }
+            Id = id,
+            Name = Tag2Name,
+            Color = Tag2Color
+        };
 
-        private void MarkForDelete(int id)
-        {
-            _tagIdsToDelete.Add(id);
-        }
+        // Act
+        var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
 
-        private int PostAndMarkForDelete(TagPostModel tagPostModel)
+        // Assert
+        Assert.NotZero(tagGetModel.Id);
+        Assert.AreEqual(Lowercase(tagPatchModel.Color), tagGetModel.Color);
+        Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
+    }
+
+    [Test]
+    public async Task UpdateTagAsync_NameOnlyUpdate_Name_SuccessfullyUpdated()
+    {
+        // Arrange
+        var tagPostModel = new TagPostModel
         {
-            var tagGetModel = TagClient.Post(tagPostModel).AssertResult();
-            MarkForDelete(tagGetModel.Id);
-            return tagGetModel.Id;
-        }
+            Name = Tag1Name,
+            Color = Tag1Color
+        };
+        var id = await PostAndMarkForDeleteAsync(tagPostModel);
+        var tagPatchModel = new TagPatchModel
+        {
+            Id = id,
+            Name = Tag2Name
+        };
+
+        // Act
+        var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
+
+        // Assert
+        Assert.NotZero(tagGetModel.Id);
+        Assert.AreEqual(Lowercase(tagPostModel.Color), tagGetModel.Color);
+        Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
+    }
+
+    [Test]
+    public async Task UpdateTagAsync_NonExistingId_ThrowsException()
+    {
+        // Arrange
+        var tagId = 0;
+        var tagPatchModel = new TagPatchModel
+        {
+            Id = tagId
+        };
+
+        // Act
+        var result = await TagClient.UpdateAsync(tagPatchModel);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+    }
+
+    private string Lowercase(string str)
+    {
+        var cultureInfo = CultureInfo.InvariantCulture;
+        return str.ToLower(cultureInfo);
+    }
+
+    private void MarkForDelete(int id)
+    {
+        _tagIdsToDelete.Add(id);
+    }
+
+    private async Task<int> PostAndMarkForDeleteAsync(TagPostModel tagPostModel)
+    {
+        var tagGetModel = await TagClient.PostAsync(tagPostModel).AssertResult();
+        MarkForDelete(tagGetModel.Id);
+        return tagGetModel.Id;
     }
 }

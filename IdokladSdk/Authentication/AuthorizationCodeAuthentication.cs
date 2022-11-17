@@ -126,7 +126,8 @@ namespace IdokladSdk.Authentication
                 ClientId = _clientId,
                 ClientSecret = _clientSecret,
                 Code = _code,
-                RedirectUri = _redirectUri
+                RedirectUri = _redirectUri,
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
 
@@ -143,7 +144,8 @@ namespace IdokladSdk.Authentication
                 ClientSecret = _clientSecret,
                 RefreshToken = RefreshToken,
                 GrantType = GrantType.AuthorizationCode,
-                Scope = "idoklad_api offline_access"
+                Scope = "idoklad_api offline_access",
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
     }

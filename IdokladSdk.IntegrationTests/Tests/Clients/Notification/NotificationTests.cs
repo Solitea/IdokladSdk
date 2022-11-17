@@ -16,7 +16,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification;
 
 [TestFixture]
-public partial class NotificationTests : TestBase
+public class NotificationTests : TestBase
 {
     private const int NotificationToDeleteId = 1;
 

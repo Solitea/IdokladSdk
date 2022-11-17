@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.Bank
+namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.Bank;
+
+public class BankTestList
 {
-    public class BankTestList
-    {
-        public int CountryId { get; set; }
+    public int CountryId { get; set; }
 
-        public DateTime DateLastChange { get; set; }
+    public DateTime DateLastChange { get; set; }
 
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public bool IsOutOfDate { get; set; }
-    }
+    public bool IsOutOfDate { get; set; }
 }

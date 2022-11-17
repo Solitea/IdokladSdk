@@ -9,6 +9,15 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Attachment;
 using NUnit.Framework;
 
+namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment;
+
+[TestFixture]
+public class AttachmentTests : TestBase
+{
+    private const string FileName = "reportnew.pdf";
+    private const int DocumentId = 913242;
+    private const string AttachmentPath = "Tests/Clients/Attachment/File/report.pdf";
+    private AttachmentClient _attachmentClient;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 {
     [TestFixture]
@@ -21,12 +30,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
         private string _attachmentName = string.Empty;
         private AttachmentClient _attachmentClient;
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            InitDokladApi();
-            _attachmentClient = DokladApi.AttachmentClient;
-        }
+    [OneTimeSetUp]
+    public void OneTimeSetUp()
+    {
+        InitDokladApi();
+        _attachmentClient = DokladApi.AttachmentClient;
+    }
 
         [Test]
         [Order(1)]
@@ -48,12 +57,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             Assert.IsTrue(data3);
         }
 
-        [Test]
-        [Order(2)]
-        public async Task GetAsync_SuccessfullyGetAttachment()
-        {
-            // Act
-            var data = await _attachmentClient.GetAsync(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
+    [Test]
+    [Order(2)]
+    public async Task GetAsync_SuccessfullyGetAttachment()
+    {
+        // Act
+        var data = await _attachmentClient.GetAsync(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
             // Assert
             Assert.Multiple(() =>
@@ -102,9 +111,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             // Act
             var data = _attachmentClient.Delete(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
-            // Assert
-            Assert.IsTrue(data);
-        }
+        // Assert
+        Assert.IsTrue(data);
+    }
 
         [Test]
         [Order(6)]
@@ -116,7 +125,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
                 FileName = "Wr<>ng“F|leNam?.docx"
             };
 
-            TestDelegate action = async () => await _attachmentClient.UploadAsync(model).AssertResult();
+        TestDelegate action = async () => await _attachmentClient.UploadAsync(model).AssertResult();
 
             // Assert
             Assert.That(action, Throws.Exception.TypeOf<ValidationException>()

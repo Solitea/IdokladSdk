@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Features.Validation;
 
 [TestFixture]
-public partial class ApiResultValidatorTests : TestBase
+public class ApiResultValidatorTests : TestBase
 {
     private const int NotFoundIssuedInvoiceId = -1;
 

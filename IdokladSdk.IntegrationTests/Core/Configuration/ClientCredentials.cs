@@ -1,9 +1,8 @@
-﻿namespace IdokladSdk.IntegrationTests.Core.Configuration
-{
-    public class ClientCredentials
-    {
-        public string ClientId { get; set; }
+﻿namespace IdokladSdk.IntegrationTests.Core.Configuration;
 
-        public string ClientSecret { get; set; }
-    }
+public class ClientCredentials
+{
+    public string ClientId { get; set; }
+
+    public string ClientSecret { get; set; }
 }

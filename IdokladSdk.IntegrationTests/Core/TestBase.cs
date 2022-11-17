@@ -7,6 +7,7 @@ using IdokladSdk.IntegrationTests.Core.Builder;
 using IdokladSdk.IntegrationTests.Core.Configuration;
 using IdokladSdk.Response;
 using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Core;
 
@@ -40,6 +41,13 @@ public class TestBase
         DokladApi = builder.Build();
     }
 
+    [OneTimeTearDown]
+    public void BaseTearDown()
+    {
+        ApiHttpClient?.Dispose();
+        IdentityHttpClient?.Dispose();
+    }
+
     protected void LoadConfiguration()
     {
         var configuration = new ConfigurationBuilder()
@@ -57,6 +65,7 @@ public class TestBase
         return new DokladApiTestBuilder("Tests", "1.0")
             .AddAuthorizationProvider<TAuthProvider>(Configuration)
             .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl)
-            .AddHttpClientForApi(ApiHttpClient);
+            .AddHttpClientForApi(ApiHttpClient)
+            .AddHttpClientForIdentityServer(IdentityHttpClient);
     }
 }

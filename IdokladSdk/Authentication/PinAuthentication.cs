@@ -92,7 +92,8 @@ namespace IdokladSdk.Authentication
             {
                 ClientId = _clientId,
                 ClientSecret = _clientSecret,
-                Pin = _pin
+                Pin = _pin,
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
 
@@ -109,7 +110,8 @@ namespace IdokladSdk.Authentication
                 ClientSecret = _clientSecret,
                 RefreshToken = RefreshToken,
                 GrantType = GrantType.Pin,
-                Scope = "eet offline_access"
+                Scope = "eet offline_access",
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
     }

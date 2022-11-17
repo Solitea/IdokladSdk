@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.VatCode
+namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.VatCode;
+
+public class VatCodeTestList
 {
-    public class VatCodeTestList
-    {
-        public int CountryId { get; set; }
+    public int CountryId { get; set; }
 
-        public DateTime DateValidityFrom { get; set; }
+    public DateTime DateValidityFrom { get; set; }
 
-        public DateTime DateValidityTo { get; set; }
-    }
+    public DateTime DateValidityTo { get; set; }
 }
