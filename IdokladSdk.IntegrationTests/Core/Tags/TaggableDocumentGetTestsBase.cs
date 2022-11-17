@@ -92,12 +92,12 @@ public abstract class TaggableDocumentGetTestsBase<TClient, TDetail, TList, TGet
             .GetAsync<EntityTags>()
             .AssertResult();
 
-            // Assert
-            var items = result.Items.ToList();
-            Assert.That(items.Count, Is.GreaterThanOrEqualTo(1));
-            var entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
-            AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
-        }
+        // Assert
+        var items = result.Items.ToList();
+        Assert.That(items.Count, Is.GreaterThanOrEqualTo(1));
+        var entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
+        AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
+    }
 
     [Test]
     public async Task GetList_NonExistingTagsCombinationFilter_ReturnsEmptyListAsync()
@@ -141,14 +141,14 @@ public abstract class TaggableDocumentGetTestsBase<TClient, TDetail, TList, TGet
             .GetAsync<EntityTags>()
             .AssertResult();
 
-            // Assert
-            var items = result.Items;
-            Assert.That(items.Count(), Is.GreaterThanOrEqualTo(2));
-            var entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
-            AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
-            entity = items.FirstOrDefault(i => i.Id == EntityWithTags2Id);
-            AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
-        }
+        // Assert
+        var items = result.Items;
+        Assert.That(items.Count(), Is.GreaterThanOrEqualTo(2));
+        var entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
+        AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
+        entity = items.FirstOrDefault(i => i.Id == EntityWithTags2Id);
+        AssertHasTags(entity.Tags, new List<int> { Tag2Id, Tag3Id });
+    }
 
     protected void AssertHasEmptyTagIds(IEnumerable<int> tagIds)
     {

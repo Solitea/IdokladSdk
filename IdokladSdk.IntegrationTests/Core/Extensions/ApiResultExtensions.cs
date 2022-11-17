@@ -28,6 +28,12 @@ public static class ApiResultExtensions
         return result.Data;
     }
 
+    /// <summary>
+    /// Assert result.
+    /// </summary>
+    /// <param name="result">Result.</param>
+    /// <typeparam name="T">T.</typeparam>
+    /// <returns>Method assert result.</returns>
     public static async Task<T> AssertResult<T>(this Task<ApiResult<T>> result)
     {
         var response = await result;
@@ -37,28 +43,6 @@ public static class ApiResultExtensions
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(response.Data);
         return response.Data;
-    }
-
-    /// <summary>
-    /// Assert result.
-    /// </summary>
-    /// <param name="batchResult">Result.</param>
-    /// <typeparam name="T">T.</typeparam>
-    /// <returns>Method assert result.</returns>
-    public static IEnumerable<T> AssertResult<T>(this ApiBatchResult<T> batchResult)
-    {
-        Assert.IsInstanceOf<ApiBatchResult<T>>(batchResult);
-        Assert.AreEqual(batchResult.Status, BatchResultType.Success);
-
-        Assert.Multiple(() =>
-        {
-            foreach (var result in batchResult.Results)
-            {
-                result.AssertResult();
-            }
-        });
-
-        return batchResult.Results.Select(x => x.Data);
     }
 
     /// <summary>

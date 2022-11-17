@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
@@ -116,7 +117,12 @@ namespace IdokladSdk.Requests.Account.Agenda
                 throw new ArgumentNullException(nameof(model));
             }
 
-            return await _client.PutFileAsync<bool>(LogoUrl, model, cancellationToken).ConfigureAwait(false);
+            var queryParams = new Dictionary<string, string>
+            {
+                { "highResolution", model.HighResolution.ToString() }
+            };
+
+            return await _client.PutFileAsync<bool>(LogoUrl, model, queryParams, cancellationToken).ConfigureAwait(false);
         }
     }
 }

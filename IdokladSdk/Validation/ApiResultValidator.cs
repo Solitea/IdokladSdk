@@ -29,13 +29,17 @@ namespace IdokladSdk.Validation
         {
             ValidateResponse(response);
 
-            if (!response.IsSuccessStatusCode)
+            TData data;
+
+            try
+            {
+                data = await deserialize(response);
+            }
+            catch (Exception)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 throw new ValidationException($"Response is not valid: {content}");
             }
-
-            var data = await deserialize(response);
 
             handler?.Invoke(data);
 

@@ -125,7 +125,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
                 FileName = "Wr<>ng“F|leNam?.docx"
             };
 
-        TestDelegate action = async () => await _attachmentClient.UploadAsync(model).AssertResult();
+        AsyncTestDelegate action = async () => await _attachmentClient.UploadAsync(model).AssertResult();
 
             // Assert
             Assert.That(action, Throws.Exception.TypeOf<ValidationException>()

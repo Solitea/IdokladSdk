@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Models.Base;
@@ -111,7 +114,6 @@ namespace IdokladSdk.Clients
         {
             var resourceUri = await GetQueryStringAsync(resource, queryParams).ConfigureAwait(false);
             var request = await CreateRequestAsync(resourceUri, HttpMethod.Get, cancellationToken).ConfigureAwait(false);
-            // ProcessQueryParameters(request, queryParams);
 
             return await ExecuteAsync<T>(request, cancellationToken).ConfigureAwait(false);
         }
@@ -361,16 +363,27 @@ namespace IdokladSdk.Clients
         /// <typeparam name="TGetModel">Return type.</typeparam>
         /// <param name="resource">Resource url.</param>
         /// <param name="file">File.</param>
+        /// <param name="queryParams">Query params.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal async Task<ApiResult<TGetModel>> PutFileAsync<TGetModel>(string resource, IFile file, CancellationToken cancellationToken)
+        protected internal async Task<ApiResult<TGetModel>> PutFileAsync<TGetModel>(string resource, IFile file, Dictionary<string, string> queryParams, CancellationToken cancellationToken)
         {
-            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
+            const string contentTypeHeader = "Content-Type";
+            string boundary = "--" + DateTime.Now.Ticks.ToString("x");
+            var resourceUri = await GetQueryStringAsync(resource, queryParams).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resourceUri, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
 
-            using (var content = new MultipartFormDataContent())
+            using (var content = new MultipartFormDataContent(boundary))
             using (var byteContent = new ByteArrayContent(file.FileBytes))
             {
+                byteContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = "\"file\"",
+                    FileName = $"\"{file.FileName}\""
+                };
                 content.Add(byteContent, file.FileName);
+                content.Headers.Remove(contentTypeHeader);
+                content.Headers.TryAddWithoutValidation(contentTypeHeader, $"multipart/form-data; boundary={boundary}");
                 request.Content = content;
 
                 return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
@@ -386,7 +399,8 @@ namespace IdokladSdk.Clients
         /// <returns>New <see cref="HttpRequestMessage"/> instance.</returns>
         protected internal async Task<HttpRequestMessage> CreateRequestAsync(string resource, HttpMethod method, CancellationToken cancellationToken)
         {
-            var request = new HttpRequestMessage(method, resource);
+            var requestUri = _apiContext.Configuration.ApiUrl + resource;
+            var request = new HttpRequestMessage(method, requestUri);
             var token = await _apiContext.GetTokenAsync(cancellationToken).ConfigureAwait(false);
 
             request.Headers.Add(Constants.Header.Authorization, "Bearer " + token.AccessToken);
@@ -434,10 +448,17 @@ namespace IdokladSdk.Clients
 
         private async Task<string> GetQueryStringAsync(string resource, Dictionary<string, string> queryParams)
         {
+            if (queryParams is null || !queryParams.Any())
+            {
+                return resource;
+            }
+
             var queryContent = new FormUrlEncodedContent(queryParams);
             var queryString = await queryContent.ReadAsStringAsync();
 
-            return $"{resource}?{queryString}";
+            var delimeter = resource.Contains("?") ? "&" : "?";
+
+            return $"{resource}{delimeter}{queryString}";
         }
 
         private async Task<T> GetDataAsync<T>(HttpResponseMessage response)

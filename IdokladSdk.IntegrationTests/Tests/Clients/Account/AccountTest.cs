@@ -33,7 +33,7 @@ public class AccountTest : TestBase
     public async Task AgendaListAsync_SuccessfullyGetAgendaList()
     {
         // Act
-        var data = (await _accountClient.Agendas.List().GetAsync()).AssertResult();
+        var data = await _accountClient.Agendas.List().GetAsync().AssertResult();
 
         // Assert
         Assert.Greater(data.TotalItems, 0);
@@ -48,8 +48,7 @@ public class AccountTest : TestBase
     public async Task SubscriptionsListAsync_FilteredByDateFromSuccessfullyGetSubscription()
     {
         // Act
-        var data = (await _accountClient.Subscriptions.List()
-            .Filter(f => f.DateFrom.IsGreaterThan(new DateTime(2020, 3, 1))).GetAsync()).AssertResult();
+        var data = await _accountClient.Subscriptions.List().Filter(f => f.DateFrom.IsGreaterThan(new DateTime(2020, 3, 1))).GetAsync().AssertResult();
 
         // Assert
         Assert.That(data.TotalItems, Is.GreaterThan(2));
@@ -59,8 +58,11 @@ public class AccountTest : TestBase
     public async Task SubscriptionsListAsync_FilteredByIsCanceledSuccessfullyGetSubscription()
     {
         // Act
-        var data = (await _accountClient.Subscriptions.List()
-            .Filter(f => f.IsCanceled.IsEqual(true)).GetAsync()).AssertResult();
+        var data = await _accountClient.Subscriptions
+            .List()
+            .Filter(f => f.IsCanceled.IsEqual(true))
+            .GetAsync()
+            .AssertResult();
 
         // Assert
         Assert.That(data.TotalItems, Is.EqualTo(0));
@@ -70,7 +72,7 @@ public class AccountTest : TestBase
     public async Task AgendaDetailAsync_SuccessfullyGetAgendaDetail()
     {
         // Act
-        var data = (await _accountClient.Agendas.Detail(AgendaId).GetAsync()).AssertResult();
+        var data = await _accountClient.Agendas.Detail(AgendaId).GetAsync().AssertResult();
 
         // Assert
         Assert.NotNull(data);
@@ -85,7 +87,7 @@ public class AccountTest : TestBase
     public async Task AgendaCurrentAsync_SuccessfullyGetAgendaCurrentDetail()
     {
         // Act
-        var data = (await _accountClient.Agendas.Current().GetAsync()).AssertResult();
+        var data = await _accountClient.Agendas.Current().GetAsync().AssertResult();
 
         // Assert
         Assert.NotNull(data);
@@ -102,7 +104,7 @@ public class AccountTest : TestBase
         var model = new AgendaDeleteRequestPostModel();
 
         // Act
-        var data = (await _accountClient.Agendas.DeleteRequestAsync(model)).AssertResult();
+        var data = await _accountClient.Agendas.DeleteRequestAsync(model).AssertResult();
 
         // Assert
         Assert.True(data);
@@ -115,7 +117,7 @@ public class AccountTest : TestBase
         var model = new AgendaPatchModel();
 
         // Act
-        var data = (await _accountClient.Agendas.UpdateAsync(model)).AssertResult();
+        var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
         // Assert
         Assert.NotNull(data);
@@ -143,11 +145,12 @@ public class AccountTest : TestBase
         };
 
         // Act
-        var hasIdentificationData = (await _accountClient.Agendas.UpdateAsync(model)).AssertResult().Contact;
+        var hasIdentificationData = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
         // Assert
-        Assert.That(hasIdentificationData.IdentificationNumber, Is.Empty);
-        Assert.That(hasIdentificationData.HasNoIdentificationNumber, Is.True);
+        var contact = hasIdentificationData.Contact;
+        Assert.That(contact.IdentificationNumber, Is.Empty);
+        Assert.That(contact.HasNoIdentificationNumber, Is.True);
 
         var identificationNumber = "25568736";
         model.Contact.IdentificationNumber = identificationNumber;
@@ -184,7 +187,7 @@ public class AccountTest : TestBase
     public async Task Agenda_GenerateBankStatementMailAsync_ReturnsEmailAddress()
     {
         // Act
-        var data = (await _accountClient.Agendas.GenerateBankStatementMailAsync()).AssertResult();
+        var data = await _accountClient.Agendas.GenerateBankStatementMailAsync().AssertResult();
 
         // Assert
         Assert.That(data, Is.Not.Null.And.Not.Empty);
@@ -194,7 +197,7 @@ public class AccountTest : TestBase
     public async Task LogoGetAsync_SuccessfullyGet()
     {
         // Act
-        var data = (await _accountClient.Agendas.GetLogoAsync()).AssertResult();
+        var data = await _accountClient.Agendas.GetLogoAsync().AssertResult();
 
         // Assert
         Assert.NotNull(data);
@@ -205,7 +208,7 @@ public class AccountTest : TestBase
     public async Task LogoDeleteAsync_SuccessfullyDeleted()
     {
         // Act
-        var data = (await _accountClient.Agendas.DeleteLogoAsync()).AssertResult();
+        var data = await _accountClient.Agendas.DeleteLogoAsync().AssertResult();
 
         // Assert
         Assert.True(data);
@@ -223,7 +226,7 @@ public class AccountTest : TestBase
         };
 
         // Act
-        var data = (await _accountClient.Agendas.UploadLogoAsync(model)).AssertResult();
+        var data = await _accountClient.Agendas.UploadLogoAsync(model).AssertResult();
 
         // Assert
         Assert.True(data);
@@ -233,7 +236,7 @@ public class AccountTest : TestBase
     public async Task UserListAsync_SuccessfullyGetUserList()
     {
         // Act
-        var data = (await _accountClient.Users.List().GetAsync()).AssertResult();
+        var data = await _accountClient.Users.List().GetAsync().AssertResult();
 
         // Assert
         Assert.Greater(data.TotalItems, 0);
@@ -246,7 +249,7 @@ public class AccountTest : TestBase
     public async Task UserDetailAsync_SuccessfullyGetUserDetail()
     {
         // Act
-        var data = (await _accountClient.Users.Detail(UserId).GetAsync()).AssertResult();
+        var data = await _accountClient.Users.Detail(UserId).GetAsync().AssertResult();
 
         // Assert
         Assert.NotNull(data);
@@ -259,7 +262,7 @@ public class AccountTest : TestBase
     public async Task UserCurrentAsync_SuccessfullyGetUserCurrentDetail()
     {
         // Act
-        var data = (await _accountClient.Users.Current().GetAsync()).AssertResult();
+        var data = await _accountClient.Users.Current().GetAsync().AssertResult();
 
         // Assert
         Assert.NotNull(data);
@@ -275,7 +278,7 @@ public class AccountTest : TestBase
         var model = new UserPatchModel();
 
         // Act
-        var data = (await _accountClient.Users.UpdateAsync(model)).AssertResult();
+        var data = await _accountClient.Users.UpdateAsync(model).AssertResult();
 
         // Assert
         Assert.NotNull(data);
@@ -285,9 +288,9 @@ public class AccountTest : TestBase
     public async Task GetSubscriptionListAsync_SubscriptionListGotSuccessfully()
     {
         // Act
-        var result = (await _accountClient.Subscriptions.List()
+        var result = await _accountClient.Subscriptions.List()
             .Sort(x => x.DateOfIssue.Desc())
-            .GetAsync()).AssertResult();
+            .GetAsync().AssertResult();
 
         // Assert
         Assert.NotNull(result);

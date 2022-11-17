@@ -34,7 +34,7 @@ public class SalesReceiptTests : TestBase
     }
 
     [OneTimeTearDown]
-    public async void OneTimeTearDown()
+    public async Task OneTimeTearDown()
     {
         foreach (var id in _salesReceiptIds)
         {

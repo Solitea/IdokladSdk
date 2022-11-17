@@ -77,7 +77,7 @@ namespace IdokladSdk.Clients
 
             var resource = ResourceUrl + $"{model.DocumentId}/{model.DocumentType}";
 
-            return await PutFileAsync<bool>(resource, model, cancellationToken).ConfigureAwait(false);
+            return await PutFileAsync<bool>(resource, model, null, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

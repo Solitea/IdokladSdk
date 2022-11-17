@@ -105,7 +105,7 @@ public class PriceListItemTests : TestBase
         var batch = new List<PriceListItemPostModel> { _priceListItemPostModel };
 
         // Act
-        var data = (await PriceListItemClient.PostAsync(batch)).AssertResult();
+        var data = await PriceListItemClient.PostAsync(batch).AssertResult();
         var priceListItemGetModel = data.First();
         _newPriceListItemId = priceListItemGetModel.Id;
 
@@ -119,10 +119,10 @@ public class PriceListItemTests : TestBase
     public async Task GetListWithFilterAsync_ReturnsList()
     {
         // Act
-        var data = (await PriceListItemClient
+        var data = await PriceListItemClient
             .List()
             .Filter(f => f.DateLastChange.IsGreaterThanOrEqual(_dateLastChange))
-            .GetAsync())
+            .GetAsync()
             .AssertResult();
 
         // Assert
@@ -140,7 +140,7 @@ public class PriceListItemTests : TestBase
         var batch = new List<PriceListItemPatchModel> { priceListItemPatchModel };
 
         // Act
-        var data = (await PriceListItemClient.UpdateAsync(batch)).AssertResult();
+        var data = await PriceListItemClient.UpdateAsync(batch).AssertResult();
         var priceListItemGetModel = data.First();
 
         // Assert
@@ -155,7 +155,7 @@ public class PriceListItemTests : TestBase
         var idBatch = new List<int> { _newPriceListItemId };
 
         // Act
-        var data = (await PriceListItemClient.DeleteAsync(idBatch, true)).AssertResult();
+        var data = await PriceListItemClient.DeleteAsync(idBatch, true).AssertResult();
 
         // Assert
         Assert.True(data.First());

@@ -66,6 +66,7 @@ public class IssuedInvoiceTests : TestBase
         Assert.AreEqual(_issuedInvoicePostModel.DateOfIssue, data.DateOfIssue);
         Assert.AreEqual(PartnerId, data.PartnerId);
         Assert.Greater(data.Items.Count, 0);
+        AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
     }
 
     [Test]
@@ -180,7 +181,7 @@ public class IssuedInvoiceTests : TestBase
         var data = await _issuedInvoiceClient.RecountAsync(model).AssertResult();
 
         // Assert
-        var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
+        var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeReduce);
         Assert.AreEqual(item.Id, recountedItem.Id);
         Assert.AreEqual(item.Name, recountedItem.Name);
         Assert.AreEqual(item.ItemType, recountedItem.ItemType);
@@ -300,10 +301,10 @@ public class IssuedInvoiceTests : TestBase
         model.Items[0].ItemType = PostIssuedInvoiceItemType.ItemTypeReduce;
 
         // Act
-        TestDelegate action = async () => await _issuedInvoiceClient.PostAsync(model).AssertResult();
+        var exception = Assert.ThrowsAsync<ValidationException>(async () => await _issuedInvoiceClient.PostAsync(model).AssertResult());
 
         // Assert
-        Assert.That(action, Throws.Exception.TypeOf<ValidationException>().And.Message.Contains("normal items"));
+        Assert.That(exception, Has.Message.Contains("normal items"));
     }
 
     private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)

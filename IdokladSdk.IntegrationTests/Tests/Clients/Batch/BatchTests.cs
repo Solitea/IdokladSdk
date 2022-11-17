@@ -72,11 +72,9 @@ public class BatchTests : TestBase
         }
 
         // Act
-        var response = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate);
+        var results = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate).AssertResult();
 
         // Assert
-        var results = response.AssertResult();
-
         Assert.Multiple(() =>
         {
             foreach (var result in results)

@@ -73,7 +73,7 @@ public abstract class TaggableDocumentTestsBase<TClient, TDetail, TList, TGetMod
         // Arrange
         var postModel = await DefaultAsync().AssertResult();
         SetRequiredProperties(postModel);
-        var id = PostAndMarkForDelete(postModel);
+        var id = await PostAndMarkForDeleteAsync(postModel);
         var patchModel = new TPatchModel { Id = id };
         SetTags(patchModel, new List<int>());
 
@@ -92,7 +92,7 @@ public abstract class TaggableDocumentTestsBase<TClient, TDetail, TList, TGetMod
         SetRequiredProperties(postModel);
         GetTags(postModel).Add(Tag1Id);
         GetTags(postModel).Add(Tag2Id);
-        var id = PostAndMarkForDelete(postModel);
+        var id = await PostAndMarkForDeleteAsync(postModel);
         var patchModel = new TPatchModel { Id = id };
 
         // Act
@@ -108,7 +108,7 @@ public abstract class TaggableDocumentTestsBase<TClient, TDetail, TList, TGetMod
         // Arrange
         var postModel = await DefaultAsync().AssertResult();
         SetRequiredProperties(postModel);
-        var id = PostAndMarkForDelete(postModel);
+        var id = await PostAndMarkForDeleteAsync(postModel);
         var patchModel = new TPatchModel { Id = id };
         SetTags(patchModel, new List<int> { Tag1Id, Tag3Id });
 
@@ -238,9 +238,9 @@ public abstract class TaggableDocumentTestsBase<TClient, TDetail, TList, TGetMod
         _entityIdsToDelete.Add(id);
     }
 
-    private int PostAndMarkForDelete(TPostModel postModel)
+    private async Task<int> PostAndMarkForDeleteAsync(TPostModel postModel)
     {
-        var tagGetModel = PostAsync(postModel).AssertResult();
+        var tagGetModel = await PostAsync(postModel).AssertResult();
         MarkForDelete(tagGetModel.Id);
         return tagGetModel.Id;
     }
