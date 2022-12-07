@@ -93,7 +93,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
 
             // Assert
             var items = result.Items.ToList();
-            Assert.That(items.Count, Is.EqualTo(1));
+            Assert.That(items.Count, Is.GreaterThanOrEqualTo(1));
             var entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
             AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
         }
@@ -142,7 +142,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
 
             // Assert
             var items = result.Items;
-            Assert.That(items.Count(), Is.EqualTo(2));
+            Assert.That(items.Count(), Is.GreaterThanOrEqualTo(2));
             var entity = items.FirstOrDefault(i => i.Id == EntityWithTags1Id);
             AssertHasTags(entity.Tags, new List<int> { Tag1Id, Tag2Id });
             entity = items.FirstOrDefault(i => i.Id == EntityWithTags2Id);

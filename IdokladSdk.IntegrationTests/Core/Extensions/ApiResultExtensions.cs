@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.Response;
 using NUnit.Framework;
@@ -25,6 +26,23 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             Assert.NotNull(result.Data);
             return result.Data;
+        }
+
+        /// <summary>
+        /// Assert result.
+        /// </summary>
+        /// <param name="result">Result.</param>
+        /// <typeparam name="T">T.</typeparam>
+        /// <returns>Method assert result.</returns>
+        public static async Task<T> AssertResult<T>(this Task<ApiResult<T>> result)
+        {
+            var response = await result;
+
+            Assert.IsInstanceOf<ApiResult<T>>(response);
+            Assert.IsTrue(response.IsSuccess, response.Message);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotNull(response.Data);
+            return response.Data;
         }
 
         /// <summary>

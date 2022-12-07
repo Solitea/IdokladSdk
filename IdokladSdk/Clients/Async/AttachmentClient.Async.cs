@@ -12,7 +12,32 @@ namespace IdokladSdk.Clients
 {
     public partial class AttachmentClient
     {
-        /// <inheritdoc cref="Get"/>
+        /// <summary>
+        /// Gets attachment.
+        /// </summary>
+        /// <param name="attachmentId">Attachment Id.</param>
+        /// <param name="compressed"><c>true</c> if the attachment should be compressed, otherwise <c>false</c>.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing attachment.</returns>
+        public Task<ApiResult<AttachmentGetModel>> GetAsync(int attachmentId, bool compressed = false, CancellationToken cancellationToken = default)
+        {
+            var resource = ResourceUrl + $"{attachmentId}";
+            var queryParams = new Dictionary<string, string>
+            {
+                { "compressed", compressed.ToString() }
+            };
+
+            return GetAsync<AttachmentGetModel>(resource, queryParams, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets document's attachments.
+        /// </summary>
+        /// <param name="documentId">Id of a document.</param>
+        /// <param name="documentType">Type of a document.</param>
+        /// <param name="compressed"><c>true</c> if the attachment should be compressed, otherwise <c>false</c>.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing list of attachments.</returns>
         public Task<ApiResult<List<AttachmentGetModel>>> GetAsync(int documentId, AttachmentDocumentType documentType, bool compressed = false, CancellationToken cancellationToken = default)
         {
             var resource = ResourceUrl + $"{documentId}/{documentType}/{compressed}";
@@ -39,7 +64,25 @@ namespace IdokladSdk.Clients
             return (await Client.ExecuteAsync<ApiResult<bool>>(request, cancellationToken).ConfigureAwait(false)).Data;
         }
 
-        /// <inheritdoc cref="Delete"/>
+        /// <summary>
+        /// Deletes attachment.
+        /// </summary>
+        /// <param name="attachmentId">Attachment Id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if deletion of an attachment was successful, otherwise <c>false</c>.</returns>
+        public Task<ApiResult<bool>> DeleteAsync(int attachmentId, CancellationToken cancellationToken = default)
+        {
+            var resource = ResourceUrl + $"{attachmentId}";
+            return DeleteAsync<bool>(resource, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deletes all document's attachments.
+        /// </summary>
+        /// <param name="documentId">Id of a document.</param>
+        /// <param name="documentType">Type of a document.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if deletion of all attachments was successful, otherwise <c>false</c>.</returns>
         public Task<ApiResult<bool>> DeleteAsync(int documentId, AttachmentDocumentType documentType, CancellationToken cancellationToken = default)
         {
             var resource = ResourceUrl + $"{documentId}/{documentType}";

@@ -14,5 +14,10 @@
         /// Gets or sets bytes of a file.
         /// </summary>
         public byte[] FileBytes { get; set; }
+
+        /// <summary xml:lang="en">
+        /// Gets or sets entity's Id.
+        /// </summary>
+        public int Id { get; set; }
     }
 }
