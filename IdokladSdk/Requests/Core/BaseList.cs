@@ -178,8 +178,8 @@ namespace IdokladSdk.Requests.Core
                 Data = new Page<TResult>
                 {
                     Items = apiResult.Data?.Items?.Select(o => selectorFunction.Invoke(o)),
-                    TotalItems = apiResult.Data.TotalItems,
-                    TotalPages = apiResult.Data.TotalPages
+                    TotalItems = apiResult.Data?.TotalItems ?? 0,
+                    TotalPages = apiResult.Data?.TotalPages ?? 0
                 },
                 ErrorCode = apiResult.ErrorCode,
                 IsSuccess = apiResult.IsSuccess,
