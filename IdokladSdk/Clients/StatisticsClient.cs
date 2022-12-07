@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Statistics;
 using IdokladSdk.Requests.Core.Extensions;
@@ -33,13 +33,13 @@ namespace IdokladSdk.Clients
         /// <param name="filterModel">Filter model.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="InvoicingForPeriodGetModel"/>.</returns>
-        public ApiResult<InvoicingForPeriodGetModel> InvoicingForPeriod(PeriodType periodType, StatisticsFilterModel filterModel = null)
+        public Task<ApiResult<InvoicingForPeriodGetModel>> InvoicingForPeriodAsync(PeriodType periodType, StatisticsFilterModel filterModel = null, CancellationToken cancellationToken = default)
         {
             var queryParams = new Dictionary<string, string> { { nameof(PeriodType), periodType.ToString() } };
             var withFilterParams = queryParams.Concat(filterModel?.AsDictionary() ?? new Dictionary<string, string>())
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
-            return Get<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", withFilterParams);
+            return GetAsync<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", withFilterParams, cancellationToken);
         }
 
         /// <summary>

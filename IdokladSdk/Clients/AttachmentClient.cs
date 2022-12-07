@@ -31,8 +31,9 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="attachmentId">Id of an attachment.</param>
         /// <param name="compressed"><c>true</c> if the attachment should be compressed, otherwise <c>false</c>.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing attachment.</returns>
-        public ApiResult<AttachmentGetModel> Get(int attachmentId, bool compressed = false)
+        public Task<ApiResult<AttachmentGetModel>> GetAsync(int attachmentId, bool compressed = false, CancellationToken cancellationToken = default)
         {
             var resource = ResourceUrl + $"{attachmentId}";
             var queryParams = new Dictionary<string, string>
@@ -40,7 +41,7 @@ namespace IdokladSdk.Clients
                 { "compressed", compressed.ToString() }
             };
 
-            return Get<AttachmentGetModel>(resource, queryParams);
+            return GetAsync<AttachmentGetModel>(resource, queryParams, cancellationToken);
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="model">File to upload.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if upload of a document was successful, otherwise <c>false</c>.</returns>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if upload of an attachment was successful, otherwise <c>false</c>.</returns>
         public async Task<ApiResult<bool>> UploadAsync(AttachmentUploadModel model, CancellationToken cancellationToken = default)
         {
             if (model is null)
@@ -84,11 +85,12 @@ namespace IdokladSdk.Clients
         /// Deletes document.
         /// </summary>
         /// <param name="attachmentId">Id of an attachment.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if deletion of an attachment was successful, otherwise <c>false</c>.</returns>
-        public ApiResult<bool> Delete(int attachmentId)
+        public Task<ApiResult<bool>> DeleteAsync(int attachmentId, CancellationToken cancellationToken = default)
         {
             var resource = ResourceUrl + $"{attachmentId}";
-            return Delete<bool>(resource);
+            return DeleteAsync<bool>(resource, cancellationToken);
         }
 
         /// <summary>
