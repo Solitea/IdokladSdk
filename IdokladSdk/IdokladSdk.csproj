@@ -6,11 +6,11 @@
         <Version>3.8.0</Version>
         <PackageId>IdokladSdk</PackageId>
         <Product>iDoklad</Product>
-        <Company>Solitea, a.s.</Company>
-        <Authors>Solitea, a.s.</Authors>
-        <Copyright>© 2016 - 2022</Copyright>
+        <Company>Seyfor, a.s.</Company>
+        <Authors>Seyfor, a.s.</Authors>
+        <Copyright>© 2016 - 2023</Copyright>
         <Description>SDK for iDoklad API</Description>
-        <PackageTags>idoklad,sdk,rest,api,solitea</PackageTags>
+        <PackageTags>idoklad,sdk,rest,api,seyfor</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
