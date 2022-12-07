@@ -28,7 +28,7 @@ namespace IdokladSdk.Clients
         /// <summary>
         /// Gets attachment.
         /// </summary>
-        /// <param name="attachmentId">Id of a document.</param>
+        /// <param name="attachmentId">Id of an attachment.</param>
         /// <param name="compressed"><c>true</c> if the attachment should be compressed, otherwise <c>false</c>.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing attachment.</returns>
         public ApiResult<AttachmentGetModel> Get(int attachmentId, bool compressed = false)
@@ -82,7 +82,7 @@ namespace IdokladSdk.Clients
         /// <summary>
         /// Deletes document.
         /// </summary>
-        /// <param name="attachmentId">Attachment Id.</param>
+        /// <param name="attachmentId">Id of an attachment.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if deletion of an attachment was successful, otherwise <c>false</c>.</returns>
         public ApiResult<bool> Delete(int attachmentId)
         {

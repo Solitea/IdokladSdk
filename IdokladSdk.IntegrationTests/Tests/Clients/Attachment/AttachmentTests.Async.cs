@@ -12,7 +12,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
     {
         [Test]
         [Order(7)]
-        public async Task UploadAsync_SuccessfullyUpdated()
+        public async Task UploadAsync_SuccessfullyUploaded()
         {
             // Arrange
             var model1 = GetAttachmentUploadModel(1);
@@ -38,23 +38,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             var data = await _attachmentClient.GetAsync(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
             // Assert
+            Assert.That(data.Count, Is.GreaterThanOrEqualTo(3));
             Assert.Multiple(() =>
             {
                 data.ForEach((attachment) =>
                 {
                     Assert.That(attachment.Id, Is.Not.EqualTo(0));
                     Assert.NotNull(attachment.FileBytes);
-                    Assert.NotNull(attachment.FileName);
+                    Assert.That(attachment.FileName, Is.Not.Null.Or.Empty);
                 });
             });
 
             var attachment = data.FirstOrDefault();
-            Assert.NotNull(attachment);
-
             _attachmentId = attachment.Id;
             _attachmentName = attachment.FileName;
-
-            Assert.That(_attachmentName, Is.Not.Null.Or.Empty);
         }
 
         [Test]

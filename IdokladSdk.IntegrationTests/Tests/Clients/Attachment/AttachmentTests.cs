@@ -29,7 +29,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
         [Test]
         [Order(1)]
-        public void Upload_SuccessfullyUpdated()
+        public void Upload_SuccessfullyUploaded()
         {
             // Arrange
             var model1 = GetAttachmentUploadModel(1);
@@ -61,17 +61,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
                 {
                     Assert.That(attachment.Id, Is.Not.EqualTo(0));
                     Assert.NotNull(attachment.FileBytes);
-                    Assert.NotNull(attachment.FileName);
+                    Assert.That(attachment.FileName, Is.Not.Null.Or.Empty);
                 });
             });
 
             var attachment = data.FirstOrDefault();
-            Assert.NotNull(attachment);
-
             _attachmentId = attachment.Id;
             _attachmentName = attachment.FileName;
-
-            Assert.That(_attachmentName, Is.Not.Null.Or.Empty);
         }
 
         [Test]
