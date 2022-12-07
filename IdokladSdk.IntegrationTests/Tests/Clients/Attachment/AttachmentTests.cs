@@ -11,11 +11,13 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 {
     [TestFixture]
-    public class AttachmentTests : TestBase
+    public partial class AttachmentTests : TestBase
     {
         private const string FileName = "reportnew.pdf";
         private const int DocumentId = 913242;
         private const string AttachmentPath = "Tests/Clients/Attachment/File/report.pdf";
+        private int _attachmentId = 0;
+        private string _attachmentName = string.Empty;
         private AttachmentClient _attachmentClient;
 
         [OneTimeSetUp]
@@ -30,38 +32,75 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
         public void Upload_SuccessfullyUpdated()
         {
             // Arrange
-            var model = new AttachmentUploadModel
-            {
-                FileBytes = File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{AttachmentPath}"),
-                FileName = FileName,
-                DocumentType = AttachmentDocumentType.IssuedInvoice,
-                DocumentId = DocumentId
-            };
+            var model1 = GetAttachmentUploadModel(1);
+            var model2 = GetAttachmentUploadModel(2);
+            var model3 = GetAttachmentUploadModel(3);
 
             // Act
-            var data = _attachmentClient.Upload(model).AssertResult();
+            var data1 = _attachmentClient.Upload(model1).AssertResult();
+            var data2 = _attachmentClient.Upload(model2).AssertResult();
+            var data3 = _attachmentClient.Upload(model3).AssertResult();
+
+            // Assert
+            Assert.IsTrue(data1);
+            Assert.IsTrue(data2);
+            Assert.IsTrue(data3);
+        }
+
+        [Test]
+        [Order(2)]
+        public void Get_SuccessfullyGetAllAttachments()
+        {
+            // Act
+            var data = _attachmentClient.Get(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                data.ForEach((attachment) =>
+                {
+                    Assert.That(attachment.Id, Is.Not.EqualTo(0));
+                    Assert.NotNull(attachment.FileBytes);
+                    Assert.NotNull(attachment.FileName);
+                });
+            });
+
+            var attachment = data.FirstOrDefault();
+            Assert.NotNull(attachment);
+
+            _attachmentId = attachment.Id;
+            _attachmentName = attachment.FileName;
+
+            Assert.That(_attachmentName, Is.Not.Null.Or.Empty);
+        }
+
+        [Test]
+        [Order(3)]
+        public void Get_SuccessfullyGetAttachment()
+        {
+            // Act
+            var data = _attachmentClient.Get(_attachmentId).AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.NotNull(data.FileBytes);
+            Assert.AreEqual(_attachmentName, data.FileName);
+        }
+
+        [Test]
+        [Order(4)]
+        public void Delete_SuccessfullyDeleted()
+        {
+            // Act
+            var data = _attachmentClient.Delete(_attachmentId).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
         }
 
         [Test]
-        [Order(2)]
-        public void Get_SuccessfullyGetAttachment()
-        {
-            // Act
-            var data = _attachmentClient.Get(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
-
-            // Assert
-            var first = data.FirstOrDefault();
-            Assert.NotNull(first);
-            Assert.NotNull(first.FileBytes);
-            Assert.AreEqual(FileName, first.FileName);
-        }
-
-        [Test]
-        [Order(3)]
-        public void Delete_SuccessfullyDeleted()
+        [Order(5)]
+        public void Delete_AllSuccessfullyDeleted()
         {
             // Act
             var data = _attachmentClient.Delete(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
@@ -71,7 +110,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
         }
 
         [Test]
-        [Order(4)]
+        [Order(6)]
         public void UploadWithWrongFileName_ExceptionThrown()
         {
             // Act
@@ -85,6 +124,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             // Assert
             Assert.That(action, Throws.Exception.TypeOf<ValidationException>()
                 .And.Message.EqualTo("File name contains one or more unsupported characters"));
+        }
+
+        private AttachmentUploadModel GetAttachmentUploadModel(int orderNumber)
+        {
+            return new AttachmentUploadModel
+            {
+                FileBytes = File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{AttachmentPath}"),
+                FileName = FileName.Insert(9, orderNumber.ToString()),
+                DocumentType = AttachmentDocumentType.IssuedInvoice,
+                DocumentId = DocumentId
+            };
         }
     }
 }
