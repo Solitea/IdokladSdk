@@ -47,11 +47,6 @@ namespace IdokladSdk.Exceptions
         /// <summary>
         /// Gets response.
         /// </summary>
-        //public RestResponse Response { get; private set; }
-
-        /// <summary>
-        /// Gets response.
-        /// </summary>
         public HttpResponseMessage Response { get; private set; }
     }
 }

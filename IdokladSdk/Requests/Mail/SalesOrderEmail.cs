@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Threading;
 using IdokladSdk.Clients;
 using IdokladSdk.Models.Email;
 using IdokladSdk.Requests.Mail.Interfaces;
