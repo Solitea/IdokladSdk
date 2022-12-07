@@ -1,10 +1,9 @@
-﻿namespace IdokladSdk.UnitTests.Tests.Modifiers.Select.SelectModels
+﻿namespace IdokladSdk.UnitTests.Tests.Modifiers.Select.SelectModels;
+
+/// <summary>
+/// SelectModel.
+/// </summary>
+public class SelectModel
 {
-    /// <summary>
-    /// SelectModel.
-    /// </summary>
-    public class SelectModel
-    {
-        public string Text { get; set; }
-    }
+    public string Text { get; set; }
 }

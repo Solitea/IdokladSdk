@@ -1,10 +1,9 @@
 ﻿using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
+
+public class ModelWithDecimalGreaterThanZeroAttribute
 {
-    public class ModelWithDecimalGreaterThanZeroAttribute
-    {
-        [DecimalGreaterThanZero]
-        public decimal Amount { get; set; }
-    }
+    [DecimalGreaterThanZero]
+    public decimal Amount { get; set; }
 }

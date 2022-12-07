@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
+
+public class ModelWithCollectionRangeAttribute
 {
-    public class ModelWithCollectionRangeAttribute
-    {
-        [CollectionRange(1, 2, false)]
-        public List<int> EntityIds { get; set; }
-    }
+    [CollectionRange(1, 2, false)]
+    public List<int> EntityIds { get; set; }
 }

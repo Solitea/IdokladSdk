@@ -1,10 +1,9 @@
 ﻿using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
+
+public class ModelWithRequiredNonDefaultAttribute
 {
-    public class ModelWithRequiredNonDefaultAttribute
-    {
-        [RequiredNonDefault]
-        public int CurrencyId { get; set; }
-    }
+    [RequiredNonDefault]
+    public int CurrencyId { get; set; }
 }

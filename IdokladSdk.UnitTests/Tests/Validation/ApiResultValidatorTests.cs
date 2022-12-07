@@ -11,122 +11,121 @@ using IdokladSdk.Validation;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Validation
+namespace IdokladSdk.UnitTests.Tests.Validation;
+
+[TestFixture]
+public class ApiResultValidatorTests
 {
-    [TestFixture]
-    public class ApiResultValidatorTests
+    [Test]
+    public void ApiResult_BasicSchema_Valid()
     {
-        [Test]
-        public void ApiResult_BasicSchema_Valid()
+        // Arrange
+        var response = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiResult()))
-            };
+            Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiResult()))
+        };
 
-            // Assert
-            Assert.DoesNotThrowAsync(async () =>
-                    await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<bool>>, null));
-        }
+        // Assert
+        Assert.DoesNotThrowAsync(async () =>
+                await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<bool>>, null));
+    }
 
-        [Test]
-        public void ApiBatchResult_BatchSchema_Valid()
+    [Test]
+    public void ApiBatchResult_BatchSchema_Valid()
+    {
+        // Arrange
+        var response = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiBatchResult()))
-            };
+            Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiBatchResult()))
+        };
 
-            // Assert
-            Assert.DoesNotThrowAsync(async () =>
-                    await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<bool>>, null));
-        }
+        // Assert
+        Assert.DoesNotThrowAsync(async () =>
+                await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<bool>>, null));
+    }
 
-        [Test]
-        public void ApiResult_InvokeHandler_ThrowsException()
+    [Test]
+    public void ApiResult_InvokeHandler_ThrowsException()
+    {
+        // Arrange
+        var response = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiResult()))
-            };
+            Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiResult()))
+        };
 
-            // Assert
-            Assert.ThrowsAsync<CustomTestException>(async () =>
-                    await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<bool>>, ApiResultHandler));
+        // Assert
+        Assert.ThrowsAsync<CustomTestException>(async () =>
+                await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<bool>>, ApiResultHandler));
 
-            void ApiResultHandler(ApiResult apiResult)
+        void ApiResultHandler(ApiResult apiResult)
+        {
+            if (!apiResult.IsSuccess)
             {
-                if (!apiResult.IsSuccess)
-                {
-                    throw new CustomTestException();
-                }
+                throw new CustomTestException();
             }
         }
+    }
 
-        [Test]
-        public void ApiBatchResult_InvokeHandler_ThrowsException()
+    [Test]
+    public void ApiBatchResult_InvokeHandler_ThrowsException()
+    {
+        // Arrange
+        var response = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiBatchResult()))
-            };
+            Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiBatchResult()))
+        };
 
-            // Assert
-            Assert.ThrowsAsync<CustomTestException>(async () =>
-                    await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<bool>>, ApiBatchResultHandler));
+        // Assert
+        Assert.ThrowsAsync<CustomTestException>(async () =>
+                await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<bool>>, ApiBatchResultHandler));
 
-            void ApiBatchResultHandler(ApiBatchResult apiResult)
+        void ApiBatchResultHandler(ApiBatchResult apiResult)
+        {
+            if (apiResult.Status == BatchResultType.Failure)
             {
-                if (apiResult.Status == BatchResultType.Failure)
-                {
-                    throw new CustomTestException();
-                }
+                throw new CustomTestException();
             }
         }
+    }
 
-        [Test]
-        public void ApiResult_ServiceUnavailabe_Throws()
+    [Test]
+    public void ApiResult_ServiceUnavailabe_Throws()
+    {
+        // Arrange
+        var response = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
+
+        // Assert
+        Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response));
+    }
+
+    [Test]
+    public void ApiBatchResult_ServiceUnavailabe_Throws()
+    {
+        // Arrange
+        var response = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
+
+        // Assert
+        Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response));
+    }
+
+    private async Task<T> GetDataAsync<T>(HttpResponseMessage response)
+    {
+        var content = await response.Content.ReadAsStringAsync();
+        var data = JsonConvert.DeserializeObject<T>(content, new CommonJsonSerializerSettings());
+
+        return data;
+    }
+
+    private ApiBatchResult<bool> GetDefaultApiBatchResult()
+    {
+        return new ApiBatchResult<bool>
         {
-            // Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
+            Results = new List<ApiResult<bool>> { GetDefaultApiResult() }
+        };
+    }
 
-            // Assert
-            Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response));
-        }
-
-        [Test]
-        public void ApiBatchResult_ServiceUnavailabe_Throws()
-        {
-            // Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
-
-            // Assert
-            Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response));
-        }
-
-        private async Task<T> GetDataAsync<T>(HttpResponseMessage response)
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<T>(content, new CommonJsonSerializerSettings());
-
-            return data;
-        }
-
-        private ApiBatchResult<bool> GetDefaultApiBatchResult()
-        {
-            return new ApiBatchResult<bool>
-            {
-                Results = new List<ApiResult<bool>> { GetDefaultApiResult() }
-            };
-        }
-
-        private ApiResult<bool> GetDefaultApiResult()
-        {
-            return new ApiResult<bool> { Message = string.Empty };
-        }
+    private ApiResult<bool> GetDefaultApiResult()
+    {
+        return new ApiResult<bool> { Message = string.Empty };
     }
 }

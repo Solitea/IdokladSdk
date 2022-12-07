@@ -1,10 +1,9 @@
 ﻿using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
+
+public class ModelWithNullableForeignKeyAttribute
 {
-    public class ModelWithNullableForeignKeyAttribute
-    {
-        [NullableForeignKey]
-        public int SalesPosEuqipmentId { get; set; }
-    }
+    [NullableForeignKey]
+    public int SalesPosEuqipmentId { get; set; }
 }
