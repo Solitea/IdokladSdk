@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
+using IdokladSdk.Exceptions;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Requests.Extensions;
@@ -33,7 +33,7 @@ namespace IdokladSdk.Clients
         {
             _apiContext = apiContext ??
                           throw new ArgumentNullException(nameof(apiContext), "API context cannot be null.");
-            HttpClient = _apiContext.ApiHttpClient;
+            HttpClient = _apiContext.HttpClient;
         }
 
         /// <summary>
@@ -53,6 +53,11 @@ namespace IdokladSdk.Clients
 
         internal async Task<ApiResult<T>> ExecuteAsync<T>(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            if (HttpClient.BaseAddress != null)
+            {
+                throw new IdokladSdkException("HttpClient cannot have BaseAddress set.");
+            }
+
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<T>>, _apiContext.ApiResultHandler);

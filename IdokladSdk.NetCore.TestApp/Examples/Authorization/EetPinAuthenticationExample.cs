@@ -72,8 +72,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         {
             _api = new DokladApiBuilder(AppName, AppVersion)
                 .AddPinAuthentication(ClientId, ClientSecret, pin, refreshToken)
-                .AddHttpClientForApi(_apiHttpClient)
-                .AddHttpClientForIdentityServer(_identityHttpClient)
+                .AddHttpClient(_apiHttpClient)
                 .Build();
         }
     }

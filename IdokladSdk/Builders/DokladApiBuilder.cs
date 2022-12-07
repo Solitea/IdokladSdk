@@ -12,8 +12,7 @@ namespace IdokladSdk.Builders
     /// </summary>
     public class DokladApiBuilder : BaseDokladApiBuilder<DokladApiBuilder, DokladApi>
     {
-        private HttpClient _apiHttpClient;
-        private HttpClient _identityHttpClient;
+        private HttpClient _httpClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DokladApiBuilder"/> class.
@@ -150,21 +149,9 @@ namespace IdokladSdk.Builders
         /// </summary>
         /// <param name="httpClient">HttpClient.</param>
         /// <returns>Current instance of DokladApiBuilder.</returns>
-        public DokladApiBuilder AddHttpClientForApi(HttpClient httpClient)
+        public DokladApiBuilder AddHttpClient(HttpClient httpClient)
         {
-            _apiHttpClient = httpClient;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add HttpClient for Doklad IdentityServer.
-        /// </summary>
-        /// <param name="httpClient">HttpClient.</param>
-        /// <returns>Current instance of DokladApiBuilder.</returns>
-        public DokladApiBuilder AddHttpClientForIdentityServer(HttpClient httpClient)
-        {
-            _identityHttpClient = httpClient;
+            _httpClient = httpClient;
 
             return this;
         }
@@ -201,12 +188,16 @@ namespace IdokladSdk.Builders
 
         private ApiContext GetApicontext(IAuthentication auth, DokladConfiguration configuration)
         {
+            if (_httpClient is null)
+            {
+                throw new IdokladSdkException($"Missing HttpClient instance. Use method {nameof(AddHttpClient)} to add new instance.");
+            }
+
             var contextConfiguration = new ApiContextConfiguration
             {
                 AppName = AppName,
                 AppVersion = AppVersion,
-                ApiHttpClient = _apiHttpClient ?? new HttpClient(),
-                IdentityHttpClient = _identityHttpClient ?? new HttpClient(),
+                HttpClient = _httpClient,
                 Authentication = auth,
                 Configuration = configuration
             };

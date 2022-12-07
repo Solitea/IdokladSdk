@@ -13,7 +13,7 @@ public class TokenizerTests : TestBase
     public void OneTimeSetUp()
     {
         LoadConfiguration();
-        IdentityHttpClient = new HttpClient();
+        HttpClient = new HttpClient();
     }
 
     [Test]
@@ -25,7 +25,7 @@ public class TokenizerTests : TestBase
         auth.Configuration = config;
 
         // Act
-        var token = await auth.GetTokenAsync(IdentityHttpClient);
+        var token = await auth.GetTokenAsync(HttpClient);
 
         // Assert
         Assert.IsNotNull(token);

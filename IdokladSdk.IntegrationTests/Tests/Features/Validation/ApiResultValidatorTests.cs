@@ -19,8 +19,7 @@ public class ApiResultValidatorTests : TestBase
     [OneTimeSetUp]
     public void OneTimeSetup()
     {
-        ApiHttpClient = new HttpClient();
-        IdentityHttpClient = new HttpClient();
+        HttpClient = new HttpClient();
         InitDokladApi(ApiResultHandler, ApiBatchResultHandler);
 
         void ApiResultHandler(ApiResult apiresult)
@@ -52,8 +51,7 @@ public class ApiResultValidatorTests : TestBase
         var api = new DokladApiBuilder("Tests", "1.0")
             .AddClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret)
             .AddCustomApiUrls(invalidApiUrl, Configuration.Urls.IdentityServerTokenUrl)
-            .AddHttpClientForApi(ApiHttpClient)
-            .AddHttpClientForIdentityServer(IdentityHttpClient)
+            .AddHttpClient(HttpClient)
             .Build();
 
         Assert.ThrowsAsync<ValidationException>(async () => await api.ContactClient.List().GetAsync());

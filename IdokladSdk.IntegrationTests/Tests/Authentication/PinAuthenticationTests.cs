@@ -12,7 +12,7 @@ public class PinAuthenticationTests : TestBase
     public void OneTimeSetup()
     {
         LoadConfiguration();
-        IdentityHttpClient = new HttpClient();
+        HttpClient = new HttpClient();
     }
 
     [Test]
@@ -24,7 +24,7 @@ public class PinAuthenticationTests : TestBase
         auth.Configuration = config;
 
         // Act
-        var token = await auth.RefreshAccessTokenAsync(IdentityHttpClient);
+        var token = await auth.RefreshAccessTokenAsync(HttpClient);
 
         // Assert
         Assert.IsNotNull(token);

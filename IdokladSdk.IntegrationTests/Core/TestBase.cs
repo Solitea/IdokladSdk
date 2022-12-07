@@ -17,9 +17,7 @@ public class TestBase
 
     public TestConfiguration Configuration { get; set; }
 
-    protected HttpClient ApiHttpClient { get; set; }
-
-    protected HttpClient IdentityHttpClient { get; set; }
+    protected HttpClient HttpClient { get; set; }
 
     public void InitDokladApi(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
     {
@@ -30,13 +28,15 @@ public class TestBase
      where TAuthProvider : IAuthorizationProvider, new()
     {
         LoadConfiguration();
+        HttpClient = new HttpClient();
 
-        var builder = CreateBuilder<TAuthProvider>();
-        builder.AddApiContextOptions(options =>
-        {
-            options.ApiResultHandler = apiResultHandler;
-            options.ApiBatchResultHandler = apiBatchResultHandler;
-        });
+        var builder = CreateBuilder<TAuthProvider>()
+            .AddApiContextOptions(options =>
+            {
+                options.ApiResultHandler = apiResultHandler;
+                options.ApiBatchResultHandler = apiBatchResultHandler;
+            })
+            .AddHttpClient(HttpClient);
 
         DokladApi = builder.Build();
     }
@@ -44,8 +44,7 @@ public class TestBase
     [OneTimeTearDown]
     public void BaseTearDown()
     {
-        ApiHttpClient?.Dispose();
-        IdentityHttpClient?.Dispose();
+        HttpClient?.Dispose();
     }
 
     protected void LoadConfiguration()
@@ -65,7 +64,6 @@ public class TestBase
         return new DokladApiTestBuilder("Tests", "1.0")
             .AddAuthorizationProvider<TAuthProvider>(Configuration)
             .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl)
-            .AddHttpClientForApi(ApiHttpClient)
-            .AddHttpClientForIdentityServer(IdentityHttpClient);
+            .AddHttpClient(HttpClient);
     }
 }

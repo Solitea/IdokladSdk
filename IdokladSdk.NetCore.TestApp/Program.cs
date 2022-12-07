@@ -55,13 +55,11 @@ namespace IdokladSdk.NetCore.TestApp
         private static void SetIdokladApi()
         {
             var httpClientFactory = _serviceProvider.GetService<IHttpClientFactory>();
-            var apiHttpClient = httpClientFactory.CreateClient("IdokladApi");
-            var identityHttpClient = httpClientFactory.CreateClient("IdokladIdentity");
+            var httpClient = httpClientFactory.CreateClient("IdokladApi");
 
             _api = new DokladApiBuilder("Test", "1.0")
                 .AddClientCredentialsAuthentication(_clientId, _clientSecret)
-                .AddHttpClientForApi(apiHttpClient)
-                .AddHttpClientForIdentityServer(identityHttpClient)
+                .AddHttpClient(httpClient)
                 .Build();
         }
 

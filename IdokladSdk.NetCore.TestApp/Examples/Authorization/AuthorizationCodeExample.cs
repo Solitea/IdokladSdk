@@ -15,14 +15,12 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         // Values specific to your application
         private const string AppName = "application name";
         private const string AppVersion = "application version";
-        private readonly HttpClient _apiHttpClient;
-        private readonly HttpClient _identityHttpClient;
+        private readonly HttpClient _httpClient;
         private DokladApi _api;
 
-        public AuthorizationCodeExample(HttpClient apiHttpClient, HttpClient identityHttpClient)
+        public AuthorizationCodeExample(HttpClient apiHttpClient)
         {
-            _apiHttpClient = apiHttpClient;
-            _identityHttpClient = identityHttpClient;
+            _httpClient = apiHttpClient;
         }
 
         public async Task AuthorizationCode_Authorize_SaveRefreshToken_AuthorizeAgain(string authorizationCode, string redirectUri)
@@ -53,7 +51,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             var initialAuthentication = new AuthorizationCodeAuthentication(ClientId, ClientSecret, authorizationCode, redirectUri);
 
             // Request access token, with this call refresh token will be requested as well
-            var tokenizer = await initialAuthentication.GetTokenAsync(_identityHttpClient, cancellationToken);
+            var tokenizer = await initialAuthentication.GetTokenAsync(_httpClient, cancellationToken);
 
             // Retrieve refresh token (both values are the same) and save it
             var refreshToken1 = tokenizer.RefreshToken;
@@ -69,8 +67,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         private void InitializeApi(string authorizationCode, string redirectUri, string refreshToken)
         {
             var builder = new DokladApiBuilder(AppName, AppVersion)
-                .AddHttpClientForApi(_apiHttpClient)
-                .AddHttpClientForIdentityServer(_identityHttpClient);
+                .AddHttpClient(_httpClient);
 
             if (string.IsNullOrEmpty(refreshToken))
             {

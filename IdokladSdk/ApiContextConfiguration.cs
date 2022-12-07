@@ -6,12 +6,12 @@ namespace IdokladSdk
     /// <summary>
     /// ApiContext configuration.
     /// </summary>
-    internal class ApiContextConfiguration
+    public class ApiContextConfiguration
     {
         /// <summary>
         /// Gets or sets HttpClient for Doklad API.
         /// </summary>
-        public HttpClient ApiHttpClient { get; set; }
+        public HttpClient HttpClient { get; set; }
 
         /// <summary>
         /// Gets or sets your application name.
@@ -32,10 +32,5 @@ namespace IdokladSdk
         /// Gets or sets custom configuration for iDoklad API.
         /// </summary>
         public DokladConfiguration Configuration { get; set; }
-
-        /// <summary>
-        /// Gets or sets HttpClient for IdentityServer.
-        /// </summary>
-        public HttpClient IdentityHttpClient { get; set; }
     }
 }

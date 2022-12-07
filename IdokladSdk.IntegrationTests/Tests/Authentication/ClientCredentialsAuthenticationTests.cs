@@ -12,7 +12,7 @@ public class ClientCredentialsAuthenticationTests : TestBase
     public void OneTimeSetup()
     {
         LoadConfiguration();
-        IdentityHttpClient = new HttpClient();
+        HttpClient = new HttpClient();
     }
 
     [Test]
@@ -24,7 +24,7 @@ public class ClientCredentialsAuthenticationTests : TestBase
         auth.Configuration = config;
 
         // Act
-        var token = await auth.GetTokenAsync(IdentityHttpClient);
+        var token = await auth.GetTokenAsync(HttpClient);
 
         // Assert
         Assert.IsNotNull(token);
