@@ -13,35 +13,36 @@ using IdokladSdk.Requests.CreditNote.Filter;
 using IdokladSdk.Response;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote;
-
-[TestFixture]
-public class CreditNoteTagTests : TaggableDocumentTestsBase<CreditNoteClient, CreditNoteDetail, CreditNoteList, CreditNoteGetModel,
-    CreditNoteListGetModel, CreditNoteDefaultPostModel, CreditNotePatchModel, CreditNoteExpand, CreditNoteFilter>
+namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 {
-    protected override int EntityWithoutTagsId => 921789;
-
-    protected override int EntityWithTags1Id => 921787;
-
-    protected override int EntityWithTags2Id => 921788;
-
-    [Test]
-    public async Task Default_SourceWithTags_CopiesTags_BaseAsync()
+    [TestFixture]
+    public class CreditNoteTagTests : TaggableDocumentTestsBase<CreditNoteClient, CreditNoteDetail, CreditNoteList, CreditNoteGetModel,
+        CreditNoteListGetModel, CreditNoteDefaultPostModel, CreditNotePatchModel, CreditNoteExpand, CreditNoteFilter>
     {
-        // Act
-        var result = await Client.DefaultAsync(IssuedInvoiceTagTests.IssuedInvoiceWithTags1Id).AssertResult();
+        protected override int EntityWithoutTagsId => 921789;
 
-        // Assert
-        AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
-    }
+        protected override int EntityWithTags1Id => 921787;
 
-    protected override Task<ApiResult<CreditNoteDefaultPostModel>> DefaultAsync() => Client.DefaultAsync(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);
+        protected override int EntityWithTags2Id => 921788;
 
-    protected override void SetRequiredProperties(CreditNoteDefaultPostModel postModel)
-    {
-        postModel.CreditNoteReason = "Some reason";
-        postModel.Description = "Test credit note";
-        postModel.PartnerId = PartnerId;
-        postModel.Items.First().Name = "Item name";
+        [Test]
+        public async Task Default_SourceWithTags_CopiesTags_BaseAsync()
+        {
+            // Act
+            var result = await Client.DefaultAsync(IssuedInvoiceTagTests.IssuedInvoiceWithTags1Id).AssertResult();
+
+            // Assert
+            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+        }
+
+        protected override Task<ApiResult<CreditNoteDefaultPostModel>> DefaultAsync() => Client.DefaultAsync(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);
+
+        protected override void SetRequiredProperties(CreditNoteDefaultPostModel postModel)
+        {
+            postModel.CreditNoteReason = "Some reason";
+            postModel.Description = "Test credit note";
+            postModel.PartnerId = PartnerId;
+            postModel.Items.First().Name = "Item name";
+        }
     }
 }

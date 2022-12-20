@@ -3,36 +3,37 @@ using IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
 using IdokladSdk.Validation.Attributes;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed;
-
-public partial class ModelValidatorTests
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 {
-    [Test]
-    public void ModelWithDecimalGreaterThanZeroAttribute_ValidModel_ReturnsExpectedResults()
+    public partial class ModelValidatorTests
     {
-        // Arrange
-        var model = new ModelWithDecimalGreaterThanZeroAttribute
+        [Test]
+        public void ModelWithDecimalGreaterThanZeroAttribute_ValidModel_ReturnsExpectedResults()
         {
-            Amount = 100m
-        };
+            // Arrange
+            var model = new ModelWithDecimalGreaterThanZeroAttribute
+            {
+                Amount = 100m
+            };
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsValid(result);
-    }
+            // Assert
+            AssertIsValid(result);
+        }
 
-    [Test]
-    public void ModelWithDecimalGreaterThanZeroAttribute_InvalidModel_ReturnsExpectedResults()
-    {
-        // Arrange
-        var model = new ModelWithDecimalGreaterThanZeroAttribute();
+        [Test]
+        public void ModelWithDecimalGreaterThanZeroAttribute_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithDecimalGreaterThanZeroAttribute();
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsNotValid(result, nameof(model.Amount), typeof(DecimalGreaterThanZeroAttribute), ValidationType.DecimalGreaterThanZero);
+            // Assert
+            AssertIsNotValid(result, nameof(model.Amount), typeof(DecimalGreaterThanZeroAttribute), ValidationType.DecimalGreaterThanZero);
+        }
     }
 }

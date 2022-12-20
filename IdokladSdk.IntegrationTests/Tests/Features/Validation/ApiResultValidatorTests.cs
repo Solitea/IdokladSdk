@@ -9,70 +9,70 @@ using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Features.Validation;
-
-[TestFixture]
-public class ApiResultValidatorTests : TestBase
+namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
 {
-    private const int NotFoundIssuedInvoiceId = -1;
-
-    [OneTimeSetUp]
-    public void OneTimeSetup()
+    [TestFixture]
+    public class ApiResultValidatorTests : TestBase
     {
-        HttpClient = new HttpClient();
-        InitDokladApi(ApiResultHandler, ApiBatchResultHandler);
+        private const int NotFoundIssuedInvoiceId = -1;
 
-        void ApiResultHandler(ApiResult apiresult)
+        [OneTimeSetUp]
+        public void OneTimeSetup()
         {
-            if (!apiresult.IsSuccess)
+            HttpClient = new HttpClient();
+            InitDokladApi(ApiResultHandler, ApiBatchResultHandler);
+
+            void ApiResultHandler(ApiResult apiresult)
             {
-                throw new ArgumentException("Unsuccessfull response."); // any exception
+                if (!apiresult.IsSuccess)
+                {
+                    throw new ArgumentException("Unsuccessfull response."); // any exception
+                }
+            }
+
+            void ApiBatchResultHandler(ApiBatchResult apiBatchResult)
+            {
+                if (apiBatchResult.Status == BatchResultType.Failure)
+                {
+                    throw new ArgumentException("Unsuccessfull response."); // any exception
+                }
+
+                if (apiBatchResult.Status == BatchResultType.PartialSuccess)
+                {
+                    throw new ArgumentException("Unsuccessfull partial response."); // any exception
+                }
             }
         }
 
-        void ApiBatchResultHandler(ApiBatchResult apiBatchResult)
+        [Test]
+        public void InvalidConfiguration_ThrowsException()
         {
-            if (apiBatchResult.Status == BatchResultType.Failure)
-            {
-                throw new ArgumentException("Unsuccessfull response."); // any exception
-            }
+            var invalidApiUrl = Configuration.Urls.ApiUrl + "/dev/v3";
+            var api = new DokladApiBuilder("Tests", "1.0")
+                .AddClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret)
+                .AddCustomApiUrls(invalidApiUrl, Configuration.Urls.IdentityServerTokenUrl)
+                .AddHttpClient(HttpClient)
+                .Build();
 
-            if (apiBatchResult.Status == BatchResultType.PartialSuccess)
-            {
-                throw new ArgumentException("Unsuccessfull partial response."); // any exception
-            }
+            Assert.ThrowsAsync<ValidationException>(async () => await api.ContactClient.List().GetAsync());
         }
-    }
 
-    [Test]
-    public void InvalidConfiguration_ThrowsException()
-    {
-        var invalidApiUrl = Configuration.Urls.ApiUrl + "/dev/v3";
-        var api = new DokladApiBuilder("Tests", "1.0")
-            .AddClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret)
-            .AddCustomApiUrls(invalidApiUrl, Configuration.Urls.IdentityServerTokenUrl)
-            .AddHttpClient(HttpClient)
-            .Build();
+        [Test]
+        public void ApiResult_CallsHandler_ThrowsExceptionAsync()
+        {
+            // Arrange
+            var issuedInvoiceClient = DokladApi.IssuedInvoiceClient;
 
-        Assert.ThrowsAsync<ValidationException>(async () => await api.ContactClient.List().GetAsync());
-    }
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(async () => await issuedInvoiceClient.DeleteAsync(NotFoundIssuedInvoiceId));
+        }
 
-    [Test]
-    public void ApiResult_CallsHandler_ThrowsExceptionAsync()
-    {
-        // Arrange
-        var issuedInvoiceClient = DokladApi.IssuedInvoiceClient;
-
-        // Assert
-        Assert.ThrowsAsync<ArgumentException>(async () => await issuedInvoiceClient.DeleteAsync(NotFoundIssuedInvoiceId));
-    }
-
-    [Test]
-    public void ApiBatchResult_CallsHandler_ThrowsExceptionAsync()
-    {
-        // Arrange
-        var batchClient = DokladApi.BatchClient;
-        var modelsToUpdate = new List<UpdateExportedModel>()
+        [Test]
+        public void ApiBatchResult_CallsHandler_ThrowsExceptionAsync()
+        {
+            // Arrange
+            var batchClient = DokladApi.BatchClient;
+            var modelsToUpdate = new List<UpdateExportedModel>()
         {
             new UpdateExportedModel
             {
@@ -88,7 +88,8 @@ public class ApiResultValidatorTests : TestBase
             }
         };
 
-        // Assert
-        Assert.ThrowsAsync<ArgumentException>(async () => await batchClient.UpdateAsync(modelsToUpdate));
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(async () => await batchClient.UpdateAsync(modelsToUpdate));
+        }
     }
 }

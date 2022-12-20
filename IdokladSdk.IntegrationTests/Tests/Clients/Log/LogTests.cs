@@ -6,42 +6,43 @@ using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.Log;
-
-/// <summary>
-/// LogTests.
-/// </summary>
-[TestFixture]
-public class LogTests : TestBase
+namespace IdokladSdk.IntegrationTests.Tests.Clients.Log
 {
-    private LogClient _logClient;
-
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
+    /// <summary>
+    /// LogTests.
+    /// </summary>
+    [TestFixture]
+    public class LogTests : TestBase
     {
-        InitDokladApi();
-        _logClient = DokladApi.LogClient;
-    }
+        private LogClient _logClient;
 
-    [Test]
-    public async Task GetListAsync_SuccessfullyReturned()
-    {
-        // Act
-        var data = await _logClient.List().GetAsync().AssertResult();
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            InitDokladApi();
+            _logClient = DokladApi.LogClient;
+        }
 
-        // Assert
-        Assert.Greater(data.TotalItems, 0);
-        Assert.Greater(data.TotalPages, 0);
-    }
+        [Test]
+        public async Task GetListAsync_SuccessfullyReturned()
+        {
+            // Act
+            var data = await _logClient.List().GetAsync().AssertResult();
 
-    [Test]
-    public async Task GetSpecificListAsync_SuccessfullyReturned()
-    {
-        // Act
-        var data = await _logClient.List(913242, LogEntityType.IssuedInvoice).GetAsync().AssertResult();
+            // Assert
+            Assert.Greater(data.TotalItems, 0);
+            Assert.Greater(data.TotalPages, 0);
+        }
 
-        // Assert
-        Assert.Greater(data.TotalItems, 0);
-        Assert.Greater(data.Items.Count(), 0);
+        [Test]
+        public async Task GetSpecificListAsync_SuccessfullyReturned()
+        {
+            // Act
+            var data = await _logClient.List(913242, LogEntityType.IssuedInvoice).GetAsync().AssertResult();
+
+            // Assert
+            Assert.Greater(data.TotalItems, 0);
+            Assert.Greater(data.Items.Count(), 0);
+        }
     }
 }

@@ -1,12 +1,13 @@
-﻿namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt.SelectModels;
-
-/// <summary>
-/// Payment.
-/// </summary>
-public class PaymentSelectModel
+﻿namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt.SelectModels
 {
     /// <summary>
-    /// Gets or sets prices.
+    /// Payment.
     /// </summary>
-    public Prices Prices { get; set; }
+    public class PaymentSelectModel
+    {
+        /// <summary>
+        /// Gets or sets prices.
+        /// </summary>
+        public Prices Prices { get; set; }
+    }
 }

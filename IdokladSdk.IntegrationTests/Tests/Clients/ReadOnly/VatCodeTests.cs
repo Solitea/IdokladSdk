@@ -8,93 +8,94 @@ using IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Common;
 using IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.VatCode;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly;
-
-[TestFixture]
-public class VatCodeTests : TestBase
+namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
 {
-    private const int Id = 1;
-    private VatCodeClient _client;
-
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
+    [TestFixture]
+    public class VatCodeTests : TestBase
     {
-        InitDokladApi();
-        _client = DokladApi.VatCodeClient;
-    }
+        private const int Id = 1;
+        private VatCodeClient _client;
 
-    [Test]
-    public async Task DetailAsync_SuccessfullyGet()
-    {
-        // Act
-        var data = (await _client
-            .Detail(Id)
-            .GetAsync())
-            .AssertResult();
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            InitDokladApi();
+            _client = DokladApi.VatCodeClient;
+        }
 
-        // Assert
-        Assert.NotNull(data);
-        AssertionsHelper.AssertDetail(data);
-    }
+        [Test]
+        public async Task DetailAsync_SuccessfullyGet()
+        {
+            // Act
+            var data = (await _client
+                .Detail(Id)
+                .GetAsync())
+                .AssertResult();
 
-    [Test]
-    public async Task DetailAsync_WithParameters_SuccessfullyGet()
-    {
-        // Act
-        var data = (await _client
-            .Detail(Id)
+            // Assert
+            Assert.NotNull(data);
+            AssertionsHelper.AssertDetail(data);
+        }
 
-            // .Include(x => x.Country)
-            .GetAsync<VatCodeTestDetail>())
-            .AssertResult();
+        [Test]
+        public async Task DetailAsync_WithParameters_SuccessfullyGet()
+        {
+            // Act
+            var data = (await _client
+                .Detail(Id)
 
-        // Assert
-        Assert.NotNull(data);
-        Assert.IsNotEmpty(data.Code);
-        Assert.IsNotEmpty(data.Name);
+                // .Include(x => x.Country)
+                .GetAsync<VatCodeTestDetail>())
+                .AssertResult();
 
-        // Assert.NotNull(data.Country);
-        // Assert.NotNull(data.Country.Name);
-    }
+            // Assert
+            Assert.NotNull(data);
+            Assert.IsNotEmpty(data.Code);
+            Assert.IsNotEmpty(data.Name);
 
-    [Test]
-    public async Task ListAsync_ReturnsNonEmptyList()
-    {
-        // Act
-        var data = (await _client
-            .List()
-            .GetAsync())
-            .AssertResult();
+            // Assert.NotNull(data.Country);
+            // Assert.NotNull(data.Country.Name);
+        }
 
-        // Assert
-        Assert.NotNull(data.Items);
-        Assert.Greater(data.TotalItems, 0);
-        Assert.Greater(data.TotalPages, 0);
-        var firstItem = data.Items.First();
-        AssertionsHelper.AssertDetail(firstItem);
-    }
+        [Test]
+        public async Task ListAsync_ReturnsNonEmptyList()
+        {
+            // Act
+            var data = (await _client
+                .List()
+                .GetAsync())
+                .AssertResult();
 
-    [Test]
-    public async Task ListAsync_WithParameters_ReturnsCorrectResult()
-    {
-        // Act
-        var countryId = 2;
-        var testDate = new DateTime(2018, 1, 1);
-        var data = (await _client
-            .List()
-            .Filter(x => x.CountryId.IsEqual(countryId))
-            .Filter(x => x.DateValidityFrom.IsLowerThanOrEqual(testDate))
-            .Filter(x => x.DateValidityTo.IsGreaterThanOrEqual(testDate))
-            .Sort(x => x.Id.Desc())
-            .GetAsync<VatCodeTestList>())
-            .AssertResult();
+            // Assert
+            Assert.NotNull(data.Items);
+            Assert.Greater(data.TotalItems, 0);
+            Assert.Greater(data.TotalPages, 0);
+            var firstItem = data.Items.First();
+            AssertionsHelper.AssertDetail(firstItem);
+        }
 
-        // Assert
-        Assert.NotNull(data.Items);
-        Assert.Greater(data.TotalItems, 0);
-        Assert.Greater(data.TotalPages, 0);
-        Assert.True(data.Items.All(i => i.CountryId == countryId));
-        Assert.True(data.Items.All(i => i.DateValidityFrom <= testDate));
-        Assert.True(data.Items.All(i => i.DateValidityTo >= testDate));
+        [Test]
+        public async Task ListAsync_WithParameters_ReturnsCorrectResult()
+        {
+            // Act
+            var countryId = 2;
+            var testDate = new DateTime(2018, 1, 1);
+            var data = (await _client
+                .List()
+                .Filter(x => x.CountryId.IsEqual(countryId))
+                .Filter(x => x.DateValidityFrom.IsLowerThanOrEqual(testDate))
+                .Filter(x => x.DateValidityTo.IsGreaterThanOrEqual(testDate))
+                .Sort(x => x.Id.Desc())
+                .GetAsync<VatCodeTestList>())
+                .AssertResult();
+
+            // Assert
+            Assert.NotNull(data.Items);
+            Assert.Greater(data.TotalItems, 0);
+            Assert.Greater(data.TotalPages, 0);
+            Assert.True(data.Items.All(i => i.CountryId == countryId));
+            Assert.True(data.Items.All(i => i.DateValidityFrom <= testDate));
+            Assert.True(data.Items.All(i => i.DateValidityTo >= testDate));
+        }
     }
 }

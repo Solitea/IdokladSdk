@@ -1,8 +1,9 @@
-﻿namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.VatReverseChargeCode;
-
-public class VatReverseChargeCodeTestDetail
+﻿namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.VatReverseChargeCode
 {
-    public int Id { get; set; }
+    public class VatReverseChargeCodeTestDetail
+    {
+        public int Id { get; set; }
 
-    public string Name { get; set; }
+        public string Name { get; set; }
+    }
 }

@@ -8,60 +8,61 @@ using IdokladSdk.Clients;
 using IdokladSdk.Response;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Clients;
-
-/// <summary>
-/// ClientTests.
-/// </summary>
-public class ClientTests
+namespace IdokladSdk.UnitTests.Tests.Clients
 {
-    [Test]
-    public void AllMethodsAreAsyncToo()
+    /// <summary>
+    /// ClientTests.
+    /// </summary>
+    public class ClientTests
     {
-        // Arrange
-        var types = AppDomain.CurrentDomain.GetAssemblies()
-            .FirstOrDefault(a => a.GetName().Name == "IdokladSdk")
-            .GetTypes()
-            .Where(p =>
-                typeof(BaseClient).IsAssignableFrom(p) &&
-                !p.IsAbstract);
-
-        // Act
-        var message = new StringBuilder();
-        foreach (var type in types)
+        [Test]
+        public void AllMethodsAreAsyncToo()
         {
-            var methodInfos = type.GetMethods();
-            var methods = methodInfos.Where(t => t.ReturnType.IsGenericType &&
-            (t.ReturnType.GetGenericTypeDefinition() == typeof(ApiResult<>) || t.ReturnType.GetGenericTypeDefinition() == typeof(ApiBatchResult<>)));
+            // Arrange
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .FirstOrDefault(a => a.GetName().Name == "IdokladSdk")
+                .GetTypes()
+                .Where(p =>
+                    typeof(BaseClient).IsAssignableFrom(p) &&
+                    !p.IsAbstract);
 
-            foreach (var methodInfo in methods)
+            // Act
+            var message = new StringBuilder();
+            foreach (var type in types)
             {
-                var parameterTypes = GetParameterTypes(methodInfo, true);
-                var asyncMethod = type.GetMethods()
-                    .FirstOrDefault(m => m.Name == methodInfo.Name + "Async" && GetParameterTypes(m, false) == parameterTypes);
-                if (asyncMethod == null || !asyncMethod.ReturnType.IsGenericType ||
-                    asyncMethod.ReturnType.GetGenericTypeDefinition() != typeof(Task<>))
+                var methodInfos = type.GetMethods();
+                var methods = methodInfos.Where(t => t.ReturnType.IsGenericType &&
+                (t.ReturnType.GetGenericTypeDefinition() == typeof(ApiResult<>) || t.ReturnType.GetGenericTypeDefinition() == typeof(ApiBatchResult<>)));
+
+                foreach (var methodInfo in methods)
                 {
-                    message.AppendLine($"{type.Name} not implement: {methodInfo.Name + "Async"}");
+                    var parameterTypes = GetParameterTypes(methodInfo, true);
+                    var asyncMethod = type.GetMethods()
+                        .FirstOrDefault(m => m.Name == methodInfo.Name + "Async" && GetParameterTypes(m, false) == parameterTypes);
+                    if (asyncMethod == null || !asyncMethod.ReturnType.IsGenericType ||
+                        asyncMethod.ReturnType.GetGenericTypeDefinition() != typeof(Task<>))
+                    {
+                        message.AppendLine($"{type.Name} not implement: {methodInfo.Name + "Async"}");
+                    }
                 }
+            }
+
+            // Assert
+            if (message.Length > 0)
+            {
+                throw new Exception(message.ToString());
             }
         }
 
-        // Assert
-        if (message.Length > 0)
+        private string GetParameterTypes(MethodInfo methodInfo, bool addCancellationToken)
         {
-            throw new Exception(message.ToString());
-        }
-    }
+            var parameters = methodInfo.GetParameters().Select(p => p.ParameterType.FullName).ToList();
+            if (addCancellationToken)
+            {
+                parameters.Add(typeof(CancellationToken).FullName);
+            }
 
-    private string GetParameterTypes(MethodInfo methodInfo, bool addCancellationToken)
-    {
-        var parameters = methodInfo.GetParameters().Select(p => p.ParameterType.FullName).ToList();
-        if (addCancellationToken)
-        {
-            parameters.Add(typeof(CancellationToken).FullName);
+            return string.Join(", ", parameters);
         }
-
-        return string.Join(", ", parameters);
     }
 }

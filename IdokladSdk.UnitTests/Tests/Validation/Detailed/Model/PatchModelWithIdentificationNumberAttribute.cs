@@ -1,11 +1,12 @@
 ﻿using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
-
-public class PatchModelWithIdentificationNumberAttribute
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
 {
-    public bool? HasNoIdentificationNumber { get; set; }
+    public class PatchModelWithIdentificationNumberAttribute
+    {
+        public bool? HasNoIdentificationNumber { get; set; }
 
-    [IdentificationNumberPatch(nameof(HasNoIdentificationNumber))]
-    public string IdentificationNumber { get; set; }
+        [IdentificationNumberPatch(nameof(HasNoIdentificationNumber))]
+        public string IdentificationNumber { get; set; }
+    }
 }

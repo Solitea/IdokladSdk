@@ -4,39 +4,40 @@ using IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
 using IdokladSdk.Validation.Attributes;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed;
-
-public partial class ModelValidatorTests
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 {
-    [Test]
-    public void ModelWithDateGreaterOrEqualAttribute_ValidModel_ReturnsExpectedResults()
+    public partial class ModelValidatorTests
     {
-        // Arrange
-        var model = new ModelWithDateGreaterOrEqualThanAttribute
+        [Test]
+        public void ModelWithDateGreaterOrEqualAttribute_ValidModel_ReturnsExpectedResults()
         {
-            DateOfIssue = new DateTime(2020, 12, 3)
-        };
+            // Arrange
+            var model = new ModelWithDateGreaterOrEqualThanAttribute
+            {
+                DateOfIssue = new DateTime(2020, 12, 3)
+            };
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsValid(result);
-    }
+            // Assert
+            AssertIsValid(result);
+        }
 
-    [Test]
-    public void ModelWithDateGreaterOrEqualAttribute_InvalidModel_ReturnsExpectedResults()
-    {
-        // Arrange
-        var model = new ModelWithDateGreaterOrEqualThanAttribute();
+        [Test]
+        public void ModelWithDateGreaterOrEqualAttribute_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithDateGreaterOrEqualThanAttribute();
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsNotValid(result, nameof(model.DateOfIssue), typeof(DateGreaterOrEqualThanAttribute), ValidationType.DateGreaterOrEqualThan);
-        var attribute = (DateGreaterOrEqualThanAttribute)GetValidationAttribute(result, nameof(model.DateOfIssue));
-        Assert.That(attribute.MinDateTime, Is.EqualTo(new DateTime(1753, 1, 1)));
-        Assert.That(attribute.AllowNull, Is.EqualTo(false));
+            // Assert
+            AssertIsNotValid(result, nameof(model.DateOfIssue), typeof(DateGreaterOrEqualThanAttribute), ValidationType.DateGreaterOrEqualThan);
+            var attribute = (DateGreaterOrEqualThanAttribute)GetValidationAttribute(result, nameof(model.DateOfIssue));
+            Assert.That(attribute.MinDateTime, Is.EqualTo(new DateTime(1753, 1, 1)));
+            Assert.That(attribute.AllowNull, Is.EqualTo(false));
+        }
     }
 }

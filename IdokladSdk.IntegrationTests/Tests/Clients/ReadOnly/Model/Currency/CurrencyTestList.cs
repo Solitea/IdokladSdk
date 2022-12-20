@@ -1,8 +1,9 @@
-﻿namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.Currency;
-
-public class CurrencyTestList
+﻿namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.Currency
 {
-    public string Code { get; set; }
+    public class CurrencyTestList
+    {
+        public string Code { get; set; }
 
-    public int Id { get; set; }
+        public int Id { get; set; }
+    }
 }

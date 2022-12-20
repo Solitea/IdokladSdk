@@ -1,6 +1,7 @@
-﻿namespace IdokladSdk.UnitTests.Tests.Modifiers.Model;
-
-public class TestSelectCustomModel
+﻿namespace IdokladSdk.UnitTests.Tests.Modifiers.Model
 {
-    public string Name { get; set; }
+    public class TestSelectCustomModel
+    {
+        public string Name { get; set; }
+    }
 }

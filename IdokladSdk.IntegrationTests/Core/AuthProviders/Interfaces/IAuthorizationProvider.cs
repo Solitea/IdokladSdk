@@ -1,9 +1,10 @@
 ﻿using IdokladSdk.Authentication;
 using IdokladSdk.IntegrationTests.Core.Configuration;
 
-namespace IdokladSdk.IntegrationTests.Core.AuthProviders;
-
-public interface IAuthorizationProvider
+namespace IdokladSdk.IntegrationTests.Core.AuthProviders
 {
-    IAuthentication GetAuthentication(TestConfiguration config);
+    public interface IAuthorizationProvider
+    {
+        IAuthentication GetAuthentication(TestConfiguration config);
+    }
 }

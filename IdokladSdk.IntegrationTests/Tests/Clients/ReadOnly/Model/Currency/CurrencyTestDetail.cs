@@ -1,10 +1,11 @@
-﻿namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.Currency;
-
-public class CurrencyTestDetail
+﻿namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.Currency
 {
-    public string Code { get; set; }
+    public class CurrencyTestDetail
+    {
+        public string Code { get; set; }
 
-    public int Id { get; set; }
+        public int Id { get; set; }
 
-    public string Name { get; set; }
+        public string Name { get; set; }
+    }
 }

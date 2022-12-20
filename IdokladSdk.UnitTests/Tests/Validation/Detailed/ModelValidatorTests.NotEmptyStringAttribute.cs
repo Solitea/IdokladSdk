@@ -3,39 +3,40 @@ using IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
 using IdokladSdk.Validation.Attributes;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed;
-
-public partial class ModelValidatorTests
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 {
-    [Test]
-    public void ModelWithNotEmptyStringAttribute_ValidModel_ReturnsExpectedResults()
+    public partial class ModelValidatorTests
     {
-        // Arrange
-        var model = new ModelWithNotEmptyStringAttribute
+        [Test]
+        public void ModelWithNotEmptyStringAttribute_ValidModel_ReturnsExpectedResults()
         {
-            Description = "Some text"
-        };
+            // Arrange
+            var model = new ModelWithNotEmptyStringAttribute
+            {
+                Description = "Some text"
+            };
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsValid(result);
-    }
+            // Assert
+            AssertIsValid(result);
+        }
 
-    [Test]
-    public void ModelWithNotEmptyStringAttribute_InvalidModel_ReturnsExpectedResults()
-    {
-        // Arrange
-        var model = new ModelWithNotEmptyStringAttribute
+        [Test]
+        public void ModelWithNotEmptyStringAttribute_InvalidModel_ReturnsExpectedResults()
         {
-            Description = string.Empty
-        };
+            // Arrange
+            var model = new ModelWithNotEmptyStringAttribute
+            {
+                Description = string.Empty
+            };
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsNotValid(result, nameof(model.Description), typeof(NotEmptyStringAttribute), ValidationType.NotEmptyString);
+            // Assert
+            AssertIsNotValid(result, nameof(model.Description), typeof(NotEmptyStringAttribute), ValidationType.NotEmptyString);
+        }
     }
 }

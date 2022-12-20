@@ -1,9 +1,10 @@
 ﻿using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
-
-public class ModelWithColorAttribute
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
 {
-    [Color]
-    public string Color { get; set; }
+    public class ModelWithColorAttribute
+    {
+        [Color]
+        public string Color { get; set; }
+    }
 }

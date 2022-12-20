@@ -2,29 +2,30 @@
 using IdokladSdk.Enums;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Authentication.Models;
-
-[TestFixture]
-public class AuthenticationErrorTests
+namespace IdokladSdk.UnitTests.Tests.Authentication.Models
 {
-    [TestCase("AuthErrorCode(0) - Agenda has Free status.", AuthenticationErrorCode.FreeSubscription)]
-    [TestCase("AuthErrorCode(1) - Agenda has NeedToDowngrade status.", AuthenticationErrorCode.NeedToDowngrade)]
-    [TestCase("AuthErrorCode(2) - Agenda has Expired status.", AuthenticationErrorCode.Expired)]
-    [TestCase("AuthErrorCode(10)", null)]
-    [TestCase("(20)AuthErrorCode", null)]
-    [TestCase("(100)", null)]
-    [TestCase("abcd(1)", null)]
-    [TestCase("", null)]
-    [TestCase("Random string", null)]
-    public void GetErrorCode_ParsedCorrectly(string errorDescription, AuthenticationErrorCode? expectedResult)
+    [TestFixture]
+    public class AuthenticationErrorTests
     {
-        // Arrange
-        var authError = new AuthenticationError
+        [TestCase("AuthErrorCode(0) - Agenda has Free status.", AuthenticationErrorCode.FreeSubscription)]
+        [TestCase("AuthErrorCode(1) - Agenda has NeedToDowngrade status.", AuthenticationErrorCode.NeedToDowngrade)]
+        [TestCase("AuthErrorCode(2) - Agenda has Expired status.", AuthenticationErrorCode.Expired)]
+        [TestCase("AuthErrorCode(10)", null)]
+        [TestCase("(20)AuthErrorCode", null)]
+        [TestCase("(100)", null)]
+        [TestCase("abcd(1)", null)]
+        [TestCase("", null)]
+        [TestCase("Random string", null)]
+        public void GetErrorCode_ParsedCorrectly(string errorDescription, AuthenticationErrorCode? expectedResult)
         {
-            ErrorDescription = errorDescription
-        };
+            // Arrange
+            var authError = new AuthenticationError
+            {
+                ErrorDescription = errorDescription
+            };
 
-        // Assert
-        Assert.AreEqual(expectedResult, authError.ErrorCode);
+            // Assert
+            Assert.AreEqual(expectedResult, authError.ErrorCode);
+        }
     }
 }

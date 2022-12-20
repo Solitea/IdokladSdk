@@ -2,21 +2,21 @@
 using IdokladSdk.Models.Email;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Models.Email;
-
-[TestFixture]
-public class EmailTests
+namespace IdokladSdk.UnitTests.Tests.Models.Email
 {
-    [Test]
-    [TestCaseSource(nameof(GetSettings))]
-    public void HasRecipients_Validate(EmailSettings settings, bool expected)
+    [TestFixture]
+    public class EmailTests
     {
-        Assert.That(settings.HasRecipients(), Is.EqualTo(expected));
-    }
+        [Test]
+        [TestCaseSource(nameof(GetSettings))]
+        public void HasRecipients_Validate(EmailSettings settings, bool expected)
+        {
+            Assert.That(settings.HasRecipients(), Is.EqualTo(expected));
+        }
 
-    private static IEnumerable<object> GetSettings()
-    {
-        return new List<object>
+        private static IEnumerable<object> GetSettings()
+        {
+            return new List<object>
         {
             new object[] { new CreditNoteEmailSettings(), false },
             new object[] { new CreditNoteEmailSettings { SendToAccountant = true }, true },
@@ -57,5 +57,6 @@ public class EmailTests
             new object[] { new SalesOrderEmailSettings { OtherRecipients = new List<string> { "qquc@furusato.tokyo" } }, true },
             new object[] { new SalesOrderEmailSettings { SendToPartner = true, OtherRecipients = new List<string> { "qquc@furusato.tokyo" } }, true },
         };
+        }
     }
 }

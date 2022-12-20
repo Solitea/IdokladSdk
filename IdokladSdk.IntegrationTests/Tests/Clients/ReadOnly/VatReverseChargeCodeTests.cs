@@ -8,86 +8,87 @@ using IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Common;
 using IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.VatReverseChargeCode;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly;
-
-[TestFixture]
-public class VatReverseChargeCodeTests : TestBase
+namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
 {
-    private const int Id = 1;
-    private VatReverseChargeCodeClient _client;
-
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
+    [TestFixture]
+    public class VatReverseChargeCodeTests : TestBase
     {
-        InitDokladApi();
-        _client = DokladApi.VatReverseChargeCodeClient;
-    }
+        private const int Id = 1;
+        private VatReverseChargeCodeClient _client;
 
-    [Test]
-    public async Task DetailAsync_SuccessfullyGet()
-    {
-        // Act
-        var data = (await _client
-            .Detail(Id)
-            .GetAsync())
-            .AssertResult();
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            InitDokladApi();
+            _client = DokladApi.VatReverseChargeCodeClient;
+        }
 
-        // Assert
-        Assert.NotNull(data);
-        AssertionsHelper.AssertDetail(data);
-    }
+        [Test]
+        public async Task DetailAsync_SuccessfullyGet()
+        {
+            // Act
+            var data = (await _client
+                .Detail(Id)
+                .GetAsync())
+                .AssertResult();
 
-    [Test]
-    public async Task DetailAsync_WithParameters_SuccessfullyGet()
-    {
-        // Act
-        var data = (await _client
-            .Detail(Id)
-            .GetAsync<VatReverseChargeCodeTestDetail>())
-            .AssertResult();
+            // Assert
+            Assert.NotNull(data);
+            AssertionsHelper.AssertDetail(data);
+        }
 
-        // Assert
-        Assert.NotNull(data);
-        Assert.NotZero(data.Id);
-        Assert.IsNotEmpty(data.Name);
-    }
+        [Test]
+        public async Task DetailAsync_WithParameters_SuccessfullyGet()
+        {
+            // Act
+            var data = (await _client
+                .Detail(Id)
+                .GetAsync<VatReverseChargeCodeTestDetail>())
+                .AssertResult();
 
-    [Test]
-    public async Task ListAsync_ReturnsNonEmptyList()
-    {
-        // Act
-        var data = (await _client
-            .List()
-            .GetAsync())
-            .AssertResult();
+            // Assert
+            Assert.NotNull(data);
+            Assert.NotZero(data.Id);
+            Assert.IsNotEmpty(data.Name);
+        }
 
-        // Assert
-        Assert.NotNull(data.Items);
-        Assert.Greater(data.TotalItems, 0);
-        Assert.Greater(data.TotalPages, 0);
-        var firstItem = data.Items.First();
-        AssertionsHelper.AssertDetail(firstItem);
-    }
+        [Test]
+        public async Task ListAsync_ReturnsNonEmptyList()
+        {
+            // Act
+            var data = (await _client
+                .List()
+                .GetAsync())
+                .AssertResult();
 
-    [Test]
-    public async Task ListAsync_WithParameters_ReturnsCorrectResult()
-    {
-        // Act
-        var testDate = new DateTime(2018, 1, 1);
-        var data = (await _client
-            .List()
-            .Filter(x => x.DateValidityFrom.IsLowerThanOrEqual(testDate))
-            .Filter(x => x.DateValidityTo.IsGreaterThanOrEqual(testDate))
-            .Sort(x => x.Id.Desc())
-            .GetAsync<VatReverseChargeCodeTestList>())
-            .AssertResult();
+            // Assert
+            Assert.NotNull(data.Items);
+            Assert.Greater(data.TotalItems, 0);
+            Assert.Greater(data.TotalPages, 0);
+            var firstItem = data.Items.First();
+            AssertionsHelper.AssertDetail(firstItem);
+        }
 
-        // Assert
-        Assert.NotNull(data.Items);
-        Assert.Greater(data.TotalItems, 0);
-        Assert.Greater(data.TotalPages, 0);
-        Assert.True(data.Items.All(i => i.DateValidityFrom <= testDate));
-        Assert.True(data.Items.All(i => i.DateValidityTo >= testDate));
-        Assert.True(data.Items.First().Id > data.Items.Last().Id);
+        [Test]
+        public async Task ListAsync_WithParameters_ReturnsCorrectResult()
+        {
+            // Act
+            var testDate = new DateTime(2018, 1, 1);
+            var data = (await _client
+                .List()
+                .Filter(x => x.DateValidityFrom.IsLowerThanOrEqual(testDate))
+                .Filter(x => x.DateValidityTo.IsGreaterThanOrEqual(testDate))
+                .Sort(x => x.Id.Desc())
+                .GetAsync<VatReverseChargeCodeTestList>())
+                .AssertResult();
+
+            // Assert
+            Assert.NotNull(data.Items);
+            Assert.Greater(data.TotalItems, 0);
+            Assert.Greater(data.TotalPages, 0);
+            Assert.True(data.Items.All(i => i.DateValidityFrom <= testDate));
+            Assert.True(data.Items.All(i => i.DateValidityTo >= testDate));
+            Assert.True(data.Items.First().Id > data.Items.Last().Id);
+        }
     }
 }

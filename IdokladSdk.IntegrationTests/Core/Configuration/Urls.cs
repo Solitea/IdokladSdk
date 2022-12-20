@@ -1,8 +1,9 @@
-﻿namespace IdokladSdk.IntegrationTests.Core.Configuration;
-
-public class Urls
+﻿namespace IdokladSdk.IntegrationTests.Core.Configuration
 {
-    public string ApiUrl { get; set; }
+    public class Urls
+    {
+        public string ApiUrl { get; set; }
 
-    public string IdentityServerTokenUrl { get; set; }
+        public string IdentityServerTokenUrl { get; set; }
+    }
 }

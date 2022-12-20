@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
-
-public class ModelWithDataTypeAttribute
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
 {
-    [DataType(DataType.EmailAddress)]
-    public string Email { get; set; }
+    public class ModelWithDataTypeAttribute
+    {
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+    }
 }

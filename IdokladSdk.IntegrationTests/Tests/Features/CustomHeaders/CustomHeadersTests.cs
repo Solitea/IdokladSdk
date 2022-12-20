@@ -10,63 +10,63 @@ using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Features.CustomHeaders;
-
-[TestFixture]
-public class CustomHeadersTests : TestBase
+namespace IdokladSdk.IntegrationTests.Tests.Features.CustomHeaders
 {
-    private static readonly Action<DokladApi> SetLanguageCzShortcut = (api) => api.ApiContext.SetLanguage(Language.Cz);
-    private static readonly Action<DokladApi> SetLanguageSkShortcut = (api) => api.ApiContext.SetLanguage(Language.Sk);
-    private static readonly Action<DokladApi> SetLanguageDeShortcut = (api) => api.ApiContext.SetLanguage(Language.De);
-    private static readonly Action<DokladApi> SetLanguageEnShortcut = (api) => api.ApiContext.SetLanguage(Language.En);
-    private static readonly Action<DokladApi> SetLanguageCzHeader = (api) => api.ApiContext.Headers["Accept-Language"] = "cs-CZ";
-    private static readonly Action<DokladApi> SetLanguageSkHeader = (api) => api.ApiContext.Headers["Accept-Language"] = "sk-SK";
-    private static readonly Action<DokladApi> SetLanguageDeHeader = (api) => api.ApiContext.Headers["Accept-Language"] = "de-DE";
-    private static readonly Action<DokladApi> SetLanguageEnHeader = (api) => api.ApiContext.Headers["Accept-Language"] = "en-US";
-
-    private static readonly object[] TestData =
+    [TestFixture]
+    public class CustomHeadersTests : TestBase
     {
-        new object[] { SetLanguageCzShortcut, "Zaokrouhlení" },
-        new object[] { SetLanguageSkShortcut, "Zaokrúhlenie" },
-        new object[] { SetLanguageDeShortcut, "Runden" },
-        new object[] { SetLanguageEnShortcut, "Rounding" },
-        new object[] { SetLanguageCzHeader, "Zaokrouhlení" },
-        new object[] { SetLanguageSkHeader, "Zaokrúhlenie" },
-        new object[] { SetLanguageDeHeader, "Runden" },
-        new object[] { SetLanguageEnHeader, "Rounding" }
-    };
+        private static readonly Action<DokladApi> SetLanguageCzShortcut = (api) => api.ApiContext.SetLanguage(Language.Cz);
+        private static readonly Action<DokladApi> SetLanguageSkShortcut = (api) => api.ApiContext.SetLanguage(Language.Sk);
+        private static readonly Action<DokladApi> SetLanguageDeShortcut = (api) => api.ApiContext.SetLanguage(Language.De);
+        private static readonly Action<DokladApi> SetLanguageEnShortcut = (api) => api.ApiContext.SetLanguage(Language.En);
+        private static readonly Action<DokladApi> SetLanguageCzHeader = (api) => api.ApiContext.Headers["Accept-Language"] = "cs-CZ";
+        private static readonly Action<DokladApi> SetLanguageSkHeader = (api) => api.ApiContext.Headers["Accept-Language"] = "sk-SK";
+        private static readonly Action<DokladApi> SetLanguageDeHeader = (api) => api.ApiContext.Headers["Accept-Language"] = "de-DE";
+        private static readonly Action<DokladApi> SetLanguageEnHeader = (api) => api.ApiContext.Headers["Accept-Language"] = "en-US";
 
-    public IssuedInvoiceClient IssuedInvoiceClient { get; set; }
-
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
-    {
-        InitDokladApi();
-        IssuedInvoiceClient = DokladApi.IssuedInvoiceClient;
-    }
-
-    [TestCaseSource(nameof(TestData))]
-    public async Task SetLanguage_SuccessfullySetAsync(Action<DokladApi> setLanguage, string expectedString)
-    {
-        // Arrange
-        var recountPostModel = CreateRecountPostModel();
-
-        // Act
-        setLanguage(DokladApi);
-        var recountGetModel = await IssuedInvoiceClient.RecountAsync(recountPostModel).AssertResult();
-
-        // Assert
-        Assert.AreEqual(expectedString, GetRoundingItem(recountGetModel));
-    }
-
-    private static IssuedInvoiceRecountPostModel CreateRecountPostModel()
-    {
-        var model = new IssuedInvoiceRecountPostModel
+        private static readonly object[] TestData =
         {
-            CurrencyId = 1,
-            DateOfTaxing = DateTime.Today.SetKindUtc(),
-            PaymentOptionId = 1,
-            Items = new List<IssuedInvoiceItemRecountPostModel>
+            new object[] { SetLanguageCzShortcut, "Zaokrouhlení" },
+            new object[] { SetLanguageSkShortcut, "Zaokrúhlenie" },
+            new object[] { SetLanguageDeShortcut, "Runden" },
+            new object[] { SetLanguageEnShortcut, "Rounding" },
+            new object[] { SetLanguageCzHeader, "Zaokrouhlení" },
+            new object[] { SetLanguageSkHeader, "Zaokrúhlenie" },
+            new object[] { SetLanguageDeHeader, "Runden" },
+            new object[] { SetLanguageEnHeader, "Rounding" }
+        };
+
+        public IssuedInvoiceClient IssuedInvoiceClient { get; set; }
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            InitDokladApi();
+            IssuedInvoiceClient = DokladApi.IssuedInvoiceClient;
+        }
+
+        [TestCaseSource(nameof(TestData))]
+        public async Task SetLanguage_SuccessfullySetAsync(Action<DokladApi> setLanguage, string expectedString)
+        {
+            // Arrange
+            var recountPostModel = CreateRecountPostModel();
+
+            // Act
+            setLanguage(DokladApi);
+            var recountGetModel = await IssuedInvoiceClient.RecountAsync(recountPostModel).AssertResult();
+
+            // Assert
+            Assert.AreEqual(expectedString, GetRoundingItem(recountGetModel));
+        }
+
+        private static IssuedInvoiceRecountPostModel CreateRecountPostModel()
+        {
+            var model = new IssuedInvoiceRecountPostModel
+            {
+                CurrencyId = 1,
+                DateOfTaxing = DateTime.Today.SetKindUtc(),
+                PaymentOptionId = 1,
+                Items = new List<IssuedInvoiceItemRecountPostModel>
             {
                 new IssuedInvoiceItemRecountPostModel
                 {
@@ -76,13 +76,14 @@ public class CustomHeadersTests : TestBase
                     VatRateType = VatRateType.Basic
                 }
             }
-        };
+            };
 
-        return model;
-    }
+            return model;
+        }
 
-    private static string GetRoundingItem(IssuedInvoiceRecountGetModel model)
-    {
-        return model.Items.FirstOrDefault(i => i.ItemType == IssuedInvoiceItemType.ItemTypeRound).Name;
+        private static string GetRoundingItem(IssuedInvoiceRecountGetModel model)
+        {
+            return model.Items.FirstOrDefault(i => i.ItemType == IssuedInvoiceItemType.ItemTypeRound).Name;
+        }
     }
 }

@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace IdokladSdk.UnitTests.Tests.Modifiers.Model;
-
-public class TestSelect
+namespace IdokladSdk.UnitTests.Tests.Modifiers.Model
 {
-    public int Id { get; set; }
+    public class TestSelect
+    {
+        public int Id { get; set; }
 
-    public string Name { get; set; }
+        public string Name { get; set; }
 
-    public TestSelectModel Model { get; set; }
+        public TestSelectModel Model { get; set; }
 
-    public List<TestSelectModel> Items { get; set; }
+        public List<TestSelectModel> Items { get; set; }
+    }
 }

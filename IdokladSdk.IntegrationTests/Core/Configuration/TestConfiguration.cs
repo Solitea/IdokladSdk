@@ -1,10 +1,11 @@
-﻿namespace IdokladSdk.IntegrationTests.Core.Configuration;
-
-public class TestConfiguration
+﻿namespace IdokladSdk.IntegrationTests.Core.Configuration
 {
-    public Urls Urls { get; set; }
+    public class TestConfiguration
+    {
+        public Urls Urls { get; set; }
 
-    public ClientCredentials ClientCredentials { get; set; }
+        public ClientCredentials ClientCredentials { get; set; }
 
-    public PinFlow PinFlow { get; set; }
+        public PinFlow PinFlow { get; set; }
+    }
 }

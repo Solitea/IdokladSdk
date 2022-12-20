@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
-
-public class ModelWithRequiredAttribute
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
 {
-    [Required]
-    public string Name { get; set; }
+    public class ModelWithRequiredAttribute
+    {
+        [Required]
+        public string Name { get; set; }
+    }
 }

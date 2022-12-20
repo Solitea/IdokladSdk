@@ -3,17 +3,18 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace IdokladSdk.UnitTests.Mocks;
-
-public class MockHttpMessageHandler : HttpClientHandler
+namespace IdokladSdk.UnitTests.Mocks
 {
-    public virtual HttpResponseMessage MockSend(HttpRequestMessage request, CancellationToken cancellationToken)
+    public class MockHttpMessageHandler : HttpClientHandler
     {
-        throw new NotImplementedException();
-    }
+        public virtual HttpResponseMessage MockSend(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(MockSend(request, cancellationToken));
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(MockSend(request, cancellationToken));
+        }
     }
 }

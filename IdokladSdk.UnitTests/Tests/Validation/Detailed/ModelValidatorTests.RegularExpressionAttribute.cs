@@ -3,39 +3,40 @@ using IdokladSdk.Enums;
 using IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed;
-
-public partial class ModelValidatorTests
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 {
-    [Test]
-    public void ModelWithRegularExpressionAttribute_ValidModel_ReturnsExpectedResults()
+    public partial class ModelValidatorTests
     {
-        // Arrange
-        var model = new ModelWithRegularExpressionAttribute
+        [Test]
+        public void ModelWithRegularExpressionAttribute_ValidModel_ReturnsExpectedResults()
         {
-            DocumentNumber = "123456"
-        };
+            // Arrange
+            var model = new ModelWithRegularExpressionAttribute
+            {
+                DocumentNumber = "123456"
+            };
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsValid(result);
-    }
+            // Assert
+            AssertIsValid(result);
+        }
 
-    [Test]
-    public void ModelWithRegularExpressionAttribute_InvalidModel_ReturnsExpectedResults()
-    {
-        // Arrange
-        var model = new ModelWithRegularExpressionAttribute
+        [Test]
+        public void ModelWithRegularExpressionAttribute_InvalidModel_ReturnsExpectedResults()
         {
-            DocumentNumber = "AAA"
-        };
+            // Arrange
+            var model = new ModelWithRegularExpressionAttribute
+            {
+                DocumentNumber = "AAA"
+            };
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsNotValid(result, nameof(model.DocumentNumber), typeof(RegularExpressionAttribute), ValidationType.RegularExpression);
+            // Assert
+            AssertIsNotValid(result, nameof(model.DocumentNumber), typeof(RegularExpressionAttribute), ValidationType.RegularExpression);
+        }
     }
 }

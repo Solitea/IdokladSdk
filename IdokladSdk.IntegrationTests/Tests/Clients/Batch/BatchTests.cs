@@ -7,105 +7,106 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Batch;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch;
-
-public class BatchTests : TestBase
+namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
 {
-    private IReadOnlyList<(int Id, ExportableEntityType Type)> _entities;
-
-    [OneTimeSetUp]
-    public void OneTimeSetup()
+    public class BatchTests : TestBase
     {
-        InitDokladApi();
-        _entities = new List<(int, ExportableEntityType)>()
+        private IReadOnlyList<(int Id, ExportableEntityType Type)> _entities;
+
+        [OneTimeSetUp]
+        public void OneTimeSetup()
+        {
+            InitDokladApi();
+            _entities = new List<(int, ExportableEntityType)>()
         {
             (913242, ExportableEntityType.IssuedInvoice),
             (323823, ExportableEntityType.Contact)
         }.AsReadOnly();
-    }
+        }
 
-    [Test]
-    public async Task UpdateAsync_SucessfullySetExportedState_Exported()
-    {
-        // Arrange
-        var modelsToUpdate = new List<UpdateExportedModel>();
-        var exportedState = ExportedState.Exported;
-
-        foreach (var (id, type) in _entities)
+        [Test]
+        public async Task UpdateAsync_SucessfullySetExportedState_Exported()
         {
-            modelsToUpdate.Add(new UpdateExportedModel
+            // Arrange
+            var modelsToUpdate = new List<UpdateExportedModel>();
+            var exportedState = ExportedState.Exported;
+
+            foreach (var (id, type) in _entities)
             {
-                Id = id,
-                EntityType = type,
-                Exported = exportedState
+                modelsToUpdate.Add(new UpdateExportedModel
+                {
+                    Id = id,
+                    EntityType = type,
+                    Exported = exportedState
+                });
+            }
+
+            // Act
+            var results = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate).AssertResult();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                foreach (var result in results)
+                {
+                    Assert.AreEqual(result.Exported, exportedState);
+                }
             });
         }
 
-        // Act
-        var results = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate).AssertResult();
-
-        // Assert
-        Assert.Multiple(() =>
+        [Test]
+        public async Task Update_SucessfullySetExportedState_NotExported()
         {
-            foreach (var result in results)
+            // Arrange
+            var modelsToUpdate = new List<UpdateExportedModel>();
+            var exportedState = ExportedState.NotExported;
+
+            foreach (var (id, type) in _entities)
             {
-                Assert.AreEqual(result.Exported, exportedState);
+                modelsToUpdate.Add(new UpdateExportedModel
+                {
+                    Id = id,
+                    EntityType = type,
+                    Exported = exportedState
+                });
             }
-        });
-    }
 
-    [Test]
-    public async Task Update_SucessfullySetExportedState_NotExported()
-    {
-        // Arrange
-        var modelsToUpdate = new List<UpdateExportedModel>();
-        var exportedState = ExportedState.NotExported;
+            // Act
+            var results = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate).AssertResult();
 
-        foreach (var (id, type) in _entities)
-        {
-            modelsToUpdate.Add(new UpdateExportedModel
+            // Assert
+            Assert.Multiple(() =>
             {
-                Id = id,
-                EntityType = type,
-                Exported = exportedState
+                foreach (var result in results)
+                {
+                    Assert.AreEqual(result.Exported, exportedState);
+                }
             });
         }
 
-        // Act
-        var results = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate).AssertResult();
-
-        // Assert
-        Assert.Multiple(() =>
+        [Test]
+        public void Update_ValidationFails_MinimumItemCount()
         {
-            foreach (var result in results)
-            {
-                Assert.AreEqual(result.Exported, exportedState);
-            }
-        });
-    }
+            // Arrange
+            var modelsToUpdate = new List<UpdateExportedModel>();
 
-    [Test]
-    public void Update_ValidationFails_MinimumItemCount()
-    {
-        // Arrange
-        var modelsToUpdate = new List<UpdateExportedModel>();
-
-        // Act + Assert
-        Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
-    }
-
-    [Test]
-    public void Update_ValidationFails_MaximumItemCount()
-    {
-        // Arrange
-        var modelsToUpdate = new List<UpdateExportedModel>();
-
-        for (int i = 0; i < 51; i++)
-        {
-            modelsToUpdate.Add(new UpdateExportedModel());
+            // Act + Assert
+            Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
         }
 
-        // Act + Assert
-        Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
+        [Test]
+        public void Update_ValidationFails_MaximumItemCount()
+        {
+            // Arrange
+            var modelsToUpdate = new List<UpdateExportedModel>();
+
+            for (int i = 0; i < 51; i++)
+            {
+                modelsToUpdate.Add(new UpdateExportedModel());
+            }
+
+            // Act + Assert
+            Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
+        }
     }
 }

@@ -1,25 +1,26 @@
 ﻿using IdokladSdk.Authentication;
 using NUnit.Framework;
 
-namespace IdokladSdk.UnitTests.Tests.Authentication;
-
-[TestFixture]
-public class TokenizerTests
+namespace IdokladSdk.UnitTests.Tests.Authentication
 {
-    [TestCase(null)]
-    [TestCase("")]
-    [TestCase("   ")]
-    [TestCase("abc")]
-    [TestCase("{ \"claim\":\"claimValue\" }")]
-    public void AccessToken_ParseClaims_ReturnsNull(string accessToken)
+    [TestFixture]
+    public class TokenizerTests
     {
-        // Act
-        var tokenizer = new Tokenizer
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("   ")]
+        [TestCase("abc")]
+        [TestCase("{ \"claim\":\"claimValue\" }")]
+        public void AccessToken_ParseClaims_ReturnsNull(string accessToken)
         {
-            AccessToken = accessToken
-        };
+            // Act
+            var tokenizer = new Tokenizer
+            {
+                AccessToken = accessToken
+            };
 
-        // Assert
-        Assert.IsNull(tokenizer.Claims);
+            // Assert
+            Assert.IsNull(tokenizer.Claims);
+        }
     }
 }

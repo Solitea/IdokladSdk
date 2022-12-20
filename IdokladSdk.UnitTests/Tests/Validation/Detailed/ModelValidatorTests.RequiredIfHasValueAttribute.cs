@@ -6,50 +6,50 @@ using IdokladSdk.Validation.Attributes;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed;
-
-public partial class ModelValidatorTests
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 {
-    [TestCaseSource(nameof(GetValidModelsWithRequiredIfHasValueAttribute))]
-    public void ModelWithRequiredIfHasValueAttribute_ValidModel_ReturnsExpectedResults(ModelWithRequiredIfHasValueAttribute model)
+    public partial class ModelValidatorTests
     {
-        // Act
-        var result = _modelValidator.Validate(model);
-
-        // Assert
-        AssertIsValid(result);
-    }
-
-    [Test]
-    public void ModelWithRequiredIfHasValueAttribute_InvalidModel_ReturnsExpectedResults()
-    {
-        // Arrange
-        var model = new ModelWithRequiredIfHasValueAttribute
+        [TestCaseSource(nameof(GetValidModelsWithRequiredIfHasValueAttribute))]
+        public void ModelWithRequiredIfHasValueAttribute_ValidModel_ReturnsExpectedResults(ModelWithRequiredIfHasValueAttribute model)
         {
-            DateInitialState = new DateTime(2020, 12, 3),
-            InitialState = null,
-            Amount = 50m,
-            CurrencyId = null
-        };
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Assert
+            AssertIsValid(result);
+        }
 
-        // Assert
-        AssertIsNotValid(result, 2);
-        AssertIsNotValidProperty(result, nameof(model.InitialState), typeof(RequiredIfHasValueAttribute), ValidationType.RequiredIfHasValue);
-        AssertIsNotValidProperty(result, nameof(model.CurrencyId), typeof(RequiredIfHasValueAttribute), ValidationType.RequiredIfHasValue);
+        [Test]
+        public void ModelWithRequiredIfHasValueAttribute_InvalidModel_ReturnsExpectedResults()
+        {
+            // Arrange
+            var model = new ModelWithRequiredIfHasValueAttribute
+            {
+                DateInitialState = new DateTime(2020, 12, 3),
+                InitialState = null,
+                Amount = 50m,
+                CurrencyId = null
+            };
 
-        var initialStateAttribute = (RequiredIfHasValueAttribute)GetValidationAttribute(result, nameof(model.InitialState));
-        Assert.That(initialStateAttribute.DependentProperty, Is.EqualTo(nameof(model.DateInitialState)));
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        var currencyIdAttribute = (RequiredIfHasValueAttribute)GetValidationAttribute(result, nameof(model.CurrencyId));
-        Assert.That(currencyIdAttribute.DependentProperty, Is.EqualTo(nameof(model.Amount)));
-    }
+            // Assert
+            AssertIsNotValid(result, 2);
+            AssertIsNotValidProperty(result, nameof(model.InitialState), typeof(RequiredIfHasValueAttribute), ValidationType.RequiredIfHasValue);
+            AssertIsNotValidProperty(result, nameof(model.CurrencyId), typeof(RequiredIfHasValueAttribute), ValidationType.RequiredIfHasValue);
 
-    private static IList<object> GetValidModelsWithRequiredIfHasValueAttribute()
-    {
-        return new List<object>
+            var initialStateAttribute = (RequiredIfHasValueAttribute)GetValidationAttribute(result, nameof(model.InitialState));
+            Assert.That(initialStateAttribute.DependentProperty, Is.EqualTo(nameof(model.DateInitialState)));
+
+            var currencyIdAttribute = (RequiredIfHasValueAttribute)GetValidationAttribute(result, nameof(model.CurrencyId));
+            Assert.That(currencyIdAttribute.DependentProperty, Is.EqualTo(nameof(model.Amount)));
+        }
+
+        private static IList<object> GetValidModelsWithRequiredIfHasValueAttribute()
+        {
+            return new List<object>
         {
             new ModelWithRequiredIfHasValueAttribute(),
             new ModelWithRequiredIfHasValueAttribute
@@ -63,5 +63,6 @@ public partial class ModelValidatorTests
                 Amount = 50m
             }
         };
+        }
     }
 }

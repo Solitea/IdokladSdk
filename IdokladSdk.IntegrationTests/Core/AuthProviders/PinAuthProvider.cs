@@ -1,16 +1,17 @@
 ﻿using IdokladSdk.Authentication;
 using IdokladSdk.IntegrationTests.Core.Configuration;
 
-namespace IdokladSdk.IntegrationTests.Core.AuthProviders;
-
-public class PinAuthProvider : IAuthorizationProvider
+namespace IdokladSdk.IntegrationTests.Core.AuthProviders
 {
-    public IAuthentication GetAuthentication(TestConfiguration config)
+    public class PinAuthProvider : IAuthorizationProvider
     {
-        return new PinAuthentication(
-            config.PinFlow.ClientId,
-            config.PinFlow.ClientSecret,
-            config.PinFlow.Pin,
-            config.PinFlow.RefreshToken);
+        public IAuthentication GetAuthentication(TestConfiguration config)
+        {
+            return new PinAuthentication(
+                config.PinFlow.ClientId,
+                config.PinFlow.ClientSecret,
+                config.PinFlow.Pin,
+                config.PinFlow.RefreshToken);
+        }
     }
 }

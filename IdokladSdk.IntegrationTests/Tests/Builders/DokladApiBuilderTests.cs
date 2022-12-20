@@ -4,27 +4,28 @@ using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Builders;
-
-internal class DokladApiBuilderTests : TestBase
+namespace IdokladSdk.IntegrationTests.Tests.Builders
 {
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
+    internal class DokladApiBuilderTests : TestBase
     {
-        InitDokladApi();
-    }
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            InitDokladApi();
+        }
 
-    [Test]
-    public void HttpClient_BaseAddressChanged_TokenCallThrows()
-    {
-        // Arrange
-        AsyncTestDelegate action = async () => await DokladApi.AccountClient.Agendas.List().GetAsync();
+        [Test]
+        public void HttpClient_BaseAddressChanged_TokenCallThrows()
+        {
+            // Arrange
+            AsyncTestDelegate action = async () => await DokladApi.AccountClient.Agendas.List().GetAsync();
 
-        // Act
-        DokladApi.ApiContext.HttpClient.BaseAddress = new Uri("https://api.idoklad.cz");
+            // Act
+            DokladApi.ApiContext.HttpClient.BaseAddress = new Uri("https://api.idoklad.cz");
 
-        // Assert
-        Assert.That(action, Throws.Exception.AssignableTo<IdokladSdkException>()
-                            .With.Message.EqualTo("HttpClient cannot have BaseAddress set."));
+            // Assert
+            Assert.That(action, Throws.Exception.AssignableTo<IdokladSdkException>()
+                                .With.Message.EqualTo("HttpClient cannot have BaseAddress set."));
+        }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using IdokladSdk.Models.ReadOnly.Currency;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.Country;
-
-public class CountryTestDetail
+namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Model.Country
 {
-    public CurrencyGetModel Currency { get; set; }
+    public class CountryTestDetail
+    {
+        public CurrencyGetModel Currency { get; set; }
 
-    public int Id { get; set; }
+        public int Id { get; set; }
 
-    public string Name { get; set; }
+        public string Name { get; set; }
+    }
 }

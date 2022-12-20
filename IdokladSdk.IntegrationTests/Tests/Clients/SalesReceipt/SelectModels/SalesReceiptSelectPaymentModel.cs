@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt.SelectModels;
-
-/// <summary>
-/// SalesReceiptSelectPaymentModel.
-/// </summary>
-public class SalesReceiptSelectPaymentModel
+namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt.SelectModels
 {
     /// <summary>
-    /// Gets or sets payments.
+    /// SalesReceiptSelectPaymentModel.
     /// </summary>
-    public List<PaymentSelectModel> Payments { get; set; }
+    public class SalesReceiptSelectPaymentModel
+    {
+        /// <summary>
+        /// Gets or sets payments.
+        /// </summary>
+        public List<PaymentSelectModel> Payments { get; set; }
+    }
 }

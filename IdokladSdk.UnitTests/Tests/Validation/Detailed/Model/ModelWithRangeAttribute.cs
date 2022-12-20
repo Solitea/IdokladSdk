@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
-
-public class ModelWithRangeAttribute
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed.Model
 {
-    [Range(0, 100)]
-    public double Discount { get; set; }
+    public class ModelWithRangeAttribute
+    {
+        [Range(0, 100)]
+        public double Discount { get; set; }
+    }
 }

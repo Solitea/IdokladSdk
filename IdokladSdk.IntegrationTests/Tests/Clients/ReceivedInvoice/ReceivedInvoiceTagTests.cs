@@ -9,36 +9,37 @@ using IdokladSdk.Requests.ReceivedInvoice;
 using IdokladSdk.Requests.ReceivedInvoice.Filter;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice;
-
-[TestFixture]
-public class ReceivedInvoiceTagTests : TaggableDocumentTestsBase<ReceivedInvoiceClient, ReceivedInvoiceDetail, ReceivedInvoiceList, ReceivedInvoiceGetModel,
-    ReceivedInvoiceListGetModel, ReceivedInvoicePostModel, ReceivedInvoicePatchModel, ReceivedInvoiceExpand, ReceivedInvoiceFilter>
+namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 {
-    protected override int EntityWithoutTagsId => 167066;
-
-    protected override int EntityWithTags1Id => 167064;
-
-    protected override int EntityWithTags2Id => 167065;
-
-    [Test]
-    public async Task Copy_SourceWithTags_CopiesTagsAsync()
+    [TestFixture]
+    public class ReceivedInvoiceTagTests : TaggableDocumentTestsBase<ReceivedInvoiceClient, ReceivedInvoiceDetail, ReceivedInvoiceList, ReceivedInvoiceGetModel,
+        ReceivedInvoiceListGetModel, ReceivedInvoicePostModel, ReceivedInvoicePatchModel, ReceivedInvoiceExpand, ReceivedInvoiceFilter>
     {
-        // Act
-        var result = await Client.CopyAsync(EntityWithTags1Id).AssertResult();
+        protected override int EntityWithoutTagsId => 167066;
 
-        // Assert
-        AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
-    }
+        protected override int EntityWithTags1Id => 167064;
 
-    protected override void SetRequiredProperties(ReceivedInvoicePostModel postModel)
-    {
-        postModel.Description = "Test received invoice";
-        postModel.PartnerId = PartnerId;
-        postModel.Items.Add(new ReceivedInvoiceItemPostModel
+        protected override int EntityWithTags2Id => 167065;
+
+        [Test]
+        public async Task Copy_SourceWithTags_CopiesTagsAsync()
         {
-            Name = "Test item",
-            UnitPrice = 100
-        });
+            // Act
+            var result = await Client.CopyAsync(EntityWithTags1Id).AssertResult();
+
+            // Assert
+            AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
+        }
+
+        protected override void SetRequiredProperties(ReceivedInvoicePostModel postModel)
+        {
+            postModel.Description = "Test received invoice";
+            postModel.PartnerId = PartnerId;
+            postModel.Items.Add(new ReceivedInvoiceItemPostModel
+            {
+                Name = "Test item",
+                UnitPrice = 100
+            });
+        }
     }
 }

@@ -3,39 +3,40 @@ using IdokladSdk.UnitTests.Tests.Validation.Detailed.Model;
 using NUnit.Framework;
 using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute;
 
-namespace IdokladSdk.UnitTests.Tests.Validation.Detailed;
-
-public partial class ModelValidatorTests
+namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 {
-    [Test]
-    public void ModelWithRangeAttribute_ValidModel_ReturnsExpectedResults()
+    public partial class ModelValidatorTests
     {
-        // Arrange
-        var model = new ModelWithRangeAttribute
+        [Test]
+        public void ModelWithRangeAttribute_ValidModel_ReturnsExpectedResults()
         {
-            Discount = 10
-        };
+            // Arrange
+            var model = new ModelWithRangeAttribute
+            {
+                Discount = 10
+            };
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsValid(result);
-    }
+            // Assert
+            AssertIsValid(result);
+        }
 
-    [Test]
-    public void ModelWithRangeAttribute_InvalidModel_ReturnsExpectedResults()
-    {
-        // Arrange
-        var model = new ModelWithRangeAttribute
+        [Test]
+        public void ModelWithRangeAttribute_InvalidModel_ReturnsExpectedResults()
         {
-            Discount = 150
-        };
+            // Arrange
+            var model = new ModelWithRangeAttribute
+            {
+                Discount = 150
+            };
 
-        // Act
-        var result = _modelValidator.Validate(model);
+            // Act
+            var result = _modelValidator.Validate(model);
 
-        // Assert
-        AssertIsNotValid(result, nameof(model.Discount), typeof(RangeAttribute), ValidationType.Range);
+            // Assert
+            AssertIsNotValid(result, nameof(model.Discount), typeof(RangeAttribute), ValidationType.Range);
+        }
     }
 }

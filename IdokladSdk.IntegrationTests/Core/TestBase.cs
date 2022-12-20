@@ -9,61 +9,62 @@ using IdokladSdk.Response;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
-namespace IdokladSdk.IntegrationTests.Core;
-
-public class TestBase
+namespace IdokladSdk.IntegrationTests.Core
 {
-    public DokladApi DokladApi { get; set; }
-
-    public TestConfiguration Configuration { get; set; }
-
-    protected HttpClient HttpClient { get; set; }
-
-    public void InitDokladApi(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
+    public class TestBase
     {
-        InitDokladApi<ClientCredentialsAuthProvider>(apiResultHandler, apiBatchResultHandler);
-    }
+        public DokladApi DokladApi { get; set; }
 
-    public void InitDokladApi<TAuthProvider>(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
-     where TAuthProvider : IAuthorizationProvider, new()
-    {
-        LoadConfiguration();
-        HttpClient = new HttpClient();
+        public TestConfiguration Configuration { get; set; }
 
-        var builder = CreateBuilder<TAuthProvider>()
-            .AddApiContextOptions(options =>
-            {
-                options.ApiResultHandler = apiResultHandler;
-                options.ApiBatchResultHandler = apiBatchResultHandler;
-            })
-            .AddHttpClient(HttpClient);
+        protected HttpClient HttpClient { get; set; }
 
-        DokladApi = builder.Build();
-    }
+        public void InitDokladApi(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
+        {
+            InitDokladApi<ClientCredentialsAuthProvider>(apiResultHandler, apiBatchResultHandler);
+        }
 
-    [OneTimeTearDown]
-    public void BaseTearDown()
-    {
-        HttpClient?.Dispose();
-    }
+        public void InitDokladApi<TAuthProvider>(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
+         where TAuthProvider : IAuthorizationProvider, new()
+        {
+            LoadConfiguration();
+            HttpClient = new HttpClient();
 
-    protected void LoadConfiguration()
-    {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("testsettings.json")
-            .AddJsonFile("localsettings.json", true)
-            .Build();
+            var builder = CreateBuilder<TAuthProvider>()
+                .AddApiContextOptions(options =>
+                {
+                    options.ApiResultHandler = apiResultHandler;
+                    options.ApiBatchResultHandler = apiBatchResultHandler;
+                })
+                .AddHttpClient(HttpClient);
 
-        Configuration = configuration.Get<TestConfiguration>();
-    }
+            DokladApi = builder.Build();
+        }
 
-    private DokladApiBuilder CreateBuilder<TAuthProvider>()
-        where TAuthProvider : IAuthorizationProvider, new()
-    {
-        return new DokladApiTestBuilder("Tests", "1.0")
-            .AddAuthorizationProvider<TAuthProvider>(Configuration)
-            .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl)
-            .AddHttpClient(HttpClient);
+        [OneTimeTearDown]
+        public void BaseTearDown()
+        {
+            HttpClient?.Dispose();
+        }
+
+        protected void LoadConfiguration()
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("testsettings.json")
+                .AddJsonFile("localsettings.json", true)
+                .Build();
+
+            Configuration = configuration.Get<TestConfiguration>();
+        }
+
+        private DokladApiBuilder CreateBuilder<TAuthProvider>()
+            where TAuthProvider : IAuthorizationProvider, new()
+        {
+            return new DokladApiTestBuilder("Tests", "1.0")
+                .AddAuthorizationProvider<TAuthProvider>(Configuration)
+                .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl)
+                .AddHttpClient(HttpClient);
+        }
     }
 }
