@@ -1,6 +1,6 @@
 ﻿using IdokladSdk.Requests.IssuedInvoice.Sort;
 
-namespace IdokladSdk.Requests.ProformaInvoice.Filter
+namespace IdokladSdk.Requests.ProformaInvoice.Sort
 {
     /// <summary>
     /// ProformaInvoiceSort.

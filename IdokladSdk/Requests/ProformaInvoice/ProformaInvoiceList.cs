@@ -2,6 +2,7 @@
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Requests.Core;
 using IdokladSdk.Requests.ProformaInvoice.Filter;
+using IdokladSdk.Requests.ProformaInvoice.Sort;
 
 namespace IdokladSdk.Requests.ProformaInvoice
 {

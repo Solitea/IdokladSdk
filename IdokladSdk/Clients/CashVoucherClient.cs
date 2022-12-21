@@ -41,9 +41,9 @@ namespace IdokladSdk.Clients
         public async Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Default/{movementType}";
-            var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken);
+            var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken).ConfigureAwait(false);
 
-            return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken);
+            return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace IdokladSdk.Clients
         public async Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Default/{movementType}/{invoiceType}/{invoiceId}";
-            var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken);
+            var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken).ConfigureAwait(false);
 
-            return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken);
+            return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -91,9 +91,9 @@ namespace IdokladSdk.Clients
         public async Task<ApiResult<bool>> PairAsync(int cashVoucherId, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Pair/{cashVoucherId}/{invoiceType}/{invoiceId}";
-            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken);
+            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
 
-            return await ExecuteAsync<bool>(request, cancellationToken);
+            return await ExecuteAsync<bool>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

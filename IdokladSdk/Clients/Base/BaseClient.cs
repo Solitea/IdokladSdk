@@ -60,7 +60,7 @@ namespace IdokladSdk.Clients
 
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-            var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<T>>, _apiContext.ApiResultHandler);
+            var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<T>>, _apiContext.ApiResultHandler).ConfigureAwait(false);
 
             return data;
         }
@@ -70,7 +70,7 @@ namespace IdokladSdk.Clients
         {
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-            var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<T>>, _apiContext.ApiBatchResultHandler);
+            var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<T>>, _apiContext.ApiBatchResultHandler).ConfigureAwait(false);
 
             return data;
         }
@@ -180,10 +180,10 @@ namespace IdokladSdk.Clients
             var batch = new BatchModel<TPatchModel>(models);
 
             ValidateModel(batch);
-            var request = await CreateRequestAsync(resource, new HttpMethod("PATCH"), cancellationToken);
+            var request = await CreateRequestAsync(resource, new HttpMethod("PATCH"), cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch, new PatchRequestJsonSerializerSettings());
 
-            return await ExecuteBatchAsync<TGetModel>(request, cancellationToken);
+            return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace IdokladSdk.Clients
             var resourceUri = await GetQueryStringAsync(resource, queryParams).ConfigureAwait(false);
             var request = await CreateRequestAsync(resourceUri, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
 
-            return await ExecuteAsync<TGetModel>(request, cancellationToken);
+            return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

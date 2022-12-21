@@ -14,9 +14,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Requests\ProformaInvoice\Sort\**" />
-        <EmbeddedResource Remove="Requests\ProformaInvoice\Sort\**" />
-        <None Remove="Requests\ProformaInvoice\Sort\**" />
         <None Include="..\README.md">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
