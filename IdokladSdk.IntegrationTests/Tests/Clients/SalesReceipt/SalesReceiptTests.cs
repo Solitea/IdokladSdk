@@ -253,7 +253,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             {
                 UnitPrice = 0.1M,
                 Amount = 1,
-                Name = "Rounding",
+                Name = "Zaokrouhlení",
                 PriceType = PriceTypeWithoutOnlyBase.WithVat,
                 VatRateType = VatRateType.Basic,
                 ItemType = SalesReceiptItemType.ItemTypeRound
