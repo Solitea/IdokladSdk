@@ -4,11 +4,10 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Repos\iDoklad\iDokladSdk\iDokladSdk.NetCore.TestApp\iDokladSdk.NetCore.TestApp.xml</DocumentationFile>
     <NoWarn>1701;1702;SA1600;SA0001;CA1707;CA1724;CA2007</NoWarn>
   </PropertyGroup>
 
