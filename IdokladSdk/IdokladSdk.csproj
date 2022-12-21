@@ -55,15 +55,15 @@
         <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="IbanNet" Version="5.3.1" />
+        <PackageReference Include="IbanNet" Version="5.7.1" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />        
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />        
     </ItemGroup>
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
