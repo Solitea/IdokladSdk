@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using IdokladSdk.Clients;
+﻿using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.RegisteredSale;
 using IdokladSdk.Requests.Core;
 using IdokladSdk.Requests.Core.Modifiers.Expand.Structure;
-using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.RegisteredSale
 {
@@ -25,12 +23,6 @@ namespace IdokladSdk.Requests.RegisteredSale
             : base(id, client)
         {
             _type = type;
-        }
-
-        /// <inheritdoc/>
-        protected override ApiResult<TResult> GetCore<TResult>(Dictionary<string, string> queryParams)
-        {
-            return Client.Get<TResult>($"{Client.ResourceUrl}/{_type}/{Id}", queryParams);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Core.Tags;
@@ -22,20 +23,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         protected override int EntityWithTags2Id => 921859;
 
         [Test]
-        public void Account_ProformaWithTags_CopiesTags()
+        public async Task Account_ProformaWithTags_CopiesTagsAsync()
         {
             // Act
-            var result = Client.GetInvoiceForAccount(EntityWithTags1Id).AssertResult();
+            var result = await Client.GetInvoiceForAccountAsync(EntityWithTags1Id).AssertResult();
 
             // Assert
             AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
         [Test]
-        public void Copy_SourceWithTags_CopiesTags()
+        public async Task Copy_SourceWithTags_CopiesTagsAsync()
         {
             // Act
-            var result = Client.Copy(EntityWithTags1Id).AssertResult();
+            var result = await Client.CopyAsync(EntityWithTags1Id).AssertResult();
 
             // Assert
             AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });

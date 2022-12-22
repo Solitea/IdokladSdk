@@ -14,12 +14,6 @@ namespace IdokladSdk.Clients.Interfaces
         /// <summary>
         /// Returns new entity with default property values suitable for subsequent editing and storing.
         /// </summary>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        ApiResult<TPostModel> Default();
-
-        /// <summary>
-        /// Returns new entity with default property values suitable for subsequent editing and storing.
-        /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
         Task<ApiResult<TPostModel>> DefaultAsync(CancellationToken cancellationToken = default);

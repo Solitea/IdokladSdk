@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.PriceListItem;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.NetCore.TestApp.Examples.Extensions;
+using IdokladSdk.Response.Extensions;
 
 namespace IdokladSdk.NetCore.TestApp.Examples
 {
@@ -22,10 +24,10 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             _api = api;
         }
 
-        public int CreateNewInvoice(int partnerId)
+        public async Task<int> CreateNewInvoiceAsync(int partnerId)
         {
             // Get default model containing default values based on agenda settings.
-            var defaultInvoice = _api.IssuedInvoiceClient.Default().Data;
+            var defaultInvoice = (await _api.IssuedInvoiceClient.DefaultAsync()).Data;
 
             // Set required properties
             defaultInvoice.PartnerId = partnerId;
@@ -42,17 +44,17 @@ namespace IdokladSdk.NetCore.TestApp.Examples
 
             // Optionally call recount to get all prices of document.
             var recountModel = defaultInvoice.ToRecountModel();
-            var recountedInvoice = _api.IssuedInvoiceClient.Recount(recountModel).Data;
+            var recountedInvoice = (await _api.IssuedInvoiceClient.RecountAsync(recountModel)).Data;
 
             // Create new invoice
-            var createdInvoice = _api.IssuedInvoiceClient.Post(defaultInvoice).CheckResult();
+            var createdInvoice = await _api.IssuedInvoiceClient.PostAsync(defaultInvoice).CheckResult();
             return createdInvoice.Id;
         }
 
-        public (int, int) AccountProforma_WithIssuedInvoiceDetail(int partnerId, int priceListItemId)
+        public async Task<(int, int)> AccountProforma_WithIssuedInvoiceDetailAsync(int partnerId, int priceListItemId)
         {
             // Get default model containing default values based on agenda settings.
-            var defaultProforma = _api.ProformaInvoiceClient.Default().Data;
+            var defaultProforma = (await _api.ProformaInvoiceClient.DefaultAsync()).Data;
 
             // Set required properties
             defaultProforma.PartnerId = partnerId;
@@ -68,27 +70,27 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             });
 
             // Create new proforma invoice
-            var createdProforma = _api.ProformaInvoiceClient.Post(defaultProforma).CheckResult();
+            var createdProforma = await _api.ProformaInvoiceClient.PostAsync(defaultProforma).CheckResult();
 
             // Pay proforma invoice
-            FullyPayProformaInvoice(createdProforma.Id);
+            await FullyPayProformaInvoiceAsync(createdProforma.Id);
 
             // Get issued invoice for accounting of proforma invoice
-            var accountingInvoice = _api.ProformaInvoiceClient.GetInvoiceForAccount(createdProforma.Id).Data;
+            var accountingInvoice = (await _api.ProformaInvoiceClient.GetInvoiceForAccountAsync(createdProforma.Id)).Data;
 
             // Modify accounting invoice
             accountingInvoice.Note = "Accounting test";
-            accountingInvoice.Items.Add(GetPriceListItem(priceListItemId), 2);
+            accountingInvoice.Items.Add(await GetPriceListItemAsync(priceListItemId), 2);
 
             // Create accounting invoice
-            var createdAccountingInvoice = _api.IssuedInvoiceClient.Post(accountingInvoice).CheckResult();
+            var createdAccountingInvoice = await _api.IssuedInvoiceClient.PostAsync(accountingInvoice).CheckResult();
             return (createdProforma.Id, createdAccountingInvoice.Id);
         }
 
-        public (int, int) AccountProforma_WithoutIssuedInvoiceDetail(int partnerId)
+        public async Task<(int, int)> AccountProforma_WithoutIssuedInvoiceDetailAsync(int partnerId)
         {
             // Get default model containing default values based on agenda settings.
-            var defaultProforma = _api.ProformaInvoiceClient.Default().Data;
+            var defaultProforma = (await _api.ProformaInvoiceClient.DefaultAsync()).Data;
 
             // Set required properties
             defaultProforma.PartnerId = partnerId;
@@ -104,20 +106,20 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             });
 
             // Create new proforma invoice
-            var createdProforma = _api.ProformaInvoiceClient.Post(defaultProforma).CheckResult();
+            var createdProforma = await _api.ProformaInvoiceClient.PostAsync(defaultProforma).CheckResult();
 
             // Pay proforma invoice
-            FullyPayProformaInvoice(createdProforma.Id);
+            await FullyPayProformaInvoiceAsync(createdProforma.Id);
 
             // Create accounting invoice - single API call without possibility to modify issued invoice before it's created
-            var createdAccountingInvoice = _api.ProformaInvoiceClient.Account(createdProforma.Id).CheckResult();
+            var createdAccountingInvoice = await _api.ProformaInvoiceClient.AccountAsync(createdProforma.Id).CheckResult();
             return (createdProforma.Id, createdAccountingInvoice.Id);
         }
 
-        public int CreatePriceListItem()
+        public async Task<int> CreatePriceListItemAsync()
         {
             // Get default model containing default values
-            var defaultItem = _api.PriceListItemClient.Default().Data;
+            var defaultItem = (await _api.PriceListItemClient.DefaultAsync()).Data;
 
             // Set properties
             defaultItem.Amount = 100;
@@ -128,11 +130,11 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             defaultItem.VatRateType = VatRateType.Basic;
 
             // Create new price list item
-            var createdItem = _api.PriceListItemClient.Post(defaultItem).CheckResult();
+            var createdItem = await _api.PriceListItemClient.PostAsync(defaultItem).CheckResult();
             return createdItem.Id;
         }
 
-        public void UpdateInvoice_AddItemFromPriceList(int invoiceId, int priceListItemId)
+        public async Task UpdateInvoice_AddItemFromPriceListAsync(int invoiceId, int priceListItemId)
         {
             // Create update model containing id (required) and only properties to be updated.
             // Update first invoice item's amount and add new invoice item containing price list item.
@@ -144,24 +146,24 @@ namespace IdokladSdk.NetCore.TestApp.Examples
                 {
                     new IssuedInvoiceItemPatchModel
                     {
-                        Id = GetFirstRowId(invoiceId),
+                        Id = await GetFirstRowId(invoiceId),
                         Amount = 5
                     },
-                    AddPriceListItem(priceListItemId, 2)
+                    await AddPriceListItemAsync(priceListItemId, 2)
                 }
             };
 
             // Update the invoice
-            var updatedInvoice = _api.IssuedInvoiceClient.Update(invoiceUpdateModel).Data;
+            var updatedInvoice = (await _api.IssuedInvoiceClient.UpdateAsync(invoiceUpdateModel)).Data;
         }
 
-        public void UpdateInvoice_NullableProperties(int invoiceId)
+        public async Task UpdateInvoice_NullablePropertiesAsync(int invoiceId)
         {
             // Entity's properties which can be null are of NullableProperty<T> type in order to distinguish
             // between non-changing the property value and explicit setting to null.
             var secondRow = new IssuedInvoiceItemPatchModel
             {
-                Id = GetSecondRowId(invoiceId)
+                Id = await GetSecondRowIdAsync(invoiceId)
             };
 
             // At this point, properties DiscountPercentage, PriceListItemId and VatCodeId wouldn't be changed in iDoklad - their IsSet
@@ -188,7 +190,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             // Create update model for first row. If we didn't include it in invoice update model, it would be removed.
             var firstRow = new IssuedInvoiceItemPatchModel
             {
-                Id = GetFirstRowId(invoiceId)
+                Id = await GetFirstRowId(invoiceId)
             };
 
             // Create invoice update model.
@@ -203,13 +205,13 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             };
 
             // Update the invoice
-            var updatedInvoice = _api.IssuedInvoiceClient.Update(invoiceUpdateModel).Data;
+            var updatedInvoice = (await _api.IssuedInvoiceClient.UpdateAsync(invoiceUpdateModel)).Data;
         }
 
-        private IssuedInvoiceItemPatchModel AddPriceListItem(int priceListItemId, int amount)
+        private async Task<IssuedInvoiceItemPatchModel> AddPriceListItemAsync(int priceListItemId, int amount)
         {
             // Get price list item
-            var priceListItem = GetPriceListItem(priceListItemId);
+            var priceListItem = await GetPriceListItemAsync(priceListItemId);
 
             // Create new issued invoice item model. Model is of IssuedInvoiceItemPatchModel because we are updating the invoice.
             var issuedInvoiceItem = new IssuedInvoiceItemPatchModel
@@ -227,31 +229,33 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             return issuedInvoiceItem;
         }
 
-        private int GetFirstRowId(int issuedInvoiceId)
+        private async Task<int> GetFirstRowId(int issuedInvoiceId)
         {
-            return _api.IssuedInvoiceClient
+            var result = await _api.IssuedInvoiceClient
                 .Detail(issuedInvoiceId)
-                .Get(invoice => invoice.Items.FirstOrDefault(item => item.ItemType == IssuedInvoiceItemType.ItemTypeNormal))
-                .Data.Id;
+                .GetAsync(invoice => invoice.Items.FirstOrDefault(item => item.ItemType == IssuedInvoiceItemType.ItemTypeNormal));
+
+            return result.Data.Id;
         }
 
-        private int GetSecondRowId(int issuedInvoiceId)
+        private async Task<int> GetSecondRowIdAsync(int issuedInvoiceId)
         {
-            return _api.IssuedInvoiceClient
+            var result = await _api.IssuedInvoiceClient
                 .Detail(issuedInvoiceId)
-                .Get(invoice => invoice.Items.Where(item => item.ItemType == IssuedInvoiceItemType.ItemTypeNormal).Skip(1).FirstOrDefault())
-                .Data.Id;
+                .GetAsync(invoice => invoice.Items.Where(item => item.ItemType == IssuedInvoiceItemType.ItemTypeNormal).Skip(1).FirstOrDefault());
+
+            return result.Data.Id;
         }
 
-        private PriceListItemGetModel GetPriceListItem(int priceListItemId)
+        private async Task<PriceListItemGetModel> GetPriceListItemAsync(int priceListItemId)
         {
-            var priceListItem = _api.PriceListItemClient.Detail(priceListItemId).Get().Data;
-            return priceListItem;
+            var result = await _api.PriceListItemClient.Detail(priceListItemId).GetAsync();
+            return result.Data;
         }
 
-        private void FullyPayProformaInvoice(int proformaInvoiceId)
+        private async Task FullyPayProformaInvoiceAsync(int proformaInvoiceId)
         {
-            _api.IssuedDocumentPaymentClient.FullyPay(proformaInvoiceId, DateTime.Today.ToUniversalTime()).CheckResult();
+            await _api.IssuedDocumentPaymentClient.FullyPayAsync(proformaInvoiceId, DateTime.Today.ToUniversalTime()).CheckResult();
         }
     }
 }

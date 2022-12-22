@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.RecurringInvoice;
 using IdokladSdk.Models.RecurringInvoice.Get;
 using IdokladSdk.Requests.RecurringInvoice;
@@ -6,7 +8,10 @@ using IdokladSdk.Response;
 
 namespace IdokladSdk.Clients
 {
-    public partial class RecurringInvoiceClient
+    /// <summary>
+    /// Client for communication with recurring invoice endpoints.
+    /// </summary>
+    public class RecurringInvoiceClient
         : BaseClient,
         IDeleteRequest,
         IEntityDetail<RecurringInvoiceDetail>,
@@ -29,15 +34,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/RecurringInvoices";
 
         /// <inheritdoc />
-        public ApiResult<RecurringInvoicePostModel> Default()
+        public Task<ApiResult<RecurringInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return Default<RecurringInvoicePostModel>();
+            return DefaultAsync<RecurringInvoicePostModel>(cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -56,41 +61,43 @@ namespace IdokladSdk.Clients
         /// Method returns list of next issue dates (max 12 future dates) for recurring invoice setting. List of dates is based on recurrence setting input.
         /// </summary>
         /// <param name="model">Recurrence setting.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Next issue dates.</returns>
-        public ApiResult<NextIssueDatesGetModel> NextIssueDates(NextIssueDatesPostModel model)
+        public Task<ApiResult<NextIssueDatesGetModel>> NextIssueDatesAsync(NextIssueDatesPostModel model, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/NextIssueDates";
-            return Post<NextIssueDatesPostModel, NextIssueDatesGetModel>(resource, model);
+            return PostAsync<NextIssueDatesPostModel, NextIssueDatesGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<RecurringInvoiceResultGetModel> Post(RecurringInvoicePostModel model)
+        public Task<ApiResult<RecurringInvoiceResultGetModel>> PostAsync(RecurringInvoicePostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<RecurringInvoicePostModel, RecurringInvoiceResultGetModel>(model);
+            return PostAsync<RecurringInvoicePostModel, RecurringInvoiceResultGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<InvoiceTemplateRecountGetModel> Recount(InvoiceTemplateRecountPostModel model)
+        public Task<ApiResult<InvoiceTemplateRecountGetModel>> RecountAsync(InvoiceTemplateRecountPostModel model, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Recount";
-            return Post<InvoiceTemplateRecountPostModel, InvoiceTemplateRecountGetModel>(resource, model);
+            return PostAsync<InvoiceTemplateRecountPostModel, InvoiceTemplateRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<RecurringInvoiceGetModel> Update(RecurringInvoicePatchModel model)
+        public Task<ApiResult<RecurringInvoiceGetModel>> UpdateAsync(RecurringInvoicePatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<RecurringInvoicePatchModel, RecurringInvoiceGetModel>(model);
+            return PatchAsync<RecurringInvoicePatchModel, RecurringInvoiceGetModel>(model, cancellationToken);
         }
 
         /// <summary>
         /// Method returns copy of recurring invoice. Returned resource is suitable for new invoice creation.
         /// </summary>
         /// <param name="id">Invoice id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Resource of recurring invoice for creation.</returns>
-        public ApiResult<RecurringInvoiceCopyGetModel> Copy(int id)
+        public Task<ApiResult<RecurringInvoiceCopyGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<RecurringInvoiceCopyGetModel>(resource);
+            return GetAsync<RecurringInvoiceCopyGetModel>(resource, null, cancellationToken);
         }
     }
 }

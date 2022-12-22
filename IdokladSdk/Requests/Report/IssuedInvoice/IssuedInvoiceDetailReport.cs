@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Report;
@@ -9,7 +11,7 @@ namespace IdokladSdk.Requests.Report.IssuedInvoice
     /// <summary>
     /// IssuedInvoiceDetailReport.
     /// </summary>
-    public partial class IssuedInvoiceDetailReport : ReportBaseDetail
+    public class IssuedInvoiceDetailReport : ReportBaseDetail
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IssuedInvoiceDetailReport"/> class.
@@ -26,20 +28,22 @@ namespace IdokladSdk.Requests.Report.IssuedInvoice
         /// Get report.
         /// </summary>
         /// <param name="option">Option.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>API result.</returns>
-        public ApiResult<string> Get(ExtendedReportOption option = null)
+        public Task<ApiResult<string>> GetAsync(ExtendedReportOption option = null, CancellationToken cancellationToken = default)
         {
-            return GetBase(option);
+            return GetBaseAsync(option, cancellationToken);
         }
 
         /// <summary>
         /// Get image report.
         /// </summary>
         /// <param name="option">Option.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>API result.</returns>
-        public ApiResult<List<ReportImageGetModel>> GetImage(ExtendedReportImageOption option = null)
+        public Task<ApiResult<List<ReportImageGetModel>>> GetImageAsync(ExtendedReportImageOption option = null, CancellationToken cancellationToken = default)
         {
-            return GetImageBase(option);
+            return GetImageBaseAsync(option, cancellationToken);
         }
     }
 }

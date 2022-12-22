@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Requests.Core;
+﻿using System.Threading;
+using IdokladSdk.Requests.Core;
 
 namespace IdokladSdk.Clients.Interfaces
 {
@@ -11,7 +12,7 @@ namespace IdokladSdk.Clients.Interfaces
     {
         /// <summary>
         /// List of entities. Returns an instance which allows operations on list of entities (filtering, sorting, etc.)
-        /// and retrieving of data by calling <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}.Get()"/>.
+        /// and retrieving of data by calling <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}.GetAsync(CancellationToken)"/>.
         /// </summary>
         /// <returns>Instance of descendant of <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}"/>.</returns>
         TList List();

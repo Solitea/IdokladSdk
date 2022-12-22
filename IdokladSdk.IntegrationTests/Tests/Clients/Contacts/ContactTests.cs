@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -14,7 +15,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
     /// ContactTests.
     /// </summary>
     [TestFixture]
-    public partial class ContactTests : TestBase
+    public class ContactTests : TestBase
     {
         private readonly string _updatedCompanyName = "Solitea Slovensko, a.s.";
         private int _newContactId = 0;
@@ -32,10 +33,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyPosted()
+        public async Task Post_SuccessfullyPosted()
         {
             // Arrange
-            _contactPostModel = ContactClient.Default().AssertResult();
+            _contactPostModel = await ContactClient.DefaultAsync().AssertResult();
             _contactPostModel.AccountNumber = "2102290124";
             _contactPostModel.BankId = 18;
             _contactPostModel.City = "Brno";
@@ -71,7 +72,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             _contactPostModel.Www = "www.solitea.cz";
 
             // Act
-            var data = ContactClient.Post(_contactPostModel).AssertResult();
+            var data = await ContactClient.PostAsync(_contactPostModel).AssertResult();
             _newContactId = data.Id;
 
             // Assert
@@ -81,10 +82,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
 
         [Test]
         [Order(2)]
-        public void GetDetail_ReturnsContact()
+        public async Task GetDetail_ReturnsContact()
         {
             // Act
-            var data = ContactClient.Detail(_newContactId).Get().AssertResult();
+            var data = await ContactClient.Detail(_newContactId).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(_newContactId, data.Id);
@@ -93,7 +94,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
 
         [Test]
         [Order(3)]
-        public void Update_SuccessfullyUpdatedContact()
+        public async Task Update_SuccessfullyUpdatedContact()
         {
             // Arrange
             var contactPatchModel = new ContactPatchModel
@@ -105,16 +106,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
                 CountryId = 1,
                 DefaultInvoiceMaturity = 9,
                 DeliveryAddresses = new List<DeliveryAddressPatchModel>
+            {
+                new DeliveryAddressPatchModel
                 {
-                    new DeliveryAddressPatchModel
-                    {
-                        City = "Brno",
-                        Name = "Money S5",
-                        IsDefault = false,
-                        PostalCode = "60200",
-                        Street = "Okružní 732/5"
-                    }
-                },
+                    City = "Brno",
+                    Name = "Money S5",
+                    IsDefault = false,
+                    PostalCode = "60200",
+                    Street = "Okružní 732/5"
+                }
+            },
                 DiscountPercentage = 8,
                 Email = "info@solitea.sk",
                 Fax = "+421 249 212 323",
@@ -138,7 +139,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             };
 
             // Act
-            var data = ContactClient.Update(contactPatchModel).AssertResult();
+            var data = await ContactClient.UpdateAsync(contactPatchModel).AssertResult();
             _dateLastChange = data.Metadata.DateLastChange;
 
             // Assert
@@ -172,14 +173,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
 
         [Test]
         [Order(4)]
-        public void GetListWithFilter_ReturnsList()
+        public async Task GetListWithFilter_ReturnsList()
         {
             // Act
-            var data = ContactClient
+            var data = await ContactClient
                 .List()
                 .Filter(f => f.CompanyName.Contains("Solitea"))
                 .Filter(f => f.DateLastChange.IsGreaterThanOrEqual(_dateLastChange))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -190,13 +191,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
 
         [Test]
         [Order(5)]
-        public void GetListWithSort_ReturnsList()
+        public async Task GetAsync_ListWithSort_ReturnsList()
         {
             // Act
-            var data = ContactClient
+            var data = await ContactClient
                 .List()
                 .Sort(f => f.CompanyName.Desc())
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -209,13 +210,24 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
 
         [Test]
         [Order(6)]
-        public void Delete_SuccessfullyDeletedContact()
+        public async Task DeleteAsync_SuccessfullyDeletedContact()
         {
             // Act
-            var data = ContactClient.Delete(_newContactId).AssertResult();
+            var data = await ContactClient.DeleteAsync(_newContactId).AssertResult();
 
             // Assert
             Assert.True(data);
+        }
+
+        [Test]
+        public async Task GetAsync_ReturnsList()
+        {
+            // Act
+            var data = await ContactClient.List().GetAsync().AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.Greater(data.Items.Count(), 0);
         }
 
         private void AssertDeliveryAddress(DeliveryAddressGetModel returnedDeliveryAddress, DeliveryAddressPatchModel expecredDeliveryAddress)

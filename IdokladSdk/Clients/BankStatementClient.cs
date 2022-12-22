@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.BankStatement;
 using IdokladSdk.Requests.BankStatement;
 using IdokladSdk.Response;
@@ -8,7 +10,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with bank statement endpoints.
     /// </summary>
-    public partial class BankStatementClient : BaseClient,
+    public class BankStatementClient : BaseClient,
         IEntityDetail<BankStatementDetail>,
         IEntityList<BankStatementList>,
         IDeleteRequest
@@ -41,17 +43,18 @@ namespace IdokladSdk.Clients
         /// Pairs a model with an invoice according to the variable symbol and currency.
         /// </summary>
         /// <param name="model">Model.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing pairing result.</returns>
-        public ApiResult<BankStatementPairingResult> Pair(BankStatementPairingPostModel model)
+        public Task<ApiResult<BankStatementPairingResult>> PairAsync(BankStatementPairingPostModel model, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Pair";
-            return Post<BankStatementPairingPostModel, BankStatementPairingResult>(resource, model);
+            return PostAsync<BankStatementPairingPostModel, BankStatementPairingResult>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, default);
         }
     }
 }

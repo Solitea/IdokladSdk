@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using IdokladSdk.Authentication;
 using IdokladSdk.Builders.Options;
 using IdokladSdk.Enums;
@@ -173,14 +174,28 @@ namespace IdokladSdk.Builders
 
         private ApiContext GetApicontext(IAuthentication auth, DokladConfiguration configuration)
         {
-            var context = new ApiContext(AppName, AppVersion, auth, configuration);
+            if (HttpClient is null)
+            {
+                throw new IdokladSdkException($"Missing HttpClient instance. Use method {nameof(AddHttpClient)} to add new instance.");
+            }
+
+            var contextConfiguration = new ApiContextConfiguration
+            {
+                AppName = AppName,
+                AppVersion = AppVersion,
+                HttpClient = HttpClient,
+                Authentication = auth,
+                Configuration = configuration
+            };
+
+            var context = new ApiContext(contextConfiguration);
 
             if (ApiContextOptionsProvider != null)
             {
                 var resultHandlers = ApiContextOptionsProvider();
                 context.ApiResultHandler = resultHandlers.ApiResultHandler;
                 context.ApiBatchResultHandler = resultHandlers.ApiBatchResultHandler;
-                context.SetLanguage(resultHandlers.Language ?? Language.En);
+                context.SetLanguage(resultHandlers.Language ?? Language.Cz);
             }
 
             return context;

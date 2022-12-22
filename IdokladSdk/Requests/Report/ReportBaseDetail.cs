@@ -3,7 +3,6 @@ using System.Globalization;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Report;
-using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.Report
 {
@@ -33,53 +32,6 @@ namespace IdokladSdk.Requests.Report
         /// Gets Client.
         /// </summary>
         protected ReportClient Client { get; }
-
-        /// <summary>
-        /// Get report.
-        /// </summary>
-        /// <param name="option">Option.</param>
-        /// <returns>API result.</returns>
-        protected ApiResult<string> GetBase(ExtendedReportOption option)
-        {
-            var resource = GetResource(option);
-            return GetBase(resource, option);
-        }
-
-        /// <summary>
-        /// Get report.
-        /// </summary>
-        /// <param name="resource">Resource.</param>
-        /// <param name="option">Option.</param>
-        /// <returns>API result.</returns>
-        protected ApiResult<string> GetBase(string resource, ExtendedReportOption option)
-        {
-            var queryParams = CreateQueryParams(option);
-            return Client.Get<string>(resource, queryParams);
-        }
-
-        /// <summary>
-        /// Get report.
-        /// </summary>
-        /// <param name="option">Option.</param>
-        /// <returns>API result.</returns>
-        protected ApiResult<List<ReportImageGetModel>> GetImageBase(ExtendedReportImageOption option)
-        {
-            var resource = GetImageResource(option);
-            return GetImageBase(resource, option);
-        }
-
-        /// <summary>
-        /// Get image report.
-        /// </summary>
-        /// <param name="resource">Resource.</param>
-        /// <param name="option">Option.</param>
-        /// <returns>API result.</returns>
-        protected ApiResult<List<ReportImageGetModel>> GetImageBase(string resource, ExtendedReportImageOption option)
-        {
-            var queryParams = CreateImageQueryParams(option);
-
-            return Client.Get<List<ReportImageGetModel>>(resource, queryParams);
-        }
 
         private Dictionary<string, string> CreateImageQueryParams(ExtendedReportImageOption option)
         {

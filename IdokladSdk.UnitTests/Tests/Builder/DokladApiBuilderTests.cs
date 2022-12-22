@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Net.Http;
 using IdokladSdk.Builders;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.Response;
 using NUnit.Framework;
 
@@ -13,6 +15,13 @@ namespace IdokladSdk.UnitTests.Tests.Builder
         private const string AppVersion = "1.0";
         private const string ClientId = "clientId";
         private const string ClientSecret = "clientSecret";
+        private HttpClient _httpClient;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            _httpClient = new HttpClient();
+        }
 
         [Test]
         public void MissingAuthentication_Throws()
@@ -31,6 +40,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             var defaultConfiguration = new DokladConfiguration();
             var api = new DokladApiBuilder(AppName, AppVersion)
                 .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddHttpClient(_httpClient)
                 .Build();
 
             // Assert
@@ -48,6 +58,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             var api = new DokladApiBuilder(AppName, AppVersion)
                 .AddClientCredentialsAuthentication(ClientId, ClientSecret)
                 .AddCustomApiUrls(apiUrl, identityServerUrl)
+                .AddHttpClient(_httpClient)
                 .Build();
 
             // Assert
@@ -70,6 +81,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                 {
                     options.Language = language;
                 })
+                .AddHttpClient(_httpClient)
                 .Build();
 
             // Assert
@@ -91,12 +103,62 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                     options.ApiResultHandler = apiResultHandler;
                     options.ApiBatchResultHandler = apiBatchResultHandler;
                 })
+                .AddHttpClient(_httpClient)
                 .Build();
 
             // Assert
             Assert.AreEqual(apiResultHandler, api.ApiContext.ApiResultHandler);
             Assert.AreNotEqual(apiResultHandler2, api.ApiContext.ApiResultHandler);
             Assert.AreEqual(apiBatchResultHandler, api.ApiContext.ApiBatchResultHandler);
+        }
+
+        [Test]
+        public void MissingHttpClient_Throws()
+        {
+            // Arrange
+            var builder = new DokladApiBuilder(AppName, AppVersion)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret);
+            TestDelegate action = () => builder.Build();
+
+            // Assert
+            Assert.That(action, Throws.Exception.AssignableTo<IdokladSdkException>()
+                                .With.Message.EqualTo("Missing HttpClient instance. Use method AddHttpClient to add new instance."));
+        }
+
+        [Test]
+        public void HttpClient_HasBaseAddressSet_Throws()
+        {
+            // Arrange
+            var httpclient = new HttpClient
+            {
+                BaseAddress = new Uri("https://api.idoklad.cz")
+            };
+            var builder = new DokladApiBuilder(AppName, AppVersion)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddHttpClient(httpclient);
+            TestDelegate action = () => builder.Build();
+
+            // Assert
+            Assert.That(action, Throws.Exception.AssignableTo<IdokladSdkException>()
+                                .With.Message.EqualTo("HttpClient cannot have BaseAddress set."));
+        }
+
+        [Test]
+        public void HttpClient_BaseAddressChanged_TokenCallThrows()
+        {
+            // Arrange
+            var httpclient = new HttpClient
+            {
+                BaseAddress = new Uri("https://api.idoklad.cz")
+            };
+            var builder = new DokladApiBuilder(AppName, AppVersion)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddHttpClient(httpclient);
+            TestDelegate action = () => builder.Build();
+
+            // Assert
+            Assert.That(action, Throws.Exception.AssignableTo<IdokladSdkException>()
+                                .With.Message.EqualTo("HttpClient cannot have BaseAddress set."));
         }
     }
 }

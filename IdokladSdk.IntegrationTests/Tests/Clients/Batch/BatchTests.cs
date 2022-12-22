@@ -18,14 +18,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
         {
             InitDokladApi();
             _entities = new List<(int, ExportableEntityType)>()
-            {
-                (913242, ExportableEntityType.IssuedInvoice),
-                (323823, ExportableEntityType.Contact)
-            }.AsReadOnly();
+        {
+            (913242, ExportableEntityType.IssuedInvoice),
+            (323823, ExportableEntityType.Contact)
+        }.AsReadOnly();
         }
 
         [Test]
-        public void Update_SucessfullySetExportedState_Exported()
+        public async Task UpdateAsync_SucessfullySetExportedState_Exported()
         {
             // Arrange
             var modelsToUpdate = new List<UpdateExportedModel>();
@@ -42,7 +42,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             }
 
             // Act
-            var results = DokladApi.BatchClient.Update(modelsToUpdate).AssertResult();
+            var results = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate).AssertResult();
 
             // Assert
             Assert.Multiple(() =>
@@ -72,11 +72,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             }
 
             // Act
-            var response = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate);
+            var results = await DokladApi.BatchClient.UpdateAsync(modelsToUpdate).AssertResult();
 
             // Assert
-            var results = response.AssertResult();
-
             Assert.Multiple(() =>
             {
                 foreach (var result in results)
@@ -93,7 +91,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             var modelsToUpdate = new List<UpdateExportedModel>();
 
             // Act + Assert
-            Assert.Throws<ValidationException>(() => DokladApi.BatchClient.Update(modelsToUpdate));
+            Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
         }
 
         [Test]
@@ -108,7 +106,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             }
 
             // Act + Assert
-            Assert.Throws<ValidationException>(() => DokladApi.BatchClient.Update(modelsToUpdate));
+            Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
         }
     }
 }

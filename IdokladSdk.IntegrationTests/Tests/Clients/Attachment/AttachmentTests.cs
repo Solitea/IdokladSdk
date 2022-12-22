@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -29,7 +30,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
         [Test]
         [Order(1)]
-        public void Upload_SuccessfullyUploaded()
+        public async Task UploadAsync_SuccessfullyUpdated()
         {
             // Arrange
             var model1 = GetAttachmentUploadModel(1);
@@ -37,9 +38,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             var model3 = GetAttachmentUploadModel(3);
 
             // Act
-            var data1 = _attachmentClient.Upload(model1).AssertResult();
-            var data2 = _attachmentClient.Upload(model2).AssertResult();
-            var data3 = _attachmentClient.Upload(model3).AssertResult();
+            var data1 = await _attachmentClient.UploadAsync(model1).AssertResult();
+            var data2 = await _attachmentClient.UploadAsync(model2).AssertResult();
+            var data3 = await _attachmentClient.UploadAsync(model3).AssertResult();
 
             // Assert
             Assert.IsTrue(data1);
@@ -49,10 +50,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
         [Test]
         [Order(2)]
-        public void Get_SuccessfullyGetAllAttachments()
+        public async Task GetAsync_SuccessfullyGetAllAttachment()
         {
             // Act
-            var data = _attachmentClient.Get(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
+            var data = await _attachmentClient.GetAsync(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
             // Assert
             Assert.Multiple(() =>
@@ -72,10 +73,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
         [Test]
         [Order(3)]
-        public void Get_SuccessfullyGetAttachment()
+        public async Task GetAsync_SuccessfullyGetAttachment()
         {
             // Act
-            var data = _attachmentClient.Get(_attachmentId).AssertResult();
+            var data = await _attachmentClient.GetAsync(_attachmentId).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -85,10 +86,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
         [Test]
         [Order(4)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = _attachmentClient.Delete(_attachmentId).AssertResult();
+            var data = await _attachmentClient.DeleteAsync(_attachmentId).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
@@ -96,10 +97,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
 
         [Test]
         [Order(5)]
-        public void Delete_AllSuccessfullyDeleted()
+        public async Task DeleteAsync_AllSuccessfullyDeleted()
         {
             // Act
-            var data = _attachmentClient.Delete(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
+            var data = await _attachmentClient.DeleteAsync(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
@@ -115,7 +116,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
                 FileName = "Wr<>ng“F|leNam?.docx"
             };
 
-            TestDelegate action = () => _attachmentClient.Upload(model).AssertResult();
+            AsyncTestDelegate action = async () => await _attachmentClient.UploadAsync(model).AssertResult();
 
             // Assert
             Assert.That(action, Throws.Exception.TypeOf<ValidationException>()

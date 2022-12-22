@@ -15,10 +15,10 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithEmailCollectionAttribute
             {
                 OtherRecipients = new List<string>
-                {
-                    "ales.micin@solitea.cz",
-                    "richard.loukota@solitea.cz"
-                }
+            {
+                "ales.micin@solitea.cz",
+                "richard.loukota@solitea.cz"
+            }
             };
 
             // Act
@@ -35,9 +35,9 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithEmailCollectionAttribute
             {
                 OtherRecipients = new List<string>
-                {
-                    "ThisIsNotValidEmailAddress",
-                }
+            {
+                "ThisIsNotValidEmailAddress",
+            }
             };
 
             // Act

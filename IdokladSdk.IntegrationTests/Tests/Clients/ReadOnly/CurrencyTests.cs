@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Readonly;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -10,7 +11,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
 {
     [TestFixture]
-    public partial class CurrencyTests : TestBase
+    public class CurrencyTests : TestBase
     {
         private const int Id = 1;
         private CurrencyClient _client;
@@ -23,12 +24,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void Detail_SuccessfullyGet()
+        public async Task DetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .Detail(Id)
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert
@@ -38,12 +39,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void Detail_WithParameters_SuccessfullyGet()
+        public async Task DetailAsync_WithParameters_SuccessfullyGet()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .Detail(Id)
-                .Get<CurrencyTestDetail>()
+                .GetAsync<CurrencyTestDetail>())
                 .AssertResult();
 
             // Assert
@@ -54,12 +55,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void List_ReturnsNonEmptyList()
+        public async Task ListAsync_ReturnsNonEmptyList()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .List()
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert
@@ -71,17 +72,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void List_WithParameters_ReturnsCorrectResult()
+        public async Task ListAsync_WithParameters_ReturnsCorrectResult()
         {
             // Act
             var code = "CZK";
             var testDate = new DateTime(2001, 1, 1);
-            var data = _client
+            var data = (await _client
                 .List()
                 .Filter(x => x.Code.IsEqual(code))
                 .Filter(x => x.DateLastChange.IsGreaterThan(testDate))
                 .Sort(x => x.Id.Desc())
-                .Get<CurrencyTestList>()
+                .GetAsync<CurrencyTestList>())
                 .AssertResult();
 
             // Assert

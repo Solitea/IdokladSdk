@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -8,6 +9,7 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.CreditNote;
 using IdokladSdk.Models.CreditNote.Post;
+using IdokladSdk.Models.CreditNote.Put;
 using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Requests.Core.Extensions;
@@ -19,7 +21,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
     /// CreditNoteTests.
     /// </summary>
     [TestFixture]
-    public partial class CreditNoteTests : TestBase
+    public class CreditNoteTests : TestBase
     {
         private const int CreditedIssuedInvoiceId = 916236;
 
@@ -50,17 +52,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         }
 
         [OneTimeTearDown]
-        public void OneTimeTearDown()
+        public async Task OneTimeTearDown()
         {
-            IssuedDocumentPaymentClient.FullyUnpay(CreditedIssuedInvoiceId);
+            await IssuedDocumentPaymentClient.FullyUnpayAsync(CreditedIssuedInvoiceId);
         }
 
         [Test]
         [Order(1)]
-        public void Default_SuccessfullyReturned()
+        public async Task DefaultAsync_SuccessfullyReturned()
         {
             // Act
-            _creditNotePostModel = CreditNoteClient.Default(CreditedIssuedInvoiceId).AssertResult();
+            _creditNotePostModel = await CreditNoteClient.DefaultAsync(CreditedIssuedInvoiceId).AssertResult();
 
             // Assert
             AssertDefault(_creditNotePostModel);
@@ -68,47 +70,42 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 
         [Test]
         [Order(2)]
-        public void Post_SuccessfullyPosted()
+        public async Task PostAsync_SuccessfullyPosted()
         {
             // Arrange
             CreatePostModel(_creditNotePostModel);
 
             // Act
-            var creditNoteGetModel = CreditNoteClient.Post(_creditNotePostModel).AssertResult();
+            var creditNoteGetModel = await CreditNoteClient.PostAsync(_creditNotePostModel).AssertResult();
             _postedCreditNoteId = creditNoteGetModel.Id;
 
             // Assert
             ComparePostAndGetModels(_creditNotePostModel, creditNoteGetModel, false);
             ComparePostAndGetItems(_creditNotePostModel.Items, creditNoteGetModel.Items.Cast<CreditNoteItemListGetModel>().ToList());
-            AssertDeliveryAddress(creditNoteGetModel.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
         [Order(3)]
-        public void GetDetail_ReturnsCreditNote()
+        public async Task GetDetailAsync_ReturnsCreditNote()
         {
             // Act
-            var creditNoteGetModel = CreditNoteClient.Detail(_postedCreditNoteId)
-                .Include(c => c.CreditedInvoice).Get().AssertResult();
+            var creditNoteGetModel = await CreditNoteClient.Detail(_postedCreditNoteId).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(_postedCreditNoteId, creditNoteGetModel.Id);
             ComparePostAndGetModels(_creditNotePostModel, creditNoteGetModel, false);
             ComparePostAndGetItems(_creditNotePostModel.Items, creditNoteGetModel.Items.Cast<CreditNoteItemListGetModel>().ToList());
-            AssertDeliveryAddress(creditNoteGetModel.DeliveryAddress, DeliveryAddressId1);
-            Assert.NotNull(creditNoteGetModel.CreditedInvoice);
-            Assert.AreEqual(creditNoteGetModel.CreditedInvoiceId, creditNoteGetModel.CreditedInvoice.Id);
         }
 
         [Test]
         [Order(4)]
-        public void GetList_ReturnsCreditNotes()
+        public async Task GetListAsync_ReturnsCreditNotes()
         {
             // Act
-            var data = CreditNoteClient
+            var data = await CreditNoteClient
                 .List()
                 .Filter(c => c.Id.IsEqual(_postedCreditNoteId))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -122,29 +119,28 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 
         [Test]
         [Order(5)]
-        public void Update_SuccessfullyUpdatedCreditNote()
+        public async Task UpdateAsync_SuccessfullyUpdatedCreditNote()
         {
             // Arrange
             var creditNotePatchModel = CreatePatchModel();
 
             // Act
-            var creditNoteGetModel = CreditNoteClient.Update(creditNotePatchModel).AssertResult();
+            var creditNoteGetModel = await CreditNoteClient.UpdateAsync(creditNotePatchModel).AssertResult();
 
             // Assert
             Assert.AreEqual(creditNotePatchModel.Id, creditNoteGetModel.Id);
             ComparePatchAndGetModels(creditNotePatchModel, creditNoteGetModel);
-            AssertDeliveryAddress(creditNoteGetModel.DeliveryAddress, DeliveryAddressId2);
         }
 
         [Test]
         [Order(6)]
-        public void Recount_SuccessfullyRecounted()
+        public async Task RecountAsync_SuccessfullyRecounted()
         {
             // Arrange
             var creditNoteRecountPostModel = CreateRecountPostModel();
 
             // Act
-            var creditNoteRecountGetModel = CreditNoteClient.Recount(creditNoteRecountPostModel).AssertResult();
+            var creditNoteRecountGetModel = await CreditNoteClient.RecountAsync(creditNoteRecountPostModel).AssertResult();
 
             // Assert
             ComparePostAndGetRecountModels(creditNoteRecountPostModel, creditNoteRecountGetModel);
@@ -152,14 +148,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 
         [Test]
         [Order(7)]
-        public void OffsetNewCreditNote_SuccessfullyOffset()
+        public async Task OffsetNewCreditNoteAsync_SuccessfullyOffset()
         {
             // Arrange
-            _creditNoteToOffsetPostModel = CreditNoteClient.Default(CreditedIssuedInvoiceId).AssertResult();
+            var result = await IssuedDocumentPaymentClient.FullyUnpayAsync(CreditedIssuedInvoiceId).AssertResult();
+            Assert.True(result);
+            _creditNoteToOffsetPostModel = await CreditNoteClient.DefaultAsync(CreditedIssuedInvoiceId).AssertResult();
             CreatePostModel(_creditNoteToOffsetPostModel);
 
             // Act
-            var offsetCreditNote = CreditNoteClient.Offset(_creditNoteToOffsetPostModel).AssertResult();
+            var offsetCreditNote = await CreditNoteClient.OffsetAsync(_creditNoteToOffsetPostModel).AssertResult();
             _offsetCreditNoteId = offsetCreditNote.Id;
 
             // Assert
@@ -171,16 +169,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 
         [Test]
         [Order(8)]
-        public void OffsetExistingCreditNote_SuccessfullyOffset()
+        public async Task OffsetExistingCreditNoteAsync_SuccessfullyOffset()
         {
             // Arrange
-            var result = IssuedDocumentPaymentClient.FullyUnpay(CreditedIssuedInvoiceId).AssertResult();
+            var result = await IssuedDocumentPaymentClient.FullyUnpayAsync(CreditedIssuedInvoiceId).AssertResult();
             Assert.True(result);
-            result = IssuedDocumentPaymentClient.FullyUnpay(_offsetCreditNoteId).AssertResult();
+            result = await IssuedDocumentPaymentClient.FullyUnpayAsync(_offsetCreditNoteId).AssertResult();
             Assert.True(result);
 
             // Act
-            var offsetCreditNote = CreditNoteClient.Offset(_offsetCreditNoteId).AssertResult();
+            var offsetCreditNote = await CreditNoteClient.OffsetAsync(_offsetCreditNoteId, new CreditNoteOffsetPutModel()).AssertResult();
 
             // Assert
             Assert.AreEqual(_offsetCreditNoteId, offsetCreditNote.Id);
@@ -191,11 +189,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 
         [Test]
         [Order(9)]
-        public void Delete_SuccessfullyDeletedCreditNote()
+        public async Task DeleteAsync_SuccessfullyDeletedCreditNote()
         {
             // Act
-            var result1 = CreditNoteClient.Delete(_postedCreditNoteId).AssertResult();
-            var result2 = CreditNoteClient.Delete(_offsetCreditNoteId).AssertResult();
+            var result1 = await CreditNoteClient.DeleteAsync(_postedCreditNoteId).AssertResult();
+            var result2 = await CreditNoteClient.DeleteAsync(_offsetCreditNoteId).AssertResult();
 
             // Assert
             Assert.True(result1);
@@ -203,12 +201,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         }
 
         [Test]
-        public void CreateFromInvoiceWithMoss_SuccessfullyCreated()
+        public async Task CreateFromInvoiceWithMossAsync_SuccessfullyCreated()
         {
             // Act
-            var model = CreditNoteClient.Default(InvoiceWithMossId).AssertResult();
+            var model = await CreditNoteClient.DefaultAsync(InvoiceWithMossId).AssertResult();
             model.CreditNoteReason = "Creadit note reason";
-            var result = CreditNoteClient.Post(model).AssertResult();
+            var result = await CreditNoteClient.PostAsync(model).AssertResult();
 
             // Assert
             Assert.Greater(result.Id, 0);
@@ -216,7 +214,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(result.Items.First().VatRate, 19);
 
             // Teardown
-            CreditNoteClient.Delete(result.Id);
+            await CreditNoteClient.DeleteAsync(result.Id);
         }
 
         private static void AssertDefault(CreditNotePostModel creditNote)
@@ -511,22 +509,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
                 IsEet = true,
                 IsIncomeTax = true,
                 Items = new List<CreditNoteItemPatchModel>
+            {
+                new CreditNoteItemPatchModel
                 {
-                    new CreditNoteItemPatchModel
-                    {
-                        Id = 1222234,
-                        Amount = 101,
-                        DiscountName = "discount name",
-                        DiscountPercentage = 13.5m,
-                        IsTaxMovement = true,
-                        Name = "name",
-                        PriceListItemId = 107444,
-                        PriceType = PriceType.WithoutVat,
-                        Unit = "unit",
-                        UnitPrice = 123.45m,
-                        VatRateType = VatRateType.Reduced1
-                    }
-                },
+                    Id = 1222234,
+                    Amount = 101,
+                    DiscountName = "discount name",
+                    DiscountPercentage = 13.5m,
+                    IsTaxMovement = true,
+                    Name = "name",
+                    PriceListItemId = 107444,
+                    PriceType = PriceType.WithoutVat,
+                    Unit = "unit",
+                    UnitPrice = 123.45m,
+                    VatRateType = VatRateType.Reduced1
+                }
+            },
                 ItemsTextPrefix = "items prefix",
                 ItemsTextSuffix = "items suffix",
                 Note = "note",
@@ -579,18 +577,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
                 ExchangeRateAmount = 1,
                 PaymentOptionId = 1,
                 Items = new List<CreditNoteItemRecountPostModel>
+            {
+                new CreditNoteItemRecountPostModel
                 {
-                    new CreditNoteItemRecountPostModel
-                    {
-                        Amount = 2,
-                        Id = 5,
-                        Name = "item",
-                        PriceType = PriceType.WithoutVat,
-                        UnitPrice = 100,
-                        VatRateType = VatRateType.Basic,
-                        DiscountPercentage = 10
-                    }
+                    Amount = 2,
+                    Id = 5,
+                    Name = "item",
+                    PriceType = PriceType.WithoutVat,
+                    UnitPrice = 100,
+                    VatRateType = VatRateType.Basic,
+                    DiscountPercentage = 10
                 }
+            }
             };
 
             return model;

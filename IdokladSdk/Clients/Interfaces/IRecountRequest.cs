@@ -15,13 +15,6 @@ namespace IdokladSdk.Clients.Interfaces
         /// Recounts entity.
         /// </summary>
         /// <param name="model">Entity to recount.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        ApiResult<TGetModel> Recount(TRecountPostModel model);
-
-        /// <summary>
-        /// Recounts entity.
-        /// </summary>
-        /// <param name="model">Entity to recount.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
         Task<ApiResult<TGetModel>> RecountAsync(TRecountPostModel model, CancellationToken cancellationToken = default);

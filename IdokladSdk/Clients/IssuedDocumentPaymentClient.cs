@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedDocumentPayment;
 using IdokladSdk.Requests.IssuedDocumentPayment;
@@ -11,7 +13,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with issued document payment endpoints.
     /// </summary>
-    public partial class IssuedDocumentPaymentClient :
+    public class IssuedDocumentPaymentClient :
         BaseClient,
         IDefaultWithIdRequest<IssuedDocumentPaymentPostModel>,
         IDeleteRequest,
@@ -33,15 +35,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/IssuedDocumentPayments";
 
         /// <inheritdoc/>
-        public ApiResult<IssuedDocumentPaymentPostModel> Default(int id)
+        public Task<ApiResult<IssuedDocumentPaymentPostModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Default<IssuedDocumentPaymentPostModel>(id);
+            return DefaultAsync<IssuedDocumentPaymentPostModel>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -51,10 +53,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> FullyUnpay(int invoiceId)
+        public Task<ApiResult<bool>> FullyUnpayAsync(int invoiceId, CancellationToken cancellationToken = default)
         {
             var resourceUrl = $"{ResourceUrl}/FullyUnpay/{invoiceId}";
-            return Put<bool>(resourceUrl);
+            return PutAsync<bool>(resourceUrl, null, cancellationToken);
         }
 
         /// <summary>
@@ -63,12 +65,13 @@ namespace IdokladSdk.Clients
         /// <param name="invoiceId">Id of invoice.</param>
         /// <param name="dateOfPayment">Date of payment.</param>
         /// <param name="salesPosEquipmentId">Sales pos equipment id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if full pay was successful, otherwise <c>false</c>.</returns>
-        public ApiResult<bool> FullyPay(int invoiceId, DateTime? dateOfPayment = null, int? salesPosEquipmentId = null)
+        public Task<ApiResult<bool>> FullyPayAsync(int invoiceId, DateTime? dateOfPayment = null, int? salesPosEquipmentId = null, CancellationToken cancellationToken = default)
         {
             var queryParams = GetQueryParamsForFullyPay(dateOfPayment, salesPosEquipmentId);
             var resourceUrl = $"{ResourceUrl}/FullyPay/{invoiceId}";
-            return Put<bool>(resourceUrl, queryParams);
+            return PutAsync<bool>(resourceUrl, queryParams, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -87,9 +90,9 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        public ApiResult<IssuedDocumentPaymentGetModel> Post(IssuedDocumentPaymentPostModel model)
+        public Task<ApiResult<IssuedDocumentPaymentGetModel>> PostAsync(IssuedDocumentPaymentPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<IssuedDocumentPaymentPostModel, IssuedDocumentPaymentGetModel>(model);
+            return PostAsync<IssuedDocumentPaymentPostModel, IssuedDocumentPaymentGetModel>(model, cancellationToken);
         }
 
         private Dictionary<string, string> GetQueryParamsForFullyPay(DateTime? dateOfPayment, int? salesPosEquipmentId)

@@ -15,13 +15,6 @@ namespace IdokladSdk.Clients.Interfaces
         /// Updates entity.
         /// </summary>
         /// <param name="model">Updated entity.</param>
-        /// <returns><see cref="ApiResult{T}"/> instance.</returns>
-        ApiResult<TGetModel> Update(TPatchModel model);
-
-        /// <summary>
-        /// Updates entity.
-        /// </summary>
-        /// <param name="model">Updated entity.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{T}"/> instance.</returns>
         Task<ApiResult<TGetModel>> UpdateAsync(TPatchModel model, CancellationToken cancellationToken = default);

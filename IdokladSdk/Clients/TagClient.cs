@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Tag;
 using IdokladSdk.Requests.Tag;
 using IdokladSdk.Response;
@@ -8,7 +10,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// TagClient.
     /// </summary>
-    public partial class TagClient : BaseClient,
+    public class TagClient : BaseClient,
         IDeleteRequest,
         IEntityList<TagList>,
         IPatchRequest<TagPatchModel, TagGetModel>,
@@ -27,9 +29,9 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/Tags";
 
         /// <inheritdoc />
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -39,15 +41,15 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<TagGetModel> Post(TagPostModel model)
+        public Task<ApiResult<TagGetModel>> PostAsync(TagPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<TagPostModel, TagGetModel>(model);
+            return PostAsync<TagPostModel, TagGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<TagGetModel> Update(TagPatchModel model)
+        public Task<ApiResult<TagGetModel>> UpdateAsync(TagPatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<TagPatchModel, TagGetModel>(model);
+            return PatchAsync<TagPatchModel, TagGetModel>(model, cancellationToken);
         }
     }
 }

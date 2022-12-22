@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Readonly;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -10,7 +11,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
 {
     [TestFixture]
-    public partial class ExchangeRateTests : TestBase
+    public class ExchangeRateTests : TestBase
     {
         private const int Id = 2;
         private ExchangeRateClient _client;
@@ -23,12 +24,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void Detail_SuccessfullyGet()
+        public async Task DetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .Detail(Id)
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert
@@ -37,13 +38,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void Detail_WithParameters_SuccessfullyGet()
+        public async Task DetailAsync_WithParameters_SuccessfullyGet()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .Detail(Id)
                 .Include(x => x.Currency)
-                .Get<ExchangeRateTestDetail>()
+                .GetAsync<ExchangeRateTestDetail>())
                 .AssertResult();
 
             // Assert
@@ -56,12 +57,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void List_ReturnsNonEmptyList()
+        public async Task ListAsync_ReturnsNonEmptyList()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .List()
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert
@@ -73,19 +74,19 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void List_WithParameters_ReturnsCorrectResult()
+        public async Task ListAsync_WithParameters_ReturnsCorrectResult()
         {
             // Act
             var currencyId = 2;
             var testDate = new DateTime(2019, 1, 1);
             var exchangeListId = 2;
-            var data = _client
+            var data = (await _client
                 .List()
                 .Filter(x => x.CurrencyId.IsEqual(currencyId))
                 .Filter(x => x.Date.IsGreaterThan(testDate))
                 .Filter(x => x.ExchangeListId.IsNotEqual(exchangeListId))
                 .Sort(x => x.Id.Desc())
-                .Get<ExchangeRateTestList>()
+                .GetAsync<ExchangeRateTestList>())
                 .AssertResult();
 
             // Assert

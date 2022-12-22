@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.StockMovement;
 using IdokladSdk.Requests.StockMovement;
@@ -9,7 +11,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with stock movement endpoints.
     /// </summary>
-    public partial class StockMovementClient : BaseClient,
+    public class StockMovementClient : BaseClient,
         IDefaultWithIdRequest<StockMovementPostModel>,
         IDeleteRequest,
         IEntityDetail<StockMovementDetail>,
@@ -31,15 +33,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/StockMovements";
 
         /// <inheritdoc/>
-        public ApiResult<StockMovementPostModel> Default(int priceListItemId)
+        public Task<ApiResult<StockMovementPostModel>> DefaultAsync(int priceListItemId, CancellationToken cancellationToken = default)
         {
-            return Get<StockMovementPostModel>(ResourceUrl + $"/Default/{priceListItemId}");
+            return GetAsync<StockMovementPostModel>(ResourceUrl + $"/Default/{priceListItemId}", null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -55,21 +57,21 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<StockMovementGetModel> Post(StockMovementPostModel model)
+        public Task<ApiResult<StockMovementGetModel>> PostAsync(StockMovementPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<StockMovementPostModel, StockMovementGetModel>(model);
+            return PostAsync<StockMovementPostModel, StockMovementGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiBatchResult<StockMovementGetModel> Post(List<StockMovementPostModel> models)
+        public Task<ApiBatchResult<StockMovementGetModel>> PostAsync(List<StockMovementPostModel> models, CancellationToken cancellationToken = default)
         {
-            return Post<StockMovementPostModel, StockMovementGetModel>(models);
+            return PostAsync<StockMovementPostModel, StockMovementGetModel>(models, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<StockMovementGetModel> Update(StockMovementPatchModel model)
+        public Task<ApiResult<StockMovementGetModel>> UpdateAsync(StockMovementPatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<StockMovementPatchModel, StockMovementGetModel>(model);
+            return PatchAsync<StockMovementPatchModel, StockMovementGetModel>(model, cancellationToken);
         }
     }
 }

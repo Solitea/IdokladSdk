@@ -16,33 +16,18 @@ namespace IdokladSdk.Requests.Core.Interfaces
         /// <summary>
         /// Retrieves a list of entities.
         /// </summary>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        ApiResult<Page<TModel>> Get();
-
-        /// <inheritdoc cref="Get"/>
         /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
         Task<ApiResult<Page<TModel>>> GetAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves a list of entities mapped to custom type.
         /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <typeparam name="TCustomModel">Custom model type.</typeparam>
         /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        ApiResult<Page<TCustomModel>> Get<TCustomModel>()
-            where TCustomModel : new();
-
-        /// <inheritdoc cref="Get{TCustomModel}()"/>
-        /// <param name="cancellationToken">Cancellation token.</param>
         Task<ApiResult<Page<TCustomModel>>> GetAsync<TCustomModel>(CancellationToken cancellationToken = default)
             where TCustomModel : new();
-
-        /// <summary>
-        /// Retrieves a list of entities and transforms each entity to custom type by calling a transform function.
-        /// </summary>
-        /// <param name="selector">A transform function to apply to each source element.</param>
-        /// <typeparam name="TResult">Return type.</typeparam>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        ApiResult<Page<TResult>> Get<TResult>(Expression<Func<TModel, TResult>> selector);
 
         /// <summary>
         /// Retrieves a list of entities and transforms each entity to custom type by calling a transform function.

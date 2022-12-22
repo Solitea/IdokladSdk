@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Requests.Contact;
 using IdokladSdk.Response;
@@ -8,7 +10,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with contact endpoints.
     /// </summary>
-    public partial class ContactClient :
+    public class ContactClient :
         BaseClient,
         IDeleteRequest,
         IDefaultRequest<ContactPostModel>,
@@ -42,27 +44,27 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        public ApiResult<ContactGetModel> Post(ContactPostModel model)
+        public Task<ApiResult<ContactGetModel>> PostAsync(ContactPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<ContactPostModel, ContactGetModel>(model);
+            return PostAsync<ContactPostModel, ContactGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<ContactGetModel> Update(ContactPatchModel model)
+        public Task<ApiResult<ContactGetModel>> UpdateAsync(ContactPatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<ContactPatchModel, ContactGetModel>(model);
+            return PatchAsync<ContactPatchModel, ContactGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<ContactPostModel> Default()
+        public Task<ApiResult<ContactPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return Default<ContactPostModel>();
+            return DefaultAsync<ContactPostModel>(cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
     }
 }

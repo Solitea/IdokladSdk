@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Authentication.Extensions;
 using IdokladSdk.Authentication.Models;
-using RestSharp;
 
 namespace IdokladSdk.Authentication
 {
@@ -52,23 +54,27 @@ namespace IdokladSdk.Authentication
         public DokladConfiguration Configuration { get; set; }
 
         /// <inheritdoc/>
-        public Tokenizer GetToken()
+        public async Task<Tokenizer> GetTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
         {
-            var client = new RestClient(Configuration.IdentityServerTokenUrl);
             var request = PrepareRequest();
+            var tokenizer = await httpClient.SendRequestAsync(request, cancellationToken).ConfigureAwait(false);
 
-            return client.RequestClientCredentialsToken(request);
+            return tokenizer;
         }
 
         /// <inheritdoc/>
-        public Tokenizer RefreshAccessToken() => throw new NotSupportedException(AuthenticationMessageConstants.ClientCredetialsRefreshTokenNotSupported);
+        public Task<Tokenizer> RefreshAccessTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
+        {
+            throw new NotSupportedException(AuthenticationMessageConstants.ClientCredetialsRefreshTokenNotSupported);
+        }
 
         private ClientCredentialsTokenRequest PrepareRequest()
         {
             return new ClientCredentialsTokenRequest
             {
                 ClientId = _clientId,
-                ClientSecret = _clientSecret
+                ClientSecret = _clientSecret,
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
     }

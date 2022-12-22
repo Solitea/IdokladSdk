@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
@@ -19,7 +20,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
     /// IssuedInvoiceTests.
     /// </summary>
     [TestFixture]
-    public partial class IssuedInvoiceTests : TestBase
+    public class IssuedInvoiceTests : TestBase
     {
         private const int DeliveryAddressId1 = 11;
         private const int DeliveryAddressId2 = 12;
@@ -42,10 +43,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyCreated()
+        public async Task PostAsync_SuccessfullyCreated()
         {
             // Arrange
-            _issuedInvoicePostModel = _issuedInvoiceClient.Default().AssertResult();
+            _issuedInvoicePostModel = await _issuedInvoiceClient.DefaultAsync().AssertResult();
             _issuedInvoicePostModel.PartnerId = PartnerId;
             _issuedInvoicePostModel.DeliveryAddressId = DeliveryAddressId1;
             _issuedInvoicePostModel.Description = "Invoice";
@@ -57,7 +58,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             });
 
             // Act
-            var data = _issuedInvoiceClient.Post(_issuedInvoicePostModel).AssertResult();
+            var data = await _issuedInvoiceClient.PostAsync(_issuedInvoicePostModel).AssertResult();
             _issuedInvoiceId = data.Id;
 
             // Assert
@@ -70,10 +71,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
         [Test]
         [Order(2)]
-        public void Get_SuccessfullyGet()
+        public async Task GetAsync_SuccessfullyGet()
         {
             // Act
-            var data = _issuedInvoiceClient.Detail(_issuedInvoiceId).Get().AssertResult();
+            var data = await _issuedInvoiceClient.Detail(_issuedInvoiceId).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(_issuedInvoiceId, data.Id);
@@ -82,11 +83,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
         [Test]
         [Order(3)]
-        public void Get_Expand_SuccessfullyGet()
+        public async Task GetAsync_Expand_SuccessfullyGet()
         {
             // Act
-            var data = _issuedInvoiceClient.Detail(_issuedInvoiceId)
-                .Include(s => s.Partner).Get().AssertResult();
+            var data = await _issuedInvoiceClient.Detail(_issuedInvoiceId)
+                .Include(s => s.Partner).GetAsync().AssertResult();
 
             Assert.AreEqual(_issuedInvoiceId, data.Id);
             Assert.IsNotNull(data.Partner);
@@ -94,7 +95,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
         [Test]
         [Order(4)]
-        public void Update_SuccessfullyUpdated()
+        public async Task Update_SuccessfullyUpdated()
         {
             var model = new IssuedInvoicePatchModel
             {
@@ -109,7 +110,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             };
 
             // Act
-            var data = _issuedInvoiceClient.Update(model).AssertResult();
+            var data = await _issuedInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
             Assert.AreEqual(model.Description, data.Description);
@@ -120,20 +121,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
         [Test]
         [Order(5)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = _issuedInvoiceClient.Delete(_issuedInvoiceId).AssertResult();
+            var data = await _issuedInvoiceClient.DeleteAsync(_issuedInvoiceId).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
         }
 
         [Test]
-        public void GetRecurrenceFromInvoice_SuccessfullyReturned()
+        public async Task GetRecurrenceFromInvoiceAsync_SuccessfullyReturned()
         {
             // Act
-            var data = _issuedInvoiceClient.Recurrence(InvoiceId).AssertResult();
+            var data = await _issuedInvoiceClient.RecurrenceAsync(InvoiceId).AssertResult();
 
             // Assert
             Assert.IsNotNull(data);
@@ -142,10 +143,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         }
 
         [Test]
-        public void GetList_SuccessfullyReturned()
+        public async Task GetListAsync_SuccessfullyReturned()
         {
             // Act
-            var data = _issuedInvoiceClient.List().Get().AssertResult();
+            var data = await _issuedInvoiceClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -153,7 +154,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         }
 
         [Test]
-        public void Recount_SuccessfullyRecounted()
+        public async Task RecountAsync_SuccessfullyRecounted()
         {
             // Arrange
             var item = new IssuedInvoiceItemRecountPostModel
@@ -177,7 +178,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             };
 
             // Act
-            var data = _issuedInvoiceClient.Recount(model).AssertResult();
+            var data = await _issuedInvoiceClient.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeReduce);
@@ -193,7 +194,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         }
 
         [Test]
-        public void Recount_ForeignCurrency_SuccessfullyRecounted()
+        public async Task Recount_ForeignCurrency_SuccessfullyRecountedAsync()
         {
             // Arrange
             var item = new IssuedInvoiceItemRecountPostModel
@@ -218,7 +219,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             };
 
             // Act
-            var result = _issuedInvoiceClient.Recount(model).AssertResult();
+            var result = await _issuedInvoiceClient.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = result.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
@@ -230,13 +231,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         }
 
         [Test]
-        public void Copy_SuccessfullyGetPosModel()
+        public async Task Copy_SuccessfullyGetPosModelAsync()
         {
             // Arrange
-            var invoiceToCopy = _issuedInvoiceClient.Detail(InvoiceId).Get().AssertResult();
+            var invoiceToCopy = await _issuedInvoiceClient.Detail(InvoiceId).GetAsync().AssertResult();
 
             // Act
-            var data = _issuedInvoiceClient.Copy(InvoiceId).AssertResult();
+            var data = await _issuedInvoiceClient.CopyAsync(InvoiceId).AssertResult();
 
             // Assert
             Assert.AreEqual(invoiceToCopy.Description, data.Description);
@@ -246,10 +247,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         }
 
         [Test]
-        public void PostWithOssRegime_SuccessfullyCreated()
+        public async Task PostWithOssRegimeAsync_SuccessfullyCreated()
         {
             // Arrange
-            _issuedInvoicePostModel = _issuedInvoiceClient.Default().AssertResult();
+            _issuedInvoicePostModel = await _issuedInvoiceClient.DefaultAsync().AssertResult();
             _issuedInvoicePostModel.PartnerId = GermanPartnerId;
             _issuedInvoicePostModel.Description = "MossTest";
             _issuedInvoicePostModel.HasVatRegimeOss = true;
@@ -262,7 +263,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             });
 
             // Act
-            var data = _issuedInvoiceClient.Post(_issuedInvoicePostModel).AssertResult();
+            var data = await _issuedInvoiceClient.PostAsync(_issuedInvoicePostModel).AssertResult();
 
             // Assert
             Assert.That(data.HasVatRegimeOss, Is.True);
@@ -271,17 +272,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             Assert.AreEqual(data.Items.First().VatRate, 19);
 
             // Teardown
-            _issuedInvoiceClient.Delete(data.Id);
+            await _issuedInvoiceClient.DeleteAsync(data.Id);
         }
 
         [Test]
-        public void Accounting_SuccessfullyAccounted()
+        public async Task Accounting_SuccessfullyAccountedAsync()
         {
             // Arrange
-            var model = _proformaInvoiceClient.GetInvoiceForAccount(ProformaInvoiceId).AssertResult();
+            var model = await _proformaInvoiceClient.GetInvoiceForAccountAsync(ProformaInvoiceId).AssertResult();
 
             // Act
-            var data = _issuedInvoiceClient.Post(model).AssertResult();
+            var data = await _issuedInvoiceClient.PostAsync(model).AssertResult();
 
             // Assert
             var item = data.Items.Where(i => i.ItemType == IssuedInvoiceItemType.ItemTypeReduce);
@@ -289,21 +290,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             Assert.That(data.ProformaInvoices, Is.Not.Null.And.Count.EqualTo(1).And.Contains(ProformaInvoiceId));
 
             // Teardown
-            _issuedInvoiceClient.Delete(data.Id);
+            await _issuedInvoiceClient.DeleteAsync(data.Id);
         }
 
         [Test]
-        public void Post_NormalInvoiceWithWrongItemType_ThrowsException()
+        public async Task Post_NormalInvoiceWithWrongItemType_ThrowsExceptionAsync()
         {
             // Arrange
-            var model = _issuedInvoiceClient.Default().AssertResult();
+            var model = await _issuedInvoiceClient.DefaultAsync().AssertResult();
             model.Items[0].ItemType = PostIssuedInvoiceItemType.ItemTypeReduce;
 
             // Act
-            TestDelegate action = () => _issuedInvoiceClient.Post(model).AssertResult();
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await _issuedInvoiceClient.PostAsync(model).AssertResult());
 
             // Assert
-            Assert.That(action, Throws.Exception.TypeOf<ValidationException>().And.Message.Contains("normal items"));
+            Assert.That(exception, Has.Message.Contains("normal items"));
         }
 
         private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)

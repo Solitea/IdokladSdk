@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -12,7 +13,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 {
     [TestFixture]
-    public partial class PriceListItemTests : TestBase
+    public class PriceListItemTests : TestBase
     {
         private readonly List<int> _newPriceListItems = new List<int>();
         private int _newPriceListItemId = 0;
@@ -32,26 +33,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         }
 
         [OneTimeTearDown]
-        public void OneTimeTearDown()
+        public async Task OneTimeTearDown()
         {
             foreach (var id in _newPriceListItems)
             {
-                PriceListItemClient.Delete(id);
+                await PriceListItemClient.DeleteAsync(id);
             }
         }
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyPosted()
+        public async Task PostAsync_SuccessfullyPosted()
         {
             // Arrange
-            _priceListItemPostModel = PriceListItemClient.Default().AssertResult();
+            _priceListItemPostModel = (await PriceListItemClient.DefaultAsync()).AssertResult();
             SetPostModel();
 
             // Act
-            var data = PriceListItemClient.Post(_priceListItemPostModel).AssertResult();
+            var data = (await PriceListItemClient.PostAsync(_priceListItemPostModel)).AssertResult();
             _newPriceListItemId = data.Id;
-            _newPriceListItems.Add(_newPriceListItemId);
 
             // Assert
             Assert.Greater(data.Id, 0);
@@ -60,10 +60,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(2)]
-        public void GetDetail_SuccessfullyGet()
+        public async Task GetDetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = PriceListItemClient.Detail(_newPriceListItemId).Get().AssertResult();
+            var data = (await PriceListItemClient.Detail(_newPriceListItemId).GetAsync()).AssertResult();
 
             // Assert
             Assert.AreEqual(_newPriceListItemId, data.Id);
@@ -72,13 +72,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(3)]
-        public void Update_SuccessfullyUpdated()
+        public async Task UpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
             var priceListItemPatchModel = CreatePatchModel();
 
             // Act
-            var data = PriceListItemClient.Update(priceListItemPatchModel).AssertResult();
+            var data = (await PriceListItemClient.UpdateAsync(priceListItemPatchModel)).AssertResult();
             _dateLastChange = data.Metadata.DateLastChange;
 
             // Assert
@@ -87,11 +87,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(4)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = PriceListItemClient.Delete(_newPriceListItemId, true).AssertResult();
-            _newPriceListItems.Remove(_newPriceListItemId);
+            var data = (await PriceListItemClient.DeleteAsync(_newPriceListItemId, true)).AssertResult();
 
             // Assert
             Assert.True(data);
@@ -99,18 +98,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(5)]
-        public void BatchPost_SuccessfullyPosted()
+        public async Task BatchPostAsync_SuccessfullyPosted()
         {
-            // Arrange
-            _priceListItemPostModel = PriceListItemClient.Default().AssertResult();
+            _priceListItemPostModel = (await PriceListItemClient.DefaultAsync()).AssertResult();
             SetPostModel();
             var batch = new List<PriceListItemPostModel> { _priceListItemPostModel };
 
             // Act
-            var data = PriceListItemClient.Post(batch).AssertResult();
+            var data = await PriceListItemClient.PostAsync(batch).AssertResult();
             var priceListItemGetModel = data.First();
             _newPriceListItemId = priceListItemGetModel.Id;
-            _newPriceListItems.Add(_newPriceListItemId);
 
             // Assert
             Assert.Greater(priceListItemGetModel.Id, 0);
@@ -119,13 +116,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(6)]
-        public void GetListWithFilter_ReturnsList()
+        public async Task GetListWithFilterAsync_ReturnsList()
         {
             // Act
-            var data = PriceListItemClient
+            var data = await PriceListItemClient
                 .List()
                 .Filter(f => f.DateLastChange.IsGreaterThanOrEqual(_dateLastChange))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -136,14 +133,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(7)]
-        public void BatchUpdate_SuccessfullyUpdated()
+        public async Task BatchUpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
             var priceListItemPatchModel = CreatePatchModel();
             var batch = new List<PriceListItemPatchModel> { priceListItemPatchModel };
 
             // Act
-            var data = PriceListItemClient.Update(batch).AssertResult();
+            var data = await PriceListItemClient.UpdateAsync(batch).AssertResult();
             var priceListItemGetModel = data.First();
 
             // Assert
@@ -152,27 +149,26 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(8)]
-        public void BatchDelete_SuccessfullyDeleted()
+        public async Task BatchDeleteAsync_SuccessfullyDeleted()
         {
             // Arrange
             var idBatch = new List<int> { _newPriceListItemId };
 
             // Act
-            var data = PriceListItemClient.Delete(idBatch, true).AssertResult();
-            _newPriceListItems.Remove(_newPriceListItemId);
+            var data = await PriceListItemClient.DeleteAsync(idBatch, true).AssertResult();
 
             // Assert
             Assert.True(data.First());
         }
 
         [Test]
-        public void GetListWithSort_ReturnsList()
+        public async Task GetListWithSortAsync_ReturnsList()
         {
             // Act
-            var data = PriceListItemClient
+            var data = (await PriceListItemClient
                 .List()
                 .Sort(x => x.Name.Desc())
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert
@@ -182,22 +178,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         }
 
         [Test]
-        public void Post_AsStockItemWithInitialData_SuccessfullyPosted()
+        public async Task Post_AsStockItemWithInitialData_SuccessfullyPostedAsync()
         {
             // Arrange
-            _priceListItemPostModel = PriceListItemClient.Default().AssertResult();
+            _priceListItemPostModel = await PriceListItemClient.DefaultAsync().AssertResult();
             SetPostModel();
             _priceListItemPostModel.InitialDateStockBalance = new DateTime(2020, 01, 01).SetKindUtc();
             _priceListItemPostModel.InitialStockBalance = 100;
 
             // Act
-            var data = PriceListItemClient.Post(_priceListItemPostModel).AssertResult();
+            var data = await PriceListItemClient.PostAsync(_priceListItemPostModel).AssertResult();
             _newPriceListItems.Add(data.Id);
 
             // Assert
             Assert.Greater(data.Id, 0);
-            var stockMovements = StockMovementClient.List()
-                .Filter(f => f.PriceListItemId.IsEqual(data.Id)).Get()
+            var stockMovements = await StockMovementClient.List()
+                .Filter(f => f.PriceListItemId.IsEqual(data.Id)).GetAsync()
                 .AssertResult();
             var initialStockMovement = stockMovements.Items.FirstOrDefault();
             Assert.NotNull(initialStockMovement);

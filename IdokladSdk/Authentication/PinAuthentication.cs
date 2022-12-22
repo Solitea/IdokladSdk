@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Authentication.Extensions;
 using IdokladSdk.Authentication.Models;
-using RestSharp;
 
 namespace IdokladSdk.Authentication
 {
@@ -56,25 +58,21 @@ namespace IdokladSdk.Authentication
         public DokladConfiguration Configuration { get; set; }
 
         /// <inheritdoc/>
-        public Tokenizer GetToken()
+        public async Task<Tokenizer> GetTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
         {
-            var client = new RestClient(Configuration.IdentityServerTokenUrl);
             var request = PrepareTokenRequest();
+            var tokenizer = await httpClient.SendRequestAsync(request, cancellationToken);
 
-            var response = client.RequestPinToken(request);
-
-            return CopyCredentials(response);
+            return CopyCredentials(tokenizer);
         }
 
         /// <inheritdoc/>
-        public Tokenizer RefreshAccessToken()
+        public async Task<Tokenizer> RefreshAccessTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
         {
-            var client = new RestClient(Configuration.IdentityServerTokenUrl);
             var request = PrepareRefreshTokenRequest();
+            var tokenizer = await httpClient.SendRequestAsync(request, cancellationToken);
 
-            var response = client.RequestRefreshToken(request);
-
-            return CopyCredentials(response);
+            return CopyCredentials(tokenizer);
         }
 
         private Tokenizer CopyCredentials(Tokenizer token)
@@ -94,7 +92,8 @@ namespace IdokladSdk.Authentication
             {
                 ClientId = _clientId,
                 ClientSecret = _clientSecret,
-                Pin = _pin
+                Pin = _pin,
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
 
@@ -111,7 +110,8 @@ namespace IdokladSdk.Authentication
                 ClientSecret = _clientSecret,
                 RefreshToken = RefreshToken,
                 GrantType = GrantType.Pin,
-                Scope = "eet offline_access"
+                Scope = "eet offline_access",
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
     }

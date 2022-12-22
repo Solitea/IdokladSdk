@@ -15,13 +15,6 @@ namespace IdokladSdk.Requests.Mail.Interfaces
         /// Sends email.
         /// </summary>
         /// <param name="settings">Settings.</param>
-        /// <returns>Result.</returns>
-        ApiResult<TResult> Send(TSettings settings);
-
-        /// <summary>
-        /// Sends email.
-        /// </summary>
-        /// <param name="settings">Settings.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Result.</returns>
         Task<ApiResult<TResult>> SendAsync(TSettings settings, CancellationToken cancellationToken = default);

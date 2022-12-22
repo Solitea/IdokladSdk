@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.Exceptions;
 using IdokladSdk.Response;
+using IdokladSdk.Serialization;
 using IdokladSdk.UnitTests.Tests.Validation.Exceptions;
 using IdokladSdk.Validation;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using RestSharp;
 
 namespace IdokladSdk.UnitTests.Tests.Validation
 {
@@ -18,40 +20,42 @@ namespace IdokladSdk.UnitTests.Tests.Validation
         public void ApiResult_BasicSchema_Valid()
         {
             // Arrange
-            IRestResponse<ApiResult<bool>> response = new RestResponse<ApiResult<bool>>
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = JsonConvert.SerializeObject(GetDefaultApiresult())
+                Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiResult()))
             };
 
             // Assert
-            Assert.DoesNotThrow(() => ApiResultValidator.ValidateResponse(response, null));
+            Assert.DoesNotThrowAsync(async () =>
+                    await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<bool>>, null));
         }
 
         [Test]
         public void ApiBatchResult_BatchSchema_Valid()
         {
             // Arrange
-            IRestResponse<ApiBatchResult<bool>> response = new RestResponse<ApiBatchResult<bool>>
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = JsonConvert.SerializeObject(GetDefaultApiBatchResult())
+                Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiBatchResult()))
             };
 
             // Assert
-            Assert.DoesNotThrow(() => ApiResultValidator.ValidateResponse(response, null));
+            Assert.DoesNotThrowAsync(async () =>
+                    await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<bool>>, null));
         }
 
         [Test]
         public void ApiResult_InvokeHandler_ThrowsException()
         {
             // Arrange
-            IRestResponse<ApiResult<bool>> response = new RestResponse<ApiResult<bool>>
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = JsonConvert.SerializeObject(GetDefaultApiresult()),
-                Data = GetDefaultApiresult()
+                Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiResult()))
             };
 
             // Assert
-            Assert.Throws<CustomTestException>(() => ApiResultValidator.ValidateResponse(response, ApiResultHandler));
+            Assert.ThrowsAsync<CustomTestException>(async () =>
+                    await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<bool>>, ApiResultHandler));
 
             void ApiResultHandler(ApiResult apiResult)
             {
@@ -66,14 +70,14 @@ namespace IdokladSdk.UnitTests.Tests.Validation
         public void ApiBatchResult_InvokeHandler_ThrowsException()
         {
             // Arrange
-            IRestResponse<ApiBatchResult<bool>> response = new RestResponse<ApiBatchResult<bool>>
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = JsonConvert.SerializeObject(GetDefaultApiBatchResult()),
-                Data = GetDefaultApiBatchResult()
+                Content = new StringContent(JsonConvert.SerializeObject(GetDefaultApiBatchResult()))
             };
 
             // Assert
-            Assert.Throws<CustomTestException>(() => ApiResultValidator.ValidateResponse(response, ApiBatchResultHandler));
+            Assert.ThrowsAsync<CustomTestException>(async () =>
+                    await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<bool>>, ApiBatchResultHandler));
 
             void ApiBatchResultHandler(ApiBatchResult apiResult)
             {
@@ -88,37 +92,39 @@ namespace IdokladSdk.UnitTests.Tests.Validation
         public void ApiResult_ServiceUnavailabe_Throws()
         {
             // Arrange
-            IRestResponse<ApiResult<bool>> response = new RestResponse<ApiResult<bool>>
-            {
-                StatusCode = HttpStatusCode.ServiceUnavailable
-            };
+            var response = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
 
             // Assert
-            Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response, null));
+            Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response));
         }
 
         [Test]
         public void ApiBatchResult_ServiceUnavailabe_Throws()
         {
             // Arrange
-            IRestResponse<ApiBatchResult<bool>> response = new RestResponse<ApiBatchResult<bool>>
-            {
-                StatusCode = HttpStatusCode.ServiceUnavailable
-            };
+            var response = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
 
             // Assert
-            Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response, null));
+            Assert.Throws<IdokladUnavailableException>(() => ApiResultValidator.ValidateResponse(response));
+        }
+
+        private async Task<T> GetDataAsync<T>(HttpResponseMessage response)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<T>(content, new CommonJsonSerializerSettings());
+
+            return data;
         }
 
         private ApiBatchResult<bool> GetDefaultApiBatchResult()
         {
             return new ApiBatchResult<bool>
             {
-                Results = new List<ApiResult<bool>> { GetDefaultApiresult() }
+                Results = new List<ApiResult<bool>> { GetDefaultApiResult() }
             };
         }
 
-        private ApiResult<bool> GetDefaultApiresult()
+        private ApiResult<bool> GetDefaultApiResult()
         {
             return new ApiResult<bool> { Message = string.Empty };
         }

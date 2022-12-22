@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Enums;
 using IdokladSdk.Requests.Core;
 using IdokladSdk.Requests.Log;
@@ -30,7 +31,7 @@ namespace IdokladSdk.Clients
 
         /// <summary>
         /// List of entities. Returns an instance which allows operations on list of entities (filtering, sorting, etc.)
-        /// and retrieving of data by calling <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}.Get()"/>.
+        /// and retrieving of data by calling <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}.GetAsync(CancellationToken)"/>.
         /// </summary>
         /// <param name="entityId">Entity Id.</param>
         /// <param name="entityType">Entity type.</param>

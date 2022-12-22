@@ -1,66 +1,72 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using IdokladSdk.Authentication.Extensions;
 using IdokladSdk.Authentication.Models;
 using IdokladSdk.Exceptions;
+using IdokladSdk.UnitTests.Mocks;
 using NSubstitute;
 using NUnit.Framework;
-using RestSharp;
 
 namespace IdokladSdk.UnitTests.Tests.Authentication.Extensions
 {
     [TestFixture]
     public partial class RestClientExtensionsTests
     {
-        private IRestClient _serviceUnavailableClient;
+        private HttpClient _serviceUnavailableClient;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            _serviceUnavailableClient = Substitute.For<IRestClient>();
-            _serviceUnavailableClient.Execute(Arg.Any<IRestRequest>()).Returns(new RestResponse { StatusCode = HttpStatusCode.ServiceUnavailable });
-            _serviceUnavailableClient.ExecuteAsync(Arg.Any<IRestRequest>(), Arg.Any<Method>(), Arg.Any<CancellationToken>())
-                                        .Returns(new RestResponse { StatusCode = HttpStatusCode.ServiceUnavailable });
+            var httpHandler = Substitute.ForPartsOf<MockHttpMessageHandler>();
+            _serviceUnavailableClient = new HttpClient(httpHandler)
+            {
+                BaseAddress = new Uri("https://api.idoklad.cz")
+            };
+
+            httpHandler.MockSend(Arg.Any<HttpRequestMessage>(), Arg.Any<CancellationToken>())
+                .Returns(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable));
         }
 
         [Test]
-        public void RequestAuthorizationCodeToken_ServiceUnavailable_Throws()
+        public void RequestAuthorizationCodeToken_ServiceUnavailable_ThrowsAsync()
         {
             // Arrange
             var request = new AuthorizationCodeTokenRequest();
 
             // Assert
-            Assert.Throws<IdokladUnavailableException>(() => _serviceUnavailableClient.RequestAuthorizationCodeToken(request));
+            Assert.ThrowsAsync<IdokladUnavailableException>(async () => await _serviceUnavailableClient.SendRequestAsync(request));
         }
 
         [Test]
-        public void RequestClientCredentialsToken_ServiceUnavailable_Throws()
+        public void RequestClientCredentialsToken_ServiceUnavailable_ThrowsAsync()
         {
             // Arrange
             var request = new ClientCredentialsTokenRequest();
 
             // Assert
-            Assert.Throws<IdokladUnavailableException>(() => _serviceUnavailableClient.RequestClientCredentialsToken(request));
+            Assert.ThrowsAsync<IdokladUnavailableException>(async () => await _serviceUnavailableClient.SendRequestAsync(request));
         }
 
         [Test]
-        public void RequestPinToken_ServiceUnavailable_Throws()
+        public void RequestPinToken_ServiceUnavailable_ThrowsAsync()
         {
             // Arrange
             var request = new PinTokenRequest();
 
             // Assert
-            Assert.Throws<IdokladUnavailableException>(() => _serviceUnavailableClient.RequestPinToken(request));
+            Assert.ThrowsAsync<IdokladUnavailableException>(async () => await _serviceUnavailableClient.SendRequestAsync(request));
         }
 
         [Test]
-        public void RequestRefreshToken_ServiceUnavailable_Throws()
+        public void RequestRefreshToken_ServiceUnavailable_ThrowsAsync()
         {
             // Arrange
             var request = new RefreshTokenRequest();
 
             // Assert
-            Assert.Throws<IdokladUnavailableException>(() => _serviceUnavailableClient.RequestRefreshToken(request));
+            Assert.ThrowsAsync<IdokladUnavailableException>(async () => await _serviceUnavailableClient.SendRequestAsync(request));
         }
     }
 }

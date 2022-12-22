@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
@@ -19,7 +20,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
     /// ProformaInvoiceTests.
     /// </summary>
     [TestFixture]
-    public partial class ProformaInvoiceTests : TestBase
+    public class ProformaInvoiceTests : TestBase
     {
         private const int DeliveryAddressId1 = 11;
         private const int DeliveryAddressId2 = 12;
@@ -50,25 +51,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
             foreach (var id in _issuedInvoiceToDeleteIds)
             {
-                _issuedInvoiceClient.Delete(id);
+                await _issuedInvoiceClient.DeleteAsync(id);
             }
 
             foreach (var id in _proformaInvoiceToDeleteIds)
             {
-                _proformaInvoiceClient.Delete(id);
+                await _proformaInvoiceClient.DeleteAsync(id);
             }
         }
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyCreated()
+        public async Task Post_SuccessfullyCreatedAsync()
         {
             // Arrange
-            var proformaInvoicePostModel = _proformaInvoiceClient.Default().AssertResult();
+            var proformaInvoicePostModel = await _proformaInvoiceClient.DefaultAsync().AssertResult();
             proformaInvoicePostModel.PartnerId = PartnerId;
             proformaInvoicePostModel.DeliveryAddressId = DeliveryAddressId1;
             proformaInvoicePostModel.Description = "Test: Update_SuccessfullyUpdated";
@@ -83,7 +84,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             });
 
             // Act
-            var data = _proformaInvoiceClient.Post(proformaInvoicePostModel).AssertResult();
+            var data = await _proformaInvoiceClient.PostAsync(proformaInvoicePostModel).AssertResult();
             _proformaInvoiceId = data.Id;
 
             // Assert
@@ -97,10 +98,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(2)]
-        public void Get_SuccessfullyGet()
+        public async Task Get_SuccessfullyGetAsync()
         {
             // Act
-            var data = _proformaInvoiceClient.Detail(_proformaInvoiceId).Get().AssertResult();
+            var data = await _proformaInvoiceClient.Detail(_proformaInvoiceId).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(_proformaInvoiceId, data.Id);
@@ -109,11 +110,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(3)]
-        public void Get_Expand_SuccessfullyGet()
+        public async Task Get_Expand_SuccessfullyGetAsync()
         {
             // Act
-            var data = _proformaInvoiceClient.Detail(_proformaInvoiceId)
-                .Include(s => s.Partner).Get().AssertResult();
+            var data = await _proformaInvoiceClient.Detail(_proformaInvoiceId)
+                .Include(s => s.Partner).GetAsync().AssertResult();
 
             Assert.AreEqual(_proformaInvoiceId, data.Id);
             Assert.IsNotNull(data.Partner);
@@ -121,7 +122,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(4)]
-        public void Update_SuccessfullyUpdated()
+        public async Task Update_SuccessfullyUpdatedAsync()
         {
             var model = new ProformaInvoicePatchModel
             {
@@ -136,7 +137,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             };
 
             // Act
-            var data = _proformaInvoiceClient.Update(model).AssertResult();
+            var data = await _proformaInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
             Assert.AreEqual(model.Description, data.Description);
@@ -147,13 +148,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(5)]
-        public void Copy_SuccessfullyGetPostModel()
+        public async Task Copy_SuccessfullyGetPostModelAsync()
         {
             // Arrange
-            var invoiceToCopy = _proformaInvoiceClient.Detail(_proformaInvoiceId).Get().AssertResult();
+            var invoiceToCopy = await _proformaInvoiceClient.Detail(_proformaInvoiceId).GetAsync().AssertResult();
 
             // Act
-            var data = _proformaInvoiceClient.Copy(_proformaInvoiceId).AssertResult();
+            var data = await _proformaInvoiceClient.CopyAsync(_proformaInvoiceId).AssertResult();
 
             // Assert
             Assert.AreEqual(invoiceToCopy.Description, data.Description);
@@ -163,10 +164,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
-        public void GetInvoiceForAccount_AlreadyAccounted_ReturnsCorrectErrorCode()
+        public async Task GetInvoiceForAccount_AlreadyAccounted_ReturnsCorrectErrorCodeAsync()
         {
             // Act
-            var result = _proformaInvoiceClient.GetInvoiceForAccount(AccountedProformaInvoiceId);
+            var result = await _proformaInvoiceClient.GetInvoiceForAccountAsync(AccountedProformaInvoiceId);
 
             // Assert
             Assert.False(result.IsSuccess);
@@ -175,10 +176,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
-        public void GetInvoiceForAccount_NotPaid_ReturnsCorrectErrorCode()
+        public async Task GetInvoiceForAccount_NotPaid_ReturnsCorrectErrorCodeAsync()
         {
             // Act
-            var result = _proformaInvoiceClient.GetInvoiceForAccount(UnpaidProformaInvoiceId);
+            var result = await _proformaInvoiceClient.GetInvoiceForAccountAsync(UnpaidProformaInvoiceId);
 
             // Assert
             Assert.False(result.IsSuccess);
@@ -188,10 +189,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(6)]
-        public void GetInvoiceForAccount_SuccessfullyGetIssuedInvoiceAccountPostModel()
+        public async Task GetInvoiceForAccount_SuccessfullyGetIssuedInvoiceAccountPostModelAsync()
         {
             // Act
-            var data = _proformaInvoiceClient.GetInvoiceForAccount(_proformaInvoiceId).AssertResult();
+            var data = await _proformaInvoiceClient.GetInvoiceForAccountAsync(_proformaInvoiceId).AssertResult();
 
             // Assert
             var item = data.Items.FirstOrDefault(i => i.ItemType == PostIssuedInvoiceItemType.ItemTypeReduce);
@@ -202,10 +203,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(7)]
-        public void Account_SuccessfullyAccounted()
+        public async Task Account_SuccessfullyAccountedAsync()
         {
             // Act
-            var data = _proformaInvoiceClient.Account(_proformaInvoiceId).AssertResult();
+            var data = await _proformaInvoiceClient.AccountAsync(_proformaInvoiceId).AssertResult();
             _issuedInvoiceToDeleteIds.Add(data.Id);
 
             // Assert
@@ -215,20 +216,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(8)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task Delete_SuccessfullyDeletedAsync()
         {
             // Act
-            var data = _proformaInvoiceClient.Delete(_proformaInvoiceId).AssertResult();
+            var data = await _proformaInvoiceClient.DeleteAsync(_proformaInvoiceId).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
         }
 
         [Test]
-        public void GetList_SuccessfullyReturned()
+        public async Task GetList_SuccessfullyReturnedAsync()
         {
             // Act
-            var data = _proformaInvoiceClient.List().Get().AssertResult();
+            var data = await _proformaInvoiceClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -236,17 +237,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
-        public void AccountMultipleProformas_SuccessfullyAccounted()
+        public async Task AccountMultipleProformas_SuccessfullyAccountedAsync()
         {
             // Arrange
-            var proformaModel = CreateProformaInvoicePostModel();
-            var proformaId1 = _proformaInvoiceClient.Post(proformaModel).AssertResult().Id;
-            var proformaId2 = _proformaInvoiceClient.Post(proformaModel).AssertResult().Id;
+            var proformaModel = await CreateProformaInvoicePostModelAsync();
+            var proformaId1 = (await _proformaInvoiceClient.PostAsync(proformaModel).AssertResult()).Id;
+            var proformaId2 = (await _proformaInvoiceClient.PostAsync(proformaModel).AssertResult()).Id;
             _proformaInvoiceToDeleteIds.AddRange(new[] { proformaId1, proformaId2 });
             var putModel = new AccountProformaInvoicesPutModel { ProformaIds = new[] { proformaId1, proformaId2 } };
 
             // Act
-            var result = _proformaInvoiceClient.AccountMultipleProformaInvoices(putModel).AssertResult();
+            var result = await _proformaInvoiceClient.AccountMultipleProformaInvoicesAsync(putModel).AssertResult();
             _issuedInvoiceToDeleteIds.Add(result.Id);
 
             // Assert
@@ -254,10 +255,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
-        public void GetRecurrenceFromInvoice_SuccessfullyReturned()
+        public async Task GetRecurrenceFromInvoice_SuccessfullyReturnedAsync()
         {
             // Act
-            var data = _proformaInvoiceClient.Recurrence(UnpaidProformaInvoiceId).AssertResult();
+            var data = await _proformaInvoiceClient.RecurrenceAsync(UnpaidProformaInvoiceId).AssertResult();
 
             // Assert
             Assert.IsNotNull(data);
@@ -266,7 +267,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
-        public void Recount_SuccessfullyRecounted()
+        public async Task Recount_SuccessfullyRecountedAsync()
         {
             // Arrange
             var item = new ProformaInvoiceItemRecountPostModel
@@ -287,7 +288,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             };
 
             // Act
-            var data = _proformaInvoiceClient.Recount(model).AssertResult();
+            var data = await _proformaInvoiceClient.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
@@ -302,7 +303,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
-        public void Recount_ForeignCurrency_SuccessfullyRecounted()
+        public async Task Recount_ForeignCurrency_SuccessfullyRecountedAsync()
         {
             // Arrange
             var item = new ProformaInvoiceItemRecountPostModel
@@ -325,7 +326,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             };
 
             // Act
-            var result = _proformaInvoiceClient.Recount(model).AssertResult();
+            var result = await _proformaInvoiceClient.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = result.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
@@ -347,9 +348,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.NotNull(data.Street);
         }
 
-        private ProformaInvoicePostModel CreateProformaInvoicePostModel()
+        private async Task<ProformaInvoicePostModel> CreateProformaInvoicePostModelAsync()
         {
-            var proformaModel = _proformaInvoiceClient.Default().AssertResult();
+            var proformaModel = await _proformaInvoiceClient.DefaultAsync().AssertResult();
             proformaModel.PartnerId = PartnerId;
             proformaModel.Description = "Invoice";
             proformaModel.DateOfPayment = DateTime.UtcNow.SetKindUtc();

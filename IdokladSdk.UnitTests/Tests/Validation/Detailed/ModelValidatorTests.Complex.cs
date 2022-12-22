@@ -59,16 +59,16 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
                 },
                 Email = "ThisEmailAddressIsProbablyLongerThatMaximumLengthOfThisPropertyAndIsNotValidEmailAddress",
                 Items = new List<ItemModel>
+            {
+                new ItemModel
                 {
-                    new ItemModel
-                    {
-                        Name = "VeryLongItemNameWhichExceedsMaximumItemLength",
-                        Amount = 0,
-                        Price = 0,
-                        Discount = 110,
-                        DiscountName = null
-                    }
+                    Name = "VeryLongItemNameWhichExceedsMaximumItemLength",
+                    Amount = 0,
+                    Price = 0,
+                    Discount = 110,
+                    DiscountName = null
                 }
+            }
             };
             var addressCity = $"{nameof(ComplexModel.Address)}.{nameof(AddressModel.City)}";
             var addressPostalCode = $"{nameof(ComplexModel.Address)}.{nameof(AddressModel.PostalCode)}";

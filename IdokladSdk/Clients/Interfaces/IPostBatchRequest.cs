@@ -18,13 +18,6 @@ namespace IdokladSdk.Clients.Interfaces
         /// Posts new entities.
         /// </summary>
         /// <param name="models">List of entities to be created.</param>
-        /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
-        ApiBatchResult<TGetModel> Post(List<TPostModel> models);
-
-        /// <summary>
-        /// Posts new entities.
-        /// </summary>
-        /// <param name="models">List of entities to be created.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
         Task<ApiBatchResult<TGetModel>> PostAsync(List<TPostModel> models, CancellationToken cancellationToken = default);

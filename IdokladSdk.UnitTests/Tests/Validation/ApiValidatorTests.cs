@@ -135,22 +135,22 @@ namespace IdokladSdk.UnitTests.Tests.Validation
                     DiscountPercentage = 5m
                 },
                 Entities = new List<TestEntity>
+            {
+                new TestEntity
                 {
-                    new TestEntity
-                    {
-                        IdentificationNumber = "nestedInCollection1",
-                        Name = "nestedInCollection1",
-                        NonNullableDate = DateTime.Now.SetKindUtc(),
-                        DiscountPercentage = 5m
-                    },
-                    new TestEntity
-                    {
-                        IdentificationNumber = "nestedInCollection2",
-                        Name = "nestedInCollection2",
-                        NonNullableDate = DateTime.Now.SetKindUtc(),
-                        DiscountPercentage = 5m
-                    },
-                }
+                    IdentificationNumber = "nestedInCollection1",
+                    Name = "nestedInCollection1",
+                    NonNullableDate = DateTime.Now.SetKindUtc(),
+                    DiscountPercentage = 5m
+                },
+                new TestEntity
+                {
+                    IdentificationNumber = "nestedInCollection2",
+                    Name = "nestedInCollection2",
+                    NonNullableDate = DateTime.Now.SetKindUtc(),
+                    DiscountPercentage = 5m
+                },
+            }
             };
 
             // Act
@@ -169,18 +169,18 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             {
                 Entity = new TestEntity(),
                 Entities = new List<TestEntity>
+            {
+                new TestEntity
                 {
-                    new TestEntity
-                    {
-                        Name = "nestedInCollection1",
-                        NonNullableDate = DateTime.Now.SetKindUtc(),
-                        DiscountPercentage = 1000m
-                    },
-                    new TestEntity
-                    {
-                        Name = "nestedInCollection2",
-                    },
-                }
+                    Name = "nestedInCollection1",
+                    NonNullableDate = DateTime.Now.SetKindUtc(),
+                    DiscountPercentage = 1000m
+                },
+                new TestEntity
+                {
+                    Name = "nestedInCollection2",
+                },
+            }
             };
 
             // Act

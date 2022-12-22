@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -11,7 +12,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
 {
     [TestFixture]
-    public partial class EmailTests : TestBase
+    public class EmailTests : TestBase
     {
         private const string MyEmail = "qquc@furusato.tokyo";
         private const string OtherEmail = "qquc@furusato.tok";
@@ -28,7 +29,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         }
 
         [Test]
-        public void Send_CreditNoteEmail_Successfully()
+        public async Task SendAsync_CreditNoteEmail_Successfully()
         {
             // Arrange
             var settings = new CreditNoteEmailSettings
@@ -44,25 +45,24 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var result = MailClient.CreditNoteEmail.Send(settings).AssertResult();
+            var result = await MailClient.CreditNoteEmail.SendAsync(settings).AssertResult();
 
             // Assert
             AssertEmailResult(result);
         }
 
         [Test]
-        public void Send_IssuedDocumentPaymentEmail_Sucessfully()
+        public async Task Send_IssuedDocumentPaymentEmail_SucessfullyAsync()
         {
             // Act
-            var response = MailClient.IssuedDocumentPaymentConfirmationEmail.Send(PaymentId);
-            var result = response.AssertResult();
+            var result = await MailClient.IssuedDocumentPaymentConfirmationEmail.SendAsync(PaymentId).AssertResult();
 
             // Assert
             Assert.IsTrue(result);
         }
 
         [Test]
-        public void Send_ProformaInvoiceEmail_Successfully()
+        public async Task Send_ProformaInvoiceEmail_Successfully()
         {
             // Arrange
             var settings = new ProformaInvoiceEmailSettings
@@ -78,14 +78,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var result = MailClient.ProformaInvoiceEmail.Send(settings).AssertResult();
+            var result = await MailClient.ProformaInvoiceEmail.SendAsync(settings).AssertResult();
 
             // Assert
             AssertEmailResult(result);
         }
 
         [Test]
-        public void Send_SalesOrderEmail_Successfully()
+        public async Task Send_SalesOrderEmail_Successfully()
         {
             // Arrange
             var settings = new SalesOrderEmailSettings
@@ -99,7 +99,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var result = MailClient.SalesOrderEmail.Send(settings).AssertResult();
+            var result = await MailClient.SalesOrderEmail.SendAsync(settings).AssertResult();
 
             // Assert
             Assert.IsTrue(result.Sent.Contains(PartnerEmail));
@@ -108,7 +108,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
 
         [TestCase(RemindersDocumentType.ProformaInvoice, 922399)]
         [TestCase(RemindersDocumentType.IssuedInvoice, 914456)]
-        public void Send_Reminders_SuccessfullySent(RemindersDocumentType documentType, int id)
+        public async Task Send_Reminders_SuccessfullySentAsync(RemindersDocumentType documentType, int id)
         {
             // Arrange
             var settings = new RemindersEmailSettings
@@ -124,7 +124,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var result = MailClient.RemindersEmail.Send(settings).AssertResult();
+            var result = await MailClient.RemindersEmail.SendAsync(settings).AssertResult();
 
             // Assert
             Assert.IsTrue(result.Sent.Contains(PartnerEmail));
@@ -132,36 +132,32 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         }
 
         [Test]
-        public void Send_SalesReceipt_SuccessfullySent()
+        public async Task Send_SalesReceipt_SuccessfullySentAsync()
         {
             // Arrange
-            var salesReceiptId = 224673;
             var settings = new SalesReceiptEmailSettings
             {
-                DocumentId = salesReceiptId,
+                DocumentId = 224673,
                 ReportLanguage = Language.En,
                 EmailBody = "Test sales receipt email.",
                 EmailSubject = "Sales receipt",
                 SendType = SendType.AsLink,
-                SendToAccountant = true,
                 SendToSelf = true,
                 SendToPartner = true,
                 OtherRecipients = new List<string> { OtherEmail }
             };
 
             // Act
-            var result = MailClient.SalesReceiptEmail.Send(settings).AssertResult();
+            var response = await MailClient.SalesReceiptEmail.SendAsync(settings);
+            var result = response.AssertResult();
 
             // Assert
             Assert.IsTrue(result.Sent.Contains(PartnerEmail));
             Assert.IsTrue(!result.NotSent.Any());
-            var salesReceipt = DokladApi.SalesReceiptClient.Detail(salesReceiptId).Get().Data;
-            Assert.AreNotEqual(MailSentType.NotSent, salesReceipt.AccountantSentStatus);
-            Assert.AreNotEqual(MailSentType.NotSent, salesReceipt.PurchaserSentStatus);
         }
 
         [Test]
-        public void Send_IssuedTaxDocument_SuccessfullySent()
+        public async Task Send_IssuedTaxDocument_SuccessfullySent()
         {
             // Arrange
             var issuedTaxDocumentId = 1542;
@@ -178,57 +174,98 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var result = MailClient.IssuedTaxDocumentEmail.Send(settings).AssertResult();
+            var result = await MailClient.IssuedTaxDocumentEmail.SendAsync(settings).AssertResult();
 
             // Assert
             Assert.IsTrue(result.Sent.Contains(PartnerEmail));
             Assert.IsTrue(!result.NotSent.Any());
-            var issuedTaxDocument = DokladApi.IssuedTaxDocumentClient.Detail(issuedTaxDocumentId).Get().Data;
+            var issuedTaxDocument = await DokladApi.IssuedTaxDocumentClient.Detail(issuedTaxDocumentId).GetAsync().AssertResult();
             Assert.AreNotEqual(MailSentType.NotSent, issuedTaxDocument.IsSentToAccountant);
             Assert.AreNotEqual(MailSentType.NotSent, issuedTaxDocument.IsSentToPartner);
         }
 
         [Test]
+        public async Task Send_IssuedInvoiceEmail_SuccessfullyAsync()
+        {
+            // Arrange
+            var settings = new IssuedInvoiceEmailSettings
+            {
+                DocumentId = 913242,
+                ReportLanguage = Language.En,
+                EmailBody = "Test IssuedInvoice email.",
+                EmailSubject = "IssuedInvoice",
+                SendType = SendType.AsPdf,
+                SendToSelf = true,
+                SendToPartner = true,
+                OtherRecipients = new List<string> { OtherEmail }
+            };
+
+            // Act
+            var response = await MailClient.IssuedInvoiceEmail.SendAsync(settings);
+            var result = response.AssertResult();
+
+            // Assert
+            AssertEmailResult(result);
+        }
+
+        [Test]
+        public async Task Send_ReceivedInvoiceEmail_SuccessfullyAsync()
+        {
+            // Arrange
+            var settings = new ReceivedInvoiceEmailSettings
+            {
+                DocumentId = 165292,
+                ReportLanguage = Language.De,
+                EmailBody = "Test ReceivedInvoice email.",
+                EmailSubject = "ReceivedInvoice",
+                SendToSelf = true,
+                OtherRecipients = new List<string> { OtherEmail }
+            };
+
+            // Act
+            var result = await MailClient.ReceivedInvoiceEmail.SendAsync(settings).AssertResult();
+
+            // Assert
+            Assert.IsTrue(result.Sent.Contains(MyEmail));
+            Assert.IsTrue(!result.NotSent.Any());
+        }
+
         [TestCaseSource(nameof(GetCreditNoteEmailSettings))]
         public void Send_CreditNoteEmailWithoutRecipient_ThrowsValidationException(CreditNoteEmailSettings setting)
         {
-            var exception = Assert.Throws<ValidationException>(() => DokladApi.MailClient.CreditNoteEmail.Send(setting));
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.CreditNoteEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
 
-        [Test]
         [TestCaseSource(nameof(GetIssuedInvoiceEmailSettings))]
         public void Send_IssuedInvoiceEmailWithoutRecipient_ThrowsValidationException(IssuedInvoiceEmailSettings setting)
         {
-            var exception = Assert.Throws<ValidationException>(() => DokladApi.MailClient.IssuedInvoiceEmail.Send(setting));
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.IssuedInvoiceEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
 
-        [Test]
         [TestCaseSource(nameof(GetProformaInvoiceEmailSettings))]
         public void Send_ProformaInvoiceEmailWithoutRecipient_ThrowsValidationException(ProformaInvoiceEmailSettings setting)
         {
-            var exception = Assert.ThrowsAsync<ValidationException>(() => DokladApi.MailClient.ProformaInvoiceEmail.SendAsync(setting));
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.ProformaInvoiceEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
 
-        [Test]
         [TestCaseSource(nameof(GetReceivedInvoiceEmailSettings))]
         public void Send_ReceivedInvoiceEmailWithoutRecipient_ThrowsValidationException(ReceivedInvoiceEmailSettings setting)
         {
-            var exception = Assert.ThrowsAsync<ValidationException>(() => DokladApi.MailClient.ReceivedInvoiceEmail.SendAsync(setting));
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.ReceivedInvoiceEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
 
-        [Test]
         [TestCaseSource(nameof(GetSalesOrderEmailSettings))]
         public void Send_SalesOrderEmailWithoutRecipient_ThrowsValidationException(SalesOrderEmailSettings setting)
         {
-            var exception = Assert.Throws<ValidationException>(() => DokladApi.MailClient.SalesOrderEmail.Send(setting));
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.SalesOrderEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
@@ -262,10 +299,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             where TSettings : EmailSettings, new()
         {
             return new List<TSettings>
-            {
-                new TSettings(),
-                new TSettings { OtherRecipients = new List<string> { "qquc@furusato" } }
-            };
+        {
+            new TSettings(),
+            new TSettings { OtherRecipients = new List<string> { "qquc@furusato" } }
+        };
         }
 
         private void AssertEmailResult(EmailSendResult result)

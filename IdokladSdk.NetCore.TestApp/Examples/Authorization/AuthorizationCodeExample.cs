@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Authentication;
 using IdokladSdk.Builders;
 
@@ -13,8 +15,13 @@ namespace IdokladSdk.NetCore.TestApp.Examples
         // Values specific to your application
         private const string AppName = "application name";
         private const string AppVersion = "application version";
-
+        private readonly HttpClient _httpClient;
         private DokladApi _api;
+
+        public AuthorizationCodeExample(HttpClient apiHttpClient)
+        {
+            _httpClient = apiHttpClient;
+        }
 
         public async Task AuthorizationCode_Authorize_SaveRefreshToken_AuthorizeAgain(string authorizationCode, string redirectUri)
         {
@@ -38,13 +45,13 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             var issuedInvoice = await _api.IssuedInvoiceClient.DefaultAsync();
         }
 
-        public async Task AuthorizationCode_RetrieveAndSaveRefreshToken(string authorizationCode, string redirectUri)
+        public async Task AuthorizationCode_RetrieveAndSaveRefreshToken(string authorizationCode, string redirectUri, CancellationToken cancellationToken)
         {
             // Create instance of authentication using one-time code, which you retreived before this step
             var initialAuthentication = new AuthorizationCodeAuthentication(ClientId, ClientSecret, authorizationCode, redirectUri);
 
             // Request access token, with this call refresh token will be requested as well
-            var tokenizer = await initialAuthentication.GetTokenAsync();
+            var tokenizer = await initialAuthentication.GetTokenAsync(_httpClient, cancellationToken);
 
             // Retrieve refresh token (both values are the same) and save it
             var refreshToken1 = tokenizer.RefreshToken;
@@ -59,7 +66,8 @@ namespace IdokladSdk.NetCore.TestApp.Examples
 
         private void InitializeApi(string authorizationCode, string redirectUri, string refreshToken)
         {
-            var builder = new DokladApiBuilder(AppName, AppVersion);
+            var builder = new DokladApiBuilder(AppName, AppVersion)
+                .AddHttpClient(_httpClient);
 
             if (string.IsNullOrEmpty(refreshToken))
             {

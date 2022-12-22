@@ -50,19 +50,19 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         private static IList<object> GetValidModelsWithRequiredIfHasValueAttribute()
         {
             return new List<object>
+        {
+            new ModelWithRequiredIfHasValueAttribute(),
+            new ModelWithRequiredIfHasValueAttribute
             {
-                new ModelWithRequiredIfHasValueAttribute(),
-                new ModelWithRequiredIfHasValueAttribute
-                {
-                    DateInitialState = new DateTime(2020, 12, 3),
-                    InitialState = 100000m
-                },
-                new ModelWithRequiredIfHasValueAttribute
-                {
-                    CurrencyId = 1,
-                    Amount = 50m
-                }
-            };
+                DateInitialState = new DateTime(2020, 12, 3),
+                InitialState = 100000m
+            },
+            new ModelWithRequiredIfHasValueAttribute
+            {
+                CurrencyId = 1,
+                Amount = 50m
+            }
+        };
         }
     }
 }

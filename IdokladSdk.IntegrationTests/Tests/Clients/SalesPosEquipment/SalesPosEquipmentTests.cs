@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Clients;
+﻿using System.Threading.Tasks;
+using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.AuthProviders;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -20,21 +21,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesPosEquipment
         }
 
         [Test]
-        public void Get_WithSelect_SuccessfullyGet()
+        public async Task Get_WithSelect_SuccessfullyGetAsync()
         {
             // Act
-            var data = _client.Detail(_salesPosEquipmentId)
-                .Get()
+            var data = await _client.Detail(_salesPosEquipmentId)
+                .GetAsync()
                 .AssertResult();
 
             Assert.AreEqual(_salesPosEquipmentId, data.Id);
         }
 
         [Test]
-        public void GetList_SuccessfullyReturned()
+        public async Task GetList_SuccessfullyReturnedAsync()
         {
             // Act
-            var data = _client.List().Get().AssertResult();
+            var data = await _client.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -42,10 +43,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesPosEquipment
         }
 
         [Test]
-        public void GetInfo_SuccessfullyReturned()
+        public async Task GetInfo_SuccessfullyReturnedAsync()
         {
             // Act
-            var data = _client.Info().Get().AssertResult();
+            var data = await _client.Info().GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(_pairedSalesPosEquipmentId, data.Id);

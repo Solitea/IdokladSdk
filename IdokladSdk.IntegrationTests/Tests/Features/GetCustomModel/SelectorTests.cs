@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -9,7 +10,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Features.GetCustomModel
 {
     [TestFixture]
-    public partial class SelectorTests : TestBase
+    public class SelectorTests : TestBase
     {
         protected const int ContactId = 323824;
 
@@ -23,12 +24,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.GetCustomModel
         }
 
         [Test]
-        public void GetDetail_WithLambdaReturningAnonymousType_Success()
+        public async Task GetDetailAsync_WithLambdaReturningAnonymousType_Success()
         {
             // Act
-            var contact = ContactClient.Detail(ContactId)
+            var contact = await ContactClient.Detail(ContactId)
                 .Include(c => c.Bank, c => c.Country.Currency)
-                .Get(c => new
+                .GetAsync(c => new
                 {
                     CompanyName = c.CompanyName.ToUpper(CultureInfo.InvariantCulture),
                     Currency = c.Country.Currency.Name,
@@ -48,11 +49,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.GetCustomModel
         }
 
         [Test]
-        public void GetList_WithLambdaReturningSpecificType_Success()
+        public async Task GetListAsync_WithLambdaReturningSpecificType_Success()
         {
             // Act
-            var contacts = ContactClient.List()
-                .Get(c => new CustomContactModel
+            var contacts = await ContactClient.List()
+                .GetAsync(c => new CustomContactModel
                 {
                     CompanyName = c.CompanyName.ToUpper(CultureInfo.InvariantCulture),
                     Name = c.Firstname + " " + c.Surname,

@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.BankAccount;
 using IdokladSdk.Requests.BankAccount;
 using IdokladSdk.Response;
@@ -8,7 +10,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with bank accounts endpoints.
     /// </summary>
-    public partial class BankAccountClient : BaseClient,
+    public class BankAccountClient : BaseClient,
         IDeleteRequest,
         IEntityDetail<BankAccountDetail>,
         IEntityList<BankAccountList>,
@@ -28,9 +30,9 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/BankAccounts";
 
         /// <inheritdoc />
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -46,15 +48,15 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<BankAccountGetModel> Post(BankAccountPostModel model)
+        public Task<ApiResult<BankAccountGetModel>> PostAsync(BankAccountPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<BankAccountPostModel, BankAccountGetModel>(model);
+            return PostAsync<BankAccountPostModel, BankAccountGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<BankAccountGetModel> Update(BankAccountPatchModel model)
+        public Task<ApiResult<BankAccountGetModel>> UpdateAsync(BankAccountPatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<BankAccountPatchModel, BankAccountGetModel>(model);
+            return PatchAsync<BankAccountPatchModel, BankAccountGetModel>(model, cancellationToken);
         }
     }
 }

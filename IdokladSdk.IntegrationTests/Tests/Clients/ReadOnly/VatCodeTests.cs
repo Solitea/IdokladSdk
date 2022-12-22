@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Readonly;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -10,7 +11,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
 {
     [TestFixture]
-    public partial class VatCodeTests : TestBase
+    public class VatCodeTests : TestBase
     {
         private const int Id = 1;
         private VatCodeClient _client;
@@ -23,12 +24,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void Detail_SuccessfullyGet()
+        public async Task DetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .Detail(Id)
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert
@@ -37,14 +38,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void Detail_WithParameters_SuccessfullyGet()
+        public async Task DetailAsync_WithParameters_SuccessfullyGet()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .Detail(Id)
 
                 // .Include(x => x.Country)
-                .Get<VatCodeTestDetail>()
+                .GetAsync<VatCodeTestDetail>())
                 .AssertResult();
 
             // Assert
@@ -57,12 +58,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void List_ReturnsNonEmptyList()
+        public async Task ListAsync_ReturnsNonEmptyList()
         {
             // Act
-            var data = _client
+            var data = (await _client
                 .List()
-                .Get()
+                .GetAsync())
                 .AssertResult();
 
             // Assert
@@ -74,18 +75,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         }
 
         [Test]
-        public void List_WithParameters_ReturnsCorrectResult()
+        public async Task ListAsync_WithParameters_ReturnsCorrectResult()
         {
             // Act
             var countryId = 2;
             var testDate = new DateTime(2018, 1, 1);
-            var data = _client
+            var data = (await _client
                 .List()
                 .Filter(x => x.CountryId.IsEqual(countryId))
                 .Filter(x => x.DateValidityFrom.IsLowerThanOrEqual(testDate))
                 .Filter(x => x.DateValidityTo.IsGreaterThanOrEqual(testDate))
                 .Sort(x => x.Id.Desc())
-                .Get<VatCodeTestList>()
+                .GetAsync<VatCodeTestList>())
                 .AssertResult();
 
             // Assert

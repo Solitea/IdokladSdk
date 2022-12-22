@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Core.Tags;
@@ -25,16 +26,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         protected override int EntityWithTags2Id => 921788;
 
         [Test]
-        public void Default_SourceWithTags_CopiesTags_Base()
+        public async Task Default_SourceWithTags_CopiesTags_BaseAsync()
         {
             // Act
-            var result = Client.Default(IssuedInvoiceTagTests.IssuedInvoiceWithTags1Id).AssertResult();
+            var result = await Client.DefaultAsync(IssuedInvoiceTagTests.IssuedInvoiceWithTags1Id).AssertResult();
 
             // Assert
             AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });
         }
 
-        protected override ApiResult<CreditNoteDefaultPostModel> Default() => Client.Default(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);
+        protected override Task<ApiResult<CreditNoteDefaultPostModel>> DefaultAsync() => Client.DefaultAsync(IssuedInvoiceTagTests.IssuedInvoiceWithoutTagsId);
 
         protected override void SetRequiredProperties(CreditNoteDefaultPostModel postModel)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -15,7 +16,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
     /// <summary>
     /// ReceivedInvoiceTests.
     /// </summary>
-    public partial class ReceivedInvoiceTests : TestBase
+    public class ReceivedInvoiceTests : TestBase
     {
         private const int PartnerId = 323823;
         private ReceivedInvoiceClient _receivedInvoiceClient;
@@ -31,12 +32,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyCreated()
+        public async Task PostAsync_SuccessfullyCreated()
         {
             var vatCodeId = 24;
 
             // Arrange
-            _receivedInvoicePostModel = _receivedInvoiceClient.Default().AssertResult();
+            _receivedInvoicePostModel = (await _receivedInvoiceClient.DefaultAsync()).AssertResult();
             _receivedInvoicePostModel.PartnerId = PartnerId;
             _receivedInvoicePostModel.Description = "Invoice";
             _receivedInvoicePostModel.Items.Clear();
@@ -44,11 +45,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             {
                 Name = "Test",
                 UnitPrice = 100,
+                Amount = 1,
                 VatCodeId = vatCodeId
             });
 
             // Act
-            var data = _receivedInvoiceClient.Post(_receivedInvoicePostModel).AssertResult();
+            var data = (await _receivedInvoiceClient.PostAsync(_receivedInvoicePostModel)).AssertResult();
             _receivedInvoiceId = data.Id;
 
             // Assert
@@ -61,10 +63,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(1)]
-        public void Post_NotValidModel_ReceivedDocumentNumberTooLong_ThrowException()
+        public async Task Post_NotValidModel_ReceivedDocumentNumberTooLong_ThrowExceptionAsync()
         {
             // Arrange
-            var receivedInvoicePostModel = _receivedInvoiceClient.Default().AssertResult();
+            var receivedInvoicePostModel = await _receivedInvoiceClient.DefaultAsync().AssertResult();
             receivedInvoicePostModel.PartnerId = PartnerId;
             receivedInvoicePostModel.Description = "Invoice";
             receivedInvoicePostModel.ReceivedDocumentNumber = new string('A', 31);
@@ -76,7 +78,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             });
 
             // Act
-            var exception = Assert.Throws<ValidationException>(() => _receivedInvoiceClient.Post(receivedInvoicePostModel));
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await _receivedInvoiceClient.PostAsync(receivedInvoicePostModel));
 
             // Assert
             Assert.IsNotNull(exception.Message);
@@ -94,7 +96,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var exception = Assert.Throws<ValidationException>(() => _receivedInvoiceClient.Update(model));
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await _receivedInvoiceClient.UpdateAsync(model));
 
             // Assert
             Assert.IsNotNull(exception.Message);
@@ -103,10 +105,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(2)]
-        public void Get_SuccessfullyGet()
+        public async Task GetAsync_SuccessfullyGet()
         {
             // Act
-            var data = _receivedInvoiceClient.Detail(_receivedInvoiceId).Get().AssertResult();
+            var data = (await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync()).AssertResult();
 
             // Assert
             Assert.AreEqual(_receivedInvoiceId, data.Id);
@@ -114,11 +116,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(3)]
-        public void Get_Expand_SuccessfullyGet()
+        public async Task GetAsync_Expand_SuccessfullyGet()
         {
             // Act
-            var data = _receivedInvoiceClient.Detail(_receivedInvoiceId)
-                .Include(s => s.Partner).Get().AssertResult();
+            var data = (await _receivedInvoiceClient.Detail(_receivedInvoiceId)
+                .Include(s => s.Partner).GetAsync()).AssertResult();
 
             Assert.AreEqual(_receivedInvoiceId, data.Id);
             Assert.IsNotNull(data.Partner);
@@ -126,7 +128,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(4)]
-        public void Update_SuccessfullyUpdated()
+        public async Task UpdateAsync_SuccessfullyUpdated()
         {
             var model = new ReceivedInvoicePatchModel
             {
@@ -135,7 +137,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var data = _receivedInvoiceClient.Update(model).AssertResult();
+            var data = (await _receivedInvoiceClient.UpdateAsync(model)).AssertResult();
 
             // Assert
             Assert.AreEqual(model.Description, data.Description);
@@ -143,16 +145,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(5)]
-        public void Update_SetCustomVatRateToNull_CustomVatRateIsNull()
+        public async Task Update_SetCustomVatRateToNull_CustomVatRateIsNullAsync()
         {
-            var invoiceToUpdate = _receivedInvoiceClient.Detail(_receivedInvoiceId).Get().AssertResult();
+            var invoiceToUpdate = await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync().AssertResult();
             var model = CreatePatchModelWithCustomVatRate(invoiceToUpdate, 13);
-            var data = _receivedInvoiceClient.Update(model).AssertResult();
+            var data = await _receivedInvoiceClient.UpdateAsync(model).AssertResult();
             Assert.IsNotNull(data.Items.First().CustomVatRate);
             model = CreatePatchModelWithCustomVatRate(invoiceToUpdate, null);
 
             // Act
-            data = _receivedInvoiceClient.Update(model).AssertResult();
+            data = await _receivedInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
             Assert.IsNull(data.Items.First().CustomVatRate);
@@ -160,13 +162,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(6)]
-        public void Copy_SuccessfullyGetPosModel()
+        public async Task CopyAsync_SuccessfullyGetPostModel()
         {
             // Arrange
-            var invoiceToCopy = _receivedInvoiceClient.Detail(_receivedInvoiceId).Get().AssertResult();
+            var invoiceToCopy = await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync().AssertResult();
 
             // Act
-            var data = _receivedInvoiceClient.Copy(_receivedInvoiceId).AssertResult();
+            var data = await _receivedInvoiceClient.CopyAsync(_receivedInvoiceId).AssertResult();
 
             // Assert
             Assert.AreEqual(invoiceToCopy.Description, data.Description);
@@ -176,33 +178,33 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(7)]
-        public void Update_AddNewItems_SucessfullyUpdated()
+        public async Task UpdateAsync_AddNewItems_SucessfullyUpdated()
         {
             // Arrange
-            var invoiceToUpdate = _receivedInvoiceClient.Detail(_receivedInvoiceId).Get().AssertResult();
+            var invoiceToUpdate = (await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync()).AssertResult();
             var itemName2 = "Test2Test";
             var itemName3 = "Test3Test";
             var model = new ReceivedInvoicePatchModel
             {
                 Id = invoiceToUpdate.Id,
                 Items = new List<ReceivedInvoiceItemPatchModel>
+            {
+                new ReceivedInvoiceItemPatchModel
                 {
-                    new ReceivedInvoiceItemPatchModel
-                    {
-                        Id = 1,
-                        Name = itemName2,
-                        UnitPrice = 100
-                    },
-                    new ReceivedInvoiceItemPatchModel
-                    {
-                        Name = itemName3,
-                        UnitPrice = 100
-                    }
+                    Id = 1,
+                    Name = itemName2,
+                    UnitPrice = 100
+                },
+                new ReceivedInvoiceItemPatchModel
+                {
+                    Name = itemName3,
+                    UnitPrice = 100
                 }
+            }
             };
 
             // Act
-            var data = _receivedInvoiceClient.Update(model).AssertResult();
+            var data = (await _receivedInvoiceClient.UpdateAsync(model)).AssertResult();
 
             // Assert
             Assert.GreaterOrEqual(2, data.Items.Count);
@@ -212,17 +214,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
         [Test]
         [Order(8)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = _receivedInvoiceClient.Delete(_receivedInvoiceId).AssertResult();
+            var data = (await _receivedInvoiceClient.DeleteAsync(_receivedInvoiceId)).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
         }
 
         [Test]
-        public void Recount_SuccessfullyRecounted()
+        public async Task RecountAsync_SuccessfullyRecounted()
         {
             // Arrange
             var item = new ReceivedInvoiceItemRecountPostModel
@@ -242,7 +244,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var data = _receivedInvoiceClient.Recount(model).AssertResult();
+            var data = (await _receivedInvoiceClient.RecountAsync(model)).AssertResult();
 
             // Assert
             var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
@@ -257,7 +259,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         }
 
         [Test]
-        public void Recount_ForeignCurrency_SuccessfullyRecounted()
+        public async Task Recount_ForeignCurrency_SuccessfullyRecountedAsync()
         {
             // Arrange
             var item = new ReceivedInvoiceItemRecountPostModel
@@ -279,7 +281,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var result = _receivedInvoiceClient.Recount(model).AssertResult();
+            var result = await _receivedInvoiceClient.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = result.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
@@ -291,10 +293,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         }
 
         [Test]
-        public void GetList_SuccessfullyReturned()
+        public async Task GetListAsync_SuccessfullyReturned()
         {
             // Act
-            var data = _receivedInvoiceClient.List().Get().AssertResult();
+            var data = await _receivedInvoiceClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -307,14 +309,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             {
                 Id = invoiceToUpdate.Id,
                 Items = new List<ReceivedInvoiceItemPatchModel>
+            {
+                new ReceivedInvoiceItemPatchModel
                 {
-                    new ReceivedInvoiceItemPatchModel
-                    {
-                        Id = invoiceToUpdate.Items.First().Id,
-                        CustomVatRate = customVatRate,
-                        Name = invoiceToUpdate.Items.First().Name
-                    }
+                    Id = invoiceToUpdate.Items.First().Id,
+                    CustomVatRate = customVatRate,
+                    Name = invoiceToUpdate.Items.First().Name
                 }
+            }
             };
         }
     }

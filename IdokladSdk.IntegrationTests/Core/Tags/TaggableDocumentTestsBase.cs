@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -37,29 +38,29 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         {
             foreach (var id in _entityIdsToDelete)
             {
-                Delete(id);
+                DeleteAsync(id);
             }
         }
 
         [Test]
-        public void Default_ReturnsEmptyTags()
+        public async Task Default_ReturnsEmptyTagsAsync()
         {
             // Act
-            var result = Default().AssertResult();
+            var result = await DefaultAsync().AssertResult();
 
             // Assert
             AssertHasEmptyTagIds(GetTags(result));
         }
 
         [Test]
-        public void Patch_DuplicateTagIds_Fails()
+        public async Task Patch_DuplicateTagIds_FailsAsync()
         {
             // Arrange
             var patchModel = new TPatchModel { Id = EntityWithTags1Id };
             SetTags(patchModel, new List<int> { Tag1Id, Tag1Id });
 
             // Act
-            var result = Update(patchModel);
+            var result = await UpdateAsync(patchModel);
 
             // Assert
             Assert.That(result.IsSuccess, Is.False);
@@ -67,66 +68,66 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void Patch_EmptyTags_RemovesTags()
+        public async Task Patch_EmptyTags_RemovesTagsAsync()
         {
             // Arrange
-            var postModel = Default().AssertResult();
+            var postModel = await DefaultAsync().AssertResult();
             SetRequiredProperties(postModel);
-            var id = PostAndMarkForDelete(postModel);
+            var id = await PostAndMarkForDeleteAsync(postModel);
             var patchModel = new TPatchModel { Id = id };
             SetTags(patchModel, new List<int>());
 
             // Act
-            var result = Update(patchModel).AssertResult();
+            var result = await UpdateAsync(patchModel).AssertResult();
 
             // Assert
             AssertHasEmptyTags(GetTags(result));
         }
 
         [Test]
-        public void Patch_NullTags_DoesNotModifyTags()
+        public async Task Patch_NullTags_DoesNotModifyTagsAsync()
         {
             // Arrange
-            var postModel = Default().AssertResult();
+            var postModel = await DefaultAsync().AssertResult();
             SetRequiredProperties(postModel);
             GetTags(postModel).Add(Tag1Id);
             GetTags(postModel).Add(Tag2Id);
-            var id = PostAndMarkForDelete(postModel);
+            var id = await PostAndMarkForDeleteAsync(postModel);
             var patchModel = new TPatchModel { Id = id };
 
             // Act
-            var result = Update(patchModel).AssertResult();
+            var result = await UpdateAsync(patchModel).AssertResult();
 
             // Assert
             AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag2Id });
         }
 
         [Test]
-        public void Patch_SomeTags_AssignsTags()
+        public async Task Patch_SomeTags_AssignsTagsAsync()
         {
             // Arrange
-            var postModel = Default().AssertResult();
+            var postModel = await DefaultAsync().AssertResult();
             SetRequiredProperties(postModel);
-            var id = PostAndMarkForDelete(postModel);
+            var id = await PostAndMarkForDeleteAsync(postModel);
             var patchModel = new TPatchModel { Id = id };
             SetTags(patchModel, new List<int> { Tag1Id, Tag3Id });
 
             // Act
-            var result = Update(patchModel).AssertResult();
+            var result = await UpdateAsync(patchModel).AssertResult();
 
             // Assert
             AssertHasTags(GetTags(result), new List<int> { Tag1Id, Tag3Id });
         }
 
         [Test]
-        public void Post_EmptyTags_DoesNotAssignTags()
+        public async Task Post_EmptyTags_DoesNotAssignTagsAsync()
         {
             // Arrange
-            var postModel = Default().AssertResult();
+            var postModel = await DefaultAsync().AssertResult();
             SetRequiredProperties(postModel);
 
             // Act
-            var result = Post(postModel).AssertResult();
+            var result = await PostAsync(postModel).AssertResult();
             MarkForDelete(result.Id);
 
             // Assert
@@ -134,16 +135,16 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void Post_MultipleTags_AssignsTags()
+        public async Task Post_MultipleTags_AssignsTagsAsync()
         {
             // Arrange
-            var postModel = Default().AssertResult();
+            var postModel = await DefaultAsync().AssertResult();
             SetRequiredProperties(postModel);
             GetTags(postModel).Add(Tag1Id);
             GetTags(postModel).Add(Tag2Id);
 
             // Act
-            var result = Post(postModel).AssertResult();
+            var result = await PostAsync(postModel).AssertResult();
             MarkForDelete(result.Id);
 
             // Assert
@@ -151,15 +152,15 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void Post_NonExistingTagId_Fails()
+        public async Task Post_NonExistingTagId_FailsAsync()
         {
             // Arrange
-            var postModel = Default().AssertResult();
+            var postModel = await DefaultAsync().AssertResult();
             SetRequiredProperties(postModel);
             GetTags(postModel).Add(1);
 
             // Act
-            var result = Post(postModel);
+            var result = await PostAsync(postModel);
 
             // Assert
             Assert.That(result.IsSuccess, Is.False);
@@ -167,15 +168,15 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void Post_NullTags_DoesNotAssignTags()
+        public async Task Post_NullTags_DoesNotAssignTagsAsync()
         {
             // Arrange
-            var postModel = Default().AssertResult();
+            var postModel = await DefaultAsync().AssertResult();
             SetRequiredProperties(postModel);
             SetTags(postModel, null);
 
             // Act
-            var result = Post(postModel).AssertResult();
+            var result = await PostAsync(postModel).AssertResult();
             MarkForDelete(result.Id);
 
             // Assert
@@ -183,24 +184,24 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void Post_SingleTag_AssignsTag()
+        public async Task Post_SingleTag_AssignsTagAsync()
         {
             // Arrange
-            var postModel = Default().AssertResult();
+            var postModel = await DefaultAsync().AssertResult();
             SetRequiredProperties(postModel);
             GetTags(postModel).Add(Tag1Id);
 
             // Act
-            var result = Post(postModel).AssertResult();
+            var result = await PostAsync(postModel).AssertResult();
             MarkForDelete(result.Id);
 
             // Assert
             AssertHasTags(GetTags(result), new List<int> { Tag1Id });
         }
 
-        protected virtual ApiResult<TPostModel> Default() => (ApiResult<TPostModel>)((IDefaultRequest<TPostModel>)Client).Default();
+        protected virtual Task<ApiResult<TPostModel>> DefaultAsync() => ((IDefaultRequest<TPostModel>)Client).DefaultAsync();
 
-        protected virtual ApiResult<bool> Delete(int id) => (ApiResult<bool>)((IDeleteRequest)Client).Delete(id);
+        protected virtual Task<ApiResult<bool>> DeleteAsync(int id) => ((IDeleteRequest)Client).DeleteAsync(id);
 
         protected List<TagDocumentGetModel> GetTags(TGetModel getModel)
         {
@@ -214,7 +215,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             return (List<int>)tagsProperty.GetValue(postModel);
         }
 
-        protected virtual ApiResult<TGetModel> Post(TPostModel postModel) => (ApiResult<TGetModel>)((IPostRequest<TPostModel, TGetModel>)Client).Post(postModel);
+        protected virtual Task<ApiResult<TGetModel>> PostAsync(TPostModel postModel) => ((IPostRequest<TPostModel, TGetModel>)Client).PostAsync(postModel);
 
         protected abstract void SetRequiredProperties(TPostModel postModel);
 
@@ -230,16 +231,16 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             tagsProperty.SetValue(postModel, tagIds);
         }
 
-        protected virtual ApiResult<TGetModel> Update(TPatchModel patchModel) => (ApiResult<TGetModel>)((IPatchRequest<TPatchModel, TGetModel>)Client).Update(patchModel);
+        protected virtual Task<ApiResult<TGetModel>> UpdateAsync(TPatchModel patchModel) => ((IPatchRequest<TPatchModel, TGetModel>)Client).UpdateAsync(patchModel);
 
         private void MarkForDelete(int id)
         {
             _entityIdsToDelete.Add(id);
         }
 
-        private int PostAndMarkForDelete(TPostModel postModel)
+        private async Task<int> PostAndMarkForDeleteAsync(TPostModel postModel)
         {
-            var tagGetModel = Post(postModel).AssertResult();
+            var tagGetModel = await PostAsync(postModel).AssertResult();
             MarkForDelete(tagGetModel.Id);
             return tagGetModel.Id;
         }

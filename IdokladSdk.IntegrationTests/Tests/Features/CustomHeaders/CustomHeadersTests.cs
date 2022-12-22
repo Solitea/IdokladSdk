@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -45,14 +46,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.CustomHeaders
         }
 
         [TestCaseSource(nameof(TestData))]
-        public void SetLanguage_SuccessfullySet(Action<DokladApi> setLanguage, string expectedString)
+        public async Task SetLanguage_SuccessfullySetAsync(Action<DokladApi> setLanguage, string expectedString)
         {
             // Arrange
             var recountPostModel = CreateRecountPostModel();
 
             // Act
             setLanguage(DokladApi);
-            var recountGetModel = IssuedInvoiceClient.Recount(recountPostModel).AssertResult();
+            var recountGetModel = await IssuedInvoiceClient.RecountAsync(recountPostModel).AssertResult();
 
             // Assert
             Assert.AreEqual(expectedString, GetRoundingItem(recountGetModel));
@@ -66,15 +67,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.CustomHeaders
                 DateOfTaxing = DateTime.Today.SetKindUtc(),
                 PaymentOptionId = 1,
                 Items = new List<IssuedInvoiceItemRecountPostModel>
+            {
+                new IssuedInvoiceItemRecountPostModel
                 {
-                    new IssuedInvoiceItemRecountPostModel
-                    {
-                        Amount = 1,
-                        PriceType = PriceType.WithVat,
-                        UnitPrice = 10.1m,
-                        VatRateType = VatRateType.Basic
-                    }
+                    Amount = 1,
+                    PriceType = PriceType.WithVat,
+                    UnitPrice = 10.1m,
+                    VatRateType = VatRateType.Basic
                 }
+            }
             };
 
             return model;

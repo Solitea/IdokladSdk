@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Exceptions;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Batch;
+using IdokladSdk.Requests.Extensions;
 using IdokladSdk.Response;
+using IdokladSdk.Serialization;
 using IdokladSdk.Validation;
-using RestSharp;
+using Newtonsoft.Json;
 
 namespace IdokladSdk.Clients
 {
     /// <summary>
     /// Base client.
     /// </summary>
-    public abstract partial class BaseClient
+    public abstract class BaseClient
     {
         private readonly ApiContext _apiContext;
 
@@ -23,9 +32,8 @@ namespace IdokladSdk.Clients
         protected BaseClient(ApiContext apiContext)
         {
             _apiContext = apiContext ??
-                          throw new ArgumentNullException("API context cannot be null.", nameof(apiContext));
-            Client = new RestClient(_apiContext.Configuration.ApiUrl);
-            Client.AddHandler("application/json", () => new CommonJsonSerializer());
+                          throw new ArgumentNullException(nameof(apiContext), "API context cannot be null.");
+            HttpClient = _apiContext.HttpClient;
         }
 
         /// <summary>
@@ -39,275 +47,352 @@ namespace IdokladSdk.Clients
         protected virtual string BatchUrl => $"{ResourceUrl}/Batch";
 
         /// <summary>
-        /// Gets RestClient.
+        /// Gets HttpClient.
         /// </summary>
-        protected RestClient Client { get; }
+        protected HttpClient HttpClient { get; }
 
-        internal ApiResult<T> Execute<T>(RestRequest request)
+        internal async Task<ApiResult<T>> ExecuteAsync<T>(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var response = Client.Execute<ApiResult<T>>(request);
+            if (HttpClient.BaseAddress != null)
+            {
+                throw new IdokladSdkException("HttpClient cannot have BaseAddress set.");
+            }
 
-            ApiResultValidator.ValidateResponse(response, _apiContext.ApiResultHandler);
+            var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-            return response.Data;
+            var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiResult<T>>, _apiContext.ApiResultHandler).ConfigureAwait(false);
+
+            return data;
         }
 
-        internal ApiBatchResult<T> ExecuteBatch<T>(RestRequest request)
+        internal async Task<ApiBatchResult<T>> ExecuteBatchAsync<T>(HttpRequestMessage request, CancellationToken cancellationToken)
             where T : new()
         {
-            var response = Client.Execute<ApiBatchResult<T>>(request);
+            var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-            ApiResultValidator.ValidateResponse(response, _apiContext.ApiBatchResultHandler);
+            var data = await ApiResultValidator.ValidateAndDeserializeResponse(response, GetDataAsync<ApiBatchResult<T>>, _apiContext.ApiBatchResultHandler).ConfigureAwait(false);
 
-            return response.Data;
+            return data;
         }
 
         /// <summary>
-        /// Delete.
+        /// DeleteAsync.
         /// </summary>
         /// <param name="id">Id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <typeparam name="T">Return type.</typeparam>
         /// <returns>Api result.</returns>
-        protected internal ApiResult<T> Delete<T>(int id)
+        protected internal Task<ApiResult<T>> DeleteAsync<T>(int id, CancellationToken cancellationToken)
             where T : new()
         {
             var deleteUrl = $"{ResourceUrl}/{id}";
-            return Delete<T>(deleteUrl);
+            return DeleteAsync<T>(deleteUrl, cancellationToken);
         }
 
         /// <summary>
-        /// Delete.
+        /// DeleteAsync.
         /// </summary>
-        /// <param name="resource">Resource url.</param>
+        /// <param name="resource">Resource.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <typeparam name="T">Return type.</typeparam>
         /// <returns>Api result.</returns>
-        protected internal ApiResult<T> Delete<T>(string resource)
+        protected internal async Task<ApiResult<T>> DeleteAsync<T>(string resource, CancellationToken cancellationToken)
             where T : new()
         {
-            var request = CreateRequest(resource, Method.DELETE);
+            var request = await CreateRequestAsync(resource, HttpMethod.Delete, cancellationToken).ConfigureAwait(false);
 
-            return Execute<T>(request);
+            return await ExecuteAsync<T>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Get.
+        /// GetAsync.
         /// </summary>
         /// <param name="resource">Resource url.</param>
         /// <param name="queryParams">Query params.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <typeparam name="T">Return type.</typeparam>
         /// <returns>Api result.</returns>
-        protected internal ApiResult<T> Get<T>(string resource, Dictionary<string, string> queryParams = null)
+        protected internal async Task<ApiResult<T>> GetAsync<T>(
+            string resource,
+            Dictionary<string, string> queryParams,
+            CancellationToken cancellationToken)
         {
-            var request = CreateRequest(resource, Method.GET);
-            ProcessQueryParameters(request, queryParams);
+            var resourceUri = await GetQueryStringAsync(resource, queryParams).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resourceUri, HttpMethod.Get, cancellationToken).ConfigureAwait(false);
 
-            return Execute<T>(request);
+            return await ExecuteAsync<T>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Patch.
+        /// PatchAsync.
         /// </summary>
+        /// <typeparam name="TPatchModel">Patch type.</typeparam>
+        /// <typeparam name="TGetModel">Return model.</typeparam>
         /// <param name="resource">Resource url.</param>
         /// <param name="model">Model.</param>
-        /// <typeparam name="TPatchModel">Patch type.</typeparam>
-        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal ApiResult<TGetModel> Patch<TPatchModel, TGetModel>(string resource, TPatchModel model)
+        protected internal async Task<ApiResult<TGetModel>> PatchAsync<TPatchModel, TGetModel>(
+            string resource,
+            TPatchModel model,
+            CancellationToken cancellationToken)
             where TGetModel : new()
         {
             ValidateModel(model);
-            var request = CreateRequest(resource, Method.PATCH);
-            request.JsonSerializer = new PatchRequestJsonSerializer();
-            request.AddJsonBody(model);
+            var request = await CreateRequestAsync(resource, new HttpMethod("PATCH"), cancellationToken).ConfigureAwait(false);
+            request.AddJsonBody(model, new PatchRequestJsonSerializerSettings());
 
-            return Execute<TGetModel>(request);
+            return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Patch.
+        /// PatchAsync.
         /// </summary>
-        /// <param name="model">Model.</param>
         /// <typeparam name="TPatchModel">Patch type.</typeparam>
         /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="model">Model.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal ApiResult<TGetModel> Patch<TPatchModel, TGetModel>(TPatchModel model)
+        protected internal Task<ApiResult<TGetModel>> PatchAsync<TPatchModel, TGetModel>(
+            TPatchModel model,
+            CancellationToken cancellationToken)
             where TGetModel : new()
         {
-            return Patch<TPatchModel, TGetModel>(ResourceUrl, model);
+            return PatchAsync<TPatchModel, TGetModel>(ResourceUrl, model, cancellationToken);
         }
 
         /// <summary>
-        /// Patch.
+        /// PatchAsync.
         /// </summary>
-        /// <param name="resource">Resource url.</param>
-        /// <param name="models">Models.</param>
         /// <typeparam name="TPatchModel">Patch type.</typeparam>
         /// <typeparam name="TGetModel">Return type.</typeparam>
-        /// <returns>Api batch result.</returns>
-        protected internal ApiBatchResult<TGetModel> Patch<TPatchModel, TGetModel>(
+        /// <param name="resource">Resource url.</param>
+        /// <param name="models">Models.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api result.</returns>
+        protected internal async Task<ApiBatchResult<TGetModel>> PatchAsync<TPatchModel, TGetModel>(
             string resource,
-            IList<TPatchModel> models)
+            IList<TPatchModel> models,
+            CancellationToken cancellationToken)
             where TPatchModel : new()
             where TGetModel : new()
         {
             var batch = new BatchModel<TPatchModel>(models);
 
             ValidateModel(batch);
-            var request = CreateRequest(resource, Method.PATCH);
-            request.JsonSerializer = new PatchRequestJsonSerializer();
-            request.AddJsonBody(batch);
+            var request = await CreateRequestAsync(resource, new HttpMethod("PATCH"), cancellationToken).ConfigureAwait(false);
+            request.AddJsonBody(batch, new PatchRequestJsonSerializerSettings());
 
-            return ExecuteBatch<TGetModel>(request);
+            return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Patch.
+        /// PatchAsync.
         /// </summary>
-        /// <param name="models">Models.</param>
         /// <typeparam name="TPatchModel">Patch type.</typeparam>
         /// <typeparam name="TGetModel">Return type.</typeparam>
-        /// <returns>Api batch result.</returns>
-        protected internal ApiBatchResult<TGetModel> Patch<TPatchModel, TGetModel>(IList<TPatchModel> models)
+        /// <param name="models">Models.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api result.</returns>
+        protected internal Task<ApiBatchResult<TGetModel>> PatchAsync<TPatchModel, TGetModel>(
+            IList<TPatchModel> models,
+            CancellationToken cancellationToken)
             where TPatchModel : new()
             where TGetModel : new()
         {
-            return Patch<TPatchModel, TGetModel>(BatchUrl, models);
+            return PatchAsync<TPatchModel, TGetModel>(BatchUrl, models, cancellationToken);
         }
 
         /// <summary>
-        /// Post.
+        /// PostAsync.
         /// </summary>
-        /// <param name="resource">Resource url.</param>
-        /// <param name="model">Model.</param>
         /// <typeparam name="TPostModel">Post type.</typeparam>
         /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="model">Model.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal ApiResult<TGetModel> Post<TPostModel, TGetModel>(string resource, TPostModel model)
+        protected internal async Task<ApiResult<TGetModel>> PostAsync<TPostModel, TGetModel>(
+            string resource,
+            TPostModel model,
+            CancellationToken cancellationToken)
             where TGetModel : new()
         {
             ValidateModel(model);
-            var request = CreateRequest(resource, Method.POST);
-            request.JsonSerializer = new CommonJsonSerializer();
-            request.AddJsonBody(model);
+            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
+            request.AddJsonBody(model, new CommonJsonSerializerSettings());
 
-            return Execute<TGetModel>(request);
+            return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Post.
+        /// PostAsync.
         /// </summary>
-        /// <param name="resource">Resource url.</param>
-        /// <typeparam name="TGetModel">Return type.</typeparam>
-        /// <returns>Api result.</returns>
-        protected internal ApiResult<TGetModel> Post<TGetModel>(string resource)
-        {
-            var request = CreateRequest(resource, Method.POST);
-
-            return Execute<TGetModel>(request);
-        }
-
-        /// <summary>
-        /// Post.
-        /// </summary>
-        /// <param name="resource">Resource url.</param>
-        /// <param name="models">Models.</param>
         /// <typeparam name="TPostModel">Post type.</typeparam>
         /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="model">Model.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal ApiBatchResult<TGetModel> Post<TPostModel, TGetModel>(
+        protected internal Task<ApiResult<TGetModel>> PostAsync<TPostModel, TGetModel>(
+            TPostModel model,
+            CancellationToken cancellationToken)
+            where TGetModel : new()
+        {
+            return PostAsync<TPostModel, TGetModel>(ResourceUrl, model, cancellationToken);
+        }
+
+        /// <summary>
+        /// PostAsync.
+        /// </summary>
+        /// <typeparam name="TPostModel">Post type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="models">Models.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api result.</returns>
+        protected internal async Task<ApiBatchResult<TGetModel>> PostAsync<TPostModel, TGetModel>(
             string resource,
-            IList<TPostModel> models)
+            IList<TPostModel> models,
+            CancellationToken cancellationToken)
             where TPostModel : new()
             where TGetModel : new()
         {
             var batch = new BatchModel<TPostModel>(models);
             ValidateModel(batch);
-            var request = CreateRequest(resource, Method.POST);
+            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
-            return ExecuteBatch<TGetModel>(request);
+            return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Post.
+        /// PostAsync.
         /// </summary>
-        /// <param name="models">Models.</param>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api result.</returns>
+        protected internal async Task<ApiResult<TGetModel>> PostAsync<TGetModel>(
+            string resource,
+            CancellationToken cancellationToken)
+        {
+            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
+
+            return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// PostAsync.
+        /// </summary>
         /// <typeparam name="TPostModel">Post type.</typeparam>
         /// <typeparam name="TGetModel">Return type.</typeparam>
-        /// <returns>Api result.</returns>
-        protected internal ApiBatchResult<TGetModel> Post<TPostModel, TGetModel>(IList<TPostModel> models)
+        /// <param name="models">Models.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api batch result.</returns>
+        protected internal Task<ApiBatchResult<TGetModel>> PostAsync<TPostModel, TGetModel>(
+            IList<TPostModel> models,
+            CancellationToken cancellationToken)
             where TPostModel : new()
             where TGetModel : new()
         {
-            return Post<TPostModel, TGetModel>(BatchUrl, models);
+            return PostAsync<TPostModel, TGetModel>(BatchUrl, models, cancellationToken);
         }
 
         /// <summary>
-        /// Post.
+        /// PutAsync.
         /// </summary>
-        /// <param name="model">Model.</param>
-        /// <typeparam name="TPostModel">PostModel.</typeparam>
-        /// <typeparam name="TGetModel">GetModel.</typeparam>
-        /// <returns>Api result.</returns>
-        protected internal ApiResult<TGetModel> Post<TPostModel, TGetModel>(TPostModel model)
-            where TGetModel : new()
-        {
-            return Post<TPostModel, TGetModel>(ResourceUrl, model);
-        }
-
-        /// <summary>
-        /// Put.
-        /// </summary>
-        /// <param name="resource">Result url.</param>
-        /// <param name="queryParams">Query params.</param>
         /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="queryParams">Query params.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal ApiResult<TGetModel> Put<TGetModel>(
+        protected internal async Task<ApiResult<TGetModel>> PutAsync<TGetModel>(
             string resource,
-            Dictionary<string, string> queryParams = null)
-            where TGetModel : new()
+            Dictionary<string, string> queryParams,
+            CancellationToken cancellationToken)
         {
-            var request = CreateRequest(resource, Method.PUT);
-            ProcessQueryParameters(request, queryParams);
+            var resourceUri = await GetQueryStringAsync(resource, queryParams).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resourceUri, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
 
-            return Execute<TGetModel>(request);
+            return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Put.
+        /// PutAsync.
         /// </summary>
-        /// <param name="resource">Resource url.</param>
-        /// <param name="model">Model.</param>
         /// <typeparam name="TPutModel">Put type.</typeparam>
         /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">resource url.</param>
+        /// <param name="model">Model.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api result.</returns>
-        protected internal ApiResult<TGetModel> Put<TPutModel, TGetModel>(string resource, TPutModel model)
+        protected internal async Task<ApiResult<TGetModel>> PutAsync<TPutModel, TGetModel>(
+            string resource,
+            TPutModel model,
+            CancellationToken cancellationToken)
             where TGetModel : new()
         {
             ValidateModel(model);
-            var request = CreateRequest(resource, Method.PUT);
+            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(model);
 
-            return Execute<TGetModel>(request);
+            return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Put.
+        /// PutAsync.
         /// </summary>
-        /// <param name="resource">Resource url.</param>
-        /// <param name="models">Models.</param>
         /// <typeparam name="TPutModel">Put type.</typeparam>
         /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="models">Models.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Api batch result.</returns>
-        protected internal ApiBatchResult<TGetModel> Put<TPutModel, TGetModel>(string resource, IList<TPutModel> models)
+        protected internal async Task<ApiBatchResult<TGetModel>> PutAsync<TPutModel, TGetModel>(
+            string resource,
+            IList<TPutModel> models,
+            CancellationToken cancellationToken)
             where TGetModel : new()
         {
             var batch = new BatchModel<TPutModel>(models);
             ValidateModel(batch);
-            var request = CreateRequest(resource, Method.PUT);
+            var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
-            return ExecuteBatch<TGetModel>(request);
+            return await ExecuteBatchAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// PutFileAsync.
+        /// </summary>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="file">File.</param>
+        /// <param name="queryParams">Query params.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api result.</returns>
+        protected internal async Task<ApiResult<TGetModel>> PutFileAsync<TGetModel>(string resource, IFile file, Dictionary<string, string> queryParams, CancellationToken cancellationToken)
+        {
+            const string contentTypeHeader = "Content-Type";
+            string boundary = "--" + DateTime.Now.Ticks.ToString("x");
+            var resourceUri = await GetQueryStringAsync(resource, queryParams).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resourceUri, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
+
+            using (var content = new MultipartFormDataContent(boundary))
+            using (var byteContent = new ByteArrayContent(file.FileBytes))
+            {
+                byteContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = "\"file\"",
+                    FileName = $"\"{file.FileName}\""
+                };
+                content.Add(byteContent, file.FileName);
+                content.Headers.Remove(contentTypeHeader);
+                content.Headers.TryAddWithoutValidation(contentTypeHeader, $"multipart/form-data; boundary={boundary}");
+                request.Content = content;
+
+                return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -315,22 +400,23 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="resource">Resource URL.</param>
         /// <param name="method">HTTP method.</param>
-        /// <returns>New RestRequest instance.</returns>
-        protected internal RestRequest CreateRequest(string resource, Method method)
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>New <see cref="HttpRequestMessage"/> instance.</returns>
+        protected internal async Task<HttpRequestMessage> CreateRequestAsync(string resource, HttpMethod method, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(resource))
+            var requestUri = _apiContext.Configuration.ApiUrl + resource;
+            var request = new HttpRequestMessage(method, requestUri);
+            var token = await _apiContext.GetTokenAsync(cancellationToken).ConfigureAwait(false);
+
+            request.Headers.Add(Constants.Header.Authorization, "Bearer " + token.AccessToken);
+            request.Headers.Add(Constants.Header.App, _apiContext.AppName);
+            request.Headers.Add(Constants.Header.AppVersion, _apiContext.AppVersion);
+            request.Headers.Add(Constants.Header.SdkVersion, GetSdkVersion());
+
+            foreach (var header in _apiContext.Headers)
             {
-                throw new ArgumentNullException("Resource URL cannot be null or empty.");
+                request.Headers.Add(header.Key, header.Value);
             }
-
-            var request = new RestRequest(resource, method);
-            var token = _apiContext.GetToken();
-
-            request.AddHeader(Constants.Header.Authorization, "Bearer " + token.AccessToken);
-            request.AddHeader(Constants.Header.App, _apiContext.AppName);
-            request.AddHeader(Constants.Header.AppVersion, _apiContext.AppVersion);
-            request.AddHeader(Constants.Header.SdkVersion, GetSdkVersion());
-            request.AddHeaders(_apiContext.Headers);
 
             return request;
         }
@@ -339,11 +425,12 @@ namespace IdokladSdk.Clients
         /// Returns new default entity suitable for editing and storing.
         /// </summary>
         /// <typeparam name="T">POST data type.</typeparam>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        protected ApiResult<T> Default<T>()
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/>ApiResult with data instance.</returns>
+        protected Task<ApiResult<T>> DefaultAsync<T>(CancellationToken cancellationToken)
             where T : new()
         {
-            return Get<T>(ResourceUrl + "/Default");
+            return GetAsync<T>(ResourceUrl + "/Default", null, cancellationToken);
         }
 
         /// <summary>
@@ -351,11 +438,12 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <typeparam name="T">POST data type.</typeparam>
         /// <param name="id">Id.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        protected ApiResult<T> Default<T>(int id)
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/>ApiResult with data instance.</returns>
+        protected Task<ApiResult<T>> DefaultAsync<T>(int id, CancellationToken cancellationToken)
             where T : new()
         {
-            return Get<T>($"{ResourceUrl}/Default/{id}");
+            return GetAsync<T>($"{ResourceUrl}/Default/{id}", null, cancellationToken);
         }
 
         private static bool IsValidObject(object obj, out List<ValidationMessage> results)
@@ -363,15 +451,27 @@ namespace IdokladSdk.Clients
             return ApiValidator.ValidateObject(obj, out results);
         }
 
-        private static void ProcessQueryParameters(RestRequest request, Dictionary<string, string> queryParams)
+        private async Task<string> GetQueryStringAsync(string resource, Dictionary<string, string> queryParams)
         {
-            if (queryParams != null)
+            if (queryParams is null || !queryParams.Any())
             {
-                foreach (var item in queryParams)
-                {
-                    request.AddQueryParameter(item.Key, item.Value);
-                }
+                return resource;
             }
+
+            var queryContent = new FormUrlEncodedContent(queryParams);
+            var queryString = await queryContent.ReadAsStringAsync();
+
+            var delimeter = resource.Contains("?") ? "&" : "?";
+
+            return $"{resource}{delimeter}{queryString}";
+        }
+
+        private async Task<T> GetDataAsync<T>(HttpResponseMessage response)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<T>(content, new CommonJsonSerializerSettings());
+
+            return data;
         }
 
         private string GetSdkVersion() => Assembly.GetExecutingAssembly().GetName().Version.ToString();

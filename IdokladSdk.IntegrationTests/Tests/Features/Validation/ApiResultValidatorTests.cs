@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
+using IdokladSdk.Builders;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
-using IdokladSdk.IntegrationTests.Core.AuthProviders;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
 using NUnit.Framework;
@@ -11,13 +12,14 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
 {
     [TestFixture]
-    public partial class ApiResultValidatorTests : TestBase
+    public class ApiResultValidatorTests : TestBase
     {
         private const int NotFoundIssuedInvoiceId = -1;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
+            HttpClient = new HttpClient();
             InitDokladApi(ApiResultHandler, ApiBatchResultHandler);
 
             void ApiResultHandler(ApiResult apiresult)
@@ -45,48 +47,49 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
         [Test]
         public void InvalidConfiguration_ThrowsException()
         {
-            var auth = new ClientCredentialsAuthProvider().GetAuthentication(Configuration);
             var invalidApiUrl = Configuration.Urls.ApiUrl + "/dev/v3";
-            var dokladConfig = new DokladConfiguration(invalidApiUrl, Configuration.Urls.IdentityServerTokenUrl);
-            var context = new ApiContext("Tests", "1.0", auth, dokladConfig);
-            var api = new DokladApi(context);
+            var api = new DokladApiBuilder("Tests", "1.0")
+                .AddClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret)
+                .AddCustomApiUrls(invalidApiUrl, Configuration.Urls.IdentityServerTokenUrl)
+                .AddHttpClient(HttpClient)
+                .Build();
 
-            Assert.Throws<ValidationException>(() => api.ContactClient.List().Get());
+            Assert.ThrowsAsync<ValidationException>(async () => await api.ContactClient.List().GetAsync());
         }
 
         [Test]
-        public void ApiResult_CallsHandler_ThrowsException()
+        public void ApiResult_CallsHandler_ThrowsExceptionAsync()
         {
             // Arrange
             var issuedInvoiceClient = DokladApi.IssuedInvoiceClient;
 
             // Assert
-            Assert.Throws<ArgumentException>(() => issuedInvoiceClient.Delete(NotFoundIssuedInvoiceId));
+            Assert.ThrowsAsync<ArgumentException>(async () => await issuedInvoiceClient.DeleteAsync(NotFoundIssuedInvoiceId));
         }
 
         [Test]
-        public void ApiBatchResult_CallsHandler_ThrowsException()
+        public void ApiBatchResult_CallsHandler_ThrowsExceptionAsync()
         {
             // Arrange
             var batchClient = DokladApi.BatchClient;
             var modelsToUpdate = new List<UpdateExportedModel>()
+        {
+            new UpdateExportedModel
             {
-                new UpdateExportedModel
-                {
-                    Id = -1,
-                    EntityType = ExportableEntityType.Contact,
-                    Exported = ExportedState.Exported
-                },
-                new UpdateExportedModel
-                {
-                    Id = -1,
-                    EntityType = ExportableEntityType.CreditNote,
-                    Exported = ExportedState.NotExported
-                }
-            };
+                Id = -1,
+                EntityType = ExportableEntityType.Contact,
+                Exported = ExportedState.Exported
+            },
+            new UpdateExportedModel
+            {
+                Id = -1,
+                EntityType = ExportableEntityType.CreditNote,
+                Exported = ExportedState.NotExported
+            }
+        };
 
             // Assert
-            Assert.Throws<ArgumentException>(() => batchClient.Update(modelsToUpdate));
+            Assert.ThrowsAsync<ArgumentException>(async () => await batchClient.UpdateAsync(modelsToUpdate));
         }
     }
 }

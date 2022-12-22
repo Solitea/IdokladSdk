@@ -1,4 +1,7 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.CreditNote;
 using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Models.CreditNote.Put;
@@ -10,7 +13,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with credit note endpoints.
     /// </summary>
-    public partial class CreditNoteClient :
+    public class CreditNoteClient :
         BaseClient,
         IDeleteRequest,
         IEntityDetail<CreditNoteDetail>,
@@ -33,15 +36,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/CreditNotes";
 
         /// <inheritdoc />
-        public ApiResult<CreditNoteDefaultPostModel> Default(int id)
+        public Task<ApiResult<CreditNoteDefaultPostModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Default<CreditNoteDefaultPostModel>(id);
+            return DefaultAsync<CreditNoteDefaultPostModel>(id, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -60,11 +63,12 @@ namespace IdokladSdk.Clients
         /// Creates new credit note and offsets it with invoice. Credit note should contain only items with ItemTypeNormal.
         /// </summary>
         /// <param name="model">Credit note to be created.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{CreditNoteGetModel}"/> instance.</returns>
-        public ApiResult<CreditNoteGetModel> Offset(CreditNotePostModel model)
+        public Task<ApiResult<CreditNoteGetModel>> OffsetAsync(CreditNotePostModel model, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Offset";
-            return Post<CreditNotePostModel, CreditNoteGetModel>(resource, model);
+            return PostAsync<CreditNotePostModel, CreditNoteGetModel>(resource, model, cancellationToken);
         }
 
         /// <summary>
@@ -72,30 +76,31 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="id">Entity Id.</param>
         /// <param name="model">Credit note offset parameters.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{CreditNoteGetModel}"/> instance.</returns>
-        public ApiResult<CreditNoteGetModel> Offset(int id, CreditNoteOffsetPutModel model = null)
+        public Task<ApiResult<CreditNoteGetModel>> OffsetAsync(int id, CreditNoteOffsetPutModel model = null, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Offset";
-            return Put<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model ?? new CreditNoteOffsetPutModel());
+            return PutAsync<CreditNoteOffsetPutModel, CreditNoteGetModel>(resource, model ?? new CreditNoteOffsetPutModel(), cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<CreditNoteGetModel> Post(CreditNotePostModel model)
+        public Task<ApiResult<CreditNoteGetModel>> PostAsync(CreditNotePostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<CreditNotePostModel, CreditNoteGetModel>(model);
+            return PostAsync<CreditNotePostModel, CreditNoteGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<CreditNoteRecountGetModel> Recount(CreditNoteRecountPostModel model)
+        public Task<ApiResult<CreditNoteRecountGetModel>> RecountAsync(CreditNoteRecountPostModel model, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Recount";
-            return Post<CreditNoteRecountPostModel, CreditNoteRecountGetModel>(resource, model);
+            return PostAsync<CreditNoteRecountPostModel, CreditNoteRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<CreditNoteGetModel> Update(CreditNotePatchModel model)
+        public Task<ApiResult<CreditNoteGetModel>> UpdateAsync(CreditNotePatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<CreditNotePatchModel, CreditNoteGetModel>(model);
+            return PatchAsync<CreditNotePatchModel, CreditNoteGetModel>(model, cancellationToken);
         }
     }
 }

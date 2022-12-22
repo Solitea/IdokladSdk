@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core.Tags;
@@ -21,7 +22,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 
         protected override int EntityWithTags2Id => 588919;
 
-        protected override ApiResult<CashVoucherPostModel> Default() => Client.Default(MovementType.Issue);
+        protected override Task<ApiResult<CashVoucherPostModel>> DefaultAsync() => Client.DefaultAsync(MovementType.Issue);
 
         protected override void SetRequiredProperties(CashVoucherPostModel postModel)
         {

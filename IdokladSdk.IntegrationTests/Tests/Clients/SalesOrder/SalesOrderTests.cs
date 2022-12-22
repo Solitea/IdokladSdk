@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -16,7 +17,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 {
     [TestFixture]
-    public partial class SalesOrderTests : TestBase
+    public class SalesOrderTests : TestBase
     {
         private const int DeliveryAddressId1 = 11;
         private const int DeliveryAddressId2 = 12;
@@ -32,56 +33,54 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
-        public void Post_SuccessfullyCreated()
+        public async Task PostAsync_SuccessfullyCreated()
         {
             // Arrange
-            var model = GetSalesOrderPostModel();
+            var model = await GetSalesOrderPostModelAsync();
 
             // Act
-            var result = _client.Post(model).AssertResult();
+            var result = await _client.PostAsync(model).AssertResult();
 
             // Assert
             Assert.Greater(result.Id, 0);
             Assert.AreEqual(model.DateOfIssue.Date, result.DateOfIssue);
             Assert.AreEqual(PartnerId, result.PartnerId);
             Assert.Greater(result.Items.Count, 0);
-            AssertDeliveryAddress(result.DeliveryAddress, DeliveryAddressId1);
-            _client.Delete(result.Id).AssertResult();
+            await _client.DeleteAsync(result.Id).AssertResult();
         }
 
         [Test]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Arrange
-            var model = GetSalesOrderPostModel();
-            var result = _client.Post(model).AssertResult();
+            var model = await GetSalesOrderPostModelAsync();
+            var result = await _client.PostAsync(model).AssertResult();
 
             // Act
-            var data = _client.Delete(result.Id).AssertResult();
+            var data = await _client.DeleteAsync(result.Id).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
         }
 
         [Test]
-        public void Get_SuccessfullyGet()
+        public async Task GetAsync_SuccessfullyGet()
         {
             // Act
-            var data = _client.Detail(SalesOrderId).Get().AssertResult();
+            var data = await _client.Detail(SalesOrderId).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(SalesOrderId, data.Id);
             Assert.Greater(data.Attachments.Count, 0);
-            AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
 
         [Test]
-        public void Get_WithInclude_SuccessfullyGet()
+        public async Task Get_WithInclude_SuccessfullyGetAsync()
         {
             // Act
-            var data = _client.Detail(SalesOrderId)
+            var data = await _client.Detail(SalesOrderId)
                 .Include(s => s.Partner)
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -90,11 +89,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
-        public void Update_SuccessfullyUpdated()
+        public async Task Update_SuccessfullyUpdatedAsync()
         {
             // Arrange
-            var model = GetSalesOrderPostModel();
-            var result = _client.Post(model).AssertResult();
+            var model = await GetSalesOrderPostModelAsync();
+            var result = await _client.PostAsync(model).AssertResult();
             var patchModel = new SalesOrderPatchModel
             {
                 Id = result.Id,
@@ -108,7 +107,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             };
 
             // Act
-            var data = _client.Update(patchModel).AssertResult();
+            var data = await _client.UpdateAsync(patchModel).AssertResult();
 
             // Assert
             Assert.AreEqual(patchModel.Description, data.Description);
@@ -116,37 +115,37 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             Assert.AreEqual(patchModel.MyAddress.AccountNumber, data.MyAddress.AccountNumber);
             Assert.AreEqual(patchModel.MyAddress.Iban, data.MyAddress.Iban);
             AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId2);
-            _client.Delete(result.Id).AssertResult();
+            await _client.DeleteAsync(result.Id).AssertResult();
         }
 
         [Test]
-        public void GetIssuedInvoice_SuccessfullyReturnIssuedInvoice()
+        public async Task GetIssuedInvoiceAsync_SuccessfullyReturnIssuedInvoice()
         {
             // Act
-            var issuedInvoice = _client.GetIssuedInvoice(SalesOrderId).AssertResult();
+            var issuedInvoice = await _client.GetIssuedInvoiceAsync(SalesOrderId).AssertResult();
 
             // Assert
-            var salesOrder = _client.Detail(SalesOrderId).Get().AssertResult();
+            var salesOrder = await _client.Detail(SalesOrderId).GetAsync().AssertResult();
             AssertIssuedInvoice(issuedInvoice, salesOrder);
         }
 
         [Test]
-        public void GetProformaInvoice_SuccessfullyReturnProformaInvoice()
+        public async Task GetProformaInvoiceAsync_SuccessfullyReturnProformaInvoice()
         {
             // Act
-            var proformaInvoice = _client.GetProformaInvoice(SalesOrderId).AssertResult();
+            var proformaInvoice = await _client.GetProformaInvoiceAsync(SalesOrderId).AssertResult();
 
             // Assert
-            var salesOrder = _client.Detail(SalesOrderId).Get().AssertResult();
+            var salesOrder = await _client.Detail(SalesOrderId).GetAsync().AssertResult();
             AssertProformaInvoice(proformaInvoice, salesOrder);
         }
 
         [Test]
-        public void Get_WithSelect_SuccessfullyGet()
+        public async Task Get_WithSelect_SuccessfullyGetAsync()
         {
             // Act
-            var data = _client.Detail(SalesOrderId)
-                .Get(s => new
+            var data = await _client.Detail(SalesOrderId)
+                .GetAsync(s => new
                 {
                     s.Id,
                     s.DocumentNumber
@@ -160,10 +159,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
-        public void GetList_SuccessfullyReturned()
+        public async Task GetListAsync_SuccessfullyReturned()
         {
             // Act
-            var data = _client.List().Get().AssertResult();
+            var data = await _client.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -171,16 +170,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
-        public void GetList_WithPage_SuccessfullyReturned()
+        public async Task GetList_WithPage_SuccessfullyReturnedAsync()
         {
             // Arrange
             var pageSize = 1;
 
             // Act
-            var data = _client.List()
+            var data = await _client.List()
                 .Page(1)
                 .PageSize(1)
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -189,15 +188,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
-        public void GetList_WithFilter_SuccessfullyReturned()
+        public async Task GetList_WithFilter_SuccessfullyReturnedAsync()
         {
             // Arrange
             var id = 1002;
 
             // Act
-            var data = _client.List()
+            var data = await _client.List()
                 .Filter(f => f.Id.IsEqual(id))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -206,25 +205,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
-        public void GetList_WithComplexFilter_SuccessfullyReturned()
+        public async Task GetList_WithComplexFilter_SuccessfullyReturnedAsync()
         {
             // Act && Assert
-            var data = _client.List()
+            var data = await _client.List()
                 .Filter(f => f.DocumentNumber.Contains("005") &&
                             (f.State.IsEqual(SalesOrderState.Created) ||
                              f.State.IsEqual(SalesOrderState.Offered) ||
                              f.State.IsEqual(SalesOrderState.Ordered) ||
                              f.State.IsEqual(SalesOrderState.Invoiced)))
-                .Get()
+                .GetAsync()
                 .AssertResult();
         }
 
         [Test]
-        public void GetList_WithSelect_SuccessfullyReturned()
+        public async Task GetList_WithSelect_SuccessfullyReturnedAsync()
         {
             // Act
-            var data = _client.List()
-                .Get(s => new
+            var data = await _client.List()
+                .GetAsync(s => new
                 {
                     s.Id,
                     s.DocumentNumber
@@ -238,7 +237,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
-        public void Recount_SuccessfullyRecounted()
+        public async Task RecountAsync_SuccessfullyRecounted()
         {
             // Arrange
             var item = new SalesOrderItemRecountPostModel
@@ -246,6 +245,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
                 UnitPrice = 100,
                 Amount = 2,
                 Name = "Test",
+                Id = 1,
                 PriceType = PriceType.WithoutVat,
                 VatRateType = VatRateType.Basic
             };
@@ -258,10 +258,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             };
 
             // Act
-            var data = _client.Recount(model).AssertResult();
+            var data = await _client.RecountAsync(model).AssertResult();
 
             // Assert
-            var recountedItem = data.Items.First();
+            var recountedItem = data.Items.First(x => x.ItemType == SalesOrderItemType.ItemTypeNormal);
             Assert.AreEqual(item.Id, recountedItem.Id);
             Assert.AreEqual(item.Name, recountedItem.Name);
             Assert.AreEqual(242, recountedItem.Prices.TotalWithVat);
@@ -273,21 +273,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
         }
 
         [Test]
-        public void Copy_SuccessfullyGetPostModel()
+        public async Task CopyAsync_SuccessfullyGetPostModel()
         {
             // Arrange
-            var model = GetSalesOrderPostModel();
+            var model = await GetSalesOrderPostModelAsync();
             model.AccountNumber = "555777";
-            var salesOrder = _client.Post(model).AssertResult();
+            var salesOrder = await _client.PostAsync(model).AssertResult();
 
             // Act
-            var salesOrderCopy = _client.Copy(salesOrder.Id).AssertResult();
+            var salesOrderCopy = await _client.CopyAsync(salesOrder.Id).AssertResult();
 
             // Assert
             Assert.AreEqual(salesOrder.Description, salesOrderCopy.Description);
             Assert.AreEqual(PartnerId, salesOrderCopy.PartnerId);
             Assert.AreEqual(salesOrder.MyAddress.AccountNumber, salesOrderCopy.AccountNumber);
-            _client.Delete(salesOrder.Id).AssertResult();
+            await _client.DeleteAsync(salesOrder.Id).AssertResult();
         }
 
         private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
@@ -331,9 +331,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             Assert.AreEqual(salesOrder.MyAddress.Swift, proformaInvoice.Swift);
         }
 
-        private SalesOrderPostModel GetSalesOrderPostModel()
+        private async Task<SalesOrderPostModel> GetSalesOrderPostModelAsync()
         {
-            var model = _client.Default().AssertResult();
+            var model = await _client.DefaultAsync().AssertResult();
             model.Description = "Test";
             model.PartnerId = PartnerId;
             model.DeliveryAddressId = DeliveryAddressId1;

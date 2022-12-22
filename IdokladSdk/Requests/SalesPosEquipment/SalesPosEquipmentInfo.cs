@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using IdokladSdk.Clients;
-using IdokladSdk.Response;
+﻿using IdokladSdk.Clients;
 
 namespace IdokladSdk.Requests.SalesPosEquipment
 {
@@ -16,12 +14,6 @@ namespace IdokladSdk.Requests.SalesPosEquipment
         public SalesPosEquipmentInfo(SalesPosEquipmentClient client)
             : base(client)
         {
-        }
-
-        /// <inheritdoc/>
-        protected override ApiResult<TResult> GetCore<TResult>(Dictionary<string, string> queryParams)
-        {
-            return Client.Get<TResult>($"{Client.ResourceUrl}/Info", queryParams);
         }
     }
 }

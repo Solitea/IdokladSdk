@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Authentication.Extensions;
 using IdokladSdk.Authentication.Models;
-using RestSharp;
 
 namespace IdokladSdk.Authentication
 {
@@ -89,23 +91,19 @@ namespace IdokladSdk.Authentication
         public DokladConfiguration Configuration { get; set; }
 
         /// <inheritdoc/>
-        public Tokenizer GetToken()
+        public async Task<Tokenizer> GetTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
         {
-            var client = new RestClient(Configuration.IdentityServerTokenUrl);
-            var authRequest = PrepareTokenRequest();
-
-            var tokenizer = client.RequestAuthorizationCodeToken(authRequest);
+            var request = PrepareTokenRequest();
+            var tokenizer = await httpClient.SendRequestAsync(request, cancellationToken).ConfigureAwait(false);
 
             return CopyCredentials(tokenizer);
         }
 
         /// <inheritdoc/>
-        public Tokenizer RefreshAccessToken()
+        public async Task<Tokenizer> RefreshAccessTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default)
         {
-            var client = new RestClient(Configuration.IdentityServerTokenUrl);
-            var authRequest = PrepareRefreshTokenRequest();
-
-            var tokenizer = client.RequestRefreshToken(authRequest);
+            var request = PrepareRefreshTokenRequest();
+            var tokenizer = await httpClient.SendRequestAsync(request, cancellationToken).ConfigureAwait(false);
 
             return CopyCredentials(tokenizer);
         }
@@ -128,7 +126,8 @@ namespace IdokladSdk.Authentication
                 ClientId = _clientId,
                 ClientSecret = _clientSecret,
                 Code = _code,
-                RedirectUri = _redirectUri
+                RedirectUri = _redirectUri,
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
 
@@ -145,7 +144,8 @@ namespace IdokladSdk.Authentication
                 ClientSecret = _clientSecret,
                 RefreshToken = RefreshToken,
                 GrantType = GrantType.AuthorizationCode,
-                Scope = "idoklad_api offline_access"
+                Scope = "idoklad_api offline_access",
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
             };
         }
     }

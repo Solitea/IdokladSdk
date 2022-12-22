@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -13,7 +14,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
     /// <summary>
     /// BankStatementTests.
     /// </summary>
-    public partial class BankStatementTests : TestBase
+    public class BankStatementTests : TestBase
     {
         private const int PartnerId = 323823;
         private const int BankStatementId = 990771;
@@ -32,10 +33,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
         }
 
         [Test]
-        public void List_SuccessfullyGetList()
+        public async Task ListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = _bankStatementClient.List().Get().AssertResult();
+            var data = (await _bankStatementClient.List().GetAsync()).AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -46,10 +47,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
         }
 
         [Test]
-        public void Detail_SuccessfullyGetDetail()
+        public async Task DetailAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = _bankStatementClient.Detail(BankStatementId).Get().AssertResult();
+            var data = (await _bankStatementClient.Detail(BankStatementId).GetAsync()).AssertResult();
 
             // Assert
             Assert.AreEqual(BankStatementId, data.Id);
@@ -58,10 +59,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
 
         [Test]
         [Order(1)]
-        public void Pair_SuccessfullyPairWithInvoice()
+        public async Task PairAsync_SuccessfullyPairWithInvoice()
         {
             // Arrange
-            var invoice = CreateInvoice();
+            var invoice = await CreateInvoiceAsync();
             _invoiceId = invoice.Id;
             var model = new BankStatementPairingPostModel
             {
@@ -77,7 +78,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             };
 
             // Act
-            var data = _bankStatementClient.Pair(model).AssertResult();
+            var data = (await _bankStatementClient.PairAsync(model)).AssertResult();
             _bankStatementId = data.CreatedBankStatement.Id;
 
             // Assert
@@ -91,25 +92,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
 
         [Test]
         [Order(2)]
-        public void Delete_SuccessfullyDeletedStatement()
+        public async Task DeleteAsync_SuccessfullyDeletedStatement()
         {
             // Act
-            var data = _bankStatementClient.Delete(_bankStatementId).AssertResult();
+            var data = (await _bankStatementClient.DeleteAsync(_bankStatementId)).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
         }
 
         [OneTimeTearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
-            var result = _issuedInvoiceClient.Delete(_invoiceId).AssertResult();
+            var result = await _issuedInvoiceClient.DeleteAsync(_invoiceId).AssertResult();
             Assert.IsTrue(result, "Invoice not deleted");
         }
 
-        private IssuedInvoiceGetModel CreateInvoice()
+        private async Task<IssuedInvoiceGetModel> CreateInvoiceAsync()
         {
-            var defaultInvoice = _issuedInvoiceClient.Default().AssertResult();
+            var defaultInvoice = await _issuedInvoiceClient.DefaultAsync().AssertResult();
             defaultInvoice.PartnerId = PartnerId;
             defaultInvoice.Description = "Invoice for pair";
             defaultInvoice.Items.Clear();
@@ -119,7 +120,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
                 Amount = 1,
                 UnitPrice = 150
             });
-            var invoice = _issuedInvoiceClient.Post(defaultInvoice).AssertResult();
+            var invoice = await _issuedInvoiceClient.PostAsync(defaultInvoice).AssertResult();
             return invoice;
         }
     }

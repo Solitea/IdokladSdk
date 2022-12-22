@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -22,20 +23,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
         }
 
         [Test]
-        public void List_SuccessfullyGet()
+        public async Task List_SuccessfullyGetAsync()
         {
             // Act
-            var data = _registeredSaleClient.List().Get().AssertResult();
+            var data = await _registeredSaleClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
         }
 
         [Test]
-        public void Detail_SuccessfullyGet()
+        public async Task Detail_SuccessfullyGetAsync()
         {
             // Act
-            var data = _registeredSaleClient.Detail(RegisteredSaleType.SalesReceipt, _salesReceiptId).Get().AssertResult();
+            var data = await _registeredSaleClient.Detail(RegisteredSaleType.SalesReceipt, _salesReceiptId).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(_salesReceiptId, data.SalesReceiptId);
@@ -43,20 +44,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
         }
 
         [Test]
-        public void Default_SuccessfullyGet()
+        public async Task Default_SuccessfullyGetAsync()
         {
             // Act
-            var data = _registeredSaleClient.Default().AssertResult();
+            var data = await _registeredSaleClient.DefaultAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(_vatIdentificationNumber, data.VatIdentificationNumber);
         }
 
         [Test]
-        public void Post_SuccessfullyCreated()
+        public async Task Post_SuccessfullyCreatedAsync()
         {
             // Arrange
-            var model = _registeredSaleClient.Default().AssertResult();
+            var model = await _registeredSaleClient.DefaultAsync().AssertResult();
             model.Bkp = "TEST_BKP";
             model.Fik = "TEST_FIK";
             model.Pkp = "TEST_PKP";
@@ -65,7 +66,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             model.Uuid = Guid.NewGuid();
 
             // Act
-            var data = _registeredSaleClient.Post(RegisteredSaleType.SalesReceipt, _salesReceiptId, model).AssertResult();
+            var data = await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model).AssertResult();
 
             // Assert
             Assert.AreEqual(_vatIdentificationNumber, data.VatIdentificationNumber);
@@ -78,13 +79,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
         }
 
         [Test]
-        public void Post_Validation_ThrowsValidationException()
+        public async Task Post_Validation_ThrowsValidationExceptionAsync()
         {
             // Arrange
-            var model = _registeredSaleClient.Default().AssertResult();
+            var model = await _registeredSaleClient.DefaultAsync().AssertResult();
 
             // Act
-            var exception = Assert.Throws<ValidationException>(() => _registeredSaleClient.Post(RegisteredSaleType.SalesReceipt, _salesReceiptId, model));
+            var exception = Assert.ThrowsAsync<ValidationException>(async () => await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model));
 
             // Assert
             Assert.AreEqual("Model is not valid.\nThe Bkp field is required.\nThe Fik field is required.\nThe Pkp field is required.\nThe ReceiptNumber field is required.", exception.Message);

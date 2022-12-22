@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using IdokladSdk.Exceptions;
-using RestSharp;
 
 namespace IdokladSdk.Validation
 {
@@ -11,13 +12,7 @@ namespace IdokladSdk.Validation
     /// </summary>
     public static class ApiResultValidator
     {
-        /// <summary>
-        /// Validate API response.
-        /// </summary>
-        /// <typeparam name="T">Result type.</typeparam>
-        /// <param name="response">Response from RestSharp.</param>
-        /// <param name="handler">Custom API result handler.</param>
-        public static void ValidateResponse<T>(IRestResponse<T> response, Action<T> handler)
+        public static void ValidateResponse(HttpResponseMessage response)
         {
             if (response == null)
             {
@@ -28,13 +23,27 @@ namespace IdokladSdk.Validation
             {
                 throw new IdokladUnavailableException(response);
             }
+        }
 
-            if (response.ErrorException != null)
+        public static async Task<TData> ValidateAndDeserializeResponse<TData>(HttpResponseMessage response, Func<HttpResponseMessage, Task<TData>> deserialize, Action<TData> handler)
+        {
+            ValidateResponse(response);
+
+            TData data;
+
+            try
             {
-                throw new ValidationException($"Response is not valid.", response.ErrorException);
+                data = await deserialize(response);
+            }
+            catch (Exception)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new ValidationException($"Response is not valid: {content}");
             }
 
-            handler?.Invoke(response.Data);
+            handler?.Invoke(data);
+
+            return data;
         }
     }
 }

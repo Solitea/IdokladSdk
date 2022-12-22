@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Core.Tags;
@@ -21,10 +22,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         protected override int EntityWithTags2Id => 167065;
 
         [Test]
-        public void Copy_SourceWithTags_CopiesTags()
+        public async Task Copy_SourceWithTags_CopiesTagsAsync()
         {
             // Act
-            var result = Client.Copy(EntityWithTags1Id).AssertResult();
+            var result = await Client.CopyAsync(EntityWithTags1Id).AssertResult();
 
             // Assert
             AssertHasTagIds(result.Tags, new List<int> { Tag1Id, Tag2Id });

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.SalesReceipt;
 using IdokladSdk.Requests.SalesReceipt;
@@ -9,7 +11,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with sales receipt endpoints.
     /// </summary>
-    public partial class SalesReceiptClient
+    public class SalesReceiptClient
         : BaseClient,
         ICopyRequest<SalesReceiptPostModel>,
         IDeleteRequest,
@@ -34,15 +36,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesReceipts";
 
         /// <inheritdoc/>
-        public ApiResult<SalesReceiptPostModel> Default()
+        public Task<ApiResult<SalesReceiptPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return Default<SalesReceiptPostModel>();
+            return DefaultAsync<SalesReceiptPostModel>(cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -58,35 +60,35 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<SalesReceiptPostModel> Copy(int id)
+        public Task<ApiResult<SalesReceiptPostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<SalesReceiptPostModel>(resource);
+            return GetAsync<SalesReceiptPostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<SalesReceiptGetModel> Post(SalesReceiptPostModel model)
+        public Task<ApiResult<SalesReceiptGetModel>> PostAsync(SalesReceiptPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<SalesReceiptPostModel, SalesReceiptGetModel>(model);
+            return PostAsync<SalesReceiptPostModel, SalesReceiptGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiBatchResult<SalesReceiptGetModel> Post(List<SalesReceiptPostModel> models)
+        public Task<ApiBatchResult<SalesReceiptGetModel>> PostAsync(List<SalesReceiptPostModel> models, CancellationToken cancellationToken = default)
         {
-            return Post<SalesReceiptPostModel, SalesReceiptGetModel>(models);
+            return PostAsync<SalesReceiptPostModel, SalesReceiptGetModel>(models, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<SalesReceiptRecountGetModel> Recount(SalesReceiptRecountPostModel model)
+        public Task<ApiResult<SalesReceiptRecountGetModel>> RecountAsync(SalesReceiptRecountPostModel model, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Recount";
-            return Post<SalesReceiptRecountPostModel, SalesReceiptRecountGetModel>(resource, model);
+            return PostAsync<SalesReceiptRecountPostModel, SalesReceiptRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<SalesReceiptGetModel> Update(SalesReceiptPatchModel model)
+        public Task<ApiResult<SalesReceiptGetModel>> UpdateAsync(SalesReceiptPatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<SalesReceiptPatchModel, SalesReceiptGetModel>(model);
+            return PatchAsync<SalesReceiptPatchModel, SalesReceiptGetModel>(model, cancellationToken);
         }
     }
 }

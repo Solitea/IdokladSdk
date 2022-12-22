@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Statistics;
 using IdokladSdk.Requests.Core.Extensions;
@@ -10,7 +12,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with statistic endpoints.
     /// </summary>
-    public partial class StatisticsClient : BaseClient
+    public class StatisticsClient : BaseClient
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StatisticsClient"/> class.
@@ -29,63 +31,69 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="periodType">Type of time period.</param>
         /// <param name="filterModel">Filter model.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="InvoicingForPeriodGetModel"/>.</returns>
-        public ApiResult<InvoicingForPeriodGetModel> InvoicingForPeriod(PeriodType periodType, StatisticsFilterModel filterModel = null)
+        public Task<ApiResult<InvoicingForPeriodGetModel>> InvoicingForPeriodAsync(PeriodType periodType, StatisticsFilterModel filterModel = null, CancellationToken cancellationToken = default)
         {
             var queryParams = new Dictionary<string, string> { { nameof(PeriodType), periodType.ToString() } };
             var withFilterParams = queryParams.Concat(filterModel?.AsDictionary() ?? new Dictionary<string, string>())
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
-            return Get<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", withFilterParams);
+            return GetAsync<InvoicingForPeriodGetModel>($"{ResourceUrl}/InvoicingForPeriod", withFilterParams, cancellationToken);
         }
 
         /// <summary>
         /// Statistics of issued and received invoices for given year.
         /// </summary>
         /// <param name="yearType">Type of year.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="InvoicingForYearGetModel"/>.</returns>
-        public ApiResult<InvoicingForYearGetModel> InvoicingForYear(YearType yearType)
+        public Task<ApiResult<InvoicingForYearGetModel>> InvoicingForYearAsync(YearType yearType, CancellationToken cancellationToken = default)
         {
             var queryParams = new Dictionary<string, string> { { nameof(YearType), yearType.ToString() } };
 
-            return Get<InvoicingForYearGetModel>($"{ResourceUrl}/InvoicingForYear", queryParams);
+            return GetAsync<InvoicingForYearGetModel>($"{ResourceUrl}/InvoicingForYear", queryParams, cancellationToken);
         }
 
         /// <summary>
         /// Statistics for issued and received invoices.
         /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="List{QuarterSummaryGetModel}"/>.</returns>
-        public ApiResult<List<QuarterSummaryGetModel>> QuarterSummary()
+        public Task<ApiResult<List<QuarterSummaryGetModel>>> QuarterSummaryAsync(CancellationToken cancellationToken = default)
         {
-            return Get<List<QuarterSummaryGetModel>>($"{ResourceUrl}/QuarterSummary");
+            return GetAsync<List<QuarterSummaryGetModel>>($"{ResourceUrl}/QuarterSummary", null, cancellationToken);
         }
 
         /// <summary>
         /// Statistics for top partners.
         /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="List{TopPartnerGetModel}"/>.</returns>
-        public ApiResult<List<TopPartnerGetModel>> TopPartners()
+        public Task<ApiResult<List<TopPartnerGetModel>>> TopPartnersAsync(CancellationToken cancellationToken = default)
         {
-            return Get<List<TopPartnerGetModel>>($"{ResourceUrl}/TopPartners");
+            return GetAsync<List<TopPartnerGetModel>>($"{ResourceUrl}/TopPartners", null, cancellationToken);
         }
 
         /// <summary>
         /// Count of documents.
         /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="AgendaSummaryGetModel"/>.</returns>
-        public ApiResult<AgendaSummaryGetModel> AgendaSummary()
+        public Task<ApiResult<AgendaSummaryGetModel>> AgendaSummaryAsync(CancellationToken cancellationToken = default)
         {
-            return Get<AgendaSummaryGetModel>($"{ResourceUrl}/AgendaSummary");
+            return GetAsync<AgendaSummaryGetModel>($"{ResourceUrl}/AgendaSummary", null, cancellationToken);
         }
 
         /// <summary>
         /// Statistics for top partners.
         /// </summary>
         /// <param name="id">Id of contact.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="ContactStatisticGetModel"/>.</returns>
-        public ApiResult<ContactStatisticGetModel> StatisticForContact(int id)
+        public Task<ApiResult<ContactStatisticGetModel>> StatisticForContactAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Get<ContactStatisticGetModel>($"{ResourceUrl}/StatisticForContact/{id}");
+            return GetAsync<ContactStatisticGetModel>($"{ResourceUrl}/StatisticForContact/{id}", null, cancellationToken);
         }
     }
 }

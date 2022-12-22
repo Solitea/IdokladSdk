@@ -102,10 +102,10 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var defaultDateTime = new DateTime(2020, 10, 10);
 
             return new List<object>
-            {
-                new ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute { DateOfIssue = defaultDateTime },
-                new ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute { DateOfIssue = defaultDateTime, DateOfVatClaim = defaultDateTime },
-            };
+        {
+            new ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute { DateOfIssue = defaultDateTime },
+            new ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute { DateOfIssue = defaultDateTime, DateOfVatClaim = defaultDateTime },
+        };
         }
 
         private static IList<object> GetValidModelsWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute()
@@ -113,12 +113,12 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var defaultDateTime = new DateTime(2020, 10, 10);
 
             return new List<object>
-            {
-                new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute(),
-                new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfIssue = defaultDateTime, DateOfVatClaim = defaultDateTime },
-                new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfVatClaim = defaultDateTime },
-                new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfIssue = defaultDateTime },
-            };
+        {
+            new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute(),
+            new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfIssue = defaultDateTime, DateOfVatClaim = defaultDateTime },
+            new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfVatClaim = defaultDateTime },
+            new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute { DateOfIssue = defaultDateTime },
+        };
         }
     }
 }

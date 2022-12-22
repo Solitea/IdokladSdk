@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
@@ -22,36 +23,6 @@ namespace IdokladSdk.Requests.Report
         public ReportDetail(int invoiceId, ReportClient client, ReportDocumentType documentType)
             : base(invoiceId, client, documentType)
         {
-        }
-
-        /// <summary>
-        /// Get report.
-        /// </summary>
-        /// <param name="option">Option.</param>
-        /// <returns>API result.</returns>
-        public ApiResult<string> Get(ReportOption option = null)
-        {
-            if (option == null)
-            {
-                return GetBase(null);
-            }
-
-            return GetBase(new ExtendedReportOption { Language = option.Language, Compressed = option.Compressed });
-        }
-
-        /// <summary>
-        /// Get image report.
-        /// </summary>
-        /// <param name="option">Option.</param>
-        /// <returns>API result.</returns>
-        public ApiResult<List<ReportImageGetModel>> GetImage(ReportImageOption option = null)
-        {
-            if (option == null)
-            {
-                return GetImageBase(null);
-            }
-
-            return GetImageBase(new ExtendedReportImageOption { Language = option.Language, });
         }
 
         /// <summary>

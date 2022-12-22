@@ -51,20 +51,21 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
         /// <param name="batchResult">Result.</param>
         /// <typeparam name="T">T.</typeparam>
         /// <returns>Method assert result.</returns>
-        public static IEnumerable<T> AssertResult<T>(this ApiBatchResult<T> batchResult)
+        public static async Task<IEnumerable<T>> AssertResult<T>(this Task<ApiBatchResult<T>> batchResult)
         {
-            Assert.IsInstanceOf<ApiBatchResult<T>>(batchResult);
-            Assert.AreEqual(batchResult.Status, BatchResultType.Success);
+            var result = await batchResult;
+            Assert.IsInstanceOf<ApiBatchResult<T>>(result);
+            Assert.AreEqual(result.Status, BatchResultType.Success);
 
             Assert.Multiple(() =>
             {
-                foreach (var result in batchResult.Results)
+                foreach (var result in result.Results)
                 {
                     result.AssertResult();
                 }
             });
 
-            return batchResult.Results.Select(x => x.Data);
+            return result.Results.Select(x => x.Data);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Requests.Core;
+﻿using System.Threading;
+using IdokladSdk.Requests.Core;
 
 namespace IdokladSdk.Clients.Interfaces
 {
@@ -10,7 +11,7 @@ namespace IdokladSdk.Clients.Interfaces
     {
         /// <summary>
         /// Detail of entity with given Id. Returns an instance which allows operations on detail of entity
-        /// (e.g. inclusion of nested objects) and retrieving of data by calling <see cref="BaseDetail{TDetail,TClient,TGetModel}.Get()"/>.
+        /// (e.g. inclusion of nested objects) and retrieving of data by calling <see cref="BaseDetail{TDetail,TClient,TGetModel}.GetAsync(CancellationToken)"/>.
         /// </summary>
         /// <param name="id">Entity Id.</param>
         /// <returns>Instance of descendant of <see cref="BaseDetail{TDetail,TClient,TGetModel}"/>.</returns>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -9,7 +10,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
 {
     [TestFixture]
-    public partial class NumericSequenceTest : TestBase
+    public class NumericSequenceTest : TestBase
     {
         private const int NumericSequenceId = 607899;
         private const int NumericSequenceYear = 2019;
@@ -23,21 +24,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         }
 
         [Test]
-        public void List_SuccessfullyGetList()
+        public async Task ListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = _numericSequenceClient.List()
-                .Filter(f => f.DocumentType.IsEqual(NumericSequenceDocumentType.IssuedInvoice)).Get().AssertResult();
+            var data = await _numericSequenceClient.List()
+                .Filter(f => f.DocumentType.IsEqual(NumericSequenceDocumentType.IssuedInvoice)).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(data.TotalItems, 1);
         }
 
         [Test]
-        public void DetailWithYear_SuccessfullyGetDetail()
+        public async Task DetailWithYearAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = _numericSequenceClient.Detail(NumericSequenceId, NumericSequenceYear).Get().AssertResult();
+            var data = await _numericSequenceClient.Detail(NumericSequenceId, NumericSequenceYear).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(NumericSequenceDocumentType.IssuedInvoice, data.DocumentType);
@@ -45,10 +46,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         }
 
         [Test]
-        public void DetailWithoutYear_SuccessfullyGetDetail()
+        public async Task DetailWithoutYearAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = _numericSequenceClient.Detail(NumericSequenceId).Get().AssertResult();
+            var data = await _numericSequenceClient.Detail(NumericSequenceId).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(NumericSequenceDocumentType.IssuedInvoice, data.DocumentType);
@@ -56,11 +57,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         }
 
         [Test]
-        public void GetDocumentNumber_CurrentYear_SuccessfullyGetDocumentNumber()
+        public async Task GetDocumentNumber_CurrentYear_SuccessfullyGetDocumentNumberAsync()
         {
             // Act
             var currentYear = DateTime.UtcNow.Year;
-            var data = _numericSequenceClient.GetDocumentNumber(NumericSequenceDocumentType.IssuedInvoice, null, 1)
+            var data = await _numericSequenceClient.GetDocumentNumberAsync(NumericSequenceDocumentType.IssuedInvoice, null, 1)
                 .AssertResult();
 
             // Assert
@@ -70,11 +71,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         }
 
         [TestCaseSource("TestData_AnotherYear")]
-        public void GetDocumentNumber_AnotherYear_SuccessfullyGetDocumentNumber(DateTime date, string expectedDocumentNumber, bool isUnique)
+        public async Task GetDocumentNumberAsync_AnotherYear_SuccessfullyGetDocumentNumber(DateTime date, string expectedDocumentNumber, bool isUnique)
         {
             // Act
-            var data = _numericSequenceClient.GetDocumentNumber(NumericSequenceDocumentType.IssuedInvoice, date, 1)
-                .AssertResult();
+            var data = await _numericSequenceClient.GetDocumentNumberAsync(NumericSequenceDocumentType.IssuedInvoice, date, 1).AssertResult();
 
             // Assert
             Assert.AreEqual(expectedDocumentNumber, data.Custom.DocumentNumber);
@@ -83,7 +83,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         }
 
         [Test]
-        public void Update_DoesNotFail()
+        public async Task UpdateAsync_DoesNotFail()
         {
             // Arrange
             var model = new NumericSequencePatchModel
@@ -92,7 +92,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
             };
 
             // Act
-            var data = _numericSequenceClient.Update(model).AssertResult();
+            var data = await _numericSequenceClient.UpdateAsync(model).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -102,8 +102,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
         {
             return new object[]
             {
-                new object[] { new DateTime(2019, 1, 1), "20190001", true },
-                new object[] { new DateTime(2020, 1, 1), "20200001", false }
+            new object[] { new DateTime(2019, 1, 1), "20190001", true },
+            new object[] { new DateTime(2020, 1, 1), "20200001", false }
             };
         }
     }

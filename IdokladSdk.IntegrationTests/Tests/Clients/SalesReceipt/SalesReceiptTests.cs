@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -15,7 +16,7 @@ using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 {
-    public partial class SalesReceiptTests : TestBase
+    public class SalesReceiptTests : TestBase
     {
         private const int PartnerId = 323823;
         private const int SalesPosEquipmentId = 12902;
@@ -33,21 +34,24 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [OneTimeTearDown]
-        public void OneTimeTearDown()
+        public async Task OneTimeTearDown()
         {
-            _salesReceiptIds.ForEach(id => _client.Delete(id));
+            foreach (var id in _salesReceiptIds)
+            {
+                await _client.DeleteAsync(id);
+            }
         }
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyCreated()
+        public async Task Post_SuccessfullyCreatedAsync()
         {
             // Arrange
-            _postModel = _client.Default().AssertResult();
+            _postModel = await _client.DefaultAsync().AssertResult();
             SetPostModel();
 
             // Act
-            var data = _client.Post(_postModel).AssertResult();
+            var data = await _client.PostAsync(_postModel).AssertResult();
             _salesReceiptId = data.Id;
             _salesReceiptIds.Add(_salesReceiptId);
 
@@ -62,10 +66,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
         [Test]
         [Order(2)]
-        public void Get_SuccessfullyGet()
+        public async Task Get_SuccessfullyGetAsync()
         {
             // Act
-            var data = _client.Detail(_salesReceiptId).Get().AssertResult();
+            var data = await _client.Detail(_salesReceiptId).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(_salesReceiptId, data.Id);
@@ -75,13 +79,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
         [Test]
         [Order(3)]
-        public void Get_WithInclude_SuccessfullyGet()
+        public async Task Get_WithInclude_SuccessfullyGetAsync()
         {
             // Act
-            var data = _client.Detail(_salesReceiptId)
+            var data = await _client.Detail(_salesReceiptId)
                 .Include(s => s.Partner)
                 .Include(s => s.Payments.PaymentOption)
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             Assert.AreEqual(_salesReceiptId, data.Id);
@@ -92,11 +96,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
         [Test]
         [Order(4)]
-        public void Get_WithSelect_SuccessfullyGet()
+        public async Task Get_WithSelect_SuccessfullyGetAsync()
         {
             // Act
-            var data = _client.Detail(_salesReceiptId)
-                .Get<SalesReceiptSelectModel>()
+            var data = await _client.Detail(_salesReceiptId)
+                .GetAsync<SalesReceiptSelectModel>()
                 .AssertResult();
 
             Assert.AreEqual(_salesReceiptId, data.Id);
@@ -106,7 +110,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
         [Test]
         [Order(5)]
-        public void Update_SuccessfullyUpdated()
+        public async Task Update_SuccessfullyUpdatedAsync()
         {
             var model = new SalesReceiptPatchModel
             {
@@ -120,8 +124,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             };
 
             // Act
-            _client.Update(model).AssertResult();
-            var data = _client.Detail(_salesReceiptId).Include(s => s.Partner).Get().AssertResult();
+            await _client.UpdateAsync(model).AssertResult();
+            var data = await _client.Detail(_salesReceiptId).Include(s => s.Partner).GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(model.Name, data.Name);
@@ -132,13 +136,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
         [Test]
         [Order(6)]
-        public void Copy_SuccessfullyGetPosModel()
+        public async Task CopyAsync_SuccessfullyGetPostModel()
         {
             // Arrange
-            var salesReceiptToCopy = _client.Detail(_salesReceiptId).Get().AssertResult();
+            var salesReceiptToCopy = await _client.Detail(_salesReceiptId).GetAsync().AssertResult();
 
             // Act
-            var data = _client.Copy(_salesReceiptId).AssertResult();
+            var data = await _client.CopyAsync(_salesReceiptId).AssertResult();
 
             // Assert
             Assert.AreEqual(salesReceiptToCopy.PartnerId, data.PartnerId);
@@ -147,10 +151,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
         [Test]
         [Order(8)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task Delete_SuccessfullyDeletedAsync()
         {
             // Act
-            var data = _client.Delete(_salesReceiptId).AssertResult();
+            var data = await _client.DeleteAsync(_salesReceiptId).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
@@ -158,10 +162,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [Test]
-        public void GetList_SuccessfullyReturned()
+        public async Task GetList_SuccessfullyReturnedAsync()
         {
             // Act
-            var data = _client.List().Get().AssertResult();
+            var data = await _client.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -169,16 +173,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [Test]
-        public void GetList_WithPage_SuccessfullyReturned()
+        public async Task GetList_WithPage_SuccessfullyReturnedAsync()
         {
             // Arrange
             var pageSize = 1;
 
             // Act
-            var data = _client.List()
+            var data = await _client.List()
                 .Page(1)
                 .PageSize(1)
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -187,15 +191,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [Test]
-        public void GetList_WithFilter_SuccessfullyReturned()
+        public async Task GetList_WithFilter_SuccessfullyReturnedAsync()
         {
             // Arrange
             var id = 224356;
 
             // Act
-            var data = _client.List()
+            var data = await _client.List()
                 .Filter(f => f.Id.IsEqual(id))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -204,11 +208,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [Test]
-        public void GetList_WithSelect_SuccessfullyReturned()
+        public async Task GetList_WithSelect_SuccessfullyReturnedAsync()
         {
             // Act
-            var data = _client.List()
-                .Get<SalesReceiptSelectPaymentModel>()
+            var data = await _client.List()
+                .GetAsync<SalesReceiptSelectPaymentModel>()
                 .AssertResult();
 
             // Assert
@@ -220,20 +224,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [Test]
-        public void Recount_SuccessfullyRecounted()
+        public async Task RecountAsync_SuccessfullyRecounted()
         {
             // Arrange
             var model = CreateRecountPostModel();
 
             // Act
-            var data = _client.Recount(model).AssertResult();
+            var data = await _client.RecountAsync(model).AssertResult();
 
             // Assert
             AssertRecountModel(data, model);
         }
 
         [Test]
-        public void Recount_WithRoundingItem_SuccessfullyRecounted()
+        public async Task Recount_WithRoundingItem_SuccessfullyRecountedAsync()
         {
             // Arrange
             var item = new SalesReceiptItemRecountPostModel
@@ -249,7 +253,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             {
                 UnitPrice = 0.1M,
                 Amount = 1,
-                Name = "Rounding",
+                Name = "Zaokrouhlení",
                 PriceType = PriceTypeWithoutOnlyBase.WithVat,
                 VatRateType = VatRateType.Basic,
                 ItemType = SalesReceiptItemType.ItemTypeRound
@@ -263,7 +267,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             };
 
             // Act
-            var data = _client.Recount(model).AssertResult();
+            var data = await _client.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = data.Items.First();
@@ -286,7 +290,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [Test]
-        public void Recount_ForeignCurrency_SuccessfullyRecounted()
+        public async Task Recount_ForeignCurrency_SuccessfullyRecountedAsync()
         {
             // Arrange
             var item = new SalesReceiptItemRecountPostModel
@@ -309,7 +313,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             };
 
             // Act
-            var result = _client.Recount(model).AssertResult();
+            var result = await _client.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = result.Items.First(x => x.ItemType == SalesReceiptItemType.ItemTypeNormal);
@@ -321,16 +325,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [Test]
-        public void BatchPost_SuccessfullyCreated()
+        public async Task BatchPost_SuccessfullyCreatedAsync()
         {
             // Arrange
-            var defaultSalesReceipt = _client.Default().AssertResult();
+            var defaultSalesReceipt = await _client.DefaultAsync().AssertResult();
             defaultSalesReceipt.SalesPosEquipmentId = SalesPosEquipmentId;
             defaultSalesReceipt.Name = "Test";
             defaultSalesReceipt.Items.First().Name = "Test";
 
             // Act
-            var data = _client.Post(new List<SalesReceiptPostModel> { defaultSalesReceipt });
+            var data = await _client.PostAsync(new List<SalesReceiptPostModel> { defaultSalesReceipt });
 
             // Assert
             Assert.AreEqual(BatchResultType.Success, data.Status);
@@ -340,15 +344,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
         }
 
         [Test]
-        public void Patch_ChangeCurrency_SucessfullyUpdated()
+        public async Task Patch_ChangeCurrency_SucessfullyUpdatedAsync()
         {
             // Arrange
-            var defaultSalesReceipt = _client.Default().AssertResult();
+            var defaultSalesReceipt = await _client.DefaultAsync().AssertResult();
             defaultSalesReceipt.SalesPosEquipmentId = SalesPosEquipmentId;
             defaultSalesReceipt.Name = "Test";
             defaultSalesReceipt.Items.First().Name = "Test";
 
-            var postResult = _client.Post(defaultSalesReceipt).AssertResult();
+            var postResult = await _client.PostAsync(defaultSalesReceipt).AssertResult();
             _salesReceiptIds.Add(postResult.Id);
             var updateModel = new SalesReceiptPatchModel
             {
@@ -358,19 +362,19 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             };
 
             // Assert
-            _client.Update(updateModel).AssertResult();
+            await _client.UpdateAsync(updateModel).AssertResult();
         }
 
         [Test]
-        public void Patch_ChangeCurrencyWithoutSalesPosEquipment_Unsucessful()
+        public async Task Patch_ChangeCurrencyWithoutSalesPosEquipment_UnsucessfulAsync()
         {
             // Arrange
-            var defaultSalesReceipt = _client.Default().AssertResult();
+            var defaultSalesReceipt = await _client.DefaultAsync().AssertResult();
             defaultSalesReceipt.SalesPosEquipmentId = SalesPosEquipmentId;
             defaultSalesReceipt.Name = "Test";
             defaultSalesReceipt.Items.First().Name = "Test";
 
-            var postResult = _client.Post(defaultSalesReceipt).AssertResult();
+            var postResult = await _client.PostAsync(defaultSalesReceipt).AssertResult();
             _salesReceiptIds.Add(postResult.Id);
             var updateModel = new SalesReceiptPatchModel
             {
@@ -379,7 +383,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             };
 
             // Act
-            var patchResult = _client.Update(updateModel);
+            var patchResult = await _client.UpdateAsync(updateModel);
 
             // Assert
             Assert.IsFalse(patchResult.IsSuccess);

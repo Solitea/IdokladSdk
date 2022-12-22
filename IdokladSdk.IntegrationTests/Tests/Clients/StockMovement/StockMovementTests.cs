@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -12,7 +13,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
     /// <summary>
     /// StockMovementTests.
     /// </summary>
-    public partial class StockMovementTests : TestBase
+    public class StockMovementTests : TestBase
     {
         private const int PriceListItemId = 107444;
         private StockMovementClient _stockMovementClient;
@@ -27,23 +28,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
 
         [Test]
         [Order(1)]
-        public void Default_SuccessfullyGetDefault()
+        public async Task DefaultAsync_SuccessfullyGetDefault()
         {
-            var data = _stockMovementClient.Default(PriceListItemId).AssertResult();
+            var data = (await _stockMovementClient.DefaultAsync(PriceListItemId)).AssertResult();
 
             Assert.AreEqual(PriceListItemId, data.PriceListItemId);
         }
 
         [Test]
         [Order(2)]
-        public void Post_SuccessfullyCreated()
+        public async Task PostAsync_SuccessfullyCreated()
         {
             // Arrange
-            var defaultModel = _stockMovementClient.Default(PriceListItemId).AssertResult();
+            var defaultModel = (await _stockMovementClient.DefaultAsync(PriceListItemId)).AssertResult();
             defaultModel.Amount = 1;
 
             // Act
-            _newStockMovement = _stockMovementClient.Post(defaultModel).AssertResult();
+            _newStockMovement = (await _stockMovementClient.PostAsync(defaultModel)).AssertResult();
 
             // Assert
             Assert.AreEqual(PriceListItemId, _newStockMovement.PriceListItemId);
@@ -52,7 +53,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
 
         [Test]
         [Order(3)]
-        public void Update_SuccessfullyUpdated()
+        public async Task UpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
             var patch = new StockMovementPatchModel
@@ -62,7 +63,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
             };
 
             // Act
-            var data = _stockMovementClient.Update(patch).AssertResult();
+            var data = (await _stockMovementClient.UpdateAsync(patch)).AssertResult();
 
             // Assert
             Assert.AreEqual(patch.Note, data.Note);
@@ -70,10 +71,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
 
         [Test]
         [Order(4)]
-        public void Detail_SuccessfullyGetDetail()
+        public async Task DetailAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = _stockMovementClient.Detail(_newStockMovement.Id).Get().AssertResult();
+            var data = (await _stockMovementClient.Detail(_newStockMovement.Id).GetAsync()).AssertResult();
 
             // Assert
             Assert.AreEqual(PriceListItemId, data.PriceListItemId);
@@ -81,40 +82,39 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
 
         [Test]
         [Order(5)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = _stockMovementClient.Delete(_newStockMovement.Id).AssertResult();
+            var data = (await _stockMovementClient.DeleteAsync(_newStockMovement.Id)).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
         }
 
         [Test]
-        public void Batch_SuccessfullyCreated()
+        public async Task BatchAsync_SuccessfullyCreated()
         {
             // Arrange
-            var defaultStockMovement = _stockMovementClient.Default(PriceListItemId).AssertResult();
+            var defaultStockMovement = (await _stockMovementClient.DefaultAsync(PriceListItemId)).AssertResult();
             defaultStockMovement.Amount = 100;
 
             // Act
-            var data = _stockMovementClient.Post(new List<StockMovementPostModel> { defaultStockMovement });
+            var data = await _stockMovementClient.PostAsync(new List<StockMovementPostModel> { defaultStockMovement });
 
             // Assert
             Assert.AreEqual(BatchResultType.Success, data.Status);
             var id = data.Results.First().Data.Id;
             Assert.Greater(id, 0);
-            _stockMovementClient.Delete(id).AssertResult();
+            await _stockMovementClient.DeleteAsync(id);
         }
 
         [Test]
-        public void GetList_SuccessfullyGetList()
+        public async Task GetListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = _stockMovementClient.List()
+            var data = (await _stockMovementClient.List()
                 .Filter(f => f.PriceListItemId.IsEqual(PriceListItemId))
-                .Get()
-                .AssertResult();
+                .GetAsync()).AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);

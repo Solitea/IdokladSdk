@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Authentication;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.Response;
 
 namespace IdokladSdk
@@ -19,44 +21,29 @@ namespace IdokladSdk
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        /// <param name="appName">Your application name.</param>
-        /// <param name="appVersion">Your application version.</param>
-        /// <param name="authentication">Authentication configuration.</param>
-        public ApiContext(string appName, string appVersion, IAuthentication authentication)
-            : this(appName, appVersion, authentication, new DokladConfiguration())
+        /// <param name="apiContextConfiguration">Configuration fo ApiContext.</param>
+        protected internal ApiContext(ApiContextConfiguration apiContextConfiguration)
         {
-        }
+            ValidateApiContextConfiguration(apiContextConfiguration);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
-        /// </summary>
-        /// <param name="appName">Your application name.</param>
-        /// <param name="appVersion">Your application version.</param>
-        /// <param name="authentication">Authentication configuration.</param>
-        /// <param name="configuration">Custom configuration for iDoklad API.</param>
-        public ApiContext(string appName, string appVersion, IAuthentication authentication, DokladConfiguration configuration)
-        {
-            if (string.IsNullOrWhiteSpace(appName))
-            {
-                throw new ArgumentException("AppName has to be supplied.", nameof(appName));
-            }
+            HttpClient = apiContextConfiguration.HttpClient;
+            AppName = apiContextConfiguration.AppName;
+            AppVersion = apiContextConfiguration.AppVersion;
+            Configuration = apiContextConfiguration.Configuration;
 
-            if (string.IsNullOrWhiteSpace(appVersion))
-            {
-                throw new ArgumentException("AppVersion has to be supplied.", nameof(appVersion));
-            }
-
-            AppName = appName;
-            AppVersion = appVersion;
-            _authentication = authentication ?? throw new ArgumentNullException(nameof(authentication), "Authentication cannot be null.");
-            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration), "Configuration cannot be null.");
-            _authentication.Configuration = configuration;
+            _authentication = apiContextConfiguration.Authentication;
+            _authentication.Configuration = apiContextConfiguration.Configuration;
         }
 
         /// <summary>
         /// Gets refresh token before expiration limit (in seconds).
         /// </summary>
         public static int RefreshTokenLimit => 600;
+
+        /// <summary>
+        /// Gets HttpClient for API.
+        /// </summary>
+        public HttpClient HttpClient { get; }
 
         /// <summary>
         /// Gets your application name.
@@ -94,53 +81,28 @@ namespace IdokladSdk
         public TokenClaims TokenClaims { get; private set; }
 
         /// <summary>
-        /// Access token.
-        /// </summary>
-        /// <returns>Tokenizer.</returns>
-        public Tokenizer GetToken()
-        {
-            if (_authentication.UseRefreshToken)
-            {
-                _token = _authentication.RefreshAccessToken();
-                _authentication.UseRefreshToken = false;
-            }
-
-            if (_token is null)
-            {
-                _token = _authentication.GetToken();
-            }
-
-            if (_token.ShouldBeRefreshedNow(RefreshTokenLimit))
-            {
-                _token = _authentication.RefreshAccessToken();
-            }
-
-            TokenClaims = new TokenClaims(_token.Claims);
-
-            return _token;
-        }
-
-        /// <summary>
         /// Returns existing Tokenizer and if necessary, refreshes it.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>up-to-date Tokenizer.</returns>
         public async Task<Tokenizer> GetTokenAsync(CancellationToken cancellationToken = default)
         {
+            ValidateHttpClient(HttpClient);
+
             if (_authentication.UseRefreshToken)
             {
-                _token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+                _token = await _authentication.RefreshAccessTokenAsync(HttpClient, cancellationToken).ConfigureAwait(false);
                 _authentication.UseRefreshToken = false;
             }
 
             if (_token is null)
             {
-                _token = await _authentication.GetTokenAsync(cancellationToken).ConfigureAwait(false);
+                _token = await _authentication.GetTokenAsync(HttpClient, cancellationToken).ConfigureAwait(false);
             }
 
             if (_token.ShouldBeRefreshedNow(RefreshTokenLimit))
             {
-                _token = await _authentication.RefreshAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+                _token = await _authentication.RefreshAccessTokenAsync(HttpClient, cancellationToken).ConfigureAwait(false);
             }
 
             TokenClaims = new TokenClaims(_token.Claims);
@@ -170,6 +132,49 @@ namespace IdokladSdk
             }
 
             Headers["Accept-Language"] = locale;
+        }
+
+        private void ValidateApiContextConfiguration(ApiContextConfiguration contextConfiguration)
+        {
+            if (contextConfiguration is null)
+            {
+                throw new ArgumentNullException(nameof(contextConfiguration), "Missing configuration for ApiContext.");
+            }
+
+            ValidateHttpClient(contextConfiguration.HttpClient);
+
+            if (string.IsNullOrWhiteSpace(contextConfiguration.AppName))
+            {
+                throw new ArgumentNullException(nameof(contextConfiguration.AppName), "AppName has to be supplied.");
+            }
+
+            if (string.IsNullOrWhiteSpace(contextConfiguration.AppVersion))
+            {
+                throw new ArgumentNullException(nameof(contextConfiguration.AppVersion), "AppVersion has to be supplied.");
+            }
+
+            if (contextConfiguration.Authentication is null)
+            {
+                throw new ArgumentNullException(nameof(contextConfiguration.Authentication), "Authentication cannot be null.");
+            }
+
+            if (contextConfiguration.Configuration is null)
+            {
+                throw new ArgumentNullException(nameof(contextConfiguration.Configuration), "Configuration cannot be null.");
+            }
+        }
+
+        private void ValidateHttpClient(HttpClient httpClient)
+        {
+            if (httpClient is null)
+            {
+                throw new ArgumentNullException("HttpClient", "HttpClient cannot be null.");
+            }
+
+            if (httpClient.BaseAddress != null)
+            {
+                throw new IdokladSdkException("HttpClient cannot have BaseAddress set.");
+            }
         }
     }
 }

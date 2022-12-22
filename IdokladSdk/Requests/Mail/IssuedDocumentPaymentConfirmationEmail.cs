@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients;
 using IdokladSdk.Requests.Mail.Interfaces;
 using IdokladSdk.Response;
 
@@ -20,9 +22,9 @@ namespace IdokladSdk.Requests.Mail
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> Send(int id)
+        public Task<ApiResult<bool>> SendAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Client.Post<bool>(GetResourceUrl(id));
+            return Client.PostAsync<bool>(GetResourceUrl(id), cancellationToken);
         }
 
         private string GetResourceUrl(int id) => $"{Client.ResourceUrl}/{DocumentType}/SendConfirmation/{id}";

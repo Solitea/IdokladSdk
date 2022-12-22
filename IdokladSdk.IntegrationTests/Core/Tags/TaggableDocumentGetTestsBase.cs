@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -46,12 +47,12 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void GetDetail_Expand_ReturnsExpandedTags()
+        public async Task GetDetail_Expand_ReturnsExpandedTagsAsync()
         {
             // Act
-            var result = ExpandableDetail(EntityWithTags1Id)
+            var result = await ExpandableDetail(EntityWithTags1Id)
                 .Include(TagIncludeExpression())
-                .Get<EntityTagDetails>()
+                .GetAsync<EntityTagDetails>()
                 .AssertResult();
 
             // Assert
@@ -59,11 +60,11 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void GetDetail_WithoutTags_ReturnsEmptyTags()
+        public async Task GetDetail_WithoutTags_ReturnsEmptyTagsAsync()
         {
             // Act
-            var result = Detail(EntityWithoutTagsId)
-                .Get<EntityTagDetails>()
+            var result = await Detail(EntityWithoutTagsId)
+                .GetAsync<EntityTagDetails>()
                 .AssertResult();
 
             // Assert
@@ -71,11 +72,11 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void GetDetail_WithTags_ReturnsTags()
+        public async Task GetDetail_WithTags_ReturnsTagsAsync()
         {
             // Act
-            var result = Detail(EntityWithTags1Id)
-                .Get<EntityTagDetails>()
+            var result = await Detail(EntityWithTags1Id)
+                .GetAsync<EntityTagDetails>()
                 .AssertResult();
 
             // Assert
@@ -83,12 +84,12 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void GetList_MultipleTagsFilter_ReturnsEntitiesWithTags()
+        public async Task GetList_MultipleTagsFilter_ReturnsEntitiesWithTagsAsync()
         {
             // Act
-            var result = FilterableList()
+            var result = await FilterableList()
                 .Filter(f => TagIdsFilterItem(f).Contains(new int[] { Tag1Id, Tag2Id }))
-                .Get<EntityTags>()
+                .GetAsync<EntityTags>()
                 .AssertResult();
 
             // Assert
@@ -99,12 +100,12 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void GetList_NonExistingTagsCombinationFilter_ReturnsEmptyList()
+        public async Task GetList_NonExistingTagsCombinationFilter_ReturnsEmptyListAsync()
         {
             // Act
-            var result = FilterableList()
+            var result = await FilterableList()
                 .Filter(f => TagIdsFilterItem(f).Contains(new int[] { Tag1Id, Tag3Id }))
-                .Get<EntityTags>()
+                .GetAsync<EntityTags>()
                 .AssertResult();
 
             // Assert
@@ -112,12 +113,12 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void GetList_ReturnsAllEntities()
+        public async Task GetList_ReturnsAllEntitiesAsync()
         {
             // Act
-            var result = PageableList()
+            var result = await PageableList()
                 .PageSize(50)
-                .Get<EntityTags>()
+                .GetAsync<EntityTags>()
                 .AssertResult();
 
             // Assert
@@ -132,12 +133,12 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [Test]
-        public void GetList_SingleTagFilter_ReturnsEntitiesWithTag()
+        public async Task GetList_SingleTagFilter_ReturnsEntitiesWithTagAsync()
         {
             // Act
-            var result = FilterableList()
+            var result = await FilterableList()
                 .Filter(f => TagIdsFilterItem(f).Contains(Tag2Id))
-                .Get<EntityTags>()
+                .GetAsync<EntityTags>()
                 .AssertResult();
 
             // Assert

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Response;
 
@@ -11,7 +13,7 @@ namespace IdokladSdk.Requests.Core
     /// <typeparam name="TDetail">Detail type.</typeparam>
     /// <typeparam name="TClient">Client type.</typeparam>
     /// <typeparam name="TGetModel">GetModel type.</typeparam>
-    public abstract partial class EntityDetail<TDetail, TClient, TGetModel> : BaseDetail<TDetail, TClient, TGetModel>
+    public abstract class EntityDetail<TDetail, TClient, TGetModel> : BaseDetail<TDetail, TClient, TGetModel>
         where TDetail : EntityDetail<TDetail, TClient, TGetModel>
         where TClient : BaseClient
         where TGetModel : new()
@@ -43,9 +45,9 @@ namespace IdokladSdk.Requests.Core
         protected int Id { get; }
 
         /// <inheritdoc />
-        protected override ApiResult<TResult> GetCore<TResult>(Dictionary<string, string> queryParams)
+        protected override Task<ApiResult<TResult>> GetCoreAsync<TResult>(Dictionary<string, string> queryParams, CancellationToken cancellationToken = default)
         {
-            return Client.Get<TResult>($"{ResourceUrl}/{Id}", queryParams);
+            return Client.GetAsync<TResult>($"{ResourceUrl}/{Id}", queryParams, cancellationToken);
         }
     }
 }

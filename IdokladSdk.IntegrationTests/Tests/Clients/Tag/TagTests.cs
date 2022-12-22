@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
@@ -12,7 +13,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
 {
     [TestFixture]
-    public partial class TagTests : TestBase
+    public class TagTests : TestBase
     {
         private const string Tag1Color = "#123456";
         private const string Tag2Color = "#654321";
@@ -42,16 +43,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDownAsync()
         {
             foreach (var id in _tagIdsToDelete)
             {
-                TagClient.Delete(id);
+                await TagClient.DeleteAsync(id);
             }
         }
 
         [Test]
-        public void AddTag_DuplicitName_Fails()
+        public async Task AddTagAsync_DuplicitName_Fails()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -59,7 +60,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 Name = Tag1Name,
                 Color = Tag1Color
             };
-            PostAndMarkForDelete(tagPostModel);
+            await PostAndMarkForDeleteAsync(tagPostModel);
             tagPostModel = new TagPostModel
             {
                 Name = Tag1Name,
@@ -67,7 +68,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var result = TagClient.Post(tagPostModel);
+            var result = await TagClient.PostAsync(tagPostModel);
 
             // Assert
             Assert.False(result.IsSuccess);
@@ -75,7 +76,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void AddTag_SuccessfullyAdded()
+        public async Task AddTagAsync_SuccessfullyAdded()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -85,7 +86,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = TagClient.Post(tagPostModel).AssertResult();
+            var tagGetModel = (await TagClient.PostAsync(tagPostModel)).AssertResult();
             MarkForDelete(tagGetModel.Id);
 
             // Assert
@@ -95,13 +96,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void DeleteTag_NonExistingId_Fails()
+        public async Task DeleteTagAsync_NonExistingId_Fails()
         {
             // Arrange
             var tagId = 0;
 
             // Act
-            var result = TagClient.Delete(tagId);
+            var result = await TagClient.DeleteAsync(tagId);
 
             // Assert
             Assert.False(result.IsSuccess);
@@ -109,7 +110,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void DeleteTag_SuccessfullyDeleted()
+        public async Task DeleteTagAsync_SuccessfullyDeleted()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -117,17 +118,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 Name = Tag1Name,
                 Color = Tag1Color
             };
-            var id = PostAndMarkForDelete(tagPostModel);
+            var id = await PostAndMarkForDeleteAsync(tagPostModel);
 
             // Act
-            var result = TagClient.Delete(id).AssertResult();
+            var result = (await TagClient.DeleteAsync(id)).AssertResult();
 
             // Assert
             Assert.True(result);
         }
 
         [Test]
-        public void Get_ReturnsList()
+        public async Task Get_ReturnsListAsync()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -135,10 +136,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 Name = Tag1Name,
                 Color = Tag1Color
             };
-            var id = PostAndMarkForDelete(tagPostModel);
+            var id = await PostAndMarkForDeleteAsync(tagPostModel);
 
             // Act
-            var data = TagClient.List().Get().AssertResult();
+            var data = await TagClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
@@ -152,7 +153,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void Get_WithFilter_ReturnsFilteredList()
+        public async Task Get_WithFilter_ReturnsFilteredListAsync()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -160,18 +161,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 Name = Tag1Name,
                 Color = Tag1Color
             };
-            PostAndMarkForDelete(tagPostModel);
+            await PostAndMarkForDeleteAsync(tagPostModel);
             tagPostModel = new TagPostModel
             {
                 Name = Tag2Name,
                 Color = Tag2Color
             };
-            var id = PostAndMarkForDelete(tagPostModel);
+            var id = await PostAndMarkForDeleteAsync(tagPostModel);
 
             // Act
-            var data = TagClient.List()
+            var data = await TagClient.List()
                 .Filter(t => t.Name.IsEqual(Tag2Name))
-                .Get().AssertResult();
+                .GetAsync().AssertResult();
 
             // Assert
             Assert.AreEqual(1, data.TotalItems);
@@ -185,7 +186,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void UpdateTag_ColorOnlyUpdate_SuccessfullyUpdated()
+        public async Task UpdateTagAsync_ColorOnlyUpdate_SuccessfullyUpdated()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -193,7 +194,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 Name = Tag1Name,
                 Color = Tag1Color
             };
-            var id = PostAndMarkForDelete(tagPostModel);
+            var id = await PostAndMarkForDeleteAsync(tagPostModel);
             var tagPatchModel = new TagPatchModel
             {
                 Id = id,
@@ -201,7 +202,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
+            var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
 
             // Assert
             Assert.NotZero(tagGetModel.Id);
@@ -210,7 +211,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void UpdateTag_DuplicitName_ThrowsException()
+        public async Task UpdateTagAsync_DuplicitName_ThrowsException()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -218,13 +219,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 Name = Tag1Name,
                 Color = Tag1Color
             };
-            PostAndMarkForDelete(tagPostModel);
+            await PostAndMarkForDeleteAsync(tagPostModel);
             tagPostModel = new TagPostModel
             {
                 Name = Tag2Color,
                 Color = Tag2Color
             };
-            var id = PostAndMarkForDelete(tagPostModel);
+            var id = await PostAndMarkForDeleteAsync(tagPostModel);
             var tagPatchModel = new TagPatchModel
             {
                 Id = id,
@@ -232,7 +233,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var result = TagClient.Update(tagPatchModel);
+            var result = await TagClient.UpdateAsync(tagPatchModel);
 
             // Assert
             Assert.False(result.IsSuccess);
@@ -240,7 +241,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void UpdateTag_FullUpdate_SuccessfullyUpdated()
+        public async Task UpdateTagAsync_FullUpdate_SuccessfullyUpdated()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -248,7 +249,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 Name = Tag1Name,
                 Color = Tag1Color
             };
-            var id = PostAndMarkForDelete(tagPostModel);
+            var id = await PostAndMarkForDeleteAsync(tagPostModel);
             var tagPatchModel = new TagPatchModel
             {
                 Id = id,
@@ -257,7 +258,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
+            var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
 
             // Assert
             Assert.NotZero(tagGetModel.Id);
@@ -266,7 +267,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void UpdateTag_NameOnlyUpdate_Name_SuccessfullyUpdated()
+        public async Task UpdateTagAsync_NameOnlyUpdate_Name_SuccessfullyUpdated()
         {
             // Arrange
             var tagPostModel = new TagPostModel
@@ -274,7 +275,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 Name = Tag1Name,
                 Color = Tag1Color
             };
-            var id = PostAndMarkForDelete(tagPostModel);
+            var id = await PostAndMarkForDeleteAsync(tagPostModel);
             var tagPatchModel = new TagPatchModel
             {
                 Id = id,
@@ -282,7 +283,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = TagClient.Update(tagPatchModel).AssertResult();
+            var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
 
             // Assert
             Assert.NotZero(tagGetModel.Id);
@@ -291,7 +292,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public void UpdateTag_NonExistingId_ThrowsException()
+        public async Task UpdateTagAsync_NonExistingId_ThrowsException()
         {
             // Arrange
             var tagId = 0;
@@ -301,7 +302,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var result = TagClient.Update(tagPatchModel);
+            var result = await TagClient.UpdateAsync(tagPatchModel);
 
             // Assert
             Assert.False(result.IsSuccess);
@@ -319,9 +320,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             _tagIdsToDelete.Add(id);
         }
 
-        private int PostAndMarkForDelete(TagPostModel tagPostModel)
+        private async Task<int> PostAndMarkForDeleteAsync(TagPostModel tagPostModel)
         {
-            var tagGetModel = TagClient.Post(tagPostModel).AssertResult();
+            var tagGetModel = await TagClient.PostAsync(tagPostModel).AssertResult();
             MarkForDelete(tagGetModel.Id);
             return tagGetModel.Id;
         }

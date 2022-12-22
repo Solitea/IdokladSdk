@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using IdokladSdk.NetCore.TestApp.Examples.Providers;
 
 namespace IdokladSdk.NetCore.TestApp.Examples
@@ -12,10 +13,10 @@ namespace IdokladSdk.NetCore.TestApp.Examples
             _api = api;
         }
 
-        public void ValidateOnClient()
+        public async Task ValidateOnClientAsync()
         {
             // Get default model containing default values based on agenda settings.
-            var invoice = _api.IssuedInvoiceClient.Default().Data;
+            var invoice = (await _api.IssuedInvoiceClient.DefaultAsync()).Data;
 
             // Modify properties to get validation errors.
             invoice.VariableSymbol = "12345678901234567890";

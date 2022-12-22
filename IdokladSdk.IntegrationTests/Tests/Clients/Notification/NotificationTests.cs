@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -15,7 +16,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
 {
     [TestFixture]
-    public partial class NotificationTests : TestBase
+    public class NotificationTests : TestBase
     {
         private const int NotificationToDeleteId = 1;
 
@@ -29,10 +30,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void Delete_NonExistingNotification_Fails()
+        public async Task DeleteAsync_NonExistingNotification_Fails()
         {
             // Act
-            var result = NotificationClient.Delete(NotificationToDeleteId);
+            var result = await NotificationClient.DeleteAsync(NotificationToDeleteId);
 
             // Assert
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
@@ -40,12 +41,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_DocumentNumberExceeded_Success()
+        public async Task GetList_DocumentNumberExceeded_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.DocumentNumberExceeded))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -54,12 +55,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_ApiLimitNotification_Success()
+        public async Task GetList_ApiLimitNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.ApiLimit))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -68,12 +69,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_BankStatementNotification_Success()
+        public async Task GetListAsync_BankStatementNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.BankStatement))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -82,12 +83,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_DocumentLinkActivatedNotification_Success()
+        public async Task GetList_DocumentLinkActivatedNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.DocumentLinkActivated))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -96,12 +97,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_EetCertificateNotification_Success()
+        public async Task GetList_EetCertificateNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.EetCertificate))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -110,12 +111,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_EetUnregisteredSalesNotification_Success()
+        public async Task GetList_EetUnregisteredSalesNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.EetUnregisteredSales))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -124,12 +125,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_FilterByDateCreated_Success()
+        public async Task GetList_FilterByDateCreated_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.DateCreated.IsGreaterThan(DateTime.MinValue))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -137,16 +138,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_FilterById_Success()
+        public async Task GetList_FilterById_Success()
         {
             // Arrange
-            var notifications = NotificationClient.List().Get().AssertResult().Items;
+            var notifications = (await NotificationClient.List().GetAsync().AssertResult()).Items;
             var id = notifications.First().Id;
 
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Id.IsEqual(id))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -157,12 +158,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_FilterBySeverityType_Success()
+        public async Task GetList_FilterBySeverityType_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.SeverityType.IsEqual(NotificationSeverityType.Warning))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -170,12 +171,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_FilterByStatus_Success()
+        public async Task GetList_FilterByStatus_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Status.IsEqual(NotificationUserStatus.New))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -183,12 +184,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_ProformaPaymentNotAccountedMessage_Success()
+        public async Task GetList_ProformaPaymentNotAccountedMessage_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.ProformaPaymentNotAccounted))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -197,12 +198,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_RecurringInvoiceNotification_Success()
+        public async Task GetList_RecurringInvoiceNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.RecurringInvoice))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -211,12 +212,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_RecurringOrderNotification_Success()
+        public async Task GetList_RecurringOrderNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.RecurringOrder))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -225,12 +226,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_ReferralExpiredSoonNotification_Success()
+        public async Task GetList_ReferralExpiredSoonNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.ReferralExpiredSoon))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -239,12 +240,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_ReferralPointsManualNotification_Success()
+        public async Task GetList_ReferralPointsManualNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.ReferralPointsManual))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -253,12 +254,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_ReferralPromoCodeExpiredSoonNotification_Success()
+        public async Task GetList_ReferralPromoCodeExpiredSoonNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.ReferralPromoCodeExpiredSoon))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -267,12 +268,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_RemindedInvoiceNotification_Success()
+        public async Task GetList_RemindedInvoiceNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.RemindedInvoice))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -281,12 +282,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_RemindersDisabledNotification_Success()
+        public async Task GetList_RemindersDisabledNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.RemindersDisabled))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -295,12 +296,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_SupportNotification_Success()
+        public async Task GetList_SupportNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.Support))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -309,12 +310,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetList_VatPayerLimitReachedNotification_Success()
+        public async Task GetList_VatPayerLimitReachedNotification_Success()
         {
             // Act
-            var result = NotificationClient.List()
+            var result = await NotificationClient.List()
                 .Filter(n => n.Type.IsEqual(NotificationType.VatPayerLimitReached))
-                .Get()
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -323,39 +324,39 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public void GetNewNotificationCount_Success()
+        public async Task GetNewNotificationsCountAsync_Success()
         {
             // Act
-            var result = NotificationClient.GetNewNotificationCount().AssertResult();
+            var result = await NotificationClient.GetNewNotificationCountAsync().AssertResult();
 
             // Assert
             Assert.Greater(result.NewNotificationsCount, 0);
         }
 
         [Test]
-        public void SetNotificationStatus_StatusSetSuccessfully()
+        public async Task SetNotificationStatusAsync_StatusSetSuccessfully()
         {
             // Arrange
             var notificationId = 527012;
-            var notification = NotificationClient
+            var notification = (await NotificationClient
                 .List()
                 .Filter(e => e.Id.IsEqual(notificationId))
-                .Get().Data.Items.First();
+                .GetAsync()).Data.Items.First();
 
             var notificationStatus = (NotificationUserStatus)new List<int> { 0, 1 }
                 .First(e => e != (int)notification.Status);
 
             var model = new List<NotificationPutModel>()
+        {
+            new NotificationPutModel
             {
-                new NotificationPutModel
-                {
-                    Id = notificationId,
-                    Status = notificationStatus
-                },
-            };
+                Id = notificationId,
+                Status = notificationStatus
+            },
+        };
 
             // Act
-            var result = NotificationClient.ChangeStatus(model).AssertResult();
+            var result = await NotificationClient.ChangeStatusAsync(model).AssertResult();
 
             // Assert
             Assert.IsNotNull(result.First());

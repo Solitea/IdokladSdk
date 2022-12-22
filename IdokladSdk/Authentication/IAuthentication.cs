@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿using System.Net.Http;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,31 +28,19 @@ namespace IdokladSdk.Authentication
         /// <summary>
         /// Request new token.
         /// </summary>
-        /// <returns>Token.</returns>
-        /// <exception cref="AuthenticationException">Authentication is unsuccessful.</exception>
-        Tokenizer GetToken();
-
-        /// <summary>
-        /// Request new token.
-        /// </summary>
+        /// <param name="httpClient">HttpClient.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Token.</returns>
         /// <exception cref="AuthenticationException">Authentication is unsuccessful.</exception>
-        Task<Tokenizer> GetTokenAsync(CancellationToken cancellationToken = default);
+        Task<Tokenizer> GetTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Refresh existing token using refresh token.
         /// </summary>
-        /// <returns>Token.</returns>
-        /// <exception cref="AuthenticationException">Authentication is unsuccessful.</exception>
-        Tokenizer RefreshAccessToken();
-
-        /// <summary>
-        /// Refresh existing token using refresh token.
-        /// </summary>
+        /// <param name="httpClient">HttpClient.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Token.</returns>
         /// <exception cref="AuthenticationException">Authentication is unsuccessful.</exception>
-        Task<Tokenizer> RefreshAccessTokenAsync(CancellationToken cancellationToken = default);
+        Task<Tokenizer> RefreshAccessTokenAsync(HttpClient httpClient, CancellationToken cancellationToken = default);
     }
 }

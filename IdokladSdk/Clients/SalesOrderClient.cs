@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.SalesOrder;
@@ -10,7 +12,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with sales order endpoints.
     /// </summary>
-    public partial class SalesOrderClient :
+    public class SalesOrderClient :
         BaseClient,
         ICopyRequest<SalesOrderPostModel>,
         IDeleteRequest,
@@ -34,22 +36,22 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesOrders";
 
         /// <inheritdoc />
-        public ApiResult<SalesOrderPostModel> Copy(int id)
+        public Task<ApiResult<SalesOrderPostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<SalesOrderPostModel>(resource);
+            return GetAsync<SalesOrderPostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<SalesOrderPostModel> Default()
+        public Task<ApiResult<SalesOrderPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return Default<SalesOrderPostModel>();
+            return DefaultAsync<SalesOrderPostModel>(cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -62,22 +64,24 @@ namespace IdokladSdk.Clients
         /// Returns new issued invoice created from given sales order.
         /// </summary>
         /// <param name="salesOrderId">Sales order id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method return issued invoice post model.</returns>
-        public ApiResult<IssuedInvoicePostModel> GetIssuedInvoice(int salesOrderId)
+        public Task<ApiResult<IssuedInvoicePostModel>> GetIssuedInvoiceAsync(int salesOrderId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{salesOrderId}/IssuedInvoice";
-            return Get<IssuedInvoicePostModel>(resource);
+            return GetAsync<IssuedInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <summary>
         /// Returns new proforma invoice created from given sales order.
         /// </summary>
         /// <param name="salesOrderId">Sales order id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method return proforma invoice post model.</returns>
-        public ApiResult<ProformaInvoicePostModel> GetProformaInvoice(int salesOrderId)
+        public Task<ApiResult<ProformaInvoicePostModel>> GetProformaInvoiceAsync(int salesOrderId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{salesOrderId}/ProformaInvoice";
-            return Get<ProformaInvoicePostModel>(resource);
+            return GetAsync<ProformaInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -87,22 +91,22 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
-        public ApiResult<SalesOrderGetModel> Post(SalesOrderPostModel model)
+        public Task<ApiResult<SalesOrderGetModel>> PostAsync(SalesOrderPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<SalesOrderPostModel, SalesOrderGetModel>(model);
+            return PostAsync<SalesOrderPostModel, SalesOrderGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<SalesOrderRecountGetModel> Recount(SalesOrderRecountPostModel model)
+        public Task<ApiResult<SalesOrderRecountGetModel>> RecountAsync(SalesOrderRecountPostModel model, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Recount";
-            return Post<SalesOrderRecountPostModel, SalesOrderRecountGetModel>(resource, model);
+            return PostAsync<SalesOrderRecountPostModel, SalesOrderRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<SalesOrderGetModel> Update(SalesOrderPatchModel model)
+        public Task<ApiResult<SalesOrderGetModel>> UpdateAsync(SalesOrderPatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<SalesOrderPatchModel, SalesOrderGetModel>(model);
+            return PatchAsync<SalesOrderPatchModel, SalesOrderGetModel>(model, cancellationToken);
         }
     }
 }

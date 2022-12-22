@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -12,7 +13,7 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 {
     [TestFixture]
-    public partial class RecurringInvoiceTests : TestBase
+    public class RecurringInvoiceTests : TestBase
     {
         private const int DeliveryAddressId1 = 11;
         private const int PartnerId = 323823;
@@ -45,23 +46,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
             if (_issuedInvoiceId.HasValue)
             {
-                IssuedInvoiceClient.Delete(_issuedInvoiceId.Value);
+                await IssuedInvoiceClient.DeleteAsync(_issuedInvoiceId.Value);
             }
         }
 
         [Test]
         [Order(1)]
-        public void Post_SuccessfullyCreated()
+        public async Task PostAsync_SuccessfullyCreated()
         {
             // Arrange
-            var model = CreatePostModel();
+            var model = await CreatePostModelAsync();
 
             // Act
-            var data = RecurringInvoiceClient.Post(model).AssertResult();
+            var data = await RecurringInvoiceClient.PostAsync(model).AssertResult();
             _recurringInvoiceId = data.Id;
             _recurringInvoiceItemId = data.InvoiceTemplate?.Items?.First()?.Id;
             _issuedInvoiceId = data.CreatedInvoice?.Id;
@@ -72,10 +73,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(2)]
-        public void GetDetail_ReturnsRecurringInvoice()
+        public async Task GetDetailAsync_ReturnsRecurringInvoice()
         {
             // Act
-            var data = RecurringInvoiceClient.Detail(_recurringInvoiceId).Get().AssertResult();
+            var data = await RecurringInvoiceClient.Detail(_recurringInvoiceId).GetAsync().AssertResult();
 
             // Assert
             AssertGetModel(data);
@@ -83,17 +84,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(3)]
-        public void GetDetail_Expand_ReturnsRecurringInvoice()
+        public async Task GetDetailAsync_Expand_ReturnsRecurringInvoice()
         {
             // Act
-            var data = RecurringInvoiceClient.Detail(_recurringInvoiceId)
+            var data = await RecurringInvoiceClient.Detail(_recurringInvoiceId)
                 .Include(i => i.InvoiceTemplate.ConstantSymbol)
                 .Include(i => i.InvoiceTemplate.Currency)
                 .Include(i => i.InvoiceTemplate.Partner)
                 .Include(i => i.InvoiceTemplate.PaymentOption)
                 .Include(i => i.InvoiceTemplate.VatReverseChargeCode)
                 .Include(i => i.InvoiceTemplate.Items.PriceListItem)
-                .Get().AssertResult();
+                .GetAsync()
+                .AssertResult();
 
             // Assert
             AssertGetModel(data);
@@ -102,13 +104,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(4)]
-        public void Update_SuccessfullyUpdated()
+        public async Task UpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
             var model = CreatePatchModel();
 
             // Act
-            var data = RecurringInvoiceClient.Update(model).AssertResult();
+            var data = await RecurringInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
             AssertGetModel(data);
@@ -116,10 +118,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(5)]
-        public void GetList_ReturnsList()
+        public async Task GetListAsync_ReturnsList()
         {
             // Act
-            var data = RecurringInvoiceClient.List().Get().AssertResult();
+            var data = await RecurringInvoiceClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.GreaterThan(0));
@@ -129,13 +131,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(6)]
-        public void GetList_WithFilter_ReturnsList()
+        public async Task GetListAsync_WithFilter_ReturnsList()
         {
             // Act
-            var data = RecurringInvoiceClient.List()
+            var data = await RecurringInvoiceClient.List()
                 .Filter(i => i.CompanyName.IsEqual(PartnerName))
                 .Filter(i => i.Id.IsEqual(_recurringInvoiceId))
-                .Get().AssertResult();
+                .GetAsync()
+                .AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.GreaterThan(0));
@@ -146,10 +149,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(7)]
-        public void GetRecurringInvoiceCopy_SuccessfullyGot()
+        public async Task GetRecurringInvoiceCopyAsync_SuccessfullyGot()
         {
             // Act
-            var data = RecurringInvoiceClient.Copy(_recurringInvoiceId).AssertResult();
+            var data = await RecurringInvoiceClient.CopyAsync(_recurringInvoiceId).AssertResult();
 
             // Assert
             Assert.NotNull(data);
@@ -158,10 +161,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(8)]
-        public void Delete_SuccessfullyDeleted()
+        public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = RecurringInvoiceClient.Delete(_recurringInvoiceId).AssertResult();
+            var data = await RecurringInvoiceClient.DeleteAsync(_recurringInvoiceId).AssertResult();
 
             // Assert
             Assert.That(data, Is.True);
@@ -169,13 +172,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(9)]
-        public void NextIssueDate_ReturnsCorrectValue()
+        public async Task NextIssueDateAsync_ReturnsCorrectValue()
         {
             // Arrange
             var model = CreateNextIssueDatesPostModel();
 
             // Act
-            var data = RecurringInvoiceClient.NextIssueDates(model).AssertResult();
+            var data = await RecurringInvoiceClient.NextIssueDatesAsync(model).AssertResult();
 
             // Assert
             AssertNextIssueData(data);
@@ -183,13 +186,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         [Test]
         [Order(10)]
-        public void Recount_SuccessfullyRecounted()
+        public async Task RecountAsync_SuccessfullyRecounted()
         {
             // Arrange
             var model = CreateRecountPostModel();
 
             // Act
-            var data = RecurringInvoiceClient.Recount(model).AssertResult();
+            var data = await RecurringInvoiceClient.RecountAsync(model).AssertResult();
 
             // Assert
             AssertRecountData(model, data);
@@ -316,13 +319,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
                 {
                     Description = "New description",
                     Items = new List<InvoiceItemTemplatePatchModel>
+                {
+                    new InvoiceItemTemplatePatchModel
                     {
-                        new InvoiceItemTemplatePatchModel
-                        {
-                            Id = _recurringInvoiceItemId ?? 0,
-                            Name = "Modified item"
-                        }
+                        Id = _recurringInvoiceItemId ?? 0,
+                        Name = "Modified item"
                     }
+                }
                 },
                 RecurringSetting = new RecurringSettingPatchModel
                 {
@@ -332,9 +335,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             };
         }
 
-        private RecurringInvoicePostModel CreatePostModel()
+        private async Task<RecurringInvoicePostModel> CreatePostModelAsync()
         {
-            var model = RecurringInvoiceClient.Default().AssertResult();
+            var model = await RecurringInvoiceClient.DefaultAsync().AssertResult();
             model.InvoiceTemplate.Description = "Some description";
             model.InvoiceTemplate.DocumentType = RecurringDocumentType.IssuedInvoice;
             model.InvoiceTemplate.PartnerId = PartnerId;
@@ -352,17 +355,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             {
                 CurrencyId = 1,
                 Items = new List<InvoiceItemTemplateRecountPostModel>
+            {
+                new InvoiceItemTemplateRecountPostModel
                 {
-                    new InvoiceItemTemplateRecountPostModel
-                    {
-                        Amount = 2,
-                        Id = 1,
-                        Name = "Test",
-                        PriceType = PriceType.WithoutVat,
-                        UnitPrice = 100,
-                        VatRateType = VatRateType.Basic
-                    }
-                },
+                    Amount = 2,
+                    Id = 1,
+                    Name = "Test",
+                    PriceType = PriceType.WithoutVat,
+                    UnitPrice = 100,
+                    VatRateType = VatRateType.Basic
+                }
+            },
                 PaymentOptionId = 1
             };
         }

@@ -38,11 +38,11 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         private static IList<object> GetValidModelsWithRangeAttribute()
         {
             return new List<object>
-            {
-                new ModelWithNullableRangeAttribute(),
-                new ModelWithNullableRangeAttribute { Amount = 10m },
-                new ModelWithNullableRangeAttribute { Amount = null }
-            };
+        {
+            new ModelWithNullableRangeAttribute(),
+            new ModelWithNullableRangeAttribute { Amount = 10m },
+            new ModelWithNullableRangeAttribute { Amount = null }
+        };
         }
     }
 }

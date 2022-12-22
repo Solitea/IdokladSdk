@@ -5,7 +5,7 @@ namespace IdokladSdk.Models.Account
     /// <summary>
     /// LogoPostModel.
     /// </summary>
-    public class LogoPostModel : ValidatableModel
+    public class LogoPostModel : ValidatableModel, IFile
     {
         /// <summary>
         /// Gets or sets filename.

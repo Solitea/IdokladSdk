@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
@@ -13,7 +15,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with issued invoice endpoints.
     /// </summary>
-    public partial class IssuedInvoiceClient :
+    public class IssuedInvoiceClient :
         BaseClient,
         ICopyRequest<IssuedInvoiceCopyGetModel>,
         IDeleteRequest,
@@ -38,22 +40,22 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/IssuedInvoices";
 
         /// <inheritdoc />
-        public ApiResult<IssuedInvoiceCopyGetModel> Copy(int id)
+        public Task<ApiResult<IssuedInvoiceCopyGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return Get<IssuedInvoiceCopyGetModel>(resource);
+            return GetAsync<IssuedInvoiceCopyGetModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<IssuedInvoicePostModel> Default()
+        public Task<ApiResult<IssuedInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return Default<IssuedInvoicePostModel>();
+            return DefaultAsync<IssuedInvoicePostModel>(cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -69,30 +71,30 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<IssuedInvoiceGetModel> Post(IssuedInvoicePostModel model)
+        public Task<ApiResult<IssuedInvoiceGetModel>> PostAsync(IssuedInvoicePostModel model, CancellationToken cancellationToken = default)
         {
             ValidatePost(model);
-            return Post<IssuedInvoicePostModel, IssuedInvoiceGetModel>(model);
+            return PostAsync<IssuedInvoicePostModel, IssuedInvoiceGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<IssuedInvoiceRecountGetModel> Recount(IssuedInvoiceRecountPostModel model)
+        public Task<ApiResult<IssuedInvoiceRecountGetModel>> RecountAsync(IssuedInvoiceRecountPostModel model, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Recount";
-            return Post<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>(resource, model);
+            return PostAsync<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<RecurringInvoicePostModel> Recurrence(int id)
+        public Task<ApiResult<RecurringInvoicePostModel>> RecurrenceAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Recurrence";
-            return Get<RecurringInvoicePostModel>(resource);
+            return GetAsync<RecurringInvoicePostModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<IssuedInvoiceGetModel> Update(IssuedInvoicePatchModel model)
+        public Task<ApiResult<IssuedInvoiceGetModel>> UpdateAsync(IssuedInvoicePatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<IssuedInvoicePatchModel, IssuedInvoiceGetModel>(model);
+            return PatchAsync<IssuedInvoicePatchModel, IssuedInvoiceGetModel>(model, cancellationToken);
         }
 
         private void ValidatePost(IssuedInvoicePostModel model)

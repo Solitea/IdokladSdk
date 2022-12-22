@@ -17,13 +17,6 @@ namespace IdokladSdk.Clients.Interfaces
         /// Posts new entity.
         /// </summary>
         /// <param name="model">Entity to be created.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
-        ApiResult<TGetModel> Post(TPostModel model);
-
-        /// <summary>
-        /// Posts new entity.
-        /// </summary>
-        /// <param name="model">Entity to be created.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance.</returns>
         Task<ApiResult<TGetModel>> PostAsync(TPostModel model, CancellationToken cancellationToken = default);

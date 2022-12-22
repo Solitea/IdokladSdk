@@ -13,13 +13,6 @@ namespace IdokladSdk.Clients.Interfaces
         /// Fully unpays document.
         /// </summary>
         /// <param name="invoiceId">Id of invoice.</param>
-        /// <returns><c>true</c> if full unpay was successful, otherwise <c>false</c>.</returns>
-        ApiResult<bool> FullyUnpay(int invoiceId);
-
-        /// <summary>
-        /// Fully unpays document.
-        /// </summary>
-        /// <param name="invoiceId">Id of invoice.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><c>true</c> if full unpay was successful, otherwise <c>false</c>.</returns>
         Task<ApiResult<bool>> FullyUnpayAsync(int invoiceId, CancellationToken cancellationToken = default);

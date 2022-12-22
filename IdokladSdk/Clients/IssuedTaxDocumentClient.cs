@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedTaxDocument.Get;
 using IdokladSdk.Models.IssuedTaxDocument.Patch;
 using IdokladSdk.Models.IssuedTaxDocument.Post;
@@ -10,7 +12,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// IssuedTaxDocumentClient.
     /// </summary>
-    public partial class IssuedTaxDocumentClient :
+    public class IssuedTaxDocumentClient :
         BaseClient,
         IDefaultWithIdRequest<IssuedTaxDocumentGetModel>,
         IEntityDetail<IssuedTaxDocumentDetail>,
@@ -32,15 +34,15 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/IssuedTaxDocuments";
 
         /// <inheritdoc />
-        public ApiResult<IssuedTaxDocumentGetModel> Default(int id)
+        public Task<ApiResult<IssuedTaxDocumentGetModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Default<IssuedTaxDocumentGetModel>(id);
+            return DefaultAsync<IssuedTaxDocumentGetModel>(id, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -56,26 +58,27 @@ namespace IdokladSdk.Clients
         }
 
         /// <summary>
-        /// Creates new issued tax document from proforma payment.
+        /// Asynchronously creates new issued tax document from proforma payment.
         /// </summary>
         /// <param name="id">Payment id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>New issued tax document.</returns>
-        public ApiResult<IssuedTaxDocumentGetModel> Post(int id)
+        public Task<ApiResult<IssuedTaxDocumentGetModel>> PostAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}";
-            return Post<IssuedTaxDocumentGetModel>(resource);
+            return PostAsync<IssuedTaxDocumentGetModel>(resource, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<IssuedTaxDocumentGetModel> Post(IssuedTaxDocumentPostModel model)
+        public Task<ApiResult<IssuedTaxDocumentGetModel>> PostAsync(IssuedTaxDocumentPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<IssuedTaxDocumentPostModel, IssuedTaxDocumentGetModel>(model);
+            return PostAsync<IssuedTaxDocumentPostModel, IssuedTaxDocumentGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public ApiResult<IssuedTaxDocumentGetModel> Update(IssuedTaxDocumentPatchModel model)
+        public Task<ApiResult<IssuedTaxDocumentGetModel>> UpdateAsync(IssuedTaxDocumentPatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<IssuedTaxDocumentPatchModel, IssuedTaxDocumentGetModel>(model);
+            return PatchAsync<IssuedTaxDocumentPatchModel, IssuedTaxDocumentGetModel>(model, cancellationToken);
         }
     }
 }

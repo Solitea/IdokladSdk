@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -11,7 +12,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Log
     /// LogTests.
     /// </summary>
     [TestFixture]
-    public partial class LogTests : TestBase
+    public class LogTests : TestBase
     {
         private LogClient _logClient;
 
@@ -23,21 +24,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Log
         }
 
         [Test]
-        public void GetList_SuccessfullyReturned()
+        public async Task GetListAsync_SuccessfullyReturned()
         {
             // Act
-            var data = _logClient.List().Get().AssertResult();
+            var data = await _logClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.Items.Count(), 0);
+            Assert.Greater(data.TotalPages, 0);
         }
 
         [Test]
-        public void GetSpecificList_SuccessfullyReturned()
+        public async Task GetSpecificListAsync_SuccessfullyReturned()
         {
             // Act
-            var data = _logClient.List(913242, LogEntityType.IssuedInvoice).Get().AssertResult();
+            var data = await _logClient.List(913242, LogEntityType.IssuedInvoice).GetAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.TotalItems, 0);

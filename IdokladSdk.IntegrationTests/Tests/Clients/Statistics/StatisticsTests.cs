@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
@@ -10,7 +11,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
     /// <summary>
     /// StatisticsTests.
     /// </summary>
-    public partial class StatisticsTests : TestBase
+    public class StatisticsTests : TestBase
     {
         private StatisticsClient _statisticsClient;
 
@@ -22,13 +23,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         }
 
         [Test]
-        public void InvoicingForPeriod_ReturnsDataForGivenPeriod()
+        public async Task InvoicingForPeriodAsync_ReturnsDataForGivenPeriod()
         {
             // Arrange
             var periodType = PeriodType.Month;
 
             // Act
-            var data = _statisticsClient.InvoicingForPeriod(periodType).AssertResult();
+            var data = await _statisticsClient.InvoicingForPeriodAsync(periodType).AssertResult();
 
             // Assert
             Assert.Greater(data.IssuedInvoices.Count, 0);
@@ -40,13 +41,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         }
 
         [Test]
-        public void InvoicingForYear_CurrentYear_ReturnsDataForGivenYear()
+        public async Task InvoicingForYearAsync_CurrentYear_ReturnsDataForGivenYear()
         {
             // Arrange
             var yearType = YearType.Actual;
 
             // Act
-            var data = _statisticsClient.InvoicingForYear(yearType).AssertResult();
+            var data = await _statisticsClient.InvoicingForYearAsync(yearType).AssertResult();
 
             // Assert
             Assert.Greater(data.IssuedInvoices.TotalWithVat, 0);
@@ -54,20 +55,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         }
 
         [Test]
-        public void QuarterSummary_ReturnsDataQuarters()
+        public async Task QuarterSummaryAsync_ReturnsDataQuarters()
         {
             // Act
-            var data = _statisticsClient.QuarterSummary().AssertResult();
+            var data = await _statisticsClient.QuarterSummaryAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.Count, 0);
         }
 
         [Test]
-        public void TopPartners_ReturnsTopPartners()
+        public async Task TopPartnersAsync_ReturnsTopPartners()
         {
             // Act
-            var data = _statisticsClient.TopPartners().AssertResult();
+            var data = await _statisticsClient.TopPartnersAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.Count, 0);
@@ -75,10 +76,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         }
 
         [Test]
-        public void AgendaSummary_ReturnsTopPartners()
+        public async Task AgendaSummaryAsync_ReturnsTopPartners()
         {
             // Act
-            var data = _statisticsClient.AgendaSummary().AssertResult();
+            var data = await _statisticsClient.AgendaSummaryAsync().AssertResult();
 
             // Assert
             Assert.Greater(data.IssuedInvoices, 0);
@@ -87,10 +88,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         }
 
         [Test]
-        public void StatisticForContact_ReturnsTopPartners()
+        public async Task StatisticForContactAsync_ReturnsTopPartners()
         {
             // Act
-            var data = _statisticsClient.StatisticForContact(323823).AssertResult();
+            var data = await _statisticsClient.StatisticForContactAsync(323823).AssertResult();
 
             // Assert
             Assert.Greater(data.IssuedInvoiceCount, 0);

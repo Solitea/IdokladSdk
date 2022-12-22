@@ -49,10 +49,10 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         private static IList<object[]> GetInvalidModelsWithDateTimeAttribute()
         {
             return new List<object[]>
-            {
-                new object[] { new ModelWithDateTimeAttribute { DateOfIssue = DateTime.MinValue }, nameof(ModelWithDateTimeAttribute.DateOfIssue) },
-                new object[] { new ModelWithDateTimeAttribute { DateOfIssue = DateTime.Now, DateOfPayment = DateTime.MinValue }, nameof(ModelWithDateTimeAttribute.DateOfPayment) }
-            };
+        {
+            new object[] { new ModelWithDateTimeAttribute { DateOfIssue = DateTime.MinValue }, nameof(ModelWithDateTimeAttribute.DateOfIssue) },
+            new object[] { new ModelWithDateTimeAttribute { DateOfIssue = DateTime.Now, DateOfPayment = DateTime.MinValue }, nameof(ModelWithDateTimeAttribute.DateOfPayment) }
+        };
         }
 
         private static IList<object> GetValidModelsWithDateTimeAttribute()
@@ -60,11 +60,11 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var date = new DateTime(2020, 12, 3);
 
             return new List<object>
-            {
-                new ModelWithDateTimeAttribute { DateOfIssue = date },
-                new ModelWithDateTimeAttribute { DateOfIssue = date, DateOfPayment = date },
-                new ModelWithDateTimeAttribute { DateOfIssue = date, DateOfPayment = null }
-            };
+        {
+            new ModelWithDateTimeAttribute { DateOfIssue = date },
+            new ModelWithDateTimeAttribute { DateOfIssue = date, DateOfPayment = date },
+            new ModelWithDateTimeAttribute { DateOfIssue = date, DateOfPayment = null }
+        };
         }
     }
 }

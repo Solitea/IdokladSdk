@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Clients.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.CashRegister;
 using IdokladSdk.Requests.CashRegister;
 using IdokladSdk.Response;
@@ -8,7 +10,7 @@ namespace IdokladSdk.Clients
     /// <summary>
     /// Client for communication with cash register endpoints.
     /// </summary>
-    public partial class CashRegisterClient : BaseClient,
+    public class CashRegisterClient : BaseClient,
         IDeleteRequest,
         IEntityDetail<CashRegisterDetail>,
         IEntityList<CashRegisterList>,
@@ -28,9 +30,9 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/CashRegisters";
 
         /// <inheritdoc />
-        public ApiResult<bool> Delete(int id)
+        public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            return Delete<bool>(id);
+            return DeleteAsync<bool>(id, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -46,15 +48,15 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public ApiResult<CashRegisterGetModel> Post(CashRegisterPostModel model)
+        public Task<ApiResult<CashRegisterGetModel>> PostAsync(CashRegisterPostModel model, CancellationToken cancellationToken = default)
         {
-            return Post<CashRegisterPostModel, CashRegisterGetModel>(model);
+            return PostAsync<CashRegisterPostModel, CashRegisterGetModel>(model, cancellationToken);
         }
 
         /// <inheritdoc />
-        public ApiResult<CashRegisterGetModel> Update(CashRegisterPatchModel model)
+        public Task<ApiResult<CashRegisterGetModel>> UpdateAsync(CashRegisterPatchModel model, CancellationToken cancellationToken = default)
         {
-            return Patch<CashRegisterPatchModel, CashRegisterGetModel>(model);
+            return PatchAsync<CashRegisterPatchModel, CashRegisterGetModel>(model, cancellationToken);
         }
     }
 }
