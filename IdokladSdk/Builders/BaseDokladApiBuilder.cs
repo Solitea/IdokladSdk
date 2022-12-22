@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using IdokladSdk.Builders.Options;
 
 namespace IdokladSdk.Builders
@@ -46,6 +47,23 @@ namespace IdokladSdk.Builders
         /// Gets or sets provider of UrlOptions.
         /// </summary>
         protected Func<UrlOptions> UrlOptionsProvider { get; set; }
+
+        /// <summary>
+        /// Gets or sets HttpClient.
+        /// </summary>
+        protected HttpClient HttpClient { get; set; }
+
+        /// <summary>
+        /// Add HttpClient instance for Doklad API.
+        /// </summary>
+        /// <param name="httpClient">HttpClient.</param>
+        /// <returns>Current instance of DokladApiBuilder.</returns>
+        public virtual TBuilder AddHttpClient(HttpClient httpClient)
+        {
+            HttpClient = httpClient;
+
+            return this as TBuilder;
+        }
 
         /// <summary>
         /// Build iDoklad API.

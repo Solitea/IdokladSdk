@@ -12,8 +12,6 @@ namespace IdokladSdk.Builders
     /// </summary>
     public class DokladApiBuilder : BaseDokladApiBuilder<DokladApiBuilder, DokladApi>
     {
-        private HttpClient _httpClient;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DokladApiBuilder"/> class.
         /// </summary>
@@ -145,18 +143,6 @@ namespace IdokladSdk.Builders
         }
 
         /// <summary>
-        /// Add HttpClient instance for Doklad API.
-        /// </summary>
-        /// <param name="httpClient">HttpClient.</param>
-        /// <returns>Current instance of DokladApiBuilder.</returns>
-        public DokladApiBuilder AddHttpClient(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-
-            return this;
-        }
-
-        /// <summary>
         /// Get specific authentication.
         /// </summary>
         /// <returns>Instance of IAuthentication.</returns>
@@ -188,7 +174,7 @@ namespace IdokladSdk.Builders
 
         private ApiContext GetApicontext(IAuthentication auth, DokladConfiguration configuration)
         {
-            if (_httpClient is null)
+            if (HttpClient is null)
             {
                 throw new IdokladSdkException($"Missing HttpClient instance. Use method {nameof(AddHttpClient)} to add new instance.");
             }
@@ -197,7 +183,7 @@ namespace IdokladSdk.Builders
             {
                 AppName = AppName,
                 AppVersion = AppVersion,
-                HttpClient = _httpClient,
+                HttpClient = HttpClient,
                 Authentication = auth,
                 Configuration = configuration
             };
