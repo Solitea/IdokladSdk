@@ -283,7 +283,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(patchModel.EetResponsibility, getModel.EetResponsibility);
             Assert.AreEqual(patchModel.ExchangeRate, getModel.ExchangeRate);
             Assert.AreEqual(patchModel.ExchangeRateAmount, getModel.ExchangeRateAmount);
-            Assert.AreEqual(patchModel.IsEet, getModel.IsEet);
+            Assert.AreEqual(patchModel.IsEet.GetValueOrDefault(), getModel.IsEet);
             Assert.AreEqual(patchModel.IsIncomeTax, getModel.IsIncomeTax);
             var getModelNormalItems = getModel.Items.Where(i => i.ItemType == IssuedInvoiceItemType.ItemTypeNormal)
                 .ToList();
@@ -506,7 +506,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
                 ExchangeRate = 10,
                 ExchangeRateAmount = 10,
                 Id = _postedCreditNoteId,
-                IsEet = true,
                 IsIncomeTax = true,
                 Items = new List<CreditNoteItemPatchModel>
             {

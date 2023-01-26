@@ -25,7 +25,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
     {
         protected const int PartnerId = 323824;
 
-        private readonly List<int> _entityIdsToDelete = new List<int>();
+        private readonly List<int> _entityIdsToDelete = new ();
 
         [SetUp]
         public void SetUp()
@@ -34,12 +34,11 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
-            foreach (var id in _entityIdsToDelete)
-            {
-                DeleteAsync(id);
-            }
+            var tasks = _entityIdsToDelete.Select(DeleteAsync);
+
+            await Task.WhenAll(tasks);
         }
 
         [Test]
