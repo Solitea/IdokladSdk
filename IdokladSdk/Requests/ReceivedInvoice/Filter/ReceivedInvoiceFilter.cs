@@ -53,6 +53,9 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Filter
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(ReceivedInvoiceGetModel.PartnerId));
 
+        /// <inheritdoc cref="ReceivedInvoiceListGetModel.VariableSymbol"/>
+        public FilterItem<string> VariableSymbol { get; set; } = new FilterItem<string>(nameof(ReceivedInvoiceGetModel.VariableSymbol));
+
         /// <summary>
         /// Gets or sets numeric tag ids.
         /// </summary>
