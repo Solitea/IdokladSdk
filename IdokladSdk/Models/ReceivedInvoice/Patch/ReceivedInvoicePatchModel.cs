@@ -35,7 +35,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets date of issue.
         /// </summary>
-        public DateTime? DateOfIssue { get; set; }
+        public NullableProperty<DateTime> DateOfIssue { get; set; }
 
         /// <summary>
         /// Gets or sets date of maturity.
@@ -55,7 +55,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets date of taxing.
         /// </summary>
-        public DateTime? DateOfTaxing { get; set; }
+        public NullableProperty<DateTime> DateOfTaxing { get; set; }
 
         /// <summary>
         /// Gets or sets date of VAT application.
