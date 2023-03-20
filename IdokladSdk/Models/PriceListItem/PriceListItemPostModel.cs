@@ -15,6 +15,7 @@ namespace IdokladSdk.Models.PriceListItem
         /// Gets or sets item amount.
         /// </summary>
         [Required]
+        [DecimalRange]
         public decimal Amount { get; set; }
 
         /// <summary>

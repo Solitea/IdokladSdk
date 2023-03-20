@@ -14,6 +14,7 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets amount.
         /// </summary>
         [Required]
+        [DecimalRange]
         public decimal Amount { get; set; }
 
         /// <summary>
