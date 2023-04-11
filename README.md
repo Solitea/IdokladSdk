@@ -26,11 +26,16 @@ You can install **SDK for iDoklad API** using the [NuGet](https://www.nuget.org/
 ## Basic
 
 ### 1. Authenticate and initialize API
+When using HttpClient, dont't forget to follow the [guidelines for using HttpClient](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines)
 
 ```csharp
+// Create HttpClient instance
+var httpClient = httpClientFactory.CreateClient("IdokladApi");
+
 // Use DokladApiBuilder to create DokladApi.
 var api = new DokladApiBuilder("your application name", "your application version")
         .AddClientCredentialsAuthentication("ClientId", "ClientSecret")
+        .AddHttpClient(httpClient)
         .Build();
 ```
 
