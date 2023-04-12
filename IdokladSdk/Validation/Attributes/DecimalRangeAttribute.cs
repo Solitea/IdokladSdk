@@ -7,12 +7,12 @@ namespace IdokladSdk.Validation.Attributes
         /// <summary>
         /// Minimum possible value of SQL decimal(18, 4).
         /// </summary>
-        private const string MinValue = "-99999999999999.9999";
+        private const string MinValue = "-99999999999999,9999";
 
         /// <summary>
         /// Maximum possible value of SQL decimal(18, 4).
         /// </summary>
-        private const string MaxValue = "99999999999999.9999";
+        private const string MaxValue = "99999999999999,9999";
 
         public DecimalRangeAttribute()
             : base(typeof(decimal), MinValue, MaxValue)
