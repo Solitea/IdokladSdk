@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesReceipt
 {
@@ -12,7 +13,7 @@ namespace IdokladSdk.Models.SalesReceipt
         /// <summary>
         /// Gets or sets amount.
         /// </summary>
-        [Range(0.0, double.MaxValue)]
+        [DecimalRange]
         public decimal? Amount { get; set; }
 
         /// <inheritdoc/>

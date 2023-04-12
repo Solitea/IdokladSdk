@@ -14,7 +14,7 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// <summary>
         /// Gets or sets item amount.
         /// </summary>
-        [Range(0.0, double.MaxValue)]
+        [DecimalRange]
         public decimal? Amount { get; set; }
 
         /// <summary>

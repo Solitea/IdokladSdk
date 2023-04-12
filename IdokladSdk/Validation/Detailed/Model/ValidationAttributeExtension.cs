@@ -69,6 +69,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(MinValueAttribute): return ValidationType.MinValue;
 
+                case nameof(DecimalRangeAttribute): return ValidationType.Range;
+
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
             }
