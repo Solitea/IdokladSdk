@@ -297,7 +297,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(patchModel.ItemsTextPrefix, getModel.ItemsTextPrefix);
             Assert.AreEqual(patchModel.ItemsTextSuffix, getModel.ItemsTextSuffix);
             Assert.AreEqual(patchModel.Note, getModel.Note);
-            Assert.AreEqual(patchModel.NoteForCreditNote, getModel.NoteForCreditNote);
             Assert.AreEqual(patchModel.OrderNumber, getModel.OrderNumber);
             Assert.AreEqual(patchModel.PartnerId, getModel.PartnerId);
             Assert.AreEqual(patchModel.PartnerAddress.AccountNumber, getModel.PartnerAddress.AccountNumber);
@@ -527,7 +526,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
                 ItemsTextPrefix = "items prefix",
                 ItemsTextSuffix = "items suffix",
                 Note = "note",
-                NoteForCreditNote = "note for credit note",
                 OrderNumber = "12345667890",
                 PartnerId = 323823,
                 PartnerAddress = new DocumentAddressPatchModel

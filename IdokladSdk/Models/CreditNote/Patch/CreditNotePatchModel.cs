@@ -143,6 +143,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets note for the document.
         /// </summary>
+        [Obsolete("This field has been merged with Note field.")]
         public string NoteForCreditNote { get; set; }
 
         /// <summary>

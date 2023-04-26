@@ -108,6 +108,31 @@
         /// <summary>
         /// Sending of email failed.
         /// </summary>
-        SendMailFailed = 116
+        SendMailFailed = 116,
+
+        /// <summary>
+        /// Cash register deletion failed.
+        /// </summary>
+        SalesPosEquipmentDependency = 117,
+
+        /// <summary>
+        /// Error regarding OSS regime. See exception message for more details.
+        /// </summary>
+        OssRegime = 119,
+
+        /// <summary>
+        /// Attachment maximum count has been exceeded.
+        /// </summary>
+        MaxAttachmentsCount = 120,
+
+        /// <summary>
+        /// Referral invoice cannot be updated.
+        /// </summary>
+        ReferralInvoice = 121,
+
+        /// <summary>
+        /// The daily email send limit has been exceeded.
+        /// </summary>
+        MailThreshold = 122,
     }
 }
