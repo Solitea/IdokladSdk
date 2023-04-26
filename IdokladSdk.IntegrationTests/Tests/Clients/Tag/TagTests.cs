@@ -186,31 +186,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        public async Task UpdateTagAsync_ColorOnlyUpdate_SuccessfullyUpdated()
-        {
-            // Arrange
-            var tagPostModel = new TagPostModel
-            {
-                Name = Tag1Name,
-                Color = Tag1Color
-            };
-            var id = await PostAndMarkForDeleteAsync(tagPostModel);
-            var tagPatchModel = new TagPatchModel
-            {
-                Id = id,
-                Color = Tag2Color
-            };
-
-            // Act
-            var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
-
-            // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPatchModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPostModel.Name, tagGetModel.Name);
-        }
-
-        [Test]
         public async Task UpdateTagAsync_DuplicitName_ThrowsException()
         {
             // Arrange
@@ -254,7 +229,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             {
                 Id = id,
                 Name = Tag2Name,
-                Color = Tag2Color
             };
 
             // Act
@@ -262,7 +236,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
 
             // Assert
             Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPatchModel.Color), tagGetModel.Color);
             Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
         }
 
