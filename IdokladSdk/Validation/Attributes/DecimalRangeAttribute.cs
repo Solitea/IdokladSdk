@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -7,15 +8,15 @@ namespace IdokladSdk.Validation.Attributes
         /// <summary>
         /// Minimum possible value of SQL decimal(18, 4).
         /// </summary>
-        private const string MinValue = "-99999999999999,9999";
+        private const decimal MinValue = -99999999999999.9999M;
 
         /// <summary>
         /// Maximum possible value of SQL decimal(18, 4).
         /// </summary>
-        private const string MaxValue = "99999999999999,9999";
+        private const decimal MaxValue = 99999999999999.9999M;
 
         public DecimalRangeAttribute()
-            : base(typeof(decimal), MinValue, MaxValue)
+            : base(typeof(decimal), MinValue.ToString(CultureInfo.CurrentCulture), MaxValue.ToString(CultureInfo.CurrentCulture))
         {
         }
     }
