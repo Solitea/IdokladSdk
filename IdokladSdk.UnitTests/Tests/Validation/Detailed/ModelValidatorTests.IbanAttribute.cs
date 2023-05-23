@@ -7,13 +7,14 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 {
     public partial class ModelValidatorTests
     {
-        [Test]
-        public void ModelWithIbanAttribute_InvalidModel_ReturnsExpectedResults()
+        [TestCase("Wrong iban")]
+        [TestCase("SK30020 00000003604642112")]
+        public void ModelWithIbanAttribute_InvalidModel_ReturnsExpectedResults(string iban)
         {
             // Arrange
             var model = new ModelWithIbanAttribute()
             {
-                Iban = "Wrong iban",
+                Iban = iban,
             };
 
             // Act
