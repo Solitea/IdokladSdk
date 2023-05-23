@@ -40,6 +40,7 @@ namespace IdokladSdk.Models.BankAccount
         /// Gets or sets IBAN.
         /// </summary>
         [StringLength(50)]
+        [Iban]
         public string Iban { get; set; }
 
         /// <summary>
