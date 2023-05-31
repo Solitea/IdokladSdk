@@ -51,7 +51,7 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Filter
         public CompareFilterItem<DateTime> DateOfReceiving { get; set; } = new CompareFilterItem<DateTime>(nameof(ReceivedInvoiceGetModel.DateOfReceiving));
 
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.PartnerId"/>
-        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(ReceivedInvoiceGetModel.PartnerId));
+        public FilterItem<int> SupplierId { get; set; } = new FilterItem<int>(nameof(SupplierId));
 
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.VariableSymbol"/>
         public FilterItem<string> VariableSymbol { get; set; } = new FilterItem<string>(nameof(ReceivedInvoiceGetModel.VariableSymbol));
