@@ -6,6 +6,11 @@
     public class InvoicingForPeriodPricesGetModel
     {
         /// <summary>
+        /// Gets or sets Period in numeric format.
+        /// </summary>
+        public int NumericPeriod { get; set; }
+
+        /// <summary>
         /// Gets or sets Period.
         /// </summary>
         public string Period { get; set; }
