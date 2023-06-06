@@ -18,7 +18,7 @@
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
         </None>
-        <None Include="iDoklad_128px.png">
+        <None Include="iDoklad_180.png">
             <Pack>True</Pack>
             <PackagePath></PackagePath>
         </None>
@@ -34,9 +34,12 @@
 
     <PropertyGroup>
         <CodeAnalysisRuleSet>..\IdokladSdk.ruleset</CodeAnalysisRuleSet>
-        <PackageIcon>iDoklad_128px.png</PackageIcon>
+        <PackageIcon>iDoklad_180.png</PackageIcon>
         <EnableNETAnalyzers>True</EnableNETAnalyzers>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/Solitea/IdokladSdk</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Title>IdokladSdk</Title>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
