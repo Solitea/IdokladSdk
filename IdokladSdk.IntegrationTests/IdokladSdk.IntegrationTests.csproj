@@ -63,4 +63,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tests\Clients\IssuedDocumentTemplate\" />
+  </ItemGroup>
+
 </Project>
