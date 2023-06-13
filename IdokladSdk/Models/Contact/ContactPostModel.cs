@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.DeliveryAddress;
@@ -8,7 +7,7 @@ using IdokladSdk.Validation.Attributes;
 namespace IdokladSdk.Models.Contact
 {
     /// <summary>
-    /// ContactModel for Post enpoints.
+    /// ContactModel for Post endpoints.
     /// </summary>
     public class ContactPostModel : ValidatableModel
     {
