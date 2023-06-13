@@ -104,7 +104,6 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.List
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [Required]
         public string Name { get; set; }
 
         /// <summary>

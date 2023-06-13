@@ -31,6 +31,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentTemplate
             IssuedDocumentTemplateClient = DokladApi.IssuedDocumentTemplateClient;
         }
 
+        [OneTimeTearDown]
+        public async Task TearDown()
+        {
+            if (_createdId > 0)
+            {
+                await IssuedDocumentTemplateClient.DeleteAsync(_createdId);
+            }
+        }
+
         [Test]
         [Order(1)]
 
@@ -42,15 +51,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentTemplate
             // Assert
             Assert.That(data, Is.Not.Null);
             Assert.That(data.DocumentType, Is.EqualTo(IssuedDocumentTemplateType.IssuedInvoice));
-        }
-
-        [OneTimeTearDown]
-        public async Task TearDown()
-        {
-            if (_createdId > 0)
-            {
-                await IssuedDocumentTemplateClient.DeleteAsync(_createdId);
-            }
         }
 
         [Test]

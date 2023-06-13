@@ -101,6 +101,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets name.
         /// </summary>
+        [StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
