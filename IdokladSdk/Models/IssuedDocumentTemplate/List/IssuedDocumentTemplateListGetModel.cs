@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
@@ -9,7 +8,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.List
     /// <summary>
     /// IssuedDocumentTemplateListGetModel.
     /// </summary>
-    public class IssuedDocumentTemplateListGetModel
+    public class IssuedDocumentTemplateListGetModel : IEntityId
     {
         /// <summary>
         /// Gets or sets bank account id.
