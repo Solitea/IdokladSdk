@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
@@ -16,6 +18,7 @@ namespace IdokladSdk.Clients
     public class ProformaInvoiceClient : BaseClient,
         ICopyRequest<ProformaInvoiceCopyGetModel>,
         IDefaultRequest<ProformaInvoicePostModel>,
+        IDefaultWithIdRequest<ProformaInvoicePostModel>,
         IDeleteRequest,
         IEntityDetail<ProformaInvoiceDetail>,
         IEntityList<ProformaInvoiceList>,
@@ -47,6 +50,13 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<ProformaInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
             return DefaultAsync<ProformaInvoicePostModel>(cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ApiResult<ProformaInvoicePostModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
+        {
+            var queryParams = new Dictionary<string, string>() { { "templateId", templateId.ToString(CultureInfo.InvariantCulture) } };
+            return DefaultAsync<ProformaInvoicePostModel>(queryParams, cancellationToken);
         }
 
         /// <inheritdoc />

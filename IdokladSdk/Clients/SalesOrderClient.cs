@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
@@ -19,6 +21,7 @@ namespace IdokladSdk.Clients
         IEntityDetail<SalesOrderDetail>,
         IEntityList<SalesOrderList>,
         IDefaultRequest<SalesOrderPostModel>,
+        IDefaultWithIdRequest<SalesOrderPostModel>,
         IPatchRequest<SalesOrderPatchModel, SalesOrderGetModel>,
         IPostRequest<SalesOrderPostModel, SalesOrderGetModel>,
         IRecountRequest<SalesOrderRecountPostModel, SalesOrderRecountGetModel>
@@ -46,6 +49,13 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<SalesOrderPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
             return DefaultAsync<SalesOrderPostModel>(cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ApiResult<SalesOrderPostModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
+        {
+            var queryParams = new Dictionary<string, string>() { { "templateId", templateId.ToString(CultureInfo.InvariantCulture) } };
+            return DefaultAsync<SalesOrderPostModel>(queryParams, cancellationToken);
         }
 
         /// <inheritdoc/>

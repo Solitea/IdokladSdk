@@ -446,6 +446,19 @@ namespace IdokladSdk.Clients
             return GetAsync<T>($"{ResourceUrl}/Default/{id}", null, cancellationToken);
         }
 
+        /// <summary>
+        /// Returns new default entity allowing query parameters.
+        /// </summary>
+        /// <typeparam name="T">POST data type.</typeparam>
+        /// <param name="queryParams">Query parameters.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/>ApiResult with data instance.</returns>
+        protected Task<ApiResult<T>> DefaultAsync<T>(Dictionary<string, string> queryParams, CancellationToken cancellationToken)
+            where T : new()
+        {
+            return GetAsync<T>($"{ResourceUrl}/Default", queryParams, cancellationToken);
+        }
+
         private static bool IsValidObject(object obj, out List<ValidationMessage> results)
         {
             return ApiValidator.ValidateObject(obj, out results);

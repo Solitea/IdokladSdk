@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +24,7 @@ namespace IdokladSdk.Clients
         IEntityDetail<IssuedInvoiceDetail>,
         IEntityList<IssuedInvoiceList>,
         IDefaultRequest<IssuedInvoicePostModel>,
+        IDefaultWithIdRequest<IssuedInvoicePostModel>,
         IPostRequest<IssuedInvoicePostModel, IssuedInvoiceGetModel>,
         IPatchRequest<IssuedInvoicePatchModel, IssuedInvoiceGetModel>,
         IRecountRequest<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>,
@@ -50,6 +53,13 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<IssuedInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
             return DefaultAsync<IssuedInvoicePostModel>(cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ApiResult<IssuedInvoicePostModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
+        {
+            var queryParams = new Dictionary<string, string>() { { "templateId", templateId.ToString(CultureInfo.InvariantCulture) } };
+            return DefaultAsync<IssuedInvoicePostModel>(queryParams, cancellationToken);
         }
 
         /// <inheritdoc />
