@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
     /// <summary>
     /// IssuedDocumentTemplatePostModel.
     /// </summary>
-    public class IssuedDocumentTemplatePostModel
+    public class IssuedDocumentTemplatePostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets bank account id.
