@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
 {
     /// <summary>
     /// IssuedDocumentTemplateItemPostModel.
     /// </summary>
-    public class IssuedDocumentTemplateItemPostModel
+    public class IssuedDocumentTemplateItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets item amount.
