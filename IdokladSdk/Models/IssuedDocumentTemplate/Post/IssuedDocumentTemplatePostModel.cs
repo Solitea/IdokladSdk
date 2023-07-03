@@ -64,7 +64,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// <summary>
         /// Gets or sets invoice maturity.
         /// </summary>
-        public short? InvoiceMaturity { get; set; }
+        public int? InvoiceMaturity { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether is constant exchange rate.
