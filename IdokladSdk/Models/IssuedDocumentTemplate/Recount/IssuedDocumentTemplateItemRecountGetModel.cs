@@ -19,7 +19,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Recount
         /// <summary>
         /// Gets or sets item type.
         /// </summary>
-        public RecurringInvoiceItemGetType ItemType { get; set; }
+        public IssuedInvoiceItemType ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets item name.
