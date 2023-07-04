@@ -22,7 +22,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets item type.
         /// </summary>
-        public PostIssuedInvoiceItemType? ItemType { get; set; }
+        public PostIssuedDocumentTemplateItemType? ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets item name.
