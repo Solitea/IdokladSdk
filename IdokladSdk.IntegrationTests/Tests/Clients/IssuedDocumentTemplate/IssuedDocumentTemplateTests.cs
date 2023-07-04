@@ -212,7 +212,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentTemplate
 
             // Assert
             var itemToRecount = model.Items.First();
-            var recountedItem = data.Items.First(x => x.ItemType == RecurringInvoiceItemGetType.ItemTypeNormal);
+            var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
             Assert.That(recountedItem.Id, Is.EqualTo(itemToRecount.Id));
             Assert.That(recountedItem.Name, Is.EqualTo(itemToRecount.Name));
             Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(242));
