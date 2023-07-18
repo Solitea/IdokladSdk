@@ -11,6 +11,7 @@ namespace IdokladSdk.Validation.PasswordStrengthValidator
 
         public PasswordStrengthValidationResult Validate(string password)
         {
+            password = password ?? string.Empty;
             return new PasswordStrengthValidationResult
             {
                 HasLowerCaseLetter = new Regex(HasLowerCaseLetter).IsMatch(password),
