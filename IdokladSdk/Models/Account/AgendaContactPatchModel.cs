@@ -13,6 +13,7 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets city of residence.
         /// </summary>
         [StringLength(50)]
+        [NotEmptyString]
         public string City { get; set; }
 
         /// <summary>
@@ -51,18 +52,21 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets area postal code.
         /// </summary>
         [StringLength(11)]
+        [NotEmptyString]
         public string PostalCode { get; set; }
 
         /// <summary>
         /// Gets or sets street.
         /// </summary>
         [StringLength(100)]
+        [NotEmptyString]
         public string Street { get; set; }
 
         /// <summary>
         /// Gets or sets VAT ID.
         /// </summary>
         [RegularExpression("(CZ|SK){1}[0-9]{8,10}", ErrorMessage = "The VAT ID is not in the right format.")]
+        [NotEmptyString]
         public string VatIdentificationNumber { get; set; }
 
         /// <summary>
@@ -70,6 +74,7 @@ namespace IdokladSdk.Models.Account
         /// Only for SK legislation.
         /// </summary>
         [StringLength(10)]
+        [NotEmptyString]
         public string VatIdentificationNumberSk { get; set; }
 
         /// <summary>
