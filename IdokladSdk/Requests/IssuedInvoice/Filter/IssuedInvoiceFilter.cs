@@ -31,6 +31,9 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
         /// <inheritdoc cref="IssuedInvoiceListGetModel.DateOfPayment"/>
         public CompareFilterItem<DateTime> DateOfPayment { get; set; } = new CompareFilterItem<DateTime>(nameof(IssuedInvoiceListGetModel.DateOfPayment));
 
+        /// <inheritdoc cref="Metadata.DateOfTaxing"/>
+        public CompareFilterItem<DateTime> DateOfTaxing { get; set; } = new CompareFilterItem<DateTime>(nameof(Metadata.DateOfTaxing));
+
         /// <inheritdoc cref="IssuedInvoiceListGetModel.Description"/>
         public ContainFilterItem<string> Description { get; set; } = new ContainFilterItem<string>(nameof(IssuedInvoiceListGetModel.Description));
 
