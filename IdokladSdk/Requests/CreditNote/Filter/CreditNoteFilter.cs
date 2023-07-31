@@ -32,7 +32,7 @@ namespace IdokladSdk.Requests.CreditNote.Filter
         public CompareFilterItem<DateTime> DateOfPayment { get; set; } = new CompareFilterItem<DateTime>(nameof(CreditNoteListGetModel.DateOfPayment));
 
         /// <inheritdoc cref="Metadata.DateOfTaxing"/>
-        public CompareFilterItem<DateTime> DateOfTaxing { get; set; } = new CompareFilterItem<DateTime>(nameof(Metadata.DateOfTaxing));
+        public CompareFilterItem<DateTime> DateOfTaxing { get; set; } = new CompareFilterItem<DateTime>(nameof(CreditNoteListGetModel.DateOfTaxing));
 
         /// <inheritdoc cref="CreditNoteListGetModel.Description"/>
         public ContainFilterItem<string> Description { get; set; } = new ContainFilterItem<string>(nameof(CreditNoteListGetModel.Description));
