@@ -137,5 +137,25 @@ namespace IdokladSdk.Enums
         /// Property has to be greater or equal to certain value. <see cref="MinValueAttribute"/>
         /// </summary>
         MinValue = 26,
+
+        /// <summary>
+        /// Property is required when recurrence type of end is after number created. <see cref="CopyCountEndOnRecurringInvoiceAttribute"/>
+        /// </summary>
+        CopyCountEndOnRecurringInvoice = 27,
+
+        /// <summary>
+        /// Property is required when recurrence type of end is on specific day. <see cref="DateOfEndOnRecurringInvoiceAttribute"/>
+        /// </summary>
+        DateOfEndOnRecurringInvoice = 28,
+
+        /// <summary>
+        /// Property must be greater or equal than today. <see cref="DateGreaterOrEqualThanTodayAttribute"/>
+        /// </summary>
+        DateGreaterOrEqualThanToday = 29,
+
+        /// <summary>
+        /// Property is valid only when RecurrenceType is Months and RecurrenceCount is 1 . <see cref="IssueLastDayOfMonthOnRecurringInvoiceAttribute"/>
+        /// </summary>
+        IssueLastDayOfMonthOnRecurringInvoice = 30
     }
 }

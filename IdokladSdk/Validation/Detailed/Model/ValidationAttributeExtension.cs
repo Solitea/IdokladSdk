@@ -71,6 +71,14 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(DecimalRangeAttribute): return ValidationType.Range;
 
+                case nameof(CopyCountEndOnRecurringInvoiceAttribute): return ValidationType.CopyCountEndOnRecurringInvoice;
+
+                case nameof(DateOfEndOnRecurringInvoiceAttribute): return ValidationType.DateOfEndOnRecurringInvoice;
+
+                case nameof(DateGreaterOrEqualThanTodayAttribute): return ValidationType.DateGreaterOrEqualThanToday;
+
+                case nameof(IssueLastDayOfMonthOnRecurringInvoiceAttribute): return ValidationType.IssueLastDayOfMonthOnRecurringInvoice;
+
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
             }
