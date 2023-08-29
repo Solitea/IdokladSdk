@@ -205,8 +205,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             Assert.Greater(data.Items.Count(), 3);
             Assert.AreEqual("Test company", data.Items.ElementAt(0).CompanyName);
             Assert.AreEqual(_updatedCompanyName, data.Items.ElementAt(1).CompanyName);
-            Assert.AreEqual("GermanContact", data.Items.ElementAt(2).CompanyName);
-            Assert.AreEqual("Alza.cz a.s.", data.Items.ElementAt(3).CompanyName);
+            Assert.AreEqual("Solitea Slovensko, a.s.", data.Items.ElementAt(2).CompanyName);
+            Assert.AreEqual("GermanContact", data.Items.ElementAt(3).CompanyName);
+            Assert.AreEqual("Alza.cz a.s.", data.Items.ElementAt(4).CompanyName);
         }
 
         [Test]
