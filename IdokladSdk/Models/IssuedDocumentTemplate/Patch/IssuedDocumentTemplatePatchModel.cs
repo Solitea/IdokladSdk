@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
@@ -29,7 +30,8 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets delivery address id.
         /// </summary>
-        public int? DeliveryAddressId { get; set; }
+        [NullableForeignKey]
+        public NullableProperty<int> DeliveryAddressId { get; set; }
 
         /// <summary>
         /// Gets or sets description.
