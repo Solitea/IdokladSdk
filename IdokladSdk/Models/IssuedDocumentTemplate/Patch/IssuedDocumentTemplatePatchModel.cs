@@ -120,7 +120,8 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets partner contact id.
         /// </summary>
-        public int? PartnerId { get; set; }
+        [NullableForeignKey]
+        public NullableProperty<int> PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets payment option id.
