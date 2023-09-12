@@ -134,5 +134,10 @@
         /// The daily email send limit has been exceeded.
         /// </summary>
         MailThreshold = 122,
+
+        /// <summary>
+        /// Numeric sequence must be unique
+        /// </summary>
+        NumericSequenceUniqueness = 123
     }
 }
