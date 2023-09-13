@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.RecurringInvoice
 {
@@ -13,22 +14,27 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets count of documents created before recurrence end. Applies to <see cref="RecurrenceTypeOfEnd.AfterNumberCreated"/>.
         /// </summary>
+        [CopyCountEndOnRecurringInvoice(nameof(TypeOfEnd))]
         public int? CopyCountEnd { get; set; }
 
         /// <summary>
         /// Gets or sets date of recurrence issue end. Applies to <see cref="RecurrenceTypeOfEnd.OnSpecificDate"/>.
         /// </summary>
+        [DateOfEndOnRecurringInvoice(nameof(TypeOfEnd))]
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfStart))]
         public DateTime? DateOfEnd { get; set; }
 
         /// <summary>
         /// Gets or sets date of first issue.
         /// </summary>
         [Required]
+        [DateGreaterOrEqualThanToday]
         public DateTime DateOfStart { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether document will be issued last day of month. Applies to <see cref="Enums.RecurrenceType.Months"/>.
         /// </summary>
+        [IssueLastDayOfMonthOnRecurringInvoice(nameof(RecurrenceType), nameof(RecurrenceCount))]
         public bool IssueLastDayOfMonth { get; set; }
 
         /// <summary>
