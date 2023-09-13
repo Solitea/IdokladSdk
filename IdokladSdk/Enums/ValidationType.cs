@@ -156,6 +156,11 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property is valid only when RecurrenceType is Months and RecurrenceCount is 1 . <see cref="IssueLastDayOfMonthOnRecurringInvoiceAttribute"/>
         /// </summary>
-        IssueLastDayOfMonthOnRecurringInvoice = 30
+        IssueLastDayOfMonthOnRecurringInvoice = 30,
+
+        /// <summary>
+        /// Property is valid only for supported file extensions . <see cref="LogoAndSignatureExtensionAttribute"/>
+        /// </summary>
+        LogoAndSignatureExtension = 31
     }
 }

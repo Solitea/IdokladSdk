@@ -4,9 +4,9 @@ using IdokladSdk.Validation.Attributes;
 namespace IdokladSdk.Models.Account
 {
     /// <summary>
-    /// LogoPostModel.
+    /// SignaturePostModel.
     /// </summary>
-    public class LogoPostModel : ValidatableModel, IFile
+    public class SignaturePostModel : ValidatableModel, IFile
     {
         /// <summary>
         /// Gets or sets filename.
@@ -18,10 +18,5 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets bytes of a file.
         /// </summary>
         public byte[] FileBytes { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use higher display quality.
-        /// </summary>
-        public bool HighResolution { get; set; }
     }
 }

@@ -15,8 +15,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
     public class AccountTest : TestBase
     {
         private const int AgendaId = 187854;
-        private const string LogoFileName = "Solitea.png";
-        private const string LogoPath = "Tests/Clients/Account/Solitea.png";
+        private const string ImageFileName = "Solitea.png";
+        private const string ImagePath = "Tests/Clients/Account/Solitea.png";
         private const int UserId = 161205;
         private const string Street = "Drobného 555/49";
 
@@ -205,10 +205,31 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public async Task LogoSignatureAsync_SuccessfullyGet()
+        {
+            // Act
+            var data = await _accountClient.Agendas.GetSignatureAsync().AssertResult();
+
+            // Assert
+            Assert.NotNull(data);
+            Assert.NotNull(data.FileBytes);
+        }
+
+        [Test]
         public async Task LogoDeleteAsync_SuccessfullyDeleted()
         {
             // Act
             var data = await _accountClient.Agendas.DeleteLogoAsync().AssertResult();
+
+            // Assert
+            Assert.True(data);
+        }
+
+        [Test]
+        public async Task LogoSignatureAsync_SuccessfullyDeleted()
+        {
+            // Act
+            var data = await _accountClient.Agendas.DeleteSignatureAsync().AssertResult();
 
             // Assert
             Assert.True(data);
@@ -220,13 +241,30 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             // Arrange
             var model = new LogoPostModel
             {
-                FileBytes = File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{LogoPath}"),
-                FileName = LogoFileName,
+                FileBytes = File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{ImagePath}"),
+                FileName = ImageFileName,
                 HighResolution = true
             };
 
             // Act
             var data = await _accountClient.Agendas.UploadLogoAsync(model).AssertResult();
+
+            // Assert
+            Assert.True(data);
+        }
+
+        [Test]
+        public async Task SignatureUpdateAsync_SuccessfullyUpdated()
+        {
+            // Arrange
+            var model = new SignaturePostModel()
+            {
+                FileBytes = File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{ImagePath}"),
+                FileName = ImageFileName,
+            };
+
+            // Act
+            var data = await _accountClient.Agendas.UploadSignatureAsync(model).AssertResult();
 
             // Assert
             Assert.True(data);
