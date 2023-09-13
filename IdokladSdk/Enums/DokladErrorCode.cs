@@ -136,7 +136,7 @@
         MailThreshold = 122,
 
         /// <summary>
-        /// Numeric sequence must be unique
+        /// Numeric sequence must be unique.
         /// </summary>
         NumericSequenceUniqueness = 123
     }
