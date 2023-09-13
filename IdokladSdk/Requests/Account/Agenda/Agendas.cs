@@ -28,13 +28,15 @@ namespace IdokladSdk.Requests.Account.Agenda
             _client = client;
         }
 
+        private string CurrentAgendaUrl => $"{_client.ResourceUrl}/CurrentAgenda";
+
         private string DeleteRequestUrl => $"{_client.ResourceUrl}/Agendas/DeleteRequest";
 
         private string GenerateBankStatementMailUrl => $"{CurrentAgendaUrl}/GenerateBankStatementMail";
 
         private string LogoUrl => $"{CurrentAgendaUrl}/Logo";
 
-        private string CurrentAgendaUrl => $"{_client.ResourceUrl}/CurrentAgenda";
+        private string SignatureUrl => $"{CurrentAgendaUrl}/Signature";
 
         /// <summary>
         /// Current agenda endpoint.
@@ -56,17 +58,28 @@ namespace IdokladSdk.Requests.Account.Agenda
         }
 
         /// <summary>
-        /// Request to delete the agenda. Deletion of the agenda has to be confirmed by clicking on the link in the email.
+        //  Request to delete the agenda. Deletion of the agenda has to be confirmed by clicking on the link in the email.
         /// </summary>
         /// <param name="model">Reasons for deleting the agenda.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><c>true</c>.</returns>
-        public Task<ApiResult<bool>> DeleteRequestAsync(AgendaDeleteRequestPostModel model, CancellationToken cancellationToken = default)
+        public Task<ApiResult<bool>> DeleteRequestAsync(AgendaDeleteRequestPostModel model,
+            CancellationToken cancellationToken = default)
         {
             return _client.PostAsync<AgendaDeleteRequestPostModel, bool>(DeleteRequestUrl, model, cancellationToken);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Deletes agenda's signature.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><c>true</c>.</returns>
+        public Task<ApiResult<bool>> DeleteSignatureAsync(CancellationToken cancellationToken = default)
+        {
+            return _client.DeleteAsync<bool>(SignatureUrl, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public AgendaDetail Detail(int id)
         {
             return new AgendaDetail(id, _client);
@@ -92,37 +105,65 @@ namespace IdokladSdk.Requests.Account.Agenda
             return _client.GetAsync<LogoGetModel>(LogoUrl, null, cancellationToken);
         }
 
-        /// <inheritdoc/>
+
+        /// <summary>
+        /// Gets agenda's signature.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Agenda's signature.</returns>
+        public Task<ApiResult<SignatureGetModel>> GetSignatureAsync(CancellationToken cancellationToken = default)
+        {
+            return _client.GetAsync<SignatureGetModel>(SignatureUrl, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public AgendaList List()
         {
             return new AgendaList(_client);
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<AgendaGetModel>> UpdateAsync(AgendaPatchModel model, CancellationToken cancellationToken = default)
+        public Task<ApiResult<AgendaGetModel>> UpdateAsync(AgendaPatchModel model,
+            CancellationToken cancellationToken = default)
         {
             return _client.PatchAsync<AgendaPatchModel, AgendaGetModel>(CurrentAgendaUrl, model, cancellationToken);
         }
 
         /// <summary>
-        /// Sets agenda logo. Existing logo will be replaced. Optimal size is 280 x 100 (96 DPI) or 900 x 300 (300 DPI). Max. file size is 5 MB.
+        /// Sets agenda logo. Existing logo will be replaced. Optimal size is 280 x 100 (96 DPI) or 900 x 300 (300 DPI). Max.file size is 5 MB.
         /// </summary>
         /// <param name="model">New logo.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Agenda's logo.</returns>
-        public async Task<ApiResult<bool>> UploadLogoAsync(LogoPostModel model, CancellationToken cancellationToken = default)
+        /// <returns><c>true</c></returns>
+        public async Task<ApiResult<bool>> UploadLogoAsync(LogoPostModel model,
+            CancellationToken cancellationToken = default)
         {
             if (model is null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var queryParams = new Dictionary<string, string>
-            {
-                { "highResolution", model.HighResolution.ToString() }
-            };
+            var queryParams = new Dictionary<string, string> { { "highResolution", model.HighResolution.ToString() } };
 
-            return await _client.PutFileAsync<bool>(LogoUrl, model, queryParams, cancellationToken).ConfigureAwait(false);
+            return await _client.PutFileAsync<bool>(LogoUrl, model, queryParams, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Sets agenda signature. Existing signature will be replaced. Max. file size is 5 MB.
+        /// </summary>
+        /// <param name="model">New signature.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><c>true</c></returns>
+        public async Task<ApiResult<bool>> UploadSignatureAsync(SignaturePostModel model,
+            CancellationToken cancellationToken = default)
+        {
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            return await _client.PutFileAsync<bool>(SignatureUrl, model, null, cancellationToken).ConfigureAwait(false);
         }
     }
 }
