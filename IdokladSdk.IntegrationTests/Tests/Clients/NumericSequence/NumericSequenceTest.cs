@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
@@ -14,6 +15,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
     {
         private const int NumericSequenceId = 607899;
         private const int NumericSequenceYear = 2019;
+        private const int NumericSequenceRegisterSaleId = 608046;
+        private const int NumericSequenceRegisterSaleId2 = 608198;
         private NumericSequenceClient _numericSequenceClient;
 
         [OneTimeSetUp]
@@ -70,7 +73,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
             Assert.NotNull(data.Unique);
         }
 
-        [TestCaseSource("TestData_AnotherYear")]
+        [TestCaseSource(nameof(TestData_AnotherYear))]
         public async Task GetDocumentNumberAsync_AnotherYear_SuccessfullyGetDocumentNumber(DateTime date, string expectedDocumentNumber, bool isUnique)
         {
             // Act
@@ -96,6 +99,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
 
             // Assert
             Assert.NotNull(data);
+        }
+
+        [Test]
+        public async Task UpdateAsync_DuplicateNumberFormat_SuccessfullyGetDetail()
+        {
+            // Arrange
+            var existingSequence = await _numericSequenceClient.Detail(NumericSequenceRegisterSaleId).GetAsync().AssertResult();
+
+            // Act
+            var result = await _numericSequenceClient.UpdateAsync(new NumericSequencePatchModel
+            {
+                Id = NumericSequenceRegisterSaleId2,
+                NumberFormat = existingSequence.NumberFormat,
+            });
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.AreEqual(DokladErrorCode.NumericSequenceUniqueness, result.ErrorCode);
+            Assert.AreEqual(HttpStatusCode.Conflict, result.StatusCode);
         }
 
         private static object[] TestData_AnotherYear()
