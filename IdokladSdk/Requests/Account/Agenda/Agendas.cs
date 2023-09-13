@@ -58,13 +58,12 @@ namespace IdokladSdk.Requests.Account.Agenda
         }
 
         /// <summary>
-        //  Request to delete the agenda. Deletion of the agenda has to be confirmed by clicking on the link in the email.
+        /// Request to delete the agenda. Deletion of the agenda has to be confirmed by clicking on the link in the email.
         /// </summary>
         /// <param name="model">Reasons for deleting the agenda.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><c>true</c>.</returns>
-        public Task<ApiResult<bool>> DeleteRequestAsync(AgendaDeleteRequestPostModel model,
-            CancellationToken cancellationToken = default)
+        public Task<ApiResult<bool>> DeleteRequestAsync(AgendaDeleteRequestPostModel model, CancellationToken cancellationToken = default)
         {
             return _client.PostAsync<AgendaDeleteRequestPostModel, bool>(DeleteRequestUrl, model, cancellationToken);
         }
@@ -105,7 +104,6 @@ namespace IdokladSdk.Requests.Account.Agenda
             return _client.GetAsync<LogoGetModel>(LogoUrl, null, cancellationToken);
         }
 
-
         /// <summary>
         /// Gets agenda's signature.
         /// </summary>
@@ -123,8 +121,7 @@ namespace IdokladSdk.Requests.Account.Agenda
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<AgendaGetModel>> UpdateAsync(AgendaPatchModel model,
-            CancellationToken cancellationToken = default)
+        public Task<ApiResult<AgendaGetModel>> UpdateAsync(AgendaPatchModel model, CancellationToken cancellationToken = default)
         {
             return _client.PatchAsync<AgendaPatchModel, AgendaGetModel>(CurrentAgendaUrl, model, cancellationToken);
         }
@@ -134,9 +131,8 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// </summary>
         /// <param name="model">New logo.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns><c>true</c></returns>
-        public async Task<ApiResult<bool>> UploadLogoAsync(LogoPostModel model,
-            CancellationToken cancellationToken = default)
+        /// <returns><c>true</c>.</returns>
+        public async Task<ApiResult<bool>> UploadLogoAsync(LogoPostModel model, CancellationToken cancellationToken = default)
         {
             if (model is null)
             {
@@ -154,9 +150,8 @@ namespace IdokladSdk.Requests.Account.Agenda
         /// </summary>
         /// <param name="model">New signature.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns><c>true</c></returns>
-        public async Task<ApiResult<bool>> UploadSignatureAsync(SignaturePostModel model,
-            CancellationToken cancellationToken = default)
+        /// <returns><c>true</c>.</returns>
+        public async Task<ApiResult<bool>> UploadSignatureAsync(SignaturePostModel model, CancellationToken cancellationToken = default)
         {
             if (model is null)
             {
