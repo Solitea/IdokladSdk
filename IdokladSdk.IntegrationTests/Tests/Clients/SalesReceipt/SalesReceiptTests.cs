@@ -147,6 +147,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             // Assert
             Assert.AreEqual(salesReceiptToCopy.PartnerId, data.PartnerId);
             Assert.AreEqual(salesReceiptToCopy.CurrencyId, data.CurrencyId);
+            Assert.That(data.Items.Count(c => c.ItemType == SalesReceiptItemType.ItemTypeRound), Is.EqualTo(1));
         }
 
         [Test]
@@ -434,7 +435,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             _postModel.Items.Add(new SalesReceiptItemPostModel
             {
                 Name = "Test",
-                UnitPrice = 100,
+                UnitPrice = 100.45m,
                 PriceType = PriceTypeWithoutOnlyBase.WithVat,
                 VatRateType = VatRateType.Basic,
                 Amount = 1,
