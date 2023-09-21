@@ -48,7 +48,7 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets is income tax.
+        /// Gets or sets a value indicating whether include subject to income tax.
         /// </summary>
         public bool IsIncomeTax { get; set; }
 

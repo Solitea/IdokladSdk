@@ -37,12 +37,12 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
         public CurrencyGetModel Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets is accounted.
+        /// Gets or sets a value indicating whether is accounted.
         /// </summary>
         public bool IsAccounted { get; set; }
 
         /// <summary>
-        /// Gets or sets is confirmation sent.
+        /// Gets or sets a value indicating whether confirmation is sent.
         /// </summary>
         public bool IsConfirmationSent { get; set; }
 

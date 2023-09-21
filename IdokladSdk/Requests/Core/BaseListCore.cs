@@ -30,15 +30,8 @@ namespace IdokladSdk.Requests.Core
         where TSort : new()
         where TGetModel : new()
     {
-        /// <summary>
-        /// Gets select.
-        /// </summary>
-        protected readonly SelectModifier<TGetModel> Select = new SelectModifier<TGetModel>();
-
         private readonly FilterModifier<TFilter> _filter = new FilterModifier<TFilter>();
-
         private readonly PageModifier _page = new PageModifier();
-
         private readonly SortModifier<TSort> _sort = new SortModifier<TSort>();
 
         /// <summary>
@@ -69,10 +62,15 @@ namespace IdokladSdk.Requests.Core
         protected string ResourceUrl =>
             string.IsNullOrEmpty(ListName) ? Client.ResourceUrl : $"{Client.ResourceUrl}/{ListName}";
 
+        /// <summary>
+        /// Gets select.
+        /// </summary>
+        protected SelectModifier<TGetModel> Select { get; } = new SelectModifier<TGetModel>();
+
         private TList This => this as TList;
 
         /// <summary>
-        ///     Filter for a list.
+        /// Filter for a list.
         /// </summary>
         /// <param name="filter">Filter expressions.</param>
         /// <returns>List of models.</returns>

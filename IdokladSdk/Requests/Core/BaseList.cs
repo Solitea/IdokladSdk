@@ -16,7 +16,8 @@ namespace IdokladSdk.Requests.Core
     /// <typeparam name="TGetModel">GetModel type.</typeparam>
     /// <typeparam name="TFilter">Filter type.</typeparam>
     /// <typeparam name="TSort">Sort type.</typeparam>
-    public abstract class BaseList<TList, TClient, TGetModel, TFilter, TSort> : BaseListCore<TList, TClient, TGetModel, TFilter, TSort> ,IGetListRequest<TGetModel>
+    public abstract class BaseList<TList, TClient, TGetModel, TFilter, TSort>
+        : BaseListCore<TList, TClient, TGetModel, TFilter, TSort>, IGetListRequest<TGetModel>
         where TList : BaseList<TList, TClient, TGetModel, TFilter, TSort>
         where TClient : BaseClient
         where TFilter : new()
@@ -27,7 +28,7 @@ namespace IdokladSdk.Requests.Core
         /// Initializes a new instance of the <see cref="BaseList{TList, TClient, TGetModel, TFilter, TSort}" /> class.
         /// </summary>
         /// <param name="client">Client type.</param>
-        protected BaseList(TClient client) 
+        protected BaseList(TClient client)
             : base(client)
         {
         }
