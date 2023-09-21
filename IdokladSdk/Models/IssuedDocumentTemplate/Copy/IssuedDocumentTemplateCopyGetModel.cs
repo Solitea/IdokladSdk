@@ -59,17 +59,17 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Copy
         public short? InvoiceMaturity { get; set; }
 
         /// <summary>
-        /// Gets or sets is constant exchange rate.
+        /// Gets or sets a value indicating whether exchange rate is constant.
         /// </summary>
         public bool IsConstantExchangeRate { get; set; }
 
         /// <summary>
-        /// Gets or sets is constant variable symbol.
+        /// Gets or sets a value indicating whether variable symbol is constant.
         /// </summary>
         public bool IsConstantVariableSymbol { get; set; }
 
         /// <summary>
-        /// Gets or sets is income tax.
+        /// Gets or sets a value indicating whether include subject to income tax.
         /// </summary>
         public bool IsIncomeTax { get; set; }
 
