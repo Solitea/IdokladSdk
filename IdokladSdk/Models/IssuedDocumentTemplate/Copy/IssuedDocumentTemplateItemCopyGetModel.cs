@@ -2,6 +2,9 @@
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.Copy
 {
+    /// <summary>
+    /// IssuedDocumentTemplateItemCopyGetModel.
+    /// </summary>
     public class IssuedDocumentTemplateItemCopyGetModel
     {
         /// <summary>

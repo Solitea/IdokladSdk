@@ -1,5 +1,5 @@
-﻿using IdokladSdk.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using IdokladSdk.Enums;
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.Copy
 {
