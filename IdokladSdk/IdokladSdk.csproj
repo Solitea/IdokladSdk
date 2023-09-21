@@ -71,11 +71,6 @@
         </AssemblyAttribute>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Models\DeliveryAddress\" />
-        <Folder Include="Requests\IssuedDocumentTemplate\Filter\" />
-        <Folder Include="Requests\IssuedDocumentTemplate\Sort\" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\IdokladSdk.SourceGenerators\IdokladSdk.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 </Project>

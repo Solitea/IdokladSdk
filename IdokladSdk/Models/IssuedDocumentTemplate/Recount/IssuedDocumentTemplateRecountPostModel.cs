@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Enums;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.Recount
@@ -19,6 +20,11 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Recount
         /// </summary>
         [Range(0.0, 99.99)]
         public decimal DiscountPercentage { get; set; }
+
+        /// <summary>
+        /// Gets or sets document type.
+        /// </summary>
+        public IssuedDocumentTemplateType DocumentType { get; set; }
 
         /// <summary>
         /// Gets or sets items.
