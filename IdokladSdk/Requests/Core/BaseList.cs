@@ -22,7 +22,6 @@ namespace IdokladSdk.Requests.Core
         where TFilter : new()
         where TSort : new()
         where TGetModel : new()
-
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseList{TList, TClient, TGetModel, TFilter, TSort}" /> class.

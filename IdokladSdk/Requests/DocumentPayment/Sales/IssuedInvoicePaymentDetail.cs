@@ -16,11 +16,14 @@ namespace IdokladSdk.Requests.DocumentPayment.Sales
         /// </summary>
         /// <param name="id">Payment id.</param>
         /// <param name="client">Issued invoice payment client.</param>
-        public IssuedInvoicePaymentDetail(int id, DocumentPaymentClient client) 
+        public IssuedInvoicePaymentDetail(int id, DocumentPaymentClient client)
             : base(id, client)
         {
         }
 
+        /// <summary>
+        /// Gets detail name.
+        /// </summary>
         protected override string DetailName => "Sales/Get/IssuedInvoice/";
     }
 }

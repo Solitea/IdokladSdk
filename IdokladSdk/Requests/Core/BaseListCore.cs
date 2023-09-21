@@ -15,7 +15,7 @@ using IdokladSdk.Response;
 namespace IdokladSdk.Requests.Core
 {
     /// <summary>
-    ///     Base class for list requests.
+    /// Base class for list requests.
     /// </summary>
     /// <typeparam name="TList">List type.</typeparam>
     /// <typeparam name="TClient">Client type.</typeparam>
@@ -30,8 +30,9 @@ namespace IdokladSdk.Requests.Core
         where TSort : new()
         where TGetModel : new()
     {
-        #region Fields
-
+        /// <summary>
+        /// Gets select.
+        /// </summary>
         protected readonly SelectModifier<TGetModel> Select = new SelectModifier<TGetModel>();
 
         private readonly FilterModifier<TFilter> _filter = new FilterModifier<TFilter>();
@@ -39,10 +40,6 @@ namespace IdokladSdk.Requests.Core
         private readonly PageModifier _page = new PageModifier();
 
         private readonly SortModifier<TSort> _sort = new SortModifier<TSort>();
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseListCore{TList, TClient, TGetModel, TFilter, TSort}" /> class.
@@ -53,10 +50,9 @@ namespace IdokladSdk.Requests.Core
             Client = client;
         }
 
-        #endregion
-
-        #region Properties
-
+        /// <summary>
+        /// Gets client.
+        /// </summary>
         protected TClient Client { get; }
 
         /// <summary>
@@ -74,10 +70,6 @@ namespace IdokladSdk.Requests.Core
             string.IsNullOrEmpty(ListName) ? Client.ResourceUrl : $"{Client.ResourceUrl}/{ListName}";
 
         private TList This => this as TList;
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         ///     Filter for a list.
@@ -145,10 +137,6 @@ namespace IdokladSdk.Requests.Core
             return This;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Calls selector function to transform GET model to custom type.
         /// </summary>
@@ -156,9 +144,9 @@ namespace IdokladSdk.Requests.Core
         /// <param name="apiResult">API result.</param>
         /// <param name="selector">A transform function to apply to each source element.</param>
         /// <returns><see cref="ApiResult{TData}" /> instance.</returns>
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods",
-            Justification = "Called internally with not null parameters.")]
-        protected ApiResult<Page<TResult>> ApplySelectorFunction<TResult>(ApiResult<Page<TGetModel>> apiResult,
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Called internally with not null parameters.")]
+        protected ApiResult<Page<TResult>> ApplySelectorFunction<TResult>(
+            ApiResult<Page<TGetModel>> apiResult,
             Expression<Func<TGetModel, TResult>> selector)
         {
             var selectorFunction = selector.Compile();
@@ -193,7 +181,5 @@ namespace IdokladSdk.Requests.Core
 
             return queryParams;
         }
-
-        #endregion
     }
 }
