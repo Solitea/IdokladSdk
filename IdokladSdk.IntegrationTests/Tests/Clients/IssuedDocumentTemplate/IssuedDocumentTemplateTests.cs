@@ -125,7 +125,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentTemplate
             Assert.That(data.PaymentOption, Is.Not.Null);
             Assert.That(data.NumericSequence, Is.Not.Null);
             Assert.That(data.VatReverseChargeCode, Is.Null);
-            // Assert.That(data.Items.First().PriceListItem, Is.Not.Null);
         }
 
         [Test]
@@ -211,6 +210,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentTemplate
             var data = await IssuedDocumentTemplateClient.RecountAsync(model).AssertResult();
 
             // Assert
+            Assert.That(data.DocumentType, Is.EqualTo(model.DocumentType));
             var itemToRecount = model.Items.First();
             var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
             Assert.That(recountedItem.Id, Is.EqualTo(itemToRecount.Id));
@@ -271,6 +271,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentTemplate
             return new IssuedDocumentTemplateRecountPostModel
             {
                 CurrencyId = 1,
+                DocumentType = IssuedDocumentTemplateType.SalesOrder,
                 Items = new List<IssuedDocumentTemplateItemRecountPostModel>
                 {
                     new IssuedDocumentTemplateItemRecountPostModel
