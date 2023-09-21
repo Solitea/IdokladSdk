@@ -16,6 +16,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
     [TestFixture]
     public class SalesDocumentPaymentTests : TestBase
     {
+        private const int CreditNotePaymentId = 1981587;
+        private const int IssuedInvoicePaymentId = 1931356;
+        private const int ProformaInvoicePaymentId = 1931330;
+        private const int SalesReceiptPaymentId = 224120;
+        private const string PartnerName = "Alza.cz a.s.";
+        private const int PaymentOptionId = 3;
+        private const string CurrencySymbol = "Kč";
+
         public DocumentPaymentClient DocumentPaymentClient { get; set; }
 
         [OneTimeSetUp]
@@ -28,36 +36,38 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
         [Test]
         public async Task GetGetCreditNotePayment_ReturnsPayment()
         {
-            // Arrange
-            var page = await DocumentPaymentClient.Sales.List().PageSize(1)
-                .GetAsync(c => new { c.Id }, DocumentPaymentSalesType.CreditNote).AssertResult();
-            var id = page.Items.First().Id;
-
             // Act
             var data = await DocumentPaymentClient.Sales
-                .GetCreditNotePayment(id).GetAsync().AssertResult();
+                .GetCreditNotePayment(CreditNotePaymentId).GetAsync().AssertResult();
 
             // Assert
-            Assert.That(data.Id, Is.EqualTo(id));
+            Assert.That(data.Id, Is.EqualTo(CreditNotePaymentId));
+            Assert.That(data.CurrencySymbol, Is.EqualTo(CurrencySymbol));
+            Assert.That(data.DateOfMaturity, Is.EqualTo(new DateTime(2021, 3, 22)));
+            Assert.That(data.DateOfPayment.Date, Is.EqualTo(new DateTime(2021, 3, 8)));
+            Assert.That(data.IsIncomeTax, Is.EqualTo(true));
+            Assert.That(data.PartnerName, Is.EqualTo(PartnerName));
             Assert.That(data.CreditNote, Is.Null);
             Assert.That(data.Prices, Is.Not.Null);
+            Assert.That(data.PaymentOptionId, Is.EqualTo(5));
         }
 
         [Test]
         public async Task GetIssuedInvoicePayment_ReturnsPayment()
         {
-            // Arrange
-            var page = await DocumentPaymentClient.Sales.List().PageSize(1)
-                .GetAsync(c => new { c.Id }, DocumentPaymentSalesType.IssuedInvoice).AssertResult();
-            var id = page.Items.First().Id;
-
             // Act
             var data = await DocumentPaymentClient.Sales
-                .GetIssuedInvoicePayment(id).GetAsync().AssertResult();
+                .GetIssuedInvoicePayment(IssuedInvoicePaymentId).GetAsync().AssertResult();
 
             // Assert
-            Assert.That(data.Id, Is.EqualTo(id));
+            Assert.That(data.Id, Is.EqualTo(IssuedInvoicePaymentId));
+            Assert.That(data.CurrencySymbol, Is.EqualTo(CurrencySymbol));
+            Assert.That(data.DateOfMaturity, Is.EqualTo(new DateTime(2020, 2, 5)));
+            Assert.That(data.DateOfPayment, Is.EqualTo(new DateTime(2020, 1, 22)));
+            Assert.That(data.IsIncomeTax, Is.EqualTo(true));
+            Assert.That(data.PartnerName, Is.EqualTo(PartnerName));
             Assert.That(data.IssuedInvoice, Is.Null);
+            Assert.That(data.PaymentOptionId, Is.EqualTo(PaymentOptionId));
         }
 
         [Test]
@@ -88,8 +98,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
         {
             // Arrange
             var partnerId = 323823;
-            var partnerName = "Alza.cz a.s.";
-            var paymentOptionId = 3;
             var dateOfPayment = new DateTime(2020, 01, 22);
             var documentNumber = "PR2020001";
 
@@ -97,8 +105,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             var data = await DocumentPaymentClient.Sales
                 .List()
                 .Filter(f => f.PartnerId.IsEqual(partnerId))
-                .Filter(f => f.PartnerName.IsEqual(partnerName))
-                .Filter(f => f.PaymentOptionId.IsEqual(paymentOptionId))
+                .Filter(f => f.PartnerName.IsEqual(PartnerName))
+                .Filter(f => f.PaymentOptionId.IsEqual(PaymentOptionId))
                 .Filter(f => f.DateOfPayment.IsEqual(dateOfPayment))
                 .Filter(f => f.DocumentNumber.IsEqual(documentNumber))
                 .FilterType(FilterType.And)
@@ -111,8 +119,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             Assert.That(data.TotalPages, Is.GreaterThan(0));
             var item = data.Items.First();
             Assert.That(item.PaidDocument.PartnerId, Is.EqualTo(partnerId));
-            Assert.That(item.PaidDocument.PartnerName, Is.EqualTo(partnerName));
-            Assert.That(item.PaymentOptionId, Is.EqualTo(paymentOptionId));
+            Assert.That(item.PaidDocument.PartnerName, Is.EqualTo(PartnerName));
+            Assert.That(item.PaymentOptionId, Is.EqualTo(PaymentOptionId));
             Assert.That(item.DateOfPayment, Is.EqualTo(dateOfPayment));
             Assert.That(item.PaidDocument.DocumentNumber, Is.EqualTo(documentNumber));
         }
@@ -151,37 +159,39 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
         [Test]
         public async Task GetProformaInvoicePayment_ReturnsPayment()
         {
-            // Arrange
-            var page = await DocumentPaymentClient.Sales.List().PageSize(1)
-                .GetAsync(c => new { c.Id }, DocumentPaymentSalesType.ProformaInvoice).AssertResult();
-            var id = page.Items.First().Id;
-
             // Act
             var data = await DocumentPaymentClient.Sales
-                .GetProformaInvoicePayment(id).GetAsync().AssertResult();
+                .GetProformaInvoicePayment(ProformaInvoicePaymentId).GetAsync().AssertResult();
 
             // Assert
-            Assert.That(data.Id, Is.EqualTo(id));
+            Assert.That(data.Id, Is.EqualTo(ProformaInvoicePaymentId));
             Assert.That(data.ProformaInvoice, Is.Null);
             Assert.That(data.Prices, Is.Not.Null);
+            Assert.That(data.CurrencySymbol, Is.EqualTo(CurrencySymbol));
+            Assert.That(data.DateOfMaturity, Is.EqualTo(new DateTime(2020, 2, 3)));
+            Assert.That(data.DateOfPayment, Is.EqualTo(new DateTime(2020, 1, 20)));
+            Assert.That(data.IsIncomeTax, Is.EqualTo(true));
+            Assert.That(data.PartnerName, Is.EqualTo(PartnerName));
+            Assert.That(data.PaymentOptionId, Is.EqualTo(1));
         }
 
         [Test]
         public async Task GetSalesReceiptPayment_ReturnsPayment()
         {
-            // Arrange
-            var page = await DocumentPaymentClient.Sales.List().PageSize(1)
-                .GetAsync(c => new { c.Id }, DocumentPaymentSalesType.SalesReceipt).AssertResult();
-            var id = page.Items.First().Id;
-
             // Act
             var data = await DocumentPaymentClient.Sales
-                .GetSalesReceiptPayment(id).GetAsync().AssertResult();
+                .GetSalesReceiptPayment(SalesReceiptPaymentId).GetAsync().AssertResult();
 
             // Assert
-            Assert.That(data.Id, Is.EqualTo(id));
+            Assert.That(data.Id, Is.EqualTo(SalesReceiptPaymentId));
             Assert.That(data.SalesReceipt, Is.Null);
             Assert.That(data.Prices, Is.Not.Null);
+            Assert.That(data.CurrencySymbol, Is.EqualTo(CurrencySymbol));
+            Assert.That(data.DateOfMaturity, Is.EqualTo(new DateTime(2020, 1, 22)));
+            Assert.That(data.DateOfPayment, Is.EqualTo(new DateTime(2020, 1, 22)));
+            Assert.That(data.IsIncomeTax, Is.EqualTo(true));
+            Assert.That(data.PartnerName, Is.EqualTo(PartnerName));
+            Assert.That(data.PaymentOptionId, Is.EqualTo(PaymentOptionId));
         }
     }
 }
