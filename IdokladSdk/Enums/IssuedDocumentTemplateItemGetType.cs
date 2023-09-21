@@ -1,28 +1,23 @@
 ﻿namespace IdokladSdk.Enums
 {
     /// <summary>
-    /// IssuedInvoiceItemType.
+    /// IssuedDocumentTemplateItemGetType.
     /// </summary>
-    public enum IssuedInvoiceItemType
+    public enum IssuedDocumentTemplateItemGetType
     {
         /// <summary>
         /// Normal issued invoice item
         /// </summary>
-        ItemTypeNormal = 0,
+        ItemTypeNormal = IssuedInvoiceItemType.ItemTypeNormal,
 
         /// <summary>
         /// Rounding item
         /// </summary>
-        ItemTypeRound = 1,
+        ItemTypeRound = IssuedInvoiceItemType.ItemTypeRound,
 
         /// <summary>
         /// Reduced item for accounting of proforma invoices
         /// </summary>
-        ItemTypeReduce = 2,
-
-        /// <summary>
-        /// Discount item
-        /// </summary>
-        ItemTypeDiscount = 3
+        ItemTypeReduce = IssuedInvoiceItemType.ItemTypeReduce,
     }
 }
