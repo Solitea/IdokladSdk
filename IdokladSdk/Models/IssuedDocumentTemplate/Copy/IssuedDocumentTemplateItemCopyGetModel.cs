@@ -1,20 +1,16 @@
 ﻿using IdokladSdk.Enums;
-using IdokladSdk.Models.Common;
 
-namespace IdokladSdk.Models.IssuedDocumentTemplate.List
+namespace IdokladSdk.Models.IssuedDocumentTemplate.Copy
 {
     /// <summary>
-    /// IssuedDocumentTemplateListItemGetModel.
+    /// IssuedDocumentTemplateItemCopyGetModel.
     /// </summary>
-    public class IssuedDocumentTemplateListItemGetModel : IEntityId
+    public class IssuedDocumentTemplateItemCopyGetModel
     {
         /// <summary>
-        /// Gets or sets item amount.
+        /// Gets or sets amount.
         /// </summary>
         public decimal Amount { get; set; }
-
-        /// <inheritdoc/>
-        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets item type.
@@ -22,19 +18,14 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.List
         public IssuedDocumentTemplateItemGetType ItemType { get; set; }
 
         /// <summary>
-        /// Gets or sets item name.
+        /// Gets or sets name.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets price list item Id.
+        /// Gets or sets price list item id.
         /// </summary>
         public int? PriceListItemId { get; set; }
-
-        /// <summary>
-        /// Gets or sets prices and calculations.
-        /// </summary>
-        public InvoiceItemPrices Prices { get; set; }
 
         /// <summary>
         /// Gets or sets price type.
@@ -42,22 +33,22 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.List
         public PriceType PriceType { get; set; }
 
         /// <summary>
-        /// Gets or sets unit of measure.
+        /// Gets or sets unit.
         /// </summary>
         public string Unit { get; set; }
 
         /// <summary>
-        /// Gets or sets unit of measure.
+        /// Gets or sets unit price.
         /// </summary>
         public decimal UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets VAT rate in percent.
+        /// Gets or sets vat code id.
         /// </summary>
         public int? VatCodeId { get; set; }
 
         /// <summary>
-        /// Gets or sets VAT rate type.
+        /// Gets or sets vat rate type.
         /// </summary>
         public VatRateType VatRateType { get; set; }
     }
