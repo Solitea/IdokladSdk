@@ -13,16 +13,6 @@ namespace IdokladSdk.Models.CashVoucher
     public class CashVoucherListGetModel : IEntityId
     {
         /// <summary>
-        /// Gets or sets id of paired invoice.
-        /// </summary>
-        public int? InvoiceId { get; set; }
-
-        /// <summary>
-        /// Gets or sets type of paired invoice.
-        /// </summary>
-        public InvoiceType? InvoiceType { get; set; }
-
-        /// <summary>
         /// Gets or sets cash register id.
         /// </summary>
         public int CashRegisterId { get; set; }
@@ -72,8 +62,18 @@ namespace IdokladSdk.Models.CashVoucher
         /// </summary>
         public ExportedState Exported { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets id of paired invoice.
+        /// </summary>
+        public int? InvoiceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets type of paired invoice.
+        /// </summary>
+        public InvoiceType? InvoiceType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether indicates whether the cash voucher is registered in EET.
@@ -150,5 +150,10 @@ namespace IdokladSdk.Models.CashVoucher
         /// Gets or sets variable symbol.
         /// </summary>
         public string VariableSymbol { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
     }
 }

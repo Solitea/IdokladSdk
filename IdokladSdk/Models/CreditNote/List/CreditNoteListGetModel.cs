@@ -130,7 +130,8 @@ namespace IdokladSdk.Models.CreditNote
         public decimal ExchangeRateAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets export to another accounting software indication. (It is recommended to use only one external accounting software beside iDoklad.)
+        /// Gets or sets export to another accounting software indication. (It is recommended to use only one external
+        /// accounting software beside iDoklad.)
         /// </summary>
         public ExportedState Exported { get; set; }
 
@@ -139,7 +140,7 @@ namespace IdokladSdk.Models.CreditNote
         /// </summary>
         public bool HasVatRegimeOss { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Id { get; set; }
 
         /// <summary>
@@ -258,6 +259,11 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or sets attribute for application of VAT based on payments.
         /// </summary>
         public VatOnPayStatus VatOnPayStatus { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
 
         /// <summary>
         /// Gets or sets VAT reverse charge code id.

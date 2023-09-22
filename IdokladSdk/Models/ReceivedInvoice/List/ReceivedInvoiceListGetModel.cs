@@ -94,7 +94,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// </summary>
         public ExportedState Exported { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Id { get; set; }
 
         /// <summary>
@@ -182,6 +182,11 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// Gets or sets attribute for application of VAT based on payments.
         /// </summary>
         public VatOnPayStatus VatOnPayStatus { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
 
         /// <summary>
         /// Gets or sets vat reverse charge code id.
