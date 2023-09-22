@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Models.IssuedDocumentTemplate.Copy;
 using IdokladSdk.Models.IssuedDocumentTemplate.Get;
 using IdokladSdk.Models.IssuedDocumentTemplate.Patch;
 using IdokladSdk.Models.IssuedDocumentTemplate.Post;
@@ -89,10 +90,10 @@ namespace IdokladSdk.Clients
         /// <param name="id">Template id.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Resource of issued document template for creation.</returns>
-        public Task<ApiResult<IssuedDocumentTemplatePostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<IssuedDocumentTemplateCopyGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return GetAsync<IssuedDocumentTemplatePostModel>(resource, null, cancellationToken);
+            return GetAsync<IssuedDocumentTemplateCopyGetModel>(resource, null, cancellationToken);
         }
     }
 }
