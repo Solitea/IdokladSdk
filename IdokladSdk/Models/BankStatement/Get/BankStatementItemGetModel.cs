@@ -33,7 +33,7 @@ namespace IdokladSdk.Models.BankStatement
         /// </summary>
         public decimal ExchangeRateAmount { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Id { get; set; }
 
         /// <summary>
@@ -110,5 +110,10 @@ namespace IdokladSdk.Models.BankStatement
         /// Gets or sets vAT rate type.
         /// </summary>
         public VatRateType VatRateType { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
     }
 }
