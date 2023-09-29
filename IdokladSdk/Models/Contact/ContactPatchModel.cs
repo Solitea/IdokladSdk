@@ -35,6 +35,7 @@ namespace IdokladSdk.Models.Contact
         /// Gets or sets company name.
         /// </summary>
         [StringLength(200)]
+        [NotEmptyString]
         public string CompanyName { get; set; }
 
         /// <summary>

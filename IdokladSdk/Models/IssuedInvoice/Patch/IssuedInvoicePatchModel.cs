@@ -66,6 +66,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets description.
         /// </summary>
+        [NotEmptyString]
         public string Description { get; set; }
 
         /// <summary>

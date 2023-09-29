@@ -78,6 +78,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets description.
         /// </summary>
+        [NotEmptyString]
         public string Description { get; set; }
 
         /// <summary>

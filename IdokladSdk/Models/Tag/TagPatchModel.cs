@@ -22,6 +22,7 @@ namespace IdokladSdk.Models.Tag
         /// Gets or sets the tag description.
         /// </summary>
         [StringLength(50)]
+        [NotEmptyString]
         public string Name { get; set; }
     }
 }
