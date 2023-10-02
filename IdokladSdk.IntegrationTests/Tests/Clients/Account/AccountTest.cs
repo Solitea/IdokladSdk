@@ -19,6 +19,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         private const string ImagePath = "Tests/Clients/Account/Solitea.png";
         private const int UserId = 161205;
         private const string Street = "Drobného 555/49";
+        private const string DefaultItemsTextPrefix = "Fakturujeme Vám za dodané zboží či služby:";
+        private const string DefaultItemsTextSuffix = "Dovolujeme si Vás upozornit, že v případně nedodržení data splatnosti uvedeného na faktuře Vám můžeme účtovat zákonný úrok z prodlení.";
+        private const string DefaultProformaItemsPrefixText = "Zasíláme Vám zálohovou fakturu na objednané zboží či služby:";
+        private const string DefaultProformaItemsSuffixText = "Zboží Vám pošleme obratem po přijetí platby na náš účet";
 
         private AccountClient _accountClient;
 
@@ -27,6 +31,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         {
             InitDokladApi();
             _accountClient = DokladApi.AccountClient;
+        }
+
+        [OneTimeTearDown]
+        public async Task OneTimeTearDown()
+        {
+            await ResetAgenda();
         }
 
         [Test]
@@ -108,6 +118,37 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
 
             // Assert
             Assert.True(data);
+        }
+
+        [Test]
+        public async Task AgendaUpdate_ItemsPrefixAndSuffix_DoesNotFail()
+        {
+            // Arrange
+            var itemsTextPrefix = $"{DefaultItemsTextPrefix}xxx";
+            var itemsTextSuffix = $"{DefaultItemsTextSuffix}xxx";
+            var proformaItemsPrefixText = $"{DefaultProformaItemsPrefixText}xxx";
+            var proformaItemsSuffixText = $"{DefaultProformaItemsSuffixText}xxx";
+            var setupModel = new AgendaPatchModel
+            {
+                SalesSettings = new SalesSettingsPatchModel
+                {
+                    ItemsTextPrefix = itemsTextPrefix,
+                    ItemsTextSuffix = itemsTextSuffix,
+                    ProformaItemsPrefixText = proformaItemsPrefixText,
+                    ProformaItemsSuffixText = proformaItemsSuffixText,
+                }
+            };
+
+            // Act
+            var result = await _accountClient.Agendas.UpdateAsync(setupModel);
+
+            // Assert
+            Assert.That(result.IsSuccess, Is.True);
+            Assert.That(result.Data, Is.Not.Null);
+            Assert.That(result.Data.SalesSettings?.ItemsTextPrefix, Is.EqualTo(itemsTextPrefix));
+            Assert.That(result.Data.SalesSettings?.ItemsTextSuffix, Is.EqualTo(itemsTextSuffix));
+            Assert.That(result.Data.SalesSettings?.ProformaItemsPrefixText, Is.EqualTo(proformaItemsPrefixText));
+            Assert.That(result.Data.SalesSettings?.ProformaItemsSuffixText, Is.EqualTo(proformaItemsSuffixText));
         }
 
         [Test]
@@ -333,6 +374,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             // Assert
             Assert.NotNull(result);
             Assert.Greater(result.TotalItems, 0);
+        }
+
+        private async Task ResetAgenda()
+        {
+            var defaultModel = new AgendaPatchModel
+            {
+                SalesSettings = new SalesSettingsPatchModel
+                {
+                    ItemsTextPrefix = DefaultItemsTextPrefix,
+                    ItemsTextSuffix = DefaultItemsTextSuffix,
+                    ProformaItemsPrefixText = DefaultProformaItemsPrefixText,
+                    ProformaItemsSuffixText = DefaultProformaItemsSuffixText,
+                }
+            };
+
+            await _accountClient.Agendas.UpdateAsync(defaultModel);
         }
     }
 }
