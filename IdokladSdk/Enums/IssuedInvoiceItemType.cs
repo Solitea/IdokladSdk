@@ -6,25 +6,22 @@
     public enum IssuedInvoiceItemType
     {
         /// <summary>
-        /// Normální položka faktury
+        /// Normal issued invoice item
         /// </summary>
         ItemTypeNormal = 0,
 
         /// <summary>
-        /// Zaokrouhlovací typ polozky
+        /// Rounding item
         /// </summary>
         ItemTypeRound = 1,
 
         /// <summary>
-        /// Odpočtová položka
-        /// </summary>
-        /// <summary xml:lang="en">
-        /// Reduced item for accounted by proforma invoices
+        /// Reduced item for accounting of proforma invoices
         /// </summary>
         ItemTypeReduce = 2,
 
         /// <summary>
-        /// Slevová položka
+        /// Discount item
         /// </summary>
         ItemTypeDiscount = 3
     }

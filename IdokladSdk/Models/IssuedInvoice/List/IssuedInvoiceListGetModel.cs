@@ -120,7 +120,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// </summary>
         public bool HasVatRegimeOss { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Id { get; set; }
 
         /// <summary>
@@ -246,6 +246,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets attribute for application of VAT based on payments.
         /// </summary>
         public VatOnPayStatus VatOnPayStatus { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
 
         /// <summary>
         /// Gets or sets vAT reverse charge code id.

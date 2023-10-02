@@ -75,6 +75,7 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use DocumentPaymentClient.DocumentPaymentClient.Sales methods instead")]
         public IssuedDocumentPaymentList List()
         {
             return new IssuedDocumentPaymentList(this);

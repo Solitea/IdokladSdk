@@ -11,12 +11,12 @@
         Reduced1 = 0,
 
         /// <summary>
-        /// Basic sazba VAT rate.
+        /// Basic VAT rate.
         /// </summary>
         Basic = 1,
 
         /// <summary>
-        /// Zero sazba VAT rate.
+        /// Zero VAT rate.
         /// </summary>
         Zero = 2,
 

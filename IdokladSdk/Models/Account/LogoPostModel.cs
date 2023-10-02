@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Account
 {
@@ -10,6 +11,7 @@ namespace IdokladSdk.Models.Account
         /// <summary>
         /// Gets or sets filename.
         /// </summary>
+        [LogoAndSignatureExtension]
         public string FileName { get; set; }
 
         /// <summary>

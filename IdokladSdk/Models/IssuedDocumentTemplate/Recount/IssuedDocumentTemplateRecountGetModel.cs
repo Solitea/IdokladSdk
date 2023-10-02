@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdokladSdk.Enums;
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.Recount
 {
@@ -16,6 +17,11 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Recount
         /// Gets or sets discount percentage.
         /// </summary>
         public decimal DiscountPercentage { get; set; }
+
+        /// <summary>
+        /// Gets or sets document type.
+        /// </summary>
+        public IssuedDocumentTemplateType DocumentType { get; set; }
 
         /// <summary>
         /// Gets or sets items.

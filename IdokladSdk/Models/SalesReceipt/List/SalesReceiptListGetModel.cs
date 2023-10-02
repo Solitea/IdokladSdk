@@ -10,9 +10,9 @@ namespace IdokladSdk.Models.SalesReceipt
     /// <summary>
     /// SalesReceipt Model for Get list endpoints.
     /// </summary>
-    public partial class SalesReceiptListGetModel : IEntityId
+    public class SalesReceiptListGetModel : IEntityId
     {
-        /// <summary>
+    /// <summary>
         /// Gets or sets status of sending the sales receipt to the accountant.
         /// </summary>
         public MailSentType AccountantSentStatus { get; set; }
@@ -69,7 +69,7 @@ namespace IdokladSdk.Models.SalesReceipt
         /// </summary>
         public string ExternalDocumentNumber { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Id { get; set; }
 
         /// <summary>
@@ -164,5 +164,10 @@ namespace IdokladSdk.Models.SalesReceipt
         /// Gets or sets tags.
         /// </summary>
         public List<TagDocumentListGetModel> Tags { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
     }
 }

@@ -22,10 +22,11 @@ namespace IdokladSdk
         private CountryClient _countryClient;
         private CreditNoteClient _creditNoteClient;
         private CurrencyClient _currencyClient;
+        private DocumentPaymentClient _documentPaymentClient;
         private ExchangeRateClient _exchangeRateClient;
         private IssuedDocumentPaymentClient _issuedDocumentPaymentClient;
-        private IssuedInvoiceClient _issuedInvoiceClient;
         private IssuedDocumentTemplateClient _issuedDocumentTemplateClient;
+        private IssuedInvoiceClient _issuedInvoiceClient;
         private IssuedTaxDocumentClient _issuedTaxDocumentClient;
         private LogClient _logClient;
         private MailClient _mailClient;
@@ -34,8 +35,8 @@ namespace IdokladSdk
         private PaymentOptionClient _paymentOptionClient;
         private PriceListItemClient _priceListItemClient;
         private ProformaInvoiceClient _proformaInvoiceClient;
-        private ReceivedInvoiceClient _receivedInvoiceClient;
         private ReceivedDocumentPaymentsClient _receivedDocumentPaymentsClient;
+        private ReceivedInvoiceClient _receivedInvoiceClient;
         private RecurringInvoiceClient _recurringInvoiceClient;
         private RegisteredSaleClient _registeredSaleClient;
         private ReportClient _reportClient;
@@ -61,15 +62,14 @@ namespace IdokladSdk
         }
 
         /// <summary>
+        /// Gets account.
+        /// </summary>
+        public AccountClient AccountClient => _accountClient ?? (_accountClient = new AccountClient(ApiContext));
+
+        /// <summary>
         /// Gets API context.
         /// </summary>
         public ApiContext ApiContext { get; }
-
-        /// <summary>
-        /// Gets account.
-        /// </summary>
-        public AccountClient AccountClient =>
-            _accountClient ?? (_accountClient = new AccountClient(ApiContext));
 
         /// <summary>
         /// Gets Attachments.
@@ -80,7 +80,8 @@ namespace IdokladSdk
         /// <summary>
         /// Gets bank accounts.
         /// </summary>
-        public BankAccountClient BankAccountClient => _bankAccountClient ?? (_bankAccountClient = new BankAccountClient(ApiContext));
+        public BankAccountClient BankAccountClient =>
+            _bankAccountClient ?? (_bankAccountClient = new BankAccountClient(ApiContext));
 
         /// <summary>
         /// Gets banks.
@@ -90,7 +91,8 @@ namespace IdokladSdk
         /// <summary>
         /// Gets bank statements.
         /// </summary>
-        public BankStatementClient BankStatementClient => _bankStatementClient ?? (_bankStatementClient = new BankStatementClient(ApiContext));
+        public BankStatementClient BankStatementClient =>
+            _bankStatementClient ?? (_bankStatementClient = new BankStatementClient(ApiContext));
 
         /// <summary>
         /// Gets batch operations.
@@ -128,12 +130,19 @@ namespace IdokladSdk
         /// <summary>
         /// Gets Credit notes.
         /// </summary>
-        public CreditNoteClient CreditNoteClient => _creditNoteClient ?? (_creditNoteClient = new CreditNoteClient(ApiContext));
+        public CreditNoteClient CreditNoteClient =>
+            _creditNoteClient ?? (_creditNoteClient = new CreditNoteClient(ApiContext));
 
         /// <summary>
         /// Gets Currencies.
         /// </summary>
         public CurrencyClient CurrencyClient => _currencyClient ?? (_currencyClient = new CurrencyClient(ApiContext));
+
+        /// <summary>
+        /// Gets Credit notes.
+        /// </summary>
+        public DocumentPaymentClient DocumentPaymentClient =>
+            _documentPaymentClient ?? (_documentPaymentClient = new DocumentPaymentClient(ApiContext));
 
         /// <summary>
         /// Gets exchange rates.
@@ -145,13 +154,15 @@ namespace IdokladSdk
         /// Gets issued invoices.
         /// </summary>
         public IssuedDocumentPaymentClient IssuedDocumentPaymentClient =>
-            _issuedDocumentPaymentClient ?? (_issuedDocumentPaymentClient = new IssuedDocumentPaymentClient(ApiContext));
+            _issuedDocumentPaymentClient ??
+            (_issuedDocumentPaymentClient = new IssuedDocumentPaymentClient(ApiContext));
 
         /// <summary>
         /// Gets issued invoices.
         /// </summary>
         public IssuedDocumentTemplateClient IssuedDocumentTemplateClient =>
-            _issuedDocumentTemplateClient ?? (_issuedDocumentTemplateClient = new IssuedDocumentTemplateClient(ApiContext));
+            _issuedDocumentTemplateClient ??
+            (_issuedDocumentTemplateClient = new IssuedDocumentTemplateClient(ApiContext));
 
         /// <summary>
         /// Gets issued invoices.
@@ -168,8 +179,7 @@ namespace IdokladSdk
         /// <summary>
         /// Gets logs.
         /// </summary>
-        public LogClient LogClient =>
-            _logClient ?? (_logClient = new LogClient(ApiContext));
+        public LogClient LogClient => _logClient ?? (_logClient = new LogClient(ApiContext));
 
         /// <summary>
         /// Gets mail.
@@ -179,12 +189,14 @@ namespace IdokladSdk
         /// <summary>
         /// Gets Notifications.
         /// </summary>
-        public NotificationClient NotificationClient => _notificationClient ?? (_notificationClient = new NotificationClient(ApiContext));
+        public NotificationClient NotificationClient =>
+            _notificationClient ?? (_notificationClient = new NotificationClient(ApiContext));
 
         /// <summary>
         /// Gets numeric sequence.
         /// </summary>
-        public NumericSequenceClient NumericSequenceClient => _numericSequenceClient ?? (_numericSequenceClient = new NumericSequenceClient(ApiContext));
+        public NumericSequenceClient NumericSequenceClient =>
+            _numericSequenceClient ?? (_numericSequenceClient = new NumericSequenceClient(ApiContext));
 
         /// <summary>
         /// Gets payment options.
@@ -205,16 +217,17 @@ namespace IdokladSdk
             _proformaInvoiceClient ?? (_proformaInvoiceClient = new ProformaInvoiceClient(ApiContext));
 
         /// <summary>
+        /// Gets received document payments.
+        /// </summary>
+        public ReceivedDocumentPaymentsClient ReceivedDocumentPaymentsClient =>
+            _receivedDocumentPaymentsClient ??
+            (_receivedDocumentPaymentsClient = new ReceivedDocumentPaymentsClient(ApiContext));
+
+        /// <summary>
         /// Gets received invoices.
         /// </summary>
         public ReceivedInvoiceClient ReceivedInvoiceClient =>
             _receivedInvoiceClient ?? (_receivedInvoiceClient = new ReceivedInvoiceClient(ApiContext));
-
-        /// <summary>
-        /// Gets received document payments.
-        /// </summary>
-        public ReceivedDocumentPaymentsClient ReceivedDocumentPaymentsClient =>
-            _receivedDocumentPaymentsClient ?? (_receivedDocumentPaymentsClient = new ReceivedDocumentPaymentsClient(ApiContext));
 
         /// <summary>
         /// Gets recurring invoices.
@@ -260,7 +273,8 @@ namespace IdokladSdk
         /// <summary>
         /// Gets stock movements.
         /// </summary>
-        public StatisticsClient StatisticsClient => _statisticsClient ?? (_statisticsClient = new StatisticsClient(ApiContext));
+        public StatisticsClient StatisticsClient =>
+            _statisticsClient ?? (_statisticsClient = new StatisticsClient(ApiContext));
 
         /// <summary>
         /// Gets stock movements.

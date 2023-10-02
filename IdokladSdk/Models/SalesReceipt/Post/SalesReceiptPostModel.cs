@@ -8,7 +8,7 @@ using IdokladSdk.Validation.Attributes;
 namespace IdokladSdk.Models.SalesReceipt
 {
     /// <summary>
-    /// SalesReceiptPaymentModel for Post enpoints.
+    /// SalesReceiptPaymentModel for Post endpoints.
     /// </summary>
     public class SalesReceiptPostModel : ValidatableModel
     {
@@ -17,16 +17,6 @@ namespace IdokladSdk.Models.SalesReceipt
         /// </summary>
         [RequiredNonDefault]
         public int CurrencyId { get; set; }
-
-        /// <summary>
-        /// Gets or sets exchange rate.
-        /// </summary>
-        public decimal ExchangeRate { get; set; }
-
-        /// <summary>
-        /// Gets or sets exchange rate amount.
-        /// </summary>
-        public decimal ExchangeRateAmount { get; set; }
 
         /// <summary>
         /// Gets or sets date of issue.
@@ -42,15 +32,25 @@ namespace IdokladSdk.Models.SalesReceipt
 
         /// <summary>
         /// Gets or sets Electronic records of sales information.
+        /// Only for Sk legislation.
+        /// </summary>
+        public EKasaApiModel EKasa { get; set; }
+
+        /// <summary>
+        /// Gets or sets Electronic records of sales information.
         /// Only for Cz legislation.
         /// </summary>
         public ElectronicRecordsOfSalesPostModel ElectronicRecordsOfSales { get; set; }
 
         /// <summary>
-        /// Gets or sets Electronic records of sales information.
-        /// Only for Sk legislation.
+        /// Gets or sets exchange rate.
         /// </summary>
-        public EKasaApiModel EKasa { get; set; }
+        public decimal ExchangeRate { get; set; }
+
+        /// <summary>
+        /// Gets or sets exchange rate amount.
+        /// </summary>
+        public decimal ExchangeRateAmount { get; set; }
 
         /// <summary>
         /// Gets or sets Number assigned by external application.

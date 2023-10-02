@@ -18,13 +18,10 @@ namespace IdokladSdk.Models.SalesOrder
         /// </summary>
         public List<DocumentAttachmentInfo> Attachments { get; set; }
 
-        /// <inheritdoc/>
-        public int Id { get; set; }
-
         /// <summary>
-        /// Gets or sets date of issue.
+        /// Gets or sets currency id.
         /// </summary>
-        public DateTime DateOfIssue { get; set; }
+        public int CurrencyId { get; set; }
 
         /// <summary>
         /// Gets or sets date of expiration.
@@ -32,14 +29,9 @@ namespace IdokladSdk.Models.SalesOrder
         public DateTime DateOfExpiration { get; set; }
 
         /// <summary>
-        /// Gets or sets exported.
+        /// Gets or sets date of issue.
         /// </summary>
-        public ExportedState Exported { get; set; }
-
-        /// <summary>
-        /// Gets or sets currency id.
-        /// </summary>
-        public int CurrencyId { get; set; }
+        public DateTime DateOfIssue { get; set; }
 
         /// <summary>
         /// Gets or sets delivery address.
@@ -70,6 +62,14 @@ namespace IdokladSdk.Models.SalesOrder
         /// Gets or sets exchange rate amount.
         /// </summary>
         public decimal ExchangeRateAmount { get; set; }
+
+        /// <summary>
+        /// Gets or sets exported.
+        /// </summary>
+        public ExportedState Exported { get; set; }
+
+        /// <inheritdoc />
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets sales order items.
@@ -135,5 +135,10 @@ namespace IdokladSdk.Models.SalesOrder
         /// Gets or sets tags.
         /// </summary>
         public List<TagDocumentListGetModel> Tags { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
     }
 }

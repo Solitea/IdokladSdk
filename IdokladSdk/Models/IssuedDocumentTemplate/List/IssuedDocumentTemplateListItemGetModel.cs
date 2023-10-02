@@ -1,5 +1,4 @@
-﻿using Doklad.Shared.Enums.Api;
-using IdokladSdk.Enums;
+﻿using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.List
@@ -20,7 +19,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.List
         /// <summary>
         /// Gets or sets item type.
         /// </summary>
-        public IssuedInvoiceItemType ItemType { get; set; }
+        public IssuedDocumentTemplateItemGetType ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets item name.

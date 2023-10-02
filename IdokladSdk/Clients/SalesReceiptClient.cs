@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.SalesReceipt;
+using IdokladSdk.Models.SalesReceipt.Copy;
 using IdokladSdk.Requests.SalesReceipt;
 using IdokladSdk.Response;
 
@@ -13,7 +14,7 @@ namespace IdokladSdk.Clients
     /// </summary>
     public class SalesReceiptClient
         : BaseClient,
-        ICopyRequest<SalesReceiptPostModel>,
+        ICopyRequest<SalesReceiptCopyGetModel>,
         IDeleteRequest,
         IEntityDetail<SalesReceiptDetail>,
         IEntityList<SalesReceiptList>,
@@ -60,10 +61,10 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<SalesReceiptPostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<SalesReceiptCopyGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return GetAsync<SalesReceiptPostModel>(resource, null, cancellationToken);
+            return GetAsync<SalesReceiptCopyGetModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
