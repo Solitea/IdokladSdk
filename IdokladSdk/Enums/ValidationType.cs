@@ -24,7 +24,7 @@ namespace IdokladSdk.Enums
         StringLength = 3,
 
         /// <summary>
-        /// Property value has to match specified range. <see cref="RangeAttribute"/>
+        /// Property value has to match specified range. <see cref="RangeNullableAttribute"/>
         /// </summary>
         Range = 4,
 
@@ -154,13 +154,33 @@ namespace IdokladSdk.Enums
         DateGreaterOrEqualThanToday = 29,
 
         /// <summary>
-        /// Property is valid only when RecurrenceType is Months and RecurrenceCount is 1 . <see cref="IssueLastDayOfMonthOnRecurringInvoiceAttribute"/>
+        /// Property is valid only when RecurrenceType is Months and RecurrenceCount is 1. <see cref="IssueLastDayOfMonthOnRecurringInvoiceAttribute"/>
         /// </summary>
         IssueLastDayOfMonthOnRecurringInvoice = 30,
 
         /// <summary>
-        /// Property is valid only for supported file extensions . <see cref="LogoAndSignatureExtensionAttribute"/>
+        /// Property is valid only for supported file extensions. <see cref="LogoAndSignatureExtensionAttribute"/>
         /// </summary>
-        LogoAndSignatureExtension = 31
+        LogoAndSignatureExtension = 31,
+
+        /// <summary>
+        /// Property cannot equals to given value if dependent property is target value. <see cref="CannotEqualIf"/>
+        /// </summary>
+        CannotEqualIf = 32,
+
+        /// <summary>
+        /// Property is must be null or empty if dependent property is target value. <see cref="NullOrEmptyStringIfAttribute"/>
+        /// </summary>
+        NullOrEmptyStringIf = 33,
+
+        /// <summary>
+        /// Property cannot be null if dependent property is target value. <see cref="NullIfAttribute"/>
+        /// </summary>
+        NullIf = 34,
+
+        /// <summary>
+        /// Property is valid only for given range. <see cref="RangeNullable"/>
+        /// </summary>
+        RangeNullable = 35
     }
 }

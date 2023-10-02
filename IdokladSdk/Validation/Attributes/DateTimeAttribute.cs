@@ -4,7 +4,7 @@ using IdokladSdk.Models.Common.Extensions;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    public class DateTimeAttribute : RangeAttribute
+    public class DateTimeAttribute : RangeNullableAttribute
     {
         public DateTimeAttribute()
             : base(typeof(DateTime), "1753-01-01", "9999-12-31")

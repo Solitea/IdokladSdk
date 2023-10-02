@@ -2,7 +2,7 @@
 
 namespace IdokladSdk.Validation.Attributes
 {
-    public class RequiredNonDefaultAttribute : RangeAttribute
+    public class RequiredNonDefaultAttribute : RangeNullableAttribute
     {
         public RequiredNonDefaultAttribute()
             : base(1, int.MaxValue)

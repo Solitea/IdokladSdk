@@ -81,6 +81,14 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(LogoAndSignatureExtensionAttribute): return ValidationType.LogoAndSignatureExtension;
 
+                case nameof(CannotEqualIfAttribute): return ValidationType.CannotEqualIf;
+
+                case nameof(NullOrEmptyStringIfAttribute): return ValidationType.NullOrEmptyStringIf;
+
+                case nameof(NullIfAttribute): return ValidationType.NullIf;
+
+                case nameof(RangeNullableAttribute): return ValidationType.RangeNullable;
+
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Common.Helpers;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -22,20 +23,20 @@ namespace IdokladSdk.Validation.Attributes
         {
             _ = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
 
-            var containerType = validationContext.ObjectInstance.GetType();
-            var field = containerType.GetProperty(DependentProperty);
-
-            if (field != null)
+            if (NullablePropertyHelper.IsNotSetNullableProperty(value))
             {
-                var dependentValue = field.GetValue(validationContext.ObjectInstance, null);
+                return ValidationResult.Success;
+            }
 
-                if ((dependentValue == null && TargetValue == null) ||
-                    (dependentValue != null && dependentValue.Equals(TargetValue)))
+            var attributePropertyValue = NullablePropertyHelper.GetValue(value);
+            var dependentPropertyValue = NullablePropertyHelper.GetDependentPropertyValue(validationContext, DependentProperty);
+
+            if ((dependentPropertyValue == null && TargetValue == null) ||
+                (dependentPropertyValue != null && dependentPropertyValue.Equals(TargetValue)))
+            {
+                if (!_innerAttribute.IsValid(attributePropertyValue))
                 {
-                    if (!_innerAttribute.IsValid(value))
-                    {
-                        return new ValidationResult(ErrorMessage, new[] { validationContext.MemberName });
-                    }
+                    return new ValidationResult(ErrorMessage, new[] { validationContext.MemberName });
                 }
             }
 
