@@ -26,5 +26,25 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets default VAT rate.
         /// </summary>
         public VatRateType DefaultVatRate { get; set; }
+
+        /// <summary>
+        /// Gets or sets text preceding invoice items.
+        /// </summary>
+        public string ItemsTextPrefix { get; set; }
+
+        /// <summary>
+        /// Gets or sets text following invoice items.
+        /// </summary>
+        public string ItemsTextSuffix { get; set; }
+
+        /// <summary>
+        /// Gets or sets text preceding proforma invoice items.
+        /// </summary>
+        public string ProformaItemsPrefixText { get; set; }
+
+        /// <summary>
+        /// Gets or sets text following proforma invoice items.
+        /// </summary>
+        public string ProformaItemsSuffixText { get; set; }
     }
 }
