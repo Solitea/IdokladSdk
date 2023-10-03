@@ -22,7 +22,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
-        public void ModelWithDateGreaterOrEqualThanTodayNullableAttribute_DateSetToNull_ReturnsInValidModel()
+        public void ModelWithDateGreaterOrEqualThanTodayNullableAttribute_DateSetToNull_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithDateGreaterOrEqualThanTodayNullableAttribute { Date = null };

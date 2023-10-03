@@ -8,12 +8,12 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
     public partial class ModelValidatorTests
     {
         [Test]
-        public void ModelWithNullIfAttribute_InvalidData_ReturnsInvalidModel()
+        public void ModelWithDecimalZeroOrDefaultIfAttribute_InvalidData_ReturnsInvalidModel()
         {
             // Arrange
-            var model = new ModelWithNullIfAttribute
+            var model = new ModelWithDecimalZeroOrDefaultIfAttribute
             {
-                DependentValue = IssuedDocumentTemplateType.SalesOrder, PropertyValue = 0
+                DependentValue = IssuedDocumentTemplateType.SalesOrder, PropertyValue = 1
             };
 
             // Act
@@ -23,17 +23,17 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             AssertIsNotValid(
                 result,
                 nameof(model.PropertyValue),
-                typeof(NullIfAttribute),
-                ValidationType.NullIf);
+                typeof(DecimalZeroOrDefaultIfAttribute),
+                ValidationType.DecimalZeroOrDefaultIf);
         }
 
         [Test]
-        public void ModelWithNullIfAttribute_ValidData_ReturnsValidModel()
+        public void ModelWithDecimalZeroOrDefaultIfAttribute_ValidData_ReturnsValidModel()
         {
             // Arrange
-            var model = new ModelWithNullIfAttribute
+            var model = new ModelWithDecimalZeroOrDefaultIfAttribute
             {
-                DependentValue = IssuedDocumentTemplateType.SalesOrder, PropertyValue = null
+                DependentValue = IssuedDocumentTemplateType.SalesOrder, PropertyValue = 0.0m
             };
 
             // Act

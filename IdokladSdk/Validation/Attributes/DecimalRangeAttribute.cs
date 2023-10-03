@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    public class DecimalRangeAttribute : RangeNullableAttribute
+    public class DecimalRangeAttribute : RangeAttribute
     {
         /// <summary>
         /// Minimum possible value of SQL decimal(18, 4).

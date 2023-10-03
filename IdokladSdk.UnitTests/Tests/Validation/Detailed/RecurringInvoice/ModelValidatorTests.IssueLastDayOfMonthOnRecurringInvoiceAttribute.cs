@@ -11,7 +11,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         [TestCase(RecurrenceType.Years, 0)]
         [TestCase(RecurrenceType.Weeks, 0)]
         [TestCase(RecurrenceType.Months, 0)]
-        public void ModelWithIssueLastDayOfMonthOnRecurringInvoiceAttribute_SetInvalidModel_ReturnsInValidModel(
+        public void ModelWithIssueLastDayOfMonthOnRecurringInvoiceAttribute_SetInvalidModel_ReturnsInvalidModel(
             RecurrenceType type, int count)
         {
             // Arrange
@@ -29,7 +29,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 
         [TestCase(true)]
         [TestCase(false)]
-        public void ModelWithIssueLastDayOfMonthOnRecurringInvoiceAttribute_ValidModel_ReturnsInValidModel(
+        public void ModelWithIssueLastDayOfMonthOnRecurringInvoiceAttribute_ValidModel_ReturnsInvalidModel(
             bool isLastDay)
         {
             // Arrange

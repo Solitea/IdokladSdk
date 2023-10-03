@@ -4,7 +4,7 @@ using IdokladSdk.Models.Common.Extensions;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    internal class NullableRangeAttribute : RangeNullableAttribute
+    internal class NullableRangeAttribute : RangeAttribute
     {
         public NullableRangeAttribute(double minimum, double maximum)
             : base(minimum, maximum)

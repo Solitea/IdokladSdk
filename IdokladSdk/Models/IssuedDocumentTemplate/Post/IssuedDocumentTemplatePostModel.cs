@@ -45,7 +45,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// Gets or sets discount percentage.
         /// </summary>
         [Range(0.0, 99.99)]
-        [CannotEqualIf(0.0, nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
+        [DecimalZeroOrDefaultIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
         public decimal DiscountPercentage { get; set; }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
     public partial class ModelValidatorTests
     {
         [Test]
-        public void ModelWithRangeNullableAttribute_InValidData_ReturnsInValidModel()
+        public void ModelWithRangeNullableAttribute_InvalidData_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithRangeNullableAttribute
@@ -23,8 +23,8 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             AssertIsNotValid(
                 result,
                 nameof(model.RangeValue),
-                typeof(RangeNullableAttribute),
-                ValidationType.RangeNullable);
+                typeof(NullableRangeAttribute),
+                ValidationType.Range);
         }
 
         [Test]

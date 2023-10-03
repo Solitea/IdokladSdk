@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    public class MinValueAttribute : RangeNullableAttribute
+    public class MinValueAttribute : RangeAttribute
     {
         public MinValueAttribute(double minimum)
             : base(minimum, double.MaxValue)

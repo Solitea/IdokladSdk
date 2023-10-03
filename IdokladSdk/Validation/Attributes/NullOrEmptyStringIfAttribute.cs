@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Common.Helpers;
-using Microsoft.IdentityModel.Tokens;
+using IdokladSdk.Requests.Core.Extensions;
 
 namespace IdokladSdk.Validation.Attributes
 {
@@ -24,7 +24,7 @@ namespace IdokladSdk.Validation.Attributes
             if (
                 dependentPropertyValue != null
                 && dependentPropertyValue.Equals(TargetValue)
-                && !((string)value).IsNullOrEmpty())
+                && ((string)value).IsNotNullOrEmpty())
             {
                 return new ValidationResult(
                     $"The field {validationContext.MemberName} must be null or empty if {DependentProperty} is {TargetValue}",

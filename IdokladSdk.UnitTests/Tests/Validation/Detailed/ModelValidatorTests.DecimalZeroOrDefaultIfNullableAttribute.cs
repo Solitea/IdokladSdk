@@ -8,10 +8,10 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
     public partial class ModelValidatorTests
     {
         [Test]
-        public void ModelWithCannotEqualIfNullableAttribute_PropertyNotSet_ReturnsValidModel()
+        public void ModelWithDecimalZeroOrDefaultIfNullableAttribute_PropertyNotSet_ReturnsValidModel()
         {
             // Arrange
-            var model = new ModelWithCannotEqualIfNullableAttribute()
+            var model = new ModelWithDecimalZeroOrDefaultIfNullableAttribute
             {
                 DependentValue = IssuedDocumentTemplateType.SalesOrder
             };
@@ -25,12 +25,13 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 
         [TestCase(1)]
         [TestCase(0)]
+        [TestCase(null)]
         public void
-            ModelWithCannotEqualIfNullableAttribute_DependentPropertyNotSet_ReturnsValidModel(
+            ModelWithDecimalZeroOrDefaultIfNullableAttribute_DependentPropertyNotSet_ReturnsValidModel(
                 decimal propertyValue)
         {
             // Arrange
-            var model = new ModelWithCannotEqualIfNullableAttribute
+            var model = new ModelWithDecimalZeroOrDefaultIfNullableAttribute
             {
                 PropertyValue = propertyValue
             };
@@ -43,12 +44,12 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
-        public void ModelWithCannotEqualIfNullableAttribute_InvalidData_ReturnsInvalidModel()
+        public void ModelWithDecimalZeroOrDefaultIfNullableAttribute_InvalidData_ReturnsInvalidModel()
         {
             // Arrange
-            var model = new ModelWithCannotEqualIfNullableAttribute
+            var model = new ModelWithDecimalZeroOrDefaultIfNullableAttribute
             {
-                DependentValue = IssuedDocumentTemplateType.SalesOrder, PropertyValue = 0
+                DependentValue = IssuedDocumentTemplateType.SalesOrder, PropertyValue = 1
             };
 
             // Act
@@ -58,19 +59,20 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             AssertIsNotValid(
                 result,
                 nameof(model.PropertyValue),
-                typeof(CannotEqualIfAttribute),
-                ValidationType.CannotEqualIf);
+                typeof(DecimalZeroOrDefaultIfAttribute),
+                ValidationType.DecimalZeroOrDefaultIf);
         }
 
-        [TestCase(IssuedDocumentTemplateType.SalesOrder, 1)]
-        [TestCase(IssuedDocumentTemplateType.IssuedInvoice, 0)]
-        [TestCase(IssuedDocumentTemplateType.ProformaInvoice, 0)]
-        public void ModelWithCannotEqualIfNullableAttribute_ValidData_ReturnsValidModel(
+        [TestCase(IssuedDocumentTemplateType.SalesOrder, 0)]
+        [TestCase(IssuedDocumentTemplateType.SalesOrder, null)]
+        [TestCase(IssuedDocumentTemplateType.IssuedInvoice, 1)]
+        [TestCase(IssuedDocumentTemplateType.ProformaInvoice, 1)]
+        public void ModelWithDecimalZeroOrDefaultIfNullableAttribute_ValidData_ReturnsValidModel(
             IssuedDocumentTemplateType dependentValue,
             decimal propertyValue)
         {
             // Arrange
-            var model = new ModelWithCannotEqualIfNullableAttribute
+            var model = new ModelWithDecimalZeroOrDefaultIfNullableAttribute
             {
                 DependentValue = dependentValue, PropertyValue = propertyValue
             };

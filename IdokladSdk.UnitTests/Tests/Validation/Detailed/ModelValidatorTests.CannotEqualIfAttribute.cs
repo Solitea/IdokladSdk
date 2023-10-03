@@ -9,7 +9,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
     {
         [TestCase(0)]
         [TestCase(0.0)]
-        public void ModelWithCannotEqualIfAttribute_InValidData_ReturnsInValidModel(decimal propertyValue)
+        public void ModelWithCannotEqualIfAttribute_InvalidData_ReturnsInvalidModel(decimal propertyValue)
         {
             // Arrange
             var model = new ModelWithCannotEqualIfAttribute
@@ -29,7 +29,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
-        public void ModelWithCannotEqualIfIntegerAttribute_InValidData_ReturnsInValidModel()
+        public void ModelWithCannotEqualIfIntegerAttribute_InvalidData_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithCannotEqualIfIntegerAttribute

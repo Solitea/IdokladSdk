@@ -24,7 +24,7 @@ namespace IdokladSdk.Enums
         StringLength = 3,
 
         /// <summary>
-        /// Property value has to match specified range. <see cref="RangeNullableAttribute"/>
+        /// Property value has to match specified range. <see cref="RangeAttribute"/>
         /// </summary>
         Range = 4,
 
@@ -34,7 +34,7 @@ namespace IdokladSdk.Enums
         RegularExpression = 5,
 
         /// <summary>
-        /// Property value cannot equals to given value. <see cref="CannotEqualAttribute"/>
+        /// Property value cannot equal to given value. <see cref="CannotEqualAttribute"/>
         /// </summary>
         CannotEqual = 6,
 
@@ -164,23 +164,23 @@ namespace IdokladSdk.Enums
         LogoAndSignatureExtension = 31,
 
         /// <summary>
-        /// Property cannot equals to given value if dependent property is target value. <see cref="CannotEqualIf"/>
+        /// Property cannot equal to given value if dependent property is target value. <see cref="CannotEqualIf"/>
         /// </summary>
         CannotEqualIf = 32,
 
         /// <summary>
-        /// Property is must be null or empty if dependent property is target value. <see cref="NullOrEmptyStringIfAttribute"/>
+        /// Property must be null or empty if dependent property is target value. <see cref="NullOrEmptyStringIfAttribute"/>
         /// </summary>
         NullOrEmptyStringIf = 33,
 
         /// <summary>
-        /// Property cannot be null if dependent property is target value. <see cref="NullIfAttribute"/>
+        /// Property must be null if dependent property is target value. <see cref="NullIfAttribute"/>
         /// </summary>
         NullIf = 34,
 
         /// <summary>
-        /// Property is valid only for given range. <see cref="RangeNullable"/>
+        /// Property must be default or zero if dependent property is target value. <see cref="DecimalZeroOrDefaultIfAttribute"/>
         /// </summary>
-        RangeNullable = 35
+        DecimalZeroOrDefaultIf = 35
     }
 }

@@ -43,8 +43,8 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets discount size in percent.
         /// </summary>
-        [RangeNullable(0.0, 99.99)]
-        [CannotEqualIf(0.0, nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
+        [NullableRange(0.0, 99.99)]
+        [DecimalZeroOrDefaultIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
         public NullableProperty<decimal> DiscountPercentage { get; set; }
 
         /// <summary>

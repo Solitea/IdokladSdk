@@ -87,7 +87,7 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(NullIfAttribute): return ValidationType.NullIf;
 
-                case nameof(RangeNullableAttribute): return ValidationType.RangeNullable;
+                case nameof(DecimalZeroOrDefaultIfAttribute): return ValidationType.DecimalZeroOrDefaultIf;
 
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");

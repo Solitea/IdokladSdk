@@ -42,7 +42,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
-        public void ModelWithNullableRequiredIfAttribute_InValidData_ReturnsInValidModel()
+        public void ModelWithNullableRequiredIfAttribute_InvalidData_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithNullableRequiredIfAttribute

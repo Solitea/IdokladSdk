@@ -8,7 +8,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
     public partial class ModelValidatorTests
     {
         [Test]
-        public void ModelWithNullOrEmptyStringIfAttribute_InValidData_ReturnsInValidModel()
+        public void ModelWithNullOrEmptyStringIfAttribute_InvalidData_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithNullOrEmptyStringIfAttribute()

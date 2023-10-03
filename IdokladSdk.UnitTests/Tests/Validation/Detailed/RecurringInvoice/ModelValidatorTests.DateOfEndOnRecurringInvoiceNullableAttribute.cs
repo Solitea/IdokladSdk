@@ -25,7 +25,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
-        public void ModelWithDateOfEndOnRecurringInvoiceNullableAttribute_SetNull_ReturnsInValidModel()
+        public void ModelWithDateOfEndOnRecurringInvoiceNullableAttribute_SetNull_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithDateOfEndOnRecurringInvoiceNullableAttribute
