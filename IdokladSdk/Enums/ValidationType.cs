@@ -34,7 +34,7 @@ namespace IdokladSdk.Enums
         RegularExpression = 5,
 
         /// <summary>
-        /// Property value cannot equals to given value. <see cref="CannotEqualAttribute"/>
+        /// Property value cannot equal to given value. <see cref="CannotEqualAttribute"/>
         /// </summary>
         CannotEqual = 6,
 
@@ -154,13 +154,33 @@ namespace IdokladSdk.Enums
         DateGreaterOrEqualThanToday = 29,
 
         /// <summary>
-        /// Property is valid only when RecurrenceType is Months and RecurrenceCount is 1 . <see cref="IssueLastDayOfMonthOnRecurringInvoiceAttribute"/>
+        /// Property is valid only when RecurrenceType is Months and RecurrenceCount is 1. <see cref="IssueLastDayOfMonthOnRecurringInvoiceAttribute"/>
         /// </summary>
         IssueLastDayOfMonthOnRecurringInvoice = 30,
 
         /// <summary>
-        /// Property is valid only for supported file extensions . <see cref="LogoAndSignatureExtensionAttribute"/>
+        /// Property is valid only for supported file extensions. <see cref="LogoAndSignatureExtensionAttribute"/>
         /// </summary>
-        LogoAndSignatureExtension = 31
+        LogoAndSignatureExtension = 31,
+
+        /// <summary>
+        /// Property cannot equal to given value if dependent property is target value. <see cref="CannotEqualIf"/>
+        /// </summary>
+        CannotEqualIf = 32,
+
+        /// <summary>
+        /// Property must be null or empty if dependent property is target value. <see cref="NullOrEmptyStringIfAttribute"/>
+        /// </summary>
+        NullOrEmptyStringIf = 33,
+
+        /// <summary>
+        /// Property must be null if dependent property is target value. <see cref="NullIfAttribute"/>
+        /// </summary>
+        NullIf = 34,
+
+        /// <summary>
+        /// Property must be default or zero if dependent property is target value. <see cref="DecimalZeroOrDefaultIfAttribute"/>
+        /// </summary>
+        DecimalZeroOrDefaultIf = 35
     }
 }

@@ -26,7 +26,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
-        public void ModelWithDateGreaterOrEqualThanTodayAttribute_InValidModel_ReturnsInValidModel()
+        public void ModelWithDateGreaterOrEqualThanTodayAttribute_InValidModel_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithDateGreaterOrEqualThanTodayAttribute

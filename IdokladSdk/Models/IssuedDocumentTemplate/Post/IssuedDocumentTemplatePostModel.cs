@@ -20,6 +20,8 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// <summary>
         /// Gets or sets constant symbol id.
         /// </summary>
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.IssuedInvoice)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.ProformaInvoice)]
         public int? ConstantSymbolId { get; set; }
 
         /// <summary>
@@ -43,6 +45,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// Gets or sets discount percentage.
         /// </summary>
         [Range(0.0, 99.99)]
+        [DecimalZeroOrDefaultIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
         public decimal DiscountPercentage { get; set; }
 
         /// <summary>
@@ -64,6 +67,9 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// <summary>
         /// Gets or sets invoice maturity.
         /// </summary>
+        [NullIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.ProformaInvoice)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.IssuedInvoice)]
         public int? InvoiceMaturity { get; set; }
 
         /// <summary>
@@ -74,11 +80,13 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// <summary>
         /// Gets or sets a value indicating whether is constant variable symbol.
         /// </summary>
+        [CannotEqualIf(true, nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
         public bool IsConstantVariableSymbol { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether is income tax.
         /// </summary>
+        [CannotEqualIf(true, nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
         public bool IsIncomeTax { get; set; }
 
         /// <summary>
@@ -134,11 +142,16 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// <summary>
         /// Gets or sets report language.
         /// </summary>
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.IssuedInvoice)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.ProformaInvoice)]
         public Language? ReportLanguage { get; set; }
 
         /// <summary>
         /// Gets or sets validity days.
         /// </summary>
+        [NullIf(nameof(DocumentType), IssuedDocumentTemplateType.IssuedInvoice)]
+        [NullIf(nameof(DocumentType), IssuedDocumentTemplateType.ProformaInvoice)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
         public int? ValidityDays { get; set; }
 
         /// <summary>
@@ -146,6 +159,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// </summary>
         [StringLength(10)]
         [RequiredIf(nameof(IsConstantVariableSymbol), true)]
+        [NullOrEmptyStringIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
         public string VariableSymbol { get; set; }
 
         /// <summary>
