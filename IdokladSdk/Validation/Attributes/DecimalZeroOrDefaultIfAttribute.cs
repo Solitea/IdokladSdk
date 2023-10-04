@@ -8,7 +8,6 @@ namespace IdokladSdk.Validation.Attributes
     {
         public DecimalZeroOrDefaultIfAttribute(string dependentProperty, object targetValue)
         {
-            
             DependentProperty = dependentProperty;
             TargetValue = targetValue;
         }
@@ -29,15 +28,15 @@ namespace IdokladSdk.Validation.Attributes
             var attributePropertyValue = NullablePropertyHelper.GetValue(value);
             var dependentPropertyValue = NullablePropertyHelper.GetDependentPropertyValue(validationContext, DependentProperty);
 
-            if (attributePropertyValue != null 
-                && (decimal)attributePropertyValue != 0.0m 
-                &&(dependentPropertyValue != null && dependentPropertyValue.Equals(TargetValue)))
+            if (attributePropertyValue != null
+                && (decimal)attributePropertyValue != 0.0m
+                && dependentPropertyValue != null && dependentPropertyValue.Equals(TargetValue))
             {
                 return new ValidationResult(
                     $"The field {validationContext.MemberName} must be zero or null if {DependentProperty} is {TargetValue}",
                     new[] { validationContext.MemberName });
             }
-            
+
             return ValidationResult.Success;
         }
     }

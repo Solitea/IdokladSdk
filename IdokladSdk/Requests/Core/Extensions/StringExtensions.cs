@@ -2,6 +2,9 @@
 
 namespace IdokladSdk.Requests.Core.Extensions
 {
+    /// <summary>
+    /// String extensions.
+    /// </summary>
     public static class StringExtensions
     {
         /// <summary>

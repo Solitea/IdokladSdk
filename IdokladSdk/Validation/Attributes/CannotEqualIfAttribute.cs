@@ -30,8 +30,7 @@ namespace IdokladSdk.Validation.Attributes
                 NullablePropertyHelper.GetDependentPropertyValue(validationContext, DependentProperty);
             var attributePropertyValue = NullablePropertyHelper.GetValue(value);
 
-            if (
-                dependentPropertyValue != null 
+            if (dependentPropertyValue != null
                 && attributePropertyValue != null
                 && dependentPropertyValue.Equals(TargetValue)
                 && IsEqual(attributePropertyValue, InvalidValue))
