@@ -33,12 +33,15 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// <summary>
         /// Gets or sets date of issue.
         /// </summary>
-        public DateTime? DateOfIssue { get; set; }
+        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
+        public NullableProperty<DateTime> DateOfIssue { get; set; }
 
         /// <summary>
         /// Gets or sets date of maturity.
         /// </summary>
-        public DateTime? DateOfMaturity { get; set; }
+        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
+        public NullableProperty<DateTime> DateOfMaturity { get; set; }
 
         /// <summary>
         /// Gets or sets date of payment.
