@@ -51,6 +51,7 @@ namespace IdokladSdk.Models.CashVoucher
         /// Gets or sets document name or description.
         /// </summary>
         [StringLength(200)]
+        [NotEmptyString]
         public string Name { get; set; }
 
         /// <summary>

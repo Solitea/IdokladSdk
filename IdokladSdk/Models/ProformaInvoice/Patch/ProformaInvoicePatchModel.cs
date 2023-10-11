@@ -67,6 +67,7 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// <summary>
         /// Gets or sets description.
         /// </summary>
+        [NotEmptyString]
         public string Description { get; set; }
 
         /// <summary>

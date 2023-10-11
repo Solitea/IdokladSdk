@@ -28,6 +28,7 @@ namespace IdokladSdk.Models.NumericSequence
         /// Gets or sets name of the numeric sequence.
         /// </summary>
         [StringLength(100)]
+        [NotEmptyString]
         public string Name { get; set; }
 
         /// <summary>

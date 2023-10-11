@@ -42,6 +42,7 @@ namespace IdokladSdk.Models.SalesOrder
         /// <summary>
         /// Gets or sets description.
         /// </summary>
+        [NotEmptyString]
         public string Description { get; set; }
 
         /// <summary>

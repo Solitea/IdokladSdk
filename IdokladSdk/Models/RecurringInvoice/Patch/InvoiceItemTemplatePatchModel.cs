@@ -21,6 +21,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// <summary>
         /// Gets or sets item name.
         /// </summary>
+        [NotEmptyString]
         public string Name { get; set; }
 
         /// <summary>
