@@ -1,4 +1,7 @@
-﻿namespace IdokladSdk
+﻿using System;
+using IdokladSdk.Clients;
+
+namespace IdokladSdk
 {
     /// <summary>
     /// Set of constants.
@@ -34,6 +37,11 @@
         /// Maximum length of document number.
         /// </summary>
         public const int MaxDocumentNumberLength = 10;
+
+        /// <summary>
+        /// DateTime format.
+        /// </summary>
+        public static readonly DateTime DefaultDateTime = new DateTime(1753, 1, 1, 0, 0, 0);
 
         /// <summary>
         /// Constants for header.
