@@ -36,13 +36,14 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or sets date of issue.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
-        public DateTime? DateOfIssue { get; set; }
+        public NullableProperty<DateTime> DateOfIssue { get; set; }
 
         /// <summary>
         /// Gets or sets date of maturity.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
-        public DateTime? DateOfMaturity { get; set; }
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
+        public NullableProperty<DateTime> DateOfMaturity { get; set; }
 
         /// <summary>
         /// Gets or sets date of payment.

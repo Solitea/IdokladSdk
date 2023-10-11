@@ -274,8 +274,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(patchModel.ConstantSymbolId, getModel.ConstantSymbolId);
             Assert.AreEqual(patchModel.CreditNoteReason, getModel.CreditNoteReason);
             Assert.AreEqual(patchModel.CurrencyId, getModel.CurrencyId);
-            Assert.AreEqual(patchModel.DateOfIssue.GetValueOrDefault().Date, getModel.DateOfIssue.Date);
-            Assert.AreEqual(patchModel.DateOfMaturity.GetValueOrDefault().Date, getModel.DateOfMaturity.Date);
+            Assert.AreEqual(patchModel.DateOfIssue.Value.GetValueOrDefault().Date, getModel.DateOfIssue.Date);
+            Assert.AreEqual(patchModel.DateOfMaturity.Value.GetValueOrDefault().Date, getModel.DateOfMaturity.Date);
             Assert.AreEqual(patchModel.DateOfTaxing.GetValueOrDefault().Date, getModel.DateOfTaxing.Date);
             Assert.AreEqual(patchModel.DateOfVatClaim.Value?.Date, getModel.DateOfVatClaim?.Date);
             Assert.AreEqual(patchModel.Description, getModel.Description);

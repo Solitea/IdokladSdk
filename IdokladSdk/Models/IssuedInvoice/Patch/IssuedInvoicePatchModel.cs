@@ -30,14 +30,14 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets date of issue.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
-        public DateTime? DateOfIssue { get; set; }
+        public NullableProperty<DateTime> DateOfIssue { get; set; }
 
         /// <summary>
         /// Gets or sets date of maturity.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
         [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
-        public DateTime? DateOfMaturity { get; set; }
+        public NullableProperty<DateTime> DateOfMaturity { get; set; }
 
         /// <summary>
         /// Gets or sets date of payment.

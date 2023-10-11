@@ -20,7 +20,9 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets constant symbol Id.
         /// </summary>
-        public int? ConstantSymbolId { get; set; }
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.IssuedInvoice)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.ProformaInvoice)]
+        public NullableProperty<int> ConstantSymbolId { get; set; }
 
         /// <summary>
         /// Gets or sets currency Id.
@@ -41,13 +43,14 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets discount size in percent.
         /// </summary>
-        [Range(0.0, 99.99)]
-        public decimal? DiscountPercentage { get; set; }
+        [NullableRange(0.0, 99.99)]
+        [DecimalZeroOrDefaultIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
+        public NullableProperty<decimal> DiscountPercentage { get; set; }
 
         /// <summary>
         /// Gets or sets document type.
         /// </summary>
-        public IssuedDocumentTemplateType? DocumentType { get; set; }
+        public NullableProperty<IssuedDocumentTemplateType> DocumentType { get; set; }
 
         /// <summary>
         /// Gets or sets exchange rate.
@@ -68,7 +71,10 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets invoice maturity (in days).
         /// </summary>
-        public int? InvoiceMaturity { get; set; }
+        [NullIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.IssuedInvoice)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.ProformaInvoice)]
+        public NullableProperty<int> InvoiceMaturity { get; set; }
 
         /// <summary>
         /// Gets or sets fixed exchange rate.
@@ -78,12 +84,14 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets fixed variable symbol.
         /// </summary>
-        public bool? IsConstantVariableSymbol { get; set; }
+        [CannotEqualIf(true, nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
+        public NullableProperty<bool> IsConstantVariableSymbol { get; set; }
 
         /// <summary xml:lang='en'>
         /// Gets or sets include subject to income tax.
         /// </summary>
-        public bool? IsIncomeTax { get; set; }
+        [CannotEqualIf(true, nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
+        public NullableProperty<bool> IsIncomeTax { get; set; }
 
         /// <summary>
         ///  Gets or sets items.
@@ -132,18 +140,24 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Patch
         /// <summary>
         /// Gets or sets language of report.
         /// </summary>
-        public Language? ReportLanguage { get; set; }
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.IssuedInvoice)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.ProformaInvoice)]
+        public NullableProperty<Language> ReportLanguage { get; set; }
 
         /// <summary>
         /// Gets or sets number of days SalesOrder is valid to.
         /// </summary>
-        public int? ValidityDays { get; set; }
+        [NullIf(nameof(DocumentType), IssuedDocumentTemplateType.IssuedInvoice)]
+        [NullIf(nameof(DocumentType), IssuedDocumentTemplateType.ProformaInvoice)]
+        [RequiredIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
+        public NullableProperty<int> ValidityDays { get; set; }
 
         /// <summary>
         /// Gets or sets variable symbol.
         /// </summary>
         [StringLength(10)]
         [RequiredIf(nameof(IsConstantVariableSymbol), true)]
+        [NullOrEmptyStringIf(nameof(DocumentType), IssuedDocumentTemplateType.SalesOrder)]
         public string VariableSymbol { get; set; }
 
         /// <summary>

@@ -34,13 +34,15 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets date of issue.
         /// </summary>
+        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
         public DateTime? DateOfIssue { get; set; }
 
         /// <summary>
         /// Gets or sets date of maturity.
         /// </summary>
-        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
         [Required]
+        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
         public DateTime DateOfMaturity { get; set; }
 
         /// <summary>

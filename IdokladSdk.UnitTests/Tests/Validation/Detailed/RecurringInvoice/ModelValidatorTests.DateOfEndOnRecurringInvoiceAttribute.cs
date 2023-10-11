@@ -9,7 +9,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
     public partial class ModelValidatorTests
     {
         [Test]
-        public void ModelWithDateOfEndOnRecurringInvoiceAttribute_NotSetInModel_ReturnsInValidModel()
+        public void ModelWithDateOfEndOnRecurringInvoiceAttribute_NotSetInModel_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithDateOfEndOnRecurringInvoiceAttribute
@@ -25,7 +25,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         }
 
         [Test]
-        public void ModelWithDateOfEndOnRecurringInvoiceAttribute_SetNull_ReturnsInValidModel()
+        public void ModelWithDateOfEndOnRecurringInvoiceAttribute_SetNull_ReturnsInvalidModel()
         {
             // Arrange
             var model = new ModelWithDateOfEndOnRecurringInvoiceAttribute

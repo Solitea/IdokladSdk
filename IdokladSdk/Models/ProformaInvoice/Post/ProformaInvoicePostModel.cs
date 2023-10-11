@@ -49,6 +49,7 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// </summary>
         [Required]
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
+        [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
         public DateTime DateOfMaturity { get; set; }
 
         /// <summary>

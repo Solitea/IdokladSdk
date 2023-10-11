@@ -4,12 +4,9 @@ using IdokladSdk.Models.Common.Helpers;
 
 namespace IdokladSdk.Validation.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public class RequiredIfAttribute : ValidationAttribute
+    public class DecimalZeroOrDefaultIfAttribute : ValidationAttribute
     {
-        private readonly RequiredAttribute _innerAttribute = new RequiredAttribute();
-
-        public RequiredIfAttribute(string dependentProperty, object targetValue)
+        public DecimalZeroOrDefaultIfAttribute(string dependentProperty, object targetValue)
         {
             DependentProperty = dependentProperty;
             TargetValue = targetValue;
@@ -31,16 +28,16 @@ namespace IdokladSdk.Validation.Attributes
             var attributePropertyValue = NullablePropertyHelper.GetValue(value);
             var dependentPropertyValue = NullablePropertyHelper.GetDependentPropertyValue(validationContext, DependentProperty);
 
-            if ((dependentPropertyValue == null && TargetValue == null) ||
-                (dependentPropertyValue != null && dependentPropertyValue.Equals(TargetValue)))
+            if (attributePropertyValue != null
+                && (decimal)attributePropertyValue != 0.0m
+                && dependentPropertyValue != null && dependentPropertyValue.Equals(TargetValue))
             {
-                if (!_innerAttribute.IsValid(attributePropertyValue))
-                {
-                    return new ValidationResult(ErrorMessage, new[] { validationContext.MemberName });
-                }
+                return new ValidationResult(
+                    $"The field {validationContext.MemberName} must be zero or null if {DependentProperty} is {TargetValue}",
+                    new[] { validationContext.MemberName });
             }
 
-            return null;
+            return ValidationResult.Success;
         }
     }
 }
