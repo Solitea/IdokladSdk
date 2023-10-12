@@ -8,11 +8,12 @@ namespace IdokladSdk.Validation.Attributes
 {
     public class DateGreaterThanOrEqualThanAnotherDateAttribute : ValidationAttribute
     {
-        private readonly bool _allowDefualtDate;
+        private readonly bool _allowDefaultDate;
 
         public DateGreaterThanOrEqualThanAnotherDateAttribute(string otherPropertyName, bool allowDefaultDate = false)
         {
             OtherPropertyName = otherPropertyName;
+            _allowDefaultDate = allowDefaultDate;
         }
 
         public string OtherPropertyName { get; }
@@ -25,7 +26,7 @@ namespace IdokladSdk.Validation.Attributes
 
             if (propertyInfo != null)
             {
-                if (value == null || (_allowDefualtDate && (DateTime)value == Constants.DefaultDateTime))
+                if (value == null || (_allowDefaultDate && (DateTime)value == Constants.DefaultDateTime))
                 {
                     return ValidationResult.Success;
                 }
