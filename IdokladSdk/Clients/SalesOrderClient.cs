@@ -4,7 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.IssuedInvoice;
+using IdokladSdk.Models.IssuedInvoice.Get;
 using IdokladSdk.Models.ProformaInvoice;
+using IdokladSdk.Models.ProformaInvoice.Get;
 using IdokladSdk.Models.SalesOrder;
 using IdokladSdk.Requests.SalesOrder;
 using IdokladSdk.Response;
@@ -75,11 +77,11 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="salesOrderId">Sales order id.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Method return issued invoice post model.</returns>
-        public Task<ApiResult<IssuedInvoicePostModel>> GetIssuedInvoiceAsync(int salesOrderId, CancellationToken cancellationToken = default)
+        /// <returns>Method return issued invoice from sales order get model.</returns>
+        public Task<ApiResult<IssuedInvoiceFromSalesOrderGetModel>> GetIssuedInvoiceAsync(int salesOrderId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{salesOrderId}/IssuedInvoice";
-            return GetAsync<IssuedInvoicePostModel>(resource, null, cancellationToken);
+            return GetAsync<IssuedInvoiceFromSalesOrderGetModel>(resource, null, cancellationToken);
         }
 
         /// <summary>
@@ -87,11 +89,11 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="salesOrderId">Sales order id.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Method return proforma invoice post model.</returns>
-        public Task<ApiResult<ProformaInvoicePostModel>> GetProformaInvoiceAsync(int salesOrderId, CancellationToken cancellationToken = default)
+        /// <returns>Method return proforma invoice from sales order get model.</returns>
+        public Task<ApiResult<ProformaInvoiceFromSalesOrderGetModel>> GetProformaInvoiceAsync(int salesOrderId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{salesOrderId}/ProformaInvoice";
-            return GetAsync<ProformaInvoicePostModel>(resource, null, cancellationToken);
+            return GetAsync<ProformaInvoiceFromSalesOrderGetModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>

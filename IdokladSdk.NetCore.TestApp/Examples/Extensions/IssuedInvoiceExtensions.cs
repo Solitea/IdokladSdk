@@ -57,8 +57,8 @@ namespace IdokladSdk.NetCore.TestApp.Examples.Extensions
                 CurrencyId = source.CurrencyId,
                 DiscountPercentage = source.DiscountPercentage,
                 DateOfTaxing = source.DateOfTaxing,
-                ExchangeRate = source.ExchangeRate ?? 1,
-                ExchangeRateAmount = source.ExchangeRateAmount ?? 1,
+                ExchangeRate = source.ExchangeRate,
+                ExchangeRateAmount = source.ExchangeRateAmount,
                 Items = source.Items.Select(ToRecountModel).ToList(),
                 PaymentOptionId = source.PaymentOptionId
             };

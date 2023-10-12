@@ -92,8 +92,6 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Post
         /// <summary>
         /// Gets or sets items.
         /// </summary>
-        [MinCollectionLength(1)]
-        [Required]
         public List<IssuedDocumentTemplateItemPostModel> Items { get; set; }
 
         /// <summary>

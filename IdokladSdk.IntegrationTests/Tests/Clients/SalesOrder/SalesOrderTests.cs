@@ -9,7 +9,9 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.IssuedInvoice;
+using IdokladSdk.Models.IssuedInvoice.Get;
 using IdokladSdk.Models.ProformaInvoice;
+using IdokladSdk.Models.ProformaInvoice.Get;
 using IdokladSdk.Models.SalesOrder;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
@@ -126,7 +128,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 
             // Assert
             var salesOrder = await _client.Detail(SalesOrderId).GetAsync().AssertResult();
-            AssertIssuedInvoice(issuedInvoice, salesOrder);
+            AssertInvoiceFromSalesOrderGetModel(issuedInvoice, salesOrder);
         }
 
         [Test]
@@ -137,7 +139,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 
             // Assert
             var salesOrder = await _client.Detail(SalesOrderId).GetAsync().AssertResult();
-            AssertProformaInvoice(proformaInvoice, salesOrder);
+            AssertProformaFromSalesOrderGetModel(proformaInvoice, salesOrder);
         }
 
         [Test]
@@ -329,6 +331,36 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             Assert.AreEqual(salesOrder.MyAddress.AccountNumber, proformaInvoice.AccountNumber);
             Assert.AreEqual(salesOrder.MyAddress.Iban, proformaInvoice.Iban);
             Assert.AreEqual(salesOrder.MyAddress.Swift, proformaInvoice.Swift);
+        }
+
+        private void AssertInvoiceFromSalesOrderGetModel(IssuedInvoiceFromSalesOrderGetModel model, SalesOrderGetModel salesOrder)
+        {
+            Assert.AreEqual(SalesOrderId, model.SalesOrderId);
+            Assert.AreEqual(salesOrder.Description, model.Description);
+            Assert.AreEqual(salesOrder.CurrencyId, model.CurrencyId);
+            Assert.AreEqual(salesOrder.ExchangeRate, model.ExchangeRate);
+            Assert.AreEqual(salesOrder.ExchangeRateAmount, model.ExchangeRateAmount);
+            Assert.AreEqual(salesOrder.PartnerId, model.PartnerId);
+            Assert.AreEqual(salesOrder.PaymentOptionId, model.PaymentOptionId);
+            Assert.AreEqual(salesOrder.OrderNumber, model.OrderNumber);
+            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, model.AccountNumber);
+            Assert.AreEqual(salesOrder.MyAddress.Iban, model.Iban);
+            Assert.AreEqual(salesOrder.MyAddress.Swift, model.Swift);
+        }
+
+        private void AssertProformaFromSalesOrderGetModel(ProformaInvoiceFromSalesOrderGetModel model, SalesOrderGetModel salesOrder)
+        {
+            Assert.AreEqual(SalesOrderId, model.SalesOrderId);
+            Assert.AreEqual(salesOrder.Description, model.Description);
+            Assert.AreEqual(salesOrder.CurrencyId, model.CurrencyId);
+            Assert.AreEqual(salesOrder.ExchangeRate, model.ExchangeRate);
+            Assert.AreEqual(salesOrder.ExchangeRateAmount, model.ExchangeRateAmount);
+            Assert.AreEqual(salesOrder.PartnerId, model.PartnerId);
+            Assert.AreEqual(salesOrder.PaymentOptionId, model.PaymentOptionId);
+            Assert.AreEqual(salesOrder.OrderNumber, model.OrderNumber);
+            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, model.AccountNumber);
+            Assert.AreEqual(salesOrder.MyAddress.Iban, model.Iban);
+            Assert.AreEqual(salesOrder.MyAddress.Swift, model.Swift);
         }
 
         private async Task<SalesOrderPostModel> GetSalesOrderPostModelAsync()

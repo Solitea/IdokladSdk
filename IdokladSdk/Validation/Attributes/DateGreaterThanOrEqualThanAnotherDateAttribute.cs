@@ -8,32 +8,45 @@ namespace IdokladSdk.Validation.Attributes
 {
     public class DateGreaterThanOrEqualThanAnotherDateAttribute : ValidationAttribute
     {
-        public DateGreaterThanOrEqualThanAnotherDateAttribute(string otherPropertyName)
+        private readonly bool _allowDefaultDate;
+
+        public DateGreaterThanOrEqualThanAnotherDateAttribute(string otherPropertyName, bool allowDefaultDate = false)
         {
             OtherPropertyName = otherPropertyName;
+            _allowDefaultDate = allowDefaultDate;
         }
 
         public string OtherPropertyName { get; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            var propertyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
             var otherPropertyInfo = validationContext.ObjectType.GetProperty(OtherPropertyName);
             var otherPropertyType = GetPropertyType(otherPropertyInfo);
 
-            if (otherPropertyType == default(DateTime).GetType())
+            if (propertyInfo != null)
             {
-                if (value == null)
+                if (value == null || (_allowDefaultDate && (DateTime)value == Constants.DefaultDateTime))
                 {
                     return ValidationResult.Success;
                 }
 
-                var toValidate = GetValueToValidate(value);
-                var referenceProperty = GetPropertyValue(otherPropertyInfo, validationContext);
-
-                if (toValidate != DateTime.MinValue && toValidate.CompareTo(referenceProperty) < 0)
+                var isNullable = Nullable.GetUnderlyingType(propertyInfo.PropertyType) != null;
+                if (isNullable && value == null)
                 {
-                    return new ValidationResult(
-                        string.Format($"The {validationContext.MemberName} cannot be earlier than the {OtherPropertyName}"));
+                    return ValidationResult.Success;
+                }
+
+                if (otherPropertyType != null && value != null)
+                {
+                    var toValidate = GetValueToValidate(value);
+                    var referenceProperty = GetPropertyValue(otherPropertyInfo, validationContext);
+
+                    if (toValidate != DateTime.MinValue && toValidate.CompareTo(referenceProperty) < 0)
+                    {
+                        return new ValidationResult(
+                            string.Format($"The {validationContext.MemberName} cannot be earlier than the {OtherPropertyName}"));
+                    }
                 }
             }
 

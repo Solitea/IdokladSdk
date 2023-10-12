@@ -101,12 +101,12 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets exchange rate.
         /// </summary>
-        public decimal? ExchangeRate { get; set; }
+        public decimal ExchangeRate { get; set; }
 
         /// <summary>
         /// Gets or sets exchange rate amount.
         /// </summary>
-        public decimal? ExchangeRateAmount { get; set; }
+        public decimal ExchangeRateAmount { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether OSS regime is set on invoice.

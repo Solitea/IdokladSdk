@@ -1,11 +1,11 @@
 ﻿using IdokladSdk.Enums;
 
-namespace IdokladSdk.Models.ProformaInvoice
+namespace IdokladSdk.Models.IssuedInvoice.Get
 {
     /// <summary>
-    /// ProformaInvoiceItemPostModel.
+    /// IssuedInvoiceItemFromSalesOrderGetModel.
     /// </summary>
-    public class ProformaInvoiceItemPostModel
+    public class IssuedInvoiceItemFromSalesOrderGetModel
     {
         /// <summary>
         /// Gets or sets item amount.
@@ -18,9 +18,29 @@ namespace IdokladSdk.Models.ProformaInvoice
         public string Code { get; set; }
 
         /// <summary>
+        /// Gets or sets discount name.
+        /// </summary>
+        public string DiscountName { get; set; }
+
+        /// <summary>
+        /// Gets or sets discount size in percent.
+        /// </summary>
+        public decimal DiscountPercentage { get; set; }
+
+        /// <summary>
+        /// Gets or sets invoice proforma id.
+        /// </summary>
+        public int? InvoiceProformaId { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether is the item a tax movement indication.
         /// </summary>
         public bool IsTaxMovement { get; set; }
+
+        /// <summary>
+        /// Gets or sets item type.
+        /// </summary>
+        public IssuedInvoiceItemType ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets item name.
@@ -48,13 +68,13 @@ namespace IdokladSdk.Models.ProformaInvoice
         public decimal UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets vAT rate type.
-        /// </summary>
-        public VatRateType VatRateType { get; set; }
-
-        /// <summary>
         /// Gets or sets id členení DPH.
         /// </summary>
         public int? VatCodeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets vAT rate type.
+        /// </summary>
+        public VatRateType VatRateType { get; set; }
     }
 }
