@@ -107,7 +107,7 @@ namespace IdokladSdk.Models.ProformaInvoice.Get
         /// <summary>
         /// Gets or sets invoice items.
         /// </summary>
-        public List<ProformaInvoiceItemPostModel> Items { get; set; }
+        public List<ProformaInvoiceItemFromSalesOrderGetModel> Items { get; set; }
 
         /// <summary>
         /// Gets or sets text za položkami.
