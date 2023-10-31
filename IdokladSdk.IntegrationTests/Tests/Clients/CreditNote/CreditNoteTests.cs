@@ -6,11 +6,11 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.IntegrationTests.Core.Helpers;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.CreditNote;
 using IdokladSdk.Models.CreditNote.Post;
 using IdokladSdk.Models.CreditNote.Put;
-using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
@@ -23,8 +23,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
     [TestFixture]
     public class CreditNoteTests : TestBase
     {
-        private const int CreditedIssuedInvoiceId = 916236;
-
         private const int InvoiceWithMossId = 1052496;
 
         private const int DeliveryAddressId1 = 11;
@@ -34,6 +32,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         private CreditNoteDefaultPostModel _creditNotePostModel;
 
         private CreditNotePostModel _creditNoteToOffsetPostModel;
+
+        private int _creditedIssuedInvoiceId;
+
+        private int _postedCreditNoteItemId;
 
         private int _postedCreditNoteId;
 
@@ -49,12 +51,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             InitDokladApi();
             CreditNoteClient = DokladApi.CreditNoteClient;
             IssuedDocumentPaymentClient = DokladApi.IssuedDocumentPaymentClient;
+            _creditedIssuedInvoiceId = DokladSdkTestsHelper.CreateDefaultIssuedInvoiceAsync(DokladApi).GetAwaiter().GetResult().Id;
         }
 
         [OneTimeTearDown]
         public async Task OneTimeTearDown()
         {
-            await IssuedDocumentPaymentClient.FullyUnpayAsync(CreditedIssuedInvoiceId);
+            await DokladApi.IssuedInvoiceClient.DeleteAsync(_creditedIssuedInvoiceId);
         }
 
         [Test]
@@ -62,7 +65,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         public async Task DefaultAsync_SuccessfullyReturned()
         {
             // Act
-            _creditNotePostModel = await CreditNoteClient.DefaultAsync(CreditedIssuedInvoiceId).AssertResult();
+            _creditNotePostModel = await CreditNoteClient.DefaultAsync(_creditedIssuedInvoiceId).AssertResult();
 
             // Assert
             AssertDefault(_creditNotePostModel);
@@ -78,6 +81,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             // Act
             var creditNoteGetModel = await CreditNoteClient.PostAsync(_creditNotePostModel).AssertResult();
             _postedCreditNoteId = creditNoteGetModel.Id;
+            _postedCreditNoteItemId = creditNoteGetModel.Items.First().Id;
 
             // Assert
             ComparePostAndGetModels(_creditNotePostModel, creditNoteGetModel, false);
@@ -151,9 +155,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         public async Task OffsetNewCreditNoteAsync_SuccessfullyOffset()
         {
             // Arrange
-            var result = await IssuedDocumentPaymentClient.FullyUnpayAsync(CreditedIssuedInvoiceId).AssertResult();
+            var result = await IssuedDocumentPaymentClient.FullyUnpayAsync(_creditedIssuedInvoiceId).AssertResult();
             Assert.True(result);
-            _creditNoteToOffsetPostModel = await CreditNoteClient.DefaultAsync(CreditedIssuedInvoiceId).AssertResult();
+            _creditNoteToOffsetPostModel = await CreditNoteClient.DefaultAsync(_creditedIssuedInvoiceId).AssertResult();
             CreatePostModel(_creditNoteToOffsetPostModel);
 
             // Act
@@ -172,7 +176,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         public async Task OffsetExistingCreditNoteAsync_SuccessfullyOffset()
         {
             // Arrange
-            var result = await IssuedDocumentPaymentClient.FullyUnpayAsync(CreditedIssuedInvoiceId).AssertResult();
+            var result = await IssuedDocumentPaymentClient.FullyUnpayAsync(_creditedIssuedInvoiceId).AssertResult();
             Assert.True(result);
             result = await IssuedDocumentPaymentClient.FullyUnpayAsync(_offsetCreditNoteId).AssertResult();
             Assert.True(result);
@@ -217,55 +221,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             await CreditNoteClient.DeleteAsync(result.Id);
         }
 
-        private static void AssertDefault(CreditNotePostModel creditNote)
-        {
-            Assert.IsNotEmpty(creditNote.AccountNumber);
-            Assert.IsNotNull(creditNote.ConstantSymbolId);
-            Assert.AreEqual(CreditedIssuedInvoiceId, creditNote.CreditedInvoiceId, 0);
-            Assert.IsEmpty(creditNote.CreditNoteReason);
-            Assert.Greater(creditNote.CurrencyId, 0);
-            Assert.IsNotNull(creditNote.DateOfIssue);
-            Assert.IsNotNull(creditNote.DateOfMaturity);
-            Assert.IsNotNull(creditNote.DateOfPayment);
-            Assert.IsNotNull(creditNote.DateOfTaxing);
-            Assert.IsNotNull(creditNote.DateOfVatApplication);
-            Assert.IsNull(creditNote.DateOfVatClaim);
-            Assert.IsNotEmpty(creditNote.Description);
-            Assert.Greater(creditNote.DocumentSerialNumber, 0);
-            Assert.AreEqual(1, creditNote.ExchangeRate);
-            Assert.AreEqual(1, creditNote.ExchangeRateAmount);
-            Assert.Greater(creditNote.Items.Count, 0);
-
-            foreach (var creditNoteItem in creditNote.Items)
-            {
-                AssertDefaultItem(creditNoteItem);
-            }
-
-            Assert.IsEmpty(creditNote.ItemsTextPrefix);
-            Assert.IsEmpty(creditNote.ItemsTextSuffix);
-            Assert.IsEmpty(creditNote.Note);
-            Assert.IsEmpty(creditNote.NoteForCreditNote);
-            Assert.Greater(creditNote.NumericSequenceId, 0);
-            Assert.Greater(creditNote.PartnerId, 0);
-            Assert.IsNotNull(creditNote.ReportLanguage);
-            Assert.IsNotEmpty(creditNote.VariableSymbol);
-        }
-
         private static void AssertDefaultItem(CreditNoteItemPostModel creditNoteItem)
         {
             Assert.IsNotEmpty(creditNoteItem.DiscountName);
             Assert.IsNotEmpty(creditNoteItem.Name);
-        }
-
-        private static void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
-        {
-            Assert.NotNull(data);
-            Assert.NotNull(data.City);
-            Assert.AreEqual(expectedDeliveryAddressId, data.ContactDeliveryAddressId);
-            Assert.NotZero(data.CountryId);
-            Assert.NotNull(data.Name);
-            Assert.NotNull(data.PostalCode);
-            Assert.NotNull(data.Street);
         }
 
         private static void ComparePatchAndGetModels(CreditNotePatchModel patchModel, CreditNoteGetModel getModel)
@@ -485,6 +444,40 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             postModel.DeliveryAddressId = DeliveryAddressId1;
         }
 
+        private void AssertDefault(CreditNotePostModel creditNote)
+        {
+            Assert.IsNotEmpty(creditNote.AccountNumber);
+            Assert.IsNotNull(creditNote.ConstantSymbolId);
+            Assert.AreEqual(_creditedIssuedInvoiceId, creditNote.CreditedInvoiceId, 0);
+            Assert.IsEmpty(creditNote.CreditNoteReason);
+            Assert.Greater(creditNote.CurrencyId, 0);
+            Assert.IsNotNull(creditNote.DateOfIssue);
+            Assert.IsNotNull(creditNote.DateOfMaturity);
+            Assert.IsNotNull(creditNote.DateOfPayment);
+            Assert.IsNotNull(creditNote.DateOfTaxing);
+            Assert.IsNotNull(creditNote.DateOfVatApplication);
+            Assert.IsNull(creditNote.DateOfVatClaim);
+            Assert.IsNotEmpty(creditNote.Description);
+            Assert.Greater(creditNote.DocumentSerialNumber, 0);
+            Assert.AreEqual(1, creditNote.ExchangeRate);
+            Assert.AreEqual(1, creditNote.ExchangeRateAmount);
+            Assert.Greater(creditNote.Items.Count, 0);
+
+            foreach (var creditNoteItem in creditNote.Items)
+            {
+                AssertDefaultItem(creditNoteItem);
+            }
+
+            Assert.IsEmpty(creditNote.ItemsTextPrefix);
+            Assert.IsEmpty(creditNote.ItemsTextSuffix);
+            Assert.IsEmpty(creditNote.Note);
+            Assert.IsEmpty(creditNote.NoteForCreditNote);
+            Assert.Greater(creditNote.NumericSequenceId, 0);
+            Assert.Greater(creditNote.PartnerId, 0);
+            Assert.IsNotNull(creditNote.ReportLanguage);
+            Assert.IsNotEmpty(creditNote.VariableSymbol);
+        }
+
         private CreditNotePatchModel CreatePatchModel()
         {
             var date = DateTime.Today.AddDays(1);
@@ -510,7 +503,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             {
                 new CreditNoteItemPatchModel
                 {
-                    Id = 1222234,
+                    Id = _postedCreditNoteItemId,
                     Amount = 101,
                     DiscountName = "discount name",
                     DiscountPercentage = 13.5m,

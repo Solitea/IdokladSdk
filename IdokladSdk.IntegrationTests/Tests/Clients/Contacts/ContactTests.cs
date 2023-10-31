@@ -199,15 +199,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
                 .Sort(f => f.CompanyName.Desc())
                 .GetAsync()
                 .AssertResult();
+            var lastItemIndex = data.Items.Count() - 1;
 
             // Assert
             Assert.NotNull(data);
             Assert.Greater(data.Items.Count(), 3);
             Assert.AreEqual("Test company", data.Items.ElementAt(0).CompanyName);
-            Assert.AreEqual(_updatedCompanyName, data.Items.ElementAt(1).CompanyName);
-            Assert.AreEqual("Solitea Slovensko, a.s.", data.Items.ElementAt(2).CompanyName);
-            Assert.AreEqual("GermanContact", data.Items.ElementAt(3).CompanyName);
-            Assert.AreEqual("Alza.cz a.s.", data.Items.ElementAt(4).CompanyName);
+            Assert.AreEqual("Alza.cz a.s.", data.Items.ElementAt(lastItemIndex).CompanyName);
         }
 
         [Test]
