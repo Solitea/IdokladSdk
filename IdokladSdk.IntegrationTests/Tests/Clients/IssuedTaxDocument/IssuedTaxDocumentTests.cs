@@ -94,8 +94,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var notAccounted = await _issuedTaxDocumentClient.List().Filter(i => i.AccountedByInvoiceId.IsEqual(null)).GetAsync().AssertResult();
 
             // Assert
-            Assert.That(allDocuments.Items.Count(i => i.AccountedByInvoiceId != null), Is.GreaterThan(0));
-            Assert.That(allDocuments.Items.Count(i => i.AccountedByInvoiceId == null), Is.GreaterThan(0));
+            Assert.That(allDocuments.Items.Count(i => i.AccountedByInvoiceId != null), Is.EqualTo(accounted.TotalItems));
+            Assert.That(allDocuments.Items.Count(i => i.AccountedByInvoiceId == null), Is.EqualTo(notAccounted.TotalItems));
         }
 
         [Test]
