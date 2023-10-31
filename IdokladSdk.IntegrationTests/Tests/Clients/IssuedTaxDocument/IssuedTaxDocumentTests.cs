@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.IntegrationTests.Core.Helpers;
+using IdokladSdk.Models.IssuedDocumentPayment;
 using IdokladSdk.Models.IssuedTaxDocument.Patch;
 using IdokladSdk.Models.IssuedTaxDocument.Post;
 using IdokladSdk.Requests.Core.Extensions;
@@ -18,9 +20,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
     [TestFixture]
     public class IssuedTaxDocumentTests : TestBase
     {
-        private const int PaymentId = 1981104;
         private const int PaymentIdForDefault = 1981104;
-        private const int ProformaInvoiceId = 1043167;
         private int _issuedTaxDocumentItemId;
         private int _issuedTaxDocumentId;
         private IssuedTaxDocumentClient _issuedTaxDocumentClient;
@@ -46,11 +46,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         public async Task PostAsync_SucessfullyCreatedFromDefaultAsync()
         {
             // Arrange
-            var defaultData = await _issuedTaxDocumentClient.DefaultAsync(PaymentIdForDefault).AssertResult();
+            var paymentId = (await GetDefaultProformaPayment()).Id;
+            var defaultData = await _issuedTaxDocumentClient.DefaultAsync(paymentId).AssertResult();
             var postData = new IssuedTaxDocumentPostModel
             {
                 DateOfIssue = defaultData.DateOfIssue,
-                PaymentId = PaymentIdForDefault,
+                PaymentId = paymentId,
                 Items = defaultData.Items.Select(x => new IssuedTaxDocumentItemPostModel
                 {
                     Id = x.Id,
@@ -63,7 +64,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             var result = await _issuedTaxDocumentClient.PostAsync(postData).AssertResult();
 
             // Assert
-            Assert.That(result.PaymentId, Is.EqualTo(PaymentIdForDefault));
+            Assert.That(result.PaymentId, Is.EqualTo(paymentId));
             Assert.That(result.DateOfIssue, Is.EqualTo(defaultData.DateOfIssue));
             Assert.That(result.Items.Count, Is.EqualTo(postData.Items.Count));
 
@@ -113,12 +114,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
         public async Task PostAsync_SuccessfullyCreated()
         {
             // Act
-            var result = await _issuedTaxDocumentClient.PostAsync(PaymentId).AssertResult();
+            var payment = await GetDefaultProformaPayment();
+            var paymentId = payment.Id;
+            var result = await _issuedTaxDocumentClient.PostAsync(paymentId).AssertResult();
             _issuedTaxDocumentId = result.Id;
             _issuedTaxDocumentItemId = result.Items.FirstOrDefault().Id;
 
             // Assert
-            Assert.That(result.ProformaInvoiceId, Is.EqualTo(ProformaInvoiceId));
+            Assert.That(result.ProformaInvoiceId, Is.EqualTo(payment.InvoiceId));
             Assert.That(result.Prices.TotalWithVatHc, Is.EqualTo(1000));
         }
 
@@ -182,6 +185,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
 
             // Assert
             Assert.That(data, Is.True);
+        }
+
+        private async Task<IssuedDocumentPaymentListGetModel> GetDefaultProformaPayment()
+        {
+            var proforma = await DokladSdkTestsHelper.CreateDefaultProformaInvoiceAsync(DokladApi);
+            var payments = await DokladApi.IssuedDocumentPaymentClient.List().Filter(i => i.InvoiceId.IsEqual(proforma.Id))
+                .GetAsync().AssertResult();
+            return payments.Items.FirstOrDefault();
         }
     }
 }

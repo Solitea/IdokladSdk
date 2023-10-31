@@ -6,6 +6,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.IntegrationTests.Core.Helpers;
 using IdokladSdk.Models.Attachment;
 using NUnit.Framework;
 
@@ -15,8 +16,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
     public partial class AttachmentTests : TestBase
     {
         private const string FileName = "reportnew.pdf";
-        private const int DocumentId = 913242;
         private const string AttachmentPath = "Tests/Clients/Attachment/File/report.pdf";
+        private int _documentId = 0;
         private int _attachmentId = 0;
         private string _attachmentName = string.Empty;
         private AttachmentClient _attachmentClient;
@@ -26,6 +27,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
         {
             InitDokladApi();
             _attachmentClient = DokladApi.AttachmentClient;
+            _documentId = DokladSdkTestsHelper.CreateDefaultIssuedInvoiceAsync(DokladApi).GetAwaiter().GetResult().Id;
+        }
+
+        [OneTimeTearDown]
+        public async Task OneTimeTeardown()
+        {
+            await DokladApi.IssuedInvoiceClient.DeleteAsync(_documentId);
         }
 
         [Test]
@@ -53,7 +61,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
         public async Task GetAsync_SuccessfullyGetAllAttachment()
         {
             // Act
-            var data = await _attachmentClient.GetAsync(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
+            var data = await _attachmentClient.GetAsync(_documentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
             // Assert
             Assert.Multiple(() =>
@@ -100,7 +108,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
         public async Task DeleteAsync_AllSuccessfullyDeleted()
         {
             // Act
-            var data = await _attachmentClient.DeleteAsync(DocumentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
+            var data = await _attachmentClient.DeleteAsync(_documentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
             // Assert
             Assert.IsTrue(data);
@@ -130,7 +138,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
                 FileBytes = File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{AttachmentPath}"),
                 FileName = FileName.Insert(9, orderNumber.ToString()),
                 DocumentType = AttachmentDocumentType.IssuedInvoice,
-                DocumentId = DocumentId
+                DocumentId = _documentId
             };
         }
     }
