@@ -17,7 +17,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
     [TestFixture]
     public class ContactTests : TestBase
     {
-        private readonly string _updatedCompanyName = "Solitea Slovensko, a.s.";
         private int _newContactId = 0;
         private ContactPostModel _contactPostModel;
         private DateTime _dateLastChange;
@@ -40,7 +39,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             _contactPostModel.AccountNumber = "2102290124";
             _contactPostModel.BankId = 18;
             _contactPostModel.City = "Brno";
-            _contactPostModel.CompanyName = _updatedCompanyName;
+            _contactPostModel.CompanyName = "Seyfor Slovensko, a.s.";
             _contactPostModel.CountryId = 2;
             _contactPostModel.DefaultInvoiceMaturity = 15;
             _contactPostModel.DeliveryAddresses.Add(new DeliveryAddressPostModel
@@ -102,7 +101,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
                 AccountNumber = "2626708763",
                 BankId = 63,
                 City = "Bratislava",
-                CompanyName = "Solitea Slovensko, a.s.",
+                CompanyName = "Seyfor Česko, a.s.",
                 CountryId = 1,
                 DefaultInvoiceMaturity = 9,
                 DeliveryAddresses = new List<DeliveryAddressPatchModel>
@@ -178,7 +177,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             // Act
             var data = await ContactClient
                 .List()
-                .Filter(f => f.CompanyName.Contains("Solitea"))
+                .Filter(f => f.CompanyName.Contains("Seyfor"))
                 .Filter(f => f.DateLastChange.IsGreaterThanOrEqual(_dateLastChange))
                 .GetAsync()
                 .AssertResult();
