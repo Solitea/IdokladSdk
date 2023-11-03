@@ -18,6 +18,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
     public class ContactTests : TestBase
     {
         private int _newContactId = 0;
+        private string _newContactName;
+        private string _updatedContactName;
         private ContactPostModel _contactPostModel;
         private DateTime _dateLastChange;
 
@@ -35,11 +37,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
         public async Task Post_SuccessfullyPosted()
         {
             // Arrange
+            _newContactName = CreateUniqueContactName();
             _contactPostModel = await ContactClient.DefaultAsync().AssertResult();
             _contactPostModel.AccountNumber = "2102290124";
             _contactPostModel.BankId = 18;
             _contactPostModel.City = "Brno";
-            _contactPostModel.CompanyName = "Seyfor Slovensko, a.s.";
+            _contactPostModel.CompanyName = _newContactName;
             _contactPostModel.CountryId = 2;
             _contactPostModel.DefaultInvoiceMaturity = 15;
             _contactPostModel.DeliveryAddresses.Add(new DeliveryAddressPostModel
@@ -96,12 +99,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
         public async Task Update_SuccessfullyUpdatedContact()
         {
             // Arrange
+            _updatedContactName = CreateUniqueContactName();
             var contactPatchModel = new ContactPatchModel
             {
                 AccountNumber = "2626708763",
                 BankId = 63,
                 City = "Bratislava",
-                CompanyName = "Seyfor Česko, a.s.",
+                CompanyName = _updatedContactName,
                 CountryId = 1,
                 DefaultInvoiceMaturity = 9,
                 DeliveryAddresses = new List<DeliveryAddressPatchModel>
@@ -177,7 +181,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             // Act
             var data = await ContactClient
                 .List()
-                .Filter(f => f.CompanyName.Contains("Seyfor"))
+                .Filter(f => f.CompanyName.Contains(_updatedContactName))
                 .Filter(f => f.DateLastChange.IsGreaterThanOrEqual(_dateLastChange))
                 .GetAsync()
                 .AssertResult();
@@ -227,6 +231,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             // Assert
             Assert.NotNull(data);
             Assert.Greater(data.Items.Count(), 0);
+        }
+
+        private static string CreateUniqueContactName()
+        {
+            var suffixToAvoidDuplicates = (long)DateTime.Now.TimeOfDay.TotalMilliseconds;
+            return $"Seyfor Slovensko {suffixToAvoidDuplicates}";
         }
 
         private void AssertDeliveryAddress(DeliveryAddressGetModel returnedDeliveryAddress, DeliveryAddressPatchModel expecredDeliveryAddress)
