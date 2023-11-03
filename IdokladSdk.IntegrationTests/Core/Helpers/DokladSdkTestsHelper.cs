@@ -8,9 +8,21 @@ namespace IdokladSdk.IntegrationTests.Core.Helpers
 {
     public static class DokladSdkTestsHelper
     {
-        public static async Task<IssuedInvoiceGetModel> CreateDefaultIssuedInvoiceAsync(DokladApi api)
+        public static async Task<IssuedInvoiceGetModel> CreateDefaultIssuedInvoiceAsync(DokladApi api, IssuedInvoicePostModel model = null)
         {
-            var model = new IssuedInvoicePostModel
+            var result = await api.IssuedInvoiceClient.PostAsync(model ?? GetDefaultIssuedInvoicePostModel());
+            return result.Data;
+        }
+
+        public static async Task<ProformaInvoiceGetModel> CreateDefaultProformaInvoiceAsync(DokladApi api, ProformaInvoicePostModel model = null)
+        {
+            var result = await api.ProformaInvoiceClient.PostAsync(model ?? GetDefaultProformaInvoicePostModel());
+            return result.Data;
+        }
+
+        public static IssuedInvoicePostModel GetDefaultIssuedInvoicePostModel()
+        {
+            return new IssuedInvoicePostModel
             {
                 AccountNumber = TestConstants.DefaultAccountNumber,
                 Items = new List<IssuedInvoiceItemPostModel>() { GetDefaultIssuedInvoiceItemModel() },
@@ -25,13 +37,11 @@ namespace IdokladSdk.IntegrationTests.Core.Helpers
                 NumericSequenceId = TestConstants.DefaultIssuedInvoiceNumericSequenceId,
                 PartnerId = TestConstants.DefaultPartnerId,
             };
-            var result = await api.IssuedInvoiceClient.PostAsync(model);
-            return result.Data;
         }
 
-        public static async Task<ProformaInvoiceGetModel> CreateDefaultProformaInvoiceAsync(DokladApi api)
+        public static ProformaInvoicePostModel GetDefaultProformaInvoicePostModel()
         {
-            var model = new ProformaInvoicePostModel
+            return new ProformaInvoicePostModel
             {
                 AccountNumber = TestConstants.DefaultAccountNumber,
                 CurrencyId = TestConstants.DefaultCurrencyId,
@@ -49,9 +59,6 @@ namespace IdokladSdk.IntegrationTests.Core.Helpers
                 PaymentOptionId = TestConstants.DefaultPaymentOptionId,
                 PartnerId = TestConstants.DefaultPartnerId,
             };
-
-            var result = await api.ProformaInvoiceClient.PostAsync(model);
-            return result.Data;
         }
 
         private static IssuedInvoiceItemPostModel GetDefaultIssuedInvoiceItemModel()
