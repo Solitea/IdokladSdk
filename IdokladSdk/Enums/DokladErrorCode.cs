@@ -141,13 +141,18 @@
         NumericSequenceUniqueness = 123,
 
         /// <summary>
-        /// Registration email domain in blacklist.
+        /// Exceeded allowed daily registration count.
         /// </summary>
-        NotAllowedEmailDomain = 124,
+        RegistrationExceeded = 124,
 
         /// <summary>
-        /// Registration email domain not in blacklist or whitelist.
+        /// Registration email domain in blacklist.
         /// </summary>
-        UnknownEmailDomain = 125
+        RegistrationForbidden = 125,
+
+        /// <summary>
+        /// Using iDoklad API is forbidden.
+        /// </summary>
+        ApiForbidden = 126
     }
 }
