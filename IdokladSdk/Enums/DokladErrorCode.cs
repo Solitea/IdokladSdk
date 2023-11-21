@@ -138,6 +138,16 @@
         /// <summary>
         /// Numeric sequence must be unique.
         /// </summary>
-        NumericSequenceUniqueness = 123
+        NumericSequenceUniqueness = 123,
+
+        /// <summary>
+        /// Registration email domain in blacklist.
+        /// </summary>
+        NotAllowedEmailDomain = 124,
+
+        /// <summary>
+        /// Registration email domain not in blacklist or whitelist.
+        /// </summary>
+        UnknownEmailDomain = 125
     }
 }

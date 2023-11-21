@@ -40,11 +40,6 @@ namespace IdokladSdk.Authentication.Extensions
                 throw new IdokladUnavailableException(response);
             }
 
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                throw new IdokladAuthorizationException(response);
-            }
-
             var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             var tokenizer = JsonConvert.DeserializeObject<Tokenizer>(content);
             tokenizer.GrantType = grantType;
