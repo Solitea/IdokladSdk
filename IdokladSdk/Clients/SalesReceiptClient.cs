@@ -18,7 +18,7 @@ namespace IdokladSdk.Clients
         IDeleteRequest,
         IEntityDetail<SalesReceiptDetail>,
         IEntityList<SalesReceiptList>,
-        IDefaultRequest<SalesReceiptPostModel>,
+        IDefaultRequest<SalesReceiptDefaultGetModel>,
         IPatchRequest<SalesReceiptPatchModel, SalesReceiptGetModel>,
         IPostRequest<SalesReceiptPostModel, SalesReceiptGetModel>,
         IPostBatchRequest<SalesReceiptPostModel, SalesReceiptGetModel>,
@@ -37,9 +37,9 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesReceipts";
 
         /// <inheritdoc/>
-        public Task<ApiResult<SalesReceiptPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
+        public Task<ApiResult<SalesReceiptDefaultGetModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync<SalesReceiptPostModel>(cancellationToken);
+            return DefaultAsync<SalesReceiptDefaultGetModel>(cancellationToken);
         }
 
         /// <inheritdoc/>

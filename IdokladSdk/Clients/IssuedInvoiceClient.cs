@@ -23,8 +23,8 @@ namespace IdokladSdk.Clients
         IDeleteRequest,
         IEntityDetail<IssuedInvoiceDetail>,
         IEntityList<IssuedInvoiceList>,
-        IDefaultRequest<IssuedInvoicePostModel>,
-        IDefaultWithIdRequest<IssuedInvoicePostModel>,
+        IDefaultRequest<IssuedInvoiceDefaultGetModel>,
+        IDefaultWithIdRequest<IssuedInvoiceDefaultGetModel>,
         IPostRequest<IssuedInvoicePostModel, IssuedInvoiceGetModel>,
         IPatchRequest<IssuedInvoicePatchModel, IssuedInvoiceGetModel>,
         IRecountRequest<IssuedInvoiceRecountPostModel, IssuedInvoiceRecountGetModel>,
@@ -50,16 +50,16 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<IssuedInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
+        public Task<ApiResult<IssuedInvoiceDefaultGetModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync<IssuedInvoicePostModel>(cancellationToken);
+            return DefaultAsync<IssuedInvoiceDefaultGetModel>(cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<IssuedInvoicePostModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
+        public Task<ApiResult<IssuedInvoiceDefaultGetModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
         {
             var queryParams = new Dictionary<string, string>() { { "templateId", templateId.ToString(CultureInfo.InvariantCulture) } };
-            return DefaultAsync<IssuedInvoicePostModel>(queryParams, cancellationToken);
+            return DefaultAsync<IssuedInvoiceDefaultGetModel>(queryParams, cancellationToken);
         }
 
         /// <inheritdoc />

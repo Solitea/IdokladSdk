@@ -192,5 +192,10 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets vat reverse charge code id.
         /// </summary>
         public int? VatReverseChargeCodeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
     }
 }

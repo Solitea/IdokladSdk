@@ -14,7 +14,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 {
     [TestFixture]
     public class CashVoucherTagTests : TaggableDocumentTestsBase<CashVoucherClient, CashVoucherDetail, CashVoucherList, CashVoucherGetModel,
-        CashVoucherListGetModel, CashVoucherPostModel, CashVoucherPatchModel, CashVoucherExpand, CashVoucherFilter>
+        CashVoucherListGetModel, CashVoucherDefaultGetModel, CashVoucherPostModel, CashVoucherPatchModel, CashVoucherExpand, CashVoucherFilter>
     {
         protected override int EntityWithoutTagsId => 588920;
 
@@ -22,7 +22,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 
         protected override int EntityWithTags2Id => 588919;
 
-        protected override Task<ApiResult<CashVoucherPostModel>> DefaultAsync() => Client.DefaultAsync(MovementType.Issue);
+        protected override Task<ApiResult<CashVoucherDefaultGetModel>> DefaultAsync() => Client.DefaultAsync(MovementType.Issue);
 
         protected override void SetRequiredProperties(CashVoucherPostModel postModel)
         {
