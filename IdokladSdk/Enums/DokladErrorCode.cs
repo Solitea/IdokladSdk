@@ -138,6 +138,21 @@
         /// <summary>
         /// Numeric sequence must be unique.
         /// </summary>
-        NumericSequenceUniqueness = 123
+        NumericSequenceUniqueness = 123,
+
+        /// <summary>
+        /// Exceeded allowed daily registration count.
+        /// </summary>
+        RegistrationExceeded = 124,
+
+        /// <summary>
+        /// Registration email domain in blacklist.
+        /// </summary>
+        RegistrationForbidden = 125,
+
+        /// <summary>
+        /// Using iDoklad API is forbidden.
+        /// </summary>
+        ApiForbidden = 126
     }
 }
