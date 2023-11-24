@@ -153,6 +153,11 @@
         /// <summary>
         /// Using iDoklad API is forbidden.
         /// </summary>
-        ApiForbidden = 126
+        ApiForbidden = 126,
+
+        /// <summary>
+        /// Vat rate type not fond.
+        /// </summary>
+        VatRateType = 127
     }
 }
