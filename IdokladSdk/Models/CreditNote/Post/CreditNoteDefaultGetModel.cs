@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Enums;
+﻿using System;
+using IdokladSdk.Enums;
 
 namespace IdokladSdk.Models.CreditNote.Post
 {
@@ -7,6 +8,11 @@ namespace IdokladSdk.Models.CreditNote.Post
     /// </summary>
     public class CreditNoteDefaultGetModel : CreditNotePostModel
     {
+        /// <summary>
+        /// Gets or sets date of taxing credited invoice.
+        /// </summary>
+        public DateTime DateOfTaxingCreditedInvoice { get; set; }
+
         /// <summary>
         /// Gets or sets discount type.
         /// </summary>
