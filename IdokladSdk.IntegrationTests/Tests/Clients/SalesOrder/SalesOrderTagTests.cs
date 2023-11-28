@@ -11,7 +11,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 {
     [TestFixture]
     public class SalesOrderTagTests : TaggableDocumentTestsBase<SalesOrderClient, SalesOrderDetail, SalesOrderList, SalesOrderGetModel,
-        SalesOrderListGetModel, SalesOrderPostModel, SalesOrderPatchModel, SalesOrderExpand, SalesOrderFilter>
+        SalesOrderListGetModel, SalesOrderDefaultGetModel, SalesOrderPostModel, SalesOrderPatchModel, SalesOrderExpand, SalesOrderFilter>
     {
         protected override int EntityWithoutTagsId => 2300;
 

@@ -13,7 +13,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 {
     [TestFixture]
     public class ReceivedInvoiceTagTests : TaggableDocumentTestsBase<ReceivedInvoiceClient, ReceivedInvoiceDetail, ReceivedInvoiceList, ReceivedInvoiceGetModel,
-        ReceivedInvoiceListGetModel, ReceivedInvoicePostModel, ReceivedInvoicePatchModel, ReceivedInvoiceExpand, ReceivedInvoiceFilter>
+        ReceivedInvoiceListGetModel, ReceivedInvoiceDefaultGetModel, ReceivedInvoicePostModel, ReceivedInvoicePatchModel, ReceivedInvoiceExpand, ReceivedInvoiceFilter>
     {
         protected override int EntityWithoutTagsId => 167066;
 

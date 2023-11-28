@@ -11,7 +11,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 {
     [TestFixture]
     public class SalesReceiptTagTests : TaggableDocumentTestsBase<SalesReceiptClient, SalesReceiptDetail, SalesReceiptList, SalesReceiptGetModel,
-        SalesReceiptListGetModel, SalesReceiptPostModel, SalesReceiptPatchModel, SalesReceiptExpand, SalesReceiptFilter>
+        SalesReceiptListGetModel, SalesReceiptDefaultGetModel, SalesReceiptPostModel, SalesReceiptPatchModel, SalesReceiptExpand, SalesReceiptFilter>
     {
         public const int SalesPosEquipmentId = 12902;
 

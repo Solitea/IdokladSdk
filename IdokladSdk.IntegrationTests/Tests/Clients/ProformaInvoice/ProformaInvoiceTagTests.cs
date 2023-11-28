@@ -14,7 +14,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 {
     [TestFixture]
     public class ProformaInvoiceTagTests : TaggableDocumentTestsBase<ProformaInvoiceClient, ProformaInvoiceDetail, ProformaInvoiceList, ProformaInvoiceGetModel,
-        ProformaInvoiceListGetModel, ProformaInvoicePostModel, ProformaInvoicePatchModel, ProformaInvoiceExpand, ProformaInvoiceFilter>
+        ProformaInvoiceListGetModel, ProformaInvoiceDefaultGetModel, ProformaInvoicePostModel, ProformaInvoicePatchModel, ProformaInvoiceExpand, ProformaInvoiceFilter>
     {
         protected override int EntityWithoutTagsId => 921865;
 
