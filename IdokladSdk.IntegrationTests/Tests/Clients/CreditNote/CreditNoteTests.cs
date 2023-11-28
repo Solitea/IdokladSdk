@@ -29,7 +29,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 
         private const int DeliveryAddressId2 = 12;
 
-        private CreditNoteDefaultPostModel _creditNotePostModel;
+        private CreditNoteDefaultGetModel _creditNotePostModel;
 
         private CreditNotePostModel _creditNoteToOffsetPostModel;
 

@@ -12,11 +12,11 @@ namespace IdokladSdk.Clients
     /// </summary>
     public class ReceivedInvoiceClient :
         BaseClient,
-        ICopyRequest<ReceivedInvoicePostModel>,
+        ICopyRequest<ReceivedInvoiceDefaultGetModel>,
         IDeleteRequest,
         IEntityList<ReceivedInvoiceList>,
         IEntityDetail<ReceivedInvoiceDetail>,
-        IDefaultRequest<ReceivedInvoicePostModel>,
+        IDefaultRequest<ReceivedInvoiceDefaultGetModel>,
         IPostRequest<ReceivedInvoicePostModel, ReceivedInvoiceGetModel>,
         IPatchRequest<ReceivedInvoicePatchModel, ReceivedInvoiceGetModel>,
         IRecountRequest<ReceivedInvoiceRecountPostModel, ReceivedInvoiceRecountGetModel>
@@ -34,16 +34,16 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/ReceivedInvoices";
 
         /// <inheritdoc />
-        public Task<ApiResult<ReceivedInvoicePostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<ReceivedInvoiceDefaultGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return GetAsync<ReceivedInvoicePostModel>(resource, null, cancellationToken);
+            return GetAsync<ReceivedInvoiceDefaultGetModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<ReceivedInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
+        public Task<ApiResult<ReceivedInvoiceDefaultGetModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync<ReceivedInvoicePostModel>(cancellationToken);
+            return DefaultAsync<ReceivedInvoiceDefaultGetModel>(cancellationToken);
         }
 
         /// <inheritdoc />

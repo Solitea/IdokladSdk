@@ -18,12 +18,12 @@ namespace IdokladSdk.Clients
     /// </summary>
     public class SalesOrderClient :
         BaseClient,
-        ICopyRequest<SalesOrderPostModel>,
+        ICopyRequest<SalesOrderDefaultGetModel>,
         IDeleteRequest,
         IEntityDetail<SalesOrderDetail>,
         IEntityList<SalesOrderList>,
-        IDefaultRequest<SalesOrderPostModel>,
-        IDefaultWithIdRequest<SalesOrderPostModel>,
+        IDefaultRequest<SalesOrderDefaultGetModel>,
+        IDefaultWithIdRequest<SalesOrderDefaultGetModel>,
         IPatchRequest<SalesOrderPatchModel, SalesOrderGetModel>,
         IPostRequest<SalesOrderPostModel, SalesOrderGetModel>,
         IRecountRequest<SalesOrderRecountPostModel, SalesOrderRecountGetModel>
@@ -41,23 +41,23 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesOrders";
 
         /// <inheritdoc />
-        public Task<ApiResult<SalesOrderPostModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<SalesOrderDefaultGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return GetAsync<SalesOrderPostModel>(resource, null, cancellationToken);
+            return GetAsync<SalesOrderDefaultGetModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public Task<ApiResult<SalesOrderPostModel>> DefaultAsync(CancellationToken cancellationToken = default)
+        public Task<ApiResult<SalesOrderDefaultGetModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync<SalesOrderPostModel>(cancellationToken);
+            return DefaultAsync<SalesOrderDefaultGetModel>(cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<SalesOrderPostModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
+        public Task<ApiResult<SalesOrderDefaultGetModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
         {
             var queryParams = new Dictionary<string, string>() { { "templateId", templateId.ToString(CultureInfo.InvariantCulture) } };
-            return DefaultAsync<SalesOrderPostModel>(queryParams, cancellationToken);
+            return DefaultAsync<SalesOrderDefaultGetModel>(queryParams, cancellationToken);
         }
 
         /// <inheritdoc/>

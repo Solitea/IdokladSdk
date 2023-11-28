@@ -14,7 +14,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 {
     [TestFixture]
     public class IssuedInvoiceTagTests : TaggableDocumentTestsBase<IssuedInvoiceClient, IssuedInvoiceDetail, IssuedInvoiceList, IssuedInvoiceGetModel,
-        IssuedInvoiceListGetModel, IssuedInvoicePostModel, IssuedInvoicePatchModel, IssuedInvoiceExpand, IssuedInvoiceFilter>
+        IssuedInvoiceListGetModel, IssuedInvoiceDefaultGetModel, IssuedInvoicePostModel, IssuedInvoicePatchModel, IssuedInvoiceExpand, IssuedInvoiceFilter>
     {
         public const int IssuedInvoiceWithoutTagsId = 921653;
 

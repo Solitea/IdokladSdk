@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.RegisteredSale;
 
 namespace IdokladSdk.Models.SalesReceipt.Copy
@@ -95,5 +96,10 @@ namespace IdokladSdk.Models.SalesReceipt.Copy
         /// Gets or sets tags.
         /// </summary>
         public List<int> Tags { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
     }
 }

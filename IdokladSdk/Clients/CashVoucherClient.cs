@@ -37,13 +37,13 @@ namespace IdokladSdk.Clients
         /// </summary>
         /// <param name="movementType">Movement type.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherPostModel"/>.</returns>
-        public async Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, CancellationToken cancellationToken = default)
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherDefaultGetModel"/>.</returns>
+        public async Task<ApiResult<CashVoucherDefaultGetModel>> DefaultAsync(MovementType movementType, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Default/{movementType}";
             var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken).ConfigureAwait(false);
 
-            return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken).ConfigureAwait(false);
+            return await ExecuteAsync<CashVoucherDefaultGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -53,13 +53,13 @@ namespace IdokladSdk.Clients
         /// <param name="invoiceType">Invoice type.</param>
         /// <param name="invoiceId">Id of invoice.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherPostModel"/>.</returns>
-        public async Task<ApiResult<CashVoucherPostModel>> DefaultAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherDefaultGetModel"/>.</returns>
+        public async Task<ApiResult<CashVoucherDefaultGetModel>> DefaultAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/Default/{movementType}/{invoiceType}/{invoiceId}";
             var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken).ConfigureAwait(false);
 
-            return await ExecuteAsync<CashVoucherPostModel>(request, cancellationToken).ConfigureAwait(false);
+            return await ExecuteAsync<CashVoucherDefaultGetModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

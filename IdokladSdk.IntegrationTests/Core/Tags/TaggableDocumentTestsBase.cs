@@ -13,7 +13,7 @@ using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Core.Tags
 {
-    public abstract class TaggableDocumentTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TPostModel, TPatchModel, TExpandModel, TFilterModel>
+    public abstract class TaggableDocumentTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TDefaultModel, TPostModel, TPatchModel, TExpandModel, TFilterModel>
         : TaggableDocumentGetTestsBase<TClient, TDetail, TList, TGetModel, TGetListModel, TExpandModel, TFilterModel>
         where TClient : BaseClient, IEntityDetail<TDetail>, IEntityList<TList>
         where TDetail : class, IGetDetailRequest<TGetModel>, IExpandable<TDetail, TExpandModel>
@@ -21,6 +21,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
         where TGetModel : IEntityId, new()
         where TGetListModel : IEntityId, new()
         where TPostModel : class, new()
+        where TDefaultModel : class, TPostModel, new()
         where TPatchModel : IEntityId, new()
     {
         protected const int PartnerId = 323824;
@@ -198,7 +199,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             AssertHasTags(GetTags(result), new List<int> { Tag1Id });
         }
 
-        protected virtual Task<ApiResult<TPostModel>> DefaultAsync() => ((IDefaultRequest<TPostModel>)Client).DefaultAsync();
+        protected virtual Task<ApiResult<TDefaultModel>> DefaultAsync() => ((IDefaultRequest<TDefaultModel>)Client).DefaultAsync();
 
         protected virtual Task<ApiResult<bool>> DeleteAsync(int id) => ((IDeleteRequest)Client).DeleteAsync(id);
 

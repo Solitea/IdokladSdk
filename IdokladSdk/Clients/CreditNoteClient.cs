@@ -18,7 +18,7 @@ namespace IdokladSdk.Clients
         IDeleteRequest,
         IEntityDetail<CreditNoteDetail>,
         IEntityList<CreditNoteList>,
-        IDefaultWithIdRequest<CreditNoteDefaultPostModel>,
+        IDefaultWithIdRequest<CreditNoteDefaultGetModel>,
         IPostRequest<CreditNotePostModel, CreditNoteGetModel>,
         IPatchRequest<CreditNotePatchModel, CreditNoteGetModel>,
         IRecountRequest<CreditNoteRecountPostModel, CreditNoteRecountGetModel>
@@ -36,9 +36,9 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/CreditNotes";
 
         /// <inheritdoc />
-        public Task<ApiResult<CreditNoteDefaultPostModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<CreditNoteDefaultGetModel>> DefaultAsync(int id, CancellationToken cancellationToken = default)
         {
-            return DefaultAsync<CreditNoteDefaultPostModel>(id, cancellationToken);
+            return DefaultAsync<CreditNoteDefaultGetModel>(id, cancellationToken);
         }
 
         /// <inheritdoc />

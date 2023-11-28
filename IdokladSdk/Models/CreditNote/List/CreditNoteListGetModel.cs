@@ -73,6 +73,11 @@ namespace IdokladSdk.Models.CreditNote
         public DateTime DateOfTaxing { get; set; }
 
         /// <summary>
+        /// Gets or sets date of taxing credited invoice.
+        /// </summary>
+        public DateTime DateOfTaxingCreditedInvoice { get; set; }
+
+        /// <summary>
         /// Gets or sets date of VAT application.
         /// </summary>
         public DateTime DateOfVatApplication { get; set; }

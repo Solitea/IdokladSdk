@@ -17,8 +17,8 @@ namespace IdokladSdk.Clients
     /// </summary>
     public class ProformaInvoiceClient : BaseClient,
         ICopyRequest<ProformaInvoiceCopyGetModel>,
-        IDefaultRequest<ProformaInvoicePostModel>,
-        IDefaultWithIdRequest<ProformaInvoicePostModel>,
+        IDefaultRequest<ProformaInvoiceDefaultGetModel>,
+        IDefaultWithIdRequest<ProformaInvoiceDefaultGetModel>,
         IDeleteRequest,
         IEntityDetail<ProformaInvoiceDetail>,
         IEntityList<ProformaInvoiceList>,
@@ -47,16 +47,16 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<ProformaInvoicePostModel>> DefaultAsync(CancellationToken cancellationToken = default)
+        public Task<ApiResult<ProformaInvoiceDefaultGetModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
-            return DefaultAsync<ProformaInvoicePostModel>(cancellationToken);
+            return DefaultAsync<ProformaInvoiceDefaultGetModel>(cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<ApiResult<ProformaInvoicePostModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
+        public Task<ApiResult<ProformaInvoiceDefaultGetModel>> DefaultAsync(int templateId, CancellationToken cancellationToken = default)
         {
             var queryParams = new Dictionary<string, string>() { { "templateId", templateId.ToString(CultureInfo.InvariantCulture) } };
-            return DefaultAsync<ProformaInvoicePostModel>(queryParams, cancellationToken);
+            return DefaultAsync<ProformaInvoiceDefaultGetModel>(queryParams, cancellationToken);
         }
 
         /// <inheritdoc />

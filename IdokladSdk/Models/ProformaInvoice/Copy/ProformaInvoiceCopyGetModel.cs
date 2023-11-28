@@ -182,5 +182,10 @@ namespace IdokladSdk.Models.ProformaInvoice
         /// Gets or sets attribute for application of VAT based on payments.
         /// </summary>
         public VatOnPayStatus VatOnPayStatus { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
     }
 }
