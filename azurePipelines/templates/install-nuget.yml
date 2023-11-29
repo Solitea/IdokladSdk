@@ -1,4 +1,5 @@
-task: NuGetToolInstaller@1
-  displayName: Install Nuget
-  inputs:
-    versionSpec: '6.8.0'
+steps:
+  - task: NuGetToolInstaller@1
+    displayName: Install Nuget
+    inputs:
+      versionSpec: '6.8.0'
