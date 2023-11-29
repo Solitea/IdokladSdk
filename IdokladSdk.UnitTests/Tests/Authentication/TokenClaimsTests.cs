@@ -19,7 +19,7 @@ namespace IdokladSdk.UnitTests.Tests.Authentication
             var parseLicenceStatus = tokenClaims.LicenceStatus;
 
             // Assert
-            Assert.AreEqual(licenceStatus, parseLicenceStatus);
+            Assert.That(licenceStatus, Is.EqualTo(parseLicenceStatus));
         }
 
         [TestCaseSource(nameof(GetUserRightsTestCases))]
@@ -32,7 +32,7 @@ namespace IdokladSdk.UnitTests.Tests.Authentication
             var parseUserRight = tokenClaims.UserRight;
 
             // Assert
-            Assert.AreEqual(userRight, parseUserRight);
+            Assert.That(userRight, Is.EqualTo(parseUserRight));
         }
 
         private static object[] GetLicenceStatusTestCases()

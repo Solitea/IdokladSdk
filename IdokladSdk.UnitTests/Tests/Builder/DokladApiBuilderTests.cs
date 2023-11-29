@@ -44,8 +44,8 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                 .Build();
 
             // Assert
-            Assert.AreEqual(defaultConfiguration.ApiUrl.ToString(), api.ApiContext.Configuration.ApiUrl.ToString());
-            Assert.AreEqual(defaultConfiguration.IdentityServerTokenUrl.ToString(), api.ApiContext.Configuration.IdentityServerTokenUrl.ToString());
+            Assert.That(defaultConfiguration.ApiUrl.ToString(), Is.EqualTo(api.ApiContext.Configuration.ApiUrl.ToString()));
+            Assert.That(defaultConfiguration.IdentityServerTokenUrl.ToString(), Is.EqualTo(api.ApiContext.Configuration.IdentityServerTokenUrl.ToString()));
         }
 
         [Test]
@@ -62,10 +62,10 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                 .Build();
 
             // Assert
-            Assert.AreNotEqual(defaultConfiguration.ApiUrl.ToString(), api.ApiContext.Configuration.ApiUrl.ToString());
-            Assert.AreNotEqual(defaultConfiguration.IdentityServerTokenUrl.ToString(), api.ApiContext.Configuration.IdentityServerTokenUrl.ToString());
-            Assert.AreEqual(apiUrl, api.ApiContext.Configuration.ApiUrl.ToString());
-            Assert.AreEqual(identityServerUrl, api.ApiContext.Configuration.IdentityServerTokenUrl.ToString());
+            Assert.That(defaultConfiguration.ApiUrl.ToString(), Is.Not.EqualTo(api.ApiContext.Configuration.ApiUrl.ToString()));
+            Assert.That(defaultConfiguration.IdentityServerTokenUrl.ToString(), Is.Not.EqualTo(api.ApiContext.Configuration.IdentityServerTokenUrl.ToString()));
+            Assert.That(apiUrl, Is.EqualTo(api.ApiContext.Configuration.ApiUrl.ToString()));
+            Assert.That(identityServerUrl, Is.EqualTo(api.ApiContext.Configuration.IdentityServerTokenUrl.ToString()));
         }
 
         [TestCase(Language.Cz, "cs-CZ")]
@@ -85,7 +85,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                 .Build();
 
             // Assert
-            Assert.AreEqual(languageCode, api.ApiContext.Headers["Accept-Language"]);
+            Assert.That(languageCode, Is.EqualTo(api.ApiContext.Headers["Accept-Language"]));
         }
 
         [Test]
@@ -107,9 +107,9 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                 .Build();
 
             // Assert
-            Assert.AreEqual(apiResultHandler, api.ApiContext.ApiResultHandler);
-            Assert.AreNotEqual(apiResultHandler2, api.ApiContext.ApiResultHandler);
-            Assert.AreEqual(apiBatchResultHandler, api.ApiContext.ApiBatchResultHandler);
+            Assert.That(apiResultHandler, Is.EqualTo(api.ApiContext.ApiResultHandler));
+            Assert.That(apiResultHandler2, Is.Not.EqualTo(api.ApiContext.ApiResultHandler));
+            Assert.That(apiBatchResultHandler, Is.EqualTo(api.ApiContext.ApiBatchResultHandler));
         }
 
         [Test]

@@ -32,7 +32,7 @@ namespace IdokladSdk.UnitTests.Tests.Serialization
             var json2 = Serialize(entity2);
 
             // Assert
-            Assert.AreEqual(json1, json2);
+            Assert.That(json2, Is.EqualTo(json1));
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace IdokladSdk.UnitTests.Tests.Serialization
             var json = Serialize(entity);
 
             // Assert
-            Assert.False(json.Contains(nameof(TestEntity.OtherEntityId)));
+            Assert.That(json.Contains(nameof(TestEntity.OtherEntityId)), Is.False);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace IdokladSdk.UnitTests.Tests.Serialization
             var json = Serialize(entity);
 
             // Assert
-            Assert.True(json.Contains(nameof(TestEntity.OtherEntityId)));
+            Assert.That(json.Contains(nameof(TestEntity.OtherEntityId)), Is.True);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace IdokladSdk.UnitTests.Tests.Serialization
             var json = Serialize(entity);
 
             // Assert
-            Assert.True(json.Contains(nameof(TestEntity.OtherEntityId)));
+            Assert.That(json.Contains(nameof(TestEntity.OtherEntityId)), Is.True);
         }
 
         private string Serialize(object entity)

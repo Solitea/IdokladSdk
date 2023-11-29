@@ -21,8 +21,8 @@ namespace IdokladSdk.UnitTests.Tests.SourceGenerator
             var unnecessaryModels = Constants.RequiredFields.Keys.Except(models);
 
             // Assert
-            Assert.AreEqual(0, missingModels.Count(), "Some models missing in dictionary");
-            Assert.AreEqual(0, unnecessaryModels.Count(), "Some models are unnecessary in dictionary");
+            Assert.That(missingModels.Count(), Is.EqualTo(0), "Some models missing in dictionary");
+            Assert.That(unnecessaryModels.Count(), Is.EqualTo(0), "Some models are unnecessary in dictionary");
         }
 
         [Test]
@@ -42,8 +42,8 @@ namespace IdokladSdk.UnitTests.Tests.SourceGenerator
                 var unnecessaryModels = Constants.RequiredFields[model.Type].Except(model.Properties);
 
                 // Assert
-                Assert.AreEqual(0, missingModels.Count(), "Some properties missing in dictionary");
-                Assert.AreEqual(0, unnecessaryModels.Count(), "Some properties are unnecessary in dictionary");
+                Assert.That(missingModels.Count(), Is.EqualTo(0), "Some properties missing in dictionary");
+                Assert.That(unnecessaryModels.Count(), Is.EqualTo(0), "Some properties are unnecessary in dictionary");
             }
         }
     }

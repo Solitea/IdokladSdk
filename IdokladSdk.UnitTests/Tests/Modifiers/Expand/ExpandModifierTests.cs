@@ -16,7 +16,7 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Expand
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.IsNull(queryParams);
+            Assert.That(queryParams, Is.Null);
         }
 
         [Test]
@@ -30,10 +30,10 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Expand
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("include", out var expand));
+            Assert.That(1, Is.EqualTo(queryParams.Count));
+            Assert.That(queryParams.TryGetValue("include", out var expand), Is.True);
             var expandString = "TestExpandModel1";
-            Assert.AreEqual(expandString, expand);
+            Assert.That(expandString, Is.EqualTo(expand));
         }
 
         [Test]
@@ -47,10 +47,10 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Expand
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("include", out var expand));
+            Assert.That(1, Is.EqualTo(queryParams.Count));
+            Assert.That(queryParams.TryGetValue("include", out var expand), Is.True);
             var expandString = "TestExpandModel1(TestExpandModel2)";
-            Assert.AreEqual(expandString, expand);
+            Assert.That(expandString, Is.EqualTo(expand));
         }
 
         [Test]
@@ -65,10 +65,10 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Expand
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("include", out var expand));
+            Assert.That(1, Is.EqualTo(queryParams.Count));
+            Assert.That(queryParams.TryGetValue("include", out var expand), Is.True);
             var expandString = "TestExpandModel2,TestExpandModel1";
-            Assert.AreEqual(expandString, expand);
+            Assert.That(expandString, Is.EqualTo(expand));
         }
 
         [Test]
@@ -83,10 +83,10 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Expand
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("include", out var expand));
+            Assert.That(1, Is.EqualTo(queryParams.Count));
+            Assert.That(queryParams.TryGetValue("include", out var expand), Is.True);
             var expandString = "TestExpandModel1(TestExpandModel2,TestExpandModel3)";
-            Assert.AreEqual(expandString, expand);
+            Assert.That(expandString, Is.EqualTo(expand));
         }
 
         [Test]
@@ -101,10 +101,10 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Expand
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("include", out var expand));
+            Assert.That(1, Is.EqualTo(queryParams.Count));
+            Assert.That(queryParams.TryGetValue("include", out var expand), Is.True);
             var expandString = "TestExpandModel1(TestExpandModel3,TestExpandModel2(TestExpandModel3))";
-            Assert.AreEqual(expandString, expand);
+            Assert.That(expandString, Is.EqualTo(expand));
         }
     }
 }

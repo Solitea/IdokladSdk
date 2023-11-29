@@ -20,7 +20,7 @@ namespace IdokladSdk.UnitTests.Tests.Authentication
             };
 
             // Assert
-            Assert.IsNull(tokenizer.Claims);
+            Assert.That(tokenizer.Claims, Is.Null);
         }
     }
 }

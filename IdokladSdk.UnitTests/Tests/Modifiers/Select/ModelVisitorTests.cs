@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Requests.Core.Modifiers.Select.Common;
 using NUnit.Framework;
@@ -33,19 +31,19 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Select
             var memberNames = visitor.MemberNames.ToList();
 
             // Assert
-            Assert.AreEqual(12, memberNames.Count);
-            Assert.Contains("CompanyName", memberNames);
-            Assert.Contains("Country", memberNames);
-            Assert.Contains("Country.Currency", memberNames);
-            Assert.Contains("Country.Currency.Name", memberNames);
-            Assert.Contains("Bank", memberNames);
-            Assert.Contains("Bank.Name", memberNames);
-            Assert.Contains("Firstname", memberNames);
-            Assert.Contains("Surname", memberNames);
-            Assert.Contains("Street", memberNames);
-            Assert.Contains("City", memberNames);
-            Assert.Contains("PostalCode", memberNames);
-            Assert.Contains("DiscountPercentage", memberNames);
+            Assert.That(memberNames.Count, Is.EqualTo(12));
+            Assert.That(memberNames, Contains.Item("CompanyName"));
+            Assert.That(memberNames, Contains.Item("Country"));
+            Assert.That(memberNames, Contains.Item("Country.Currency"));
+            Assert.That(memberNames, Contains.Item("Country.Currency.Name"));
+            Assert.That(memberNames, Contains.Item("Bank"));
+            Assert.That(memberNames, Contains.Item("Bank.Name"));
+            Assert.That(memberNames, Contains.Item("Firstname"));
+            Assert.That(memberNames, Contains.Item("Surname"));
+            Assert.That(memberNames, Contains.Item("Street"));
+            Assert.That(memberNames, Contains.Item("City"));
+            Assert.That(memberNames, Contains.Item("PostalCode"));
+            Assert.That(memberNames, Contains.Item("DiscountPercentage"));
         }
     }
 }
