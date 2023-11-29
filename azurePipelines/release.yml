@@ -21,10 +21,7 @@ stages:
     displayName: Build and test package
     pool: 'iDokladBuild'
     steps:
-    - task: NuGetToolInstaller@1
-      displayName: Install Nuget
-      inputs:
-        versionSpec: '5.6.0'
+    - template: templates/install-nuget.yml
         
     - task: FileTransform@2
       displayName: 'Substitute settings'

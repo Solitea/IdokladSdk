@@ -21,10 +21,7 @@ stages:
     workspace:
       clean: resources
     steps:
-    - task: NuGetToolInstaller@1
-      displayName: Install Nuget
-      inputs:
-        versionSpec: '6.0.0'
+    - template: templates/install-nuget.yml
 
     - task: FileTransform@2
       displayName: 'Substitute settings'
