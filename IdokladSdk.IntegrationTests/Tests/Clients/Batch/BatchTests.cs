@@ -49,7 +49,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             {
                 foreach (var result in results)
                 {
-                    Assert.AreEqual(result.Exported, exportedState);
+                    Assert.That(result.Exported, Is.EqualTo(exportedState));
                 }
             });
         }
@@ -79,7 +79,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             {
                 foreach (var result in results)
                 {
-                    Assert.AreEqual(result.Exported, exportedState);
+                    Assert.That(result.Exported, Is.EqualTo(exportedState));
                 }
             });
         }

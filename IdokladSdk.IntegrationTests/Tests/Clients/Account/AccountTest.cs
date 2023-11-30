@@ -46,12 +46,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
             var agenda = data.Items.FirstOrDefault();
-            Assert.NotNull(agenda);
-            Assert.AreEqual(AgendaId, agenda.Id);
-            Assert.NotNull(agenda.Contact);
-            Assert.AreEqual(Street, agenda.Contact.Street);
+            Assert.That(agenda, Is.Not.Null);
+            Assert.That(agenda.Id, Is.EqualTo(AgendaId));
+            Assert.That(agenda.Contact, Is.Not.Null);
+            Assert.That(agenda.Contact.Street, Is.EqualTo(Street));
         }
 
         [Test]
@@ -85,11 +85,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.Detail(AgendaId).GetAsync().AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.AreEqual(AgendaId, data.Id);
-            Assert.AreEqual("Solitea Česká republika, a.s.", data.Name);
-            Assert.NotNull(data.Contact);
-            Assert.AreEqual(Street, data.Contact.Street);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Id, Is.EqualTo(AgendaId));
+            Assert.That(data.Name, Is.EqualTo("Solitea Česká republika, a.s."));
+            Assert.That(data.Contact, Is.Not.Null);
+            Assert.That(data.Contact.Street, Is.EqualTo(Street));
             Assert.That(data.HasVatRegimeOss, Is.True);
         }
 
@@ -100,11 +100,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.Current().GetAsync().AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.AreEqual(AgendaId, data.Id);
-            Assert.AreEqual("Solitea Česká republika, a.s.", data.Name);
-            Assert.NotNull(data.Contact);
-            Assert.AreEqual(Street, data.Contact.Street);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Id, Is.EqualTo(AgendaId));
+            Assert.That(data.Name, Is.EqualTo("Solitea Česká republika, a.s."));
+            Assert.That(data.Contact, Is.Not.Null);
+            Assert.That(data.Contact.Street, Is.EqualTo(Street));
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.DeleteRequestAsync(model).AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -161,15 +161,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.NotNull(data.AutomaticPairPaymentsSettings);
-            Assert.True(data.BankAccounts.Any());
-            Assert.True(data.CashRegisters.Any());
-            Assert.NotNull(data.Contact);
-            Assert.NotNull(data.PurchaseSettings);
-            Assert.NotNull(data.SalesSettings);
-            Assert.NotNull(data.SendReminderSettings);
-            Assert.NotNull(data.Subscription);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.AutomaticPairPaymentsSettings, Is.Not.Null);
+            Assert.That(data.BankAccounts.Any(), Is.True);
+            Assert.That(data.CashRegisters.Any(), Is.True);
+            Assert.That(data.Contact, Is.Not.Null);
+            Assert.That(data.PurchaseSettings, Is.Not.Null);
+            Assert.That(data.SalesSettings, Is.Not.Null);
+            Assert.That(data.SendReminderSettings, Is.Not.Null);
+            Assert.That(data.Subscription, Is.Not.Null);
         }
 
         [Test]
@@ -201,8 +201,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = (await _accountClient.Agendas.UpdateAsync(model)).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.NotNull(data.Contact);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Contact, Is.Not.Null);
             Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
             Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
         }
@@ -241,8 +241,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.GetLogoAsync().AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.NotNull(data.FileBytes);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.FileBytes, Is.Not.Null);
         }
 
         [Test]
@@ -252,8 +252,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.GetSignatureAsync().AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.NotNull(data.FileBytes);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.FileBytes, Is.Not.Null);
         }
 
         [Test]
@@ -263,7 +263,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.DeleteLogoAsync().AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -273,7 +273,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.DeleteSignatureAsync().AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -291,7 +291,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.UploadLogoAsync(model).AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -308,7 +308,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Agendas.UploadSignatureAsync(model).AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -318,10 +318,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Users.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
             var user = data.Items.FirstOrDefault();
-            Assert.NotNull(user);
-            Assert.AreEqual(UserId, user.Id);
+            Assert.That(user, Is.Not.Null);
+            Assert.That(user.Id, Is.EqualTo(UserId));
         }
 
         [Test]
@@ -331,10 +331,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Users.Detail(UserId).GetAsync().AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.AreEqual(UserId, data.Id);
-            Assert.AreEqual("qquc@furusato.tokyo", data.Username);
-            Assert.AreEqual(UserRight.Admin, data.Rights);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Id, Is.EqualTo(UserId));
+            Assert.That(data.Username, Is.EqualTo("qquc@furusato.tokyo"));
+            Assert.That(data.Rights, Is.EqualTo(UserRight.Admin));
         }
 
         [Test]
@@ -344,10 +344,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Users.Current().GetAsync().AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.AreEqual(UserId, data.Id);
-            Assert.AreEqual("qquc@furusato.tokyo", data.Username);
-            Assert.AreEqual(UserRight.Admin, data.Rights);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Id, Is.EqualTo(UserId));
+            Assert.That(data.Username, Is.EqualTo("qquc@furusato.tokyo"));
+            Assert.That(data.Rights, Is.EqualTo(UserRight.Admin));
         }
 
         [Test]
@@ -360,7 +360,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             var data = await _accountClient.Users.UpdateAsync(model).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
+            Assert.That(data, Is.Not.Null);
         }
 
         [Test]
@@ -372,8 +372,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
                 .GetAsync().AssertResult();
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Greater(result.TotalItems, 0);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.TotalItems, Is.GreaterThan(0));
         }
 
         private async Task ResetAgenda()

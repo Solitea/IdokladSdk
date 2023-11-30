@@ -39,11 +39,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             var data = (await _bankStatementClient.List().GetAsync()).AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
             var bankStatement = data.Items.FirstOrDefault();
-            Assert.NotNull(bankStatement);
-            Assert.AreEqual(BankStatementId, bankStatement.Id);
-            Assert.AreEqual(100, bankStatement.Items.First().Prices.PaidAmount);
+            Assert.That(bankStatement, Is.Not.Null);
+            Assert.That(bankStatement.Id, Is.EqualTo(BankStatementId));
+            Assert.That(bankStatement.Items.First().Prices.PaidAmount, Is.EqualTo(100));
         }
 
         [Test]
@@ -53,8 +53,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             var data = (await _bankStatementClient.Detail(BankStatementId).GetAsync()).AssertResult();
 
             // Assert
-            Assert.AreEqual(BankStatementId, data.Id);
-            Assert.AreEqual(100, data.Items.First().Prices.PaidAmount);
+            Assert.That(data.Id, Is.EqualTo(BankStatementId));
+            Assert.That(data.Items.First().Prices.PaidAmount, Is.EqualTo(100));
         }
 
         [Test]
@@ -82,12 +82,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             _bankStatementId = data.CreatedBankStatement.Id;
 
             // Assert
-            Assert.IsTrue(data.WasPaired);
-            Assert.AreEqual(invoice.Id, data.PairedInvoiceId);
+            Assert.That(data.WasPaired, Is.True);
+            Assert.That(data.PairedInvoiceId, Is.EqualTo(invoice.Id));
             var item = data.CreatedBankStatement.Items.First();
-            Assert.AreEqual(invoice.VariableSymbol, item.VariableSymbol);
-            Assert.AreEqual(invoice.Prices.TotalWithVat, item.Prices.PaidAmount);
-            Assert.IsNotNull(data.CreatedBankStatement.Tags.FirstOrDefault(t => t.TagId == Tag1Id));
+            Assert.That(item.VariableSymbol, Is.EqualTo(invoice.VariableSymbol));
+            Assert.That(item.Prices.PaidAmount, Is.EqualTo(invoice.Prices.TotalWithVat));
+            Assert.That(data.CreatedBankStatement.Tags.FirstOrDefault(t => t.TagId == Tag1Id), Is.Not.Null);
         }
 
         [Test]
@@ -98,14 +98,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             var data = (await _bankStatementClient.DeleteAsync(_bankStatementId)).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
 
         [OneTimeTearDown]
         public async Task TearDown()
         {
             var result = await _issuedInvoiceClient.DeleteAsync(_invoiceId).AssertResult();
-            Assert.IsTrue(result, "Invoice not deleted");
+            Assert.That(result, Is.True, "Invoice not deleted");
         }
 
         private async Task<IssuedInvoiceGetModel> CreateInvoiceAsync()

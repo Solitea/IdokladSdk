@@ -21,10 +21,10 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
         /// <returns>Method assert result.</returns>
         public static T AssertResult<T>(this ApiResult<T> result)
         {
-            Assert.IsInstanceOf<ApiResult<T>>(result);
-            Assert.IsTrue(result.IsSuccess, result.Message);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.NotNull(result.Data);
+            Assert.That(result, Is.InstanceOf<ApiResult<T>>());
+            Assert.That(result.IsSuccess, Is.True, result.Message);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(result.Data, Is.Not.Null);
             return result.Data;
         }
 
@@ -38,10 +38,10 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
         {
             var response = await result;
 
-            Assert.IsInstanceOf<ApiResult<T>>(response);
-            Assert.IsTrue(response.IsSuccess, response.Message);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.NotNull(response.Data);
+            Assert.That(response, Is.InstanceOf<ApiResult<T>>());
+            Assert.That(response.IsSuccess, Is.True, response.Message);
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(response.Data, Is.Not.Null);
             return response.Data;
         }
 
@@ -54,8 +54,8 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
         public static async Task<IEnumerable<T>> AssertResult<T>(this Task<ApiBatchResult<T>> batchResult)
         {
             var result = await batchResult;
-            Assert.IsInstanceOf<ApiBatchResult<T>>(result);
-            Assert.AreEqual(result.Status, BatchResultType.Success);
+            Assert.That(result, Is.InstanceOf<ApiBatchResult<T>>());
+            Assert.That(result.Status, Is.EqualTo(BatchResultType.Success));
 
             Assert.Multiple(() =>
             {

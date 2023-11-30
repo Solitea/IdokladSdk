@@ -78,7 +78,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             _newContactId = data.Id;
 
             // Assert
-            Assert.Greater(data.Id, 0);
+            Assert.That(data.Id, Is.GreaterThan(0));
             AssertGetModel(data);
         }
 
@@ -90,7 +90,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             var data = await ContactClient.Detail(_newContactId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_newContactId, data.Id);
+            Assert.That(data.Id, Is.EqualTo(_newContactId));
             AssertGetModel(data);
         }
 
@@ -146,32 +146,32 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             _dateLastChange = data.Metadata.DateLastChange;
 
             // Assert
-            Assert.AreEqual(contactPatchModel.Id, data.Id);
-            Assert.AreEqual(contactPatchModel.AccountNumber, data.AccountNumber);
-            Assert.AreEqual(contactPatchModel.BankId.Value, data.BankId);
-            Assert.AreEqual(contactPatchModel.City, data.City);
-            Assert.AreEqual(contactPatchModel.CompanyName, data.CompanyName);
-            Assert.AreEqual(contactPatchModel.CountryId.Value, data.CountryId);
-            Assert.AreEqual(contactPatchModel.DefaultInvoiceMaturity.Value, data.DefaultInvoiceMaturity);
+            Assert.That(data.Id, Is.EqualTo(contactPatchModel.Id));
+            Assert.That(data.AccountNumber, Is.EqualTo(contactPatchModel.AccountNumber));
+            Assert.That(data.BankId, Is.EqualTo(contactPatchModel.BankId.Value));
+            Assert.That(data.City, Is.EqualTo(contactPatchModel.City));
+            Assert.That(data.CompanyName, Is.EqualTo(contactPatchModel.CompanyName));
+            Assert.That(data.CountryId, Is.EqualTo(contactPatchModel.CountryId.Value));
+            Assert.That(data.DefaultInvoiceMaturity, Is.EqualTo(contactPatchModel.DefaultInvoiceMaturity.Value));
             AssertDeliveryAddress(data.DeliveryAddresses.First(), contactPatchModel.DeliveryAddresses.First());
-            Assert.AreEqual(contactPatchModel.DiscountPercentage, data.DiscountPercentage);
-            Assert.AreEqual(contactPatchModel.Email, data.Email);
-            Assert.AreEqual(contactPatchModel.Fax, data.Fax);
-            Assert.AreEqual(contactPatchModel.Firstname, data.Firstname);
-            Assert.AreEqual(contactPatchModel.Iban, data.Iban);
-            Assert.AreEqual(contactPatchModel.IdentificationNumber, data.IdentificationNumber);
-            Assert.AreEqual(false, data.IsRegisteredForVatOnPay);
-            Assert.AreEqual(contactPatchModel.Mobile, data.Mobile);
-            Assert.AreEqual(contactPatchModel.Note, data.Note);
-            Assert.AreEqual(contactPatchModel.Phone, data.Phone);
-            Assert.AreEqual(contactPatchModel.PostalCode, data.PostalCode);
-            Assert.AreEqual(contactPatchModel.SendReminders, data.SendReminders);
-            Assert.AreEqual(contactPatchModel.Street, data.Street);
-            Assert.AreEqual(contactPatchModel.Surname, data.Surname);
-            Assert.AreEqual(contactPatchModel.Swift, data.Swift);
-            Assert.AreEqual(contactPatchModel.VatIdentificationNumber, data.VatIdentificationNumber);
-            Assert.AreEqual(contactPatchModel.VatIdentificationNumberSk, data.VatIdentificationNumberSk);
-            Assert.AreEqual(contactPatchModel.Www, data.Www);
+            Assert.That(data.DiscountPercentage, Is.EqualTo(contactPatchModel.DiscountPercentage));
+            Assert.That(data.Email, Is.EqualTo(contactPatchModel.Email));
+            Assert.That(data.Fax, Is.EqualTo(contactPatchModel.Fax));
+            Assert.That(data.Firstname, Is.EqualTo(contactPatchModel.Firstname));
+            Assert.That(data.Iban, Is.EqualTo(contactPatchModel.Iban));
+            Assert.That(data.IdentificationNumber, Is.EqualTo(contactPatchModel.IdentificationNumber));
+            Assert.That(data.IsRegisteredForVatOnPay, Is.EqualTo(false));
+            Assert.That(data.Mobile, Is.EqualTo(contactPatchModel.Mobile));
+            Assert.That(data.Note, Is.EqualTo(contactPatchModel.Note));
+            Assert.That(data.Phone, Is.EqualTo(contactPatchModel.Phone));
+            Assert.That(data.PostalCode, Is.EqualTo(contactPatchModel.PostalCode));
+            Assert.That(data.SendReminders, Is.EqualTo(contactPatchModel.SendReminders));
+            Assert.That(data.Street, Is.EqualTo(contactPatchModel.Street));
+            Assert.That(data.Surname, Is.EqualTo(contactPatchModel.Surname));
+            Assert.That(data.Swift, Is.EqualTo(contactPatchModel.Swift));
+            Assert.That(data.VatIdentificationNumber, Is.EqualTo(contactPatchModel.VatIdentificationNumber));
+            Assert.That(data.VatIdentificationNumberSk, Is.EqualTo(contactPatchModel.VatIdentificationNumberSk));
+            Assert.That(data.Www, Is.EqualTo(contactPatchModel.Www));
         }
 
         [Test]
@@ -187,9 +187,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.Greater(data.Items.Count(), 0);
-            Assert.AreEqual(_newContactId, data.Items.ElementAt(0).Id);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.GreaterThan(0));
+            Assert.That(data.Items.ElementAt(0).Id, Is.EqualTo(_newContactId));
         }
 
         [Test]
@@ -205,10 +205,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             var lastItemIndex = data.Items.Count() - 1;
 
             // Assert
-            Assert.NotNull(data);
-            Assert.Greater(data.Items.Count(), 3);
-            Assert.AreEqual("Test company", data.Items.ElementAt(0).CompanyName);
-            Assert.AreEqual("Alza.cz a.s.", data.Items.ElementAt(lastItemIndex).CompanyName);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.GreaterThan(3));
+            Assert.That(data.Items.ElementAt(0).CompanyName, Is.EqualTo("Test company"));
+            Assert.That(data.Items.ElementAt(lastItemIndex).CompanyName, Is.EqualTo("Alza.cz a.s."));
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             var data = await ContactClient.DeleteAsync(_newContactId).AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -229,8 +229,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             var data = await ContactClient.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.Greater(data.Items.Count(), 0);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.GreaterThan(0));
         }
 
         private static string CreateUniqueContactName()
@@ -239,55 +239,55 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             return $"Seyfor Slovensko {suffixToAvoidDuplicates}";
         }
 
-        private void AssertDeliveryAddress(DeliveryAddressGetModel returnedDeliveryAddress, DeliveryAddressPatchModel expecredDeliveryAddress)
+        private void AssertDeliveryAddress(DeliveryAddressGetModel returnedDeliveryAddress, DeliveryAddressPatchModel expectedDeliveryAddress)
         {
-            Assert.AreEqual(expecredDeliveryAddress.City, returnedDeliveryAddress.City);
-            Assert.AreEqual(expecredDeliveryAddress.IsDefault, returnedDeliveryAddress.IsDefault);
-            Assert.AreEqual(expecredDeliveryAddress.Name, returnedDeliveryAddress.Name);
-            Assert.AreEqual(expecredDeliveryAddress.PostalCode, returnedDeliveryAddress.PostalCode);
-            Assert.AreEqual(expecredDeliveryAddress.Street, returnedDeliveryAddress.Street);
-            Assert.NotZero(returnedDeliveryAddress.CountryId);
-            Assert.NotZero(returnedDeliveryAddress.Id);
+            Assert.That(returnedDeliveryAddress.City, Is.EqualTo(expectedDeliveryAddress.City));
+            Assert.That(returnedDeliveryAddress.IsDefault, Is.EqualTo(expectedDeliveryAddress.IsDefault));
+            Assert.That(returnedDeliveryAddress.Name, Is.EqualTo(expectedDeliveryAddress.Name));
+            Assert.That(returnedDeliveryAddress.PostalCode, Is.EqualTo(expectedDeliveryAddress.PostalCode));
+            Assert.That(returnedDeliveryAddress.Street, Is.EqualTo(expectedDeliveryAddress.Street));
+            Assert.That(returnedDeliveryAddress.CountryId, Is.Not.Zero);
+            Assert.That(returnedDeliveryAddress.Id, Is.Not.Zero);
         }
 
-        private void AssertDeliveryAddress(DeliveryAddressGetModel returnedDeliveryAddress, DeliveryAddressPostModel expecredDeliveryAddress)
+        private void AssertDeliveryAddress(DeliveryAddressGetModel returnedDeliveryAddress, DeliveryAddressPostModel expectedDeliveryAddress)
         {
-            Assert.AreEqual(expecredDeliveryAddress.City, returnedDeliveryAddress.City);
-            Assert.AreEqual(expecredDeliveryAddress.IsDefault, returnedDeliveryAddress.IsDefault);
-            Assert.AreEqual(expecredDeliveryAddress.Name, returnedDeliveryAddress.Name);
-            Assert.AreEqual(expecredDeliveryAddress.PostalCode, returnedDeliveryAddress.PostalCode);
-            Assert.AreEqual(expecredDeliveryAddress.Street, returnedDeliveryAddress.Street);
-            Assert.NotZero(returnedDeliveryAddress.CountryId);
-            Assert.NotZero(returnedDeliveryAddress.Id);
+            Assert.That(returnedDeliveryAddress.City, Is.EqualTo(expectedDeliveryAddress.City));
+            Assert.That(returnedDeliveryAddress.IsDefault, Is.EqualTo(expectedDeliveryAddress.IsDefault));
+            Assert.That(returnedDeliveryAddress.Name, Is.EqualTo(expectedDeliveryAddress.Name));
+            Assert.That(returnedDeliveryAddress.PostalCode, Is.EqualTo(expectedDeliveryAddress.PostalCode));
+            Assert.That(returnedDeliveryAddress.Street, Is.EqualTo(expectedDeliveryAddress.Street));
+            Assert.That(returnedDeliveryAddress.CountryId, Is.Not.Zero);
+            Assert.That(returnedDeliveryAddress.Id, Is.Not.Zero);
         }
 
         private void AssertGetModel(ContactGetModel data)
         {
-            Assert.AreEqual(_contactPostModel.AccountNumber, data.AccountNumber);
-            Assert.AreEqual(_contactPostModel.BankId, data.BankId);
-            Assert.AreEqual(_contactPostModel.City, data.City);
-            Assert.AreEqual(_contactPostModel.CompanyName, data.CompanyName);
-            Assert.AreEqual(_contactPostModel.CountryId, data.CountryId);
-            Assert.AreEqual(_contactPostModel.DefaultInvoiceMaturity, data.DefaultInvoiceMaturity);
+            Assert.That(data.AccountNumber, Is.EqualTo(_contactPostModel.AccountNumber));
+            Assert.That(data.BankId, Is.EqualTo(_contactPostModel.BankId));
+            Assert.That(data.City, Is.EqualTo(_contactPostModel.City));
+            Assert.That(data.CompanyName, Is.EqualTo(_contactPostModel.CompanyName));
+            Assert.That(data.CountryId, Is.EqualTo(_contactPostModel.CountryId));
+            Assert.That(data.DefaultInvoiceMaturity, Is.EqualTo(_contactPostModel.DefaultInvoiceMaturity));
             AssertDeliveryAddress(data.DeliveryAddresses.First(), _contactPostModel.DeliveryAddresses.First());
-            Assert.AreEqual(_contactPostModel.DiscountPercentage, data.DiscountPercentage);
-            Assert.AreEqual(_contactPostModel.Email, data.Email);
-            Assert.AreEqual(_contactPostModel.Fax, data.Fax);
-            Assert.AreEqual(_contactPostModel.Firstname, data.Firstname);
-            Assert.AreEqual(_contactPostModel.Iban, data.Iban);
-            Assert.AreEqual(_contactPostModel.IdentificationNumber, data.IdentificationNumber);
-            Assert.AreEqual(_contactPostModel.IsRegisteredForVatOnPay, data.IsRegisteredForVatOnPay);
-            Assert.AreEqual(_contactPostModel.Mobile, data.Mobile);
-            Assert.AreEqual(_contactPostModel.Note, data.Note);
-            Assert.AreEqual(_contactPostModel.Phone, data.Phone);
-            Assert.AreEqual(_contactPostModel.PostalCode, data.PostalCode);
-            Assert.AreEqual(_contactPostModel.SendReminders, data.SendReminders);
-            Assert.AreEqual(_contactPostModel.Street, data.Street);
-            Assert.AreEqual(_contactPostModel.Surname, data.Surname);
-            Assert.AreEqual(_contactPostModel.Swift, data.Swift);
-            Assert.AreEqual(_contactPostModel.VatIdentificationNumber, data.VatIdentificationNumber);
-            Assert.AreEqual(_contactPostModel.VatIdentificationNumberSk, data.VatIdentificationNumberSk);
-            Assert.AreEqual(_contactPostModel.Www, data.Www);
+            Assert.That(data.DiscountPercentage, Is.EqualTo(_contactPostModel.DiscountPercentage));
+            Assert.That(data.Email, Is.EqualTo(_contactPostModel.Email));
+            Assert.That(data.Fax, Is.EqualTo(_contactPostModel.Fax));
+            Assert.That(data.Firstname, Is.EqualTo(_contactPostModel.Firstname));
+            Assert.That(data.Iban, Is.EqualTo(_contactPostModel.Iban));
+            Assert.That(data.IdentificationNumber, Is.EqualTo(_contactPostModel.IdentificationNumber));
+            Assert.That(data.IsRegisteredForVatOnPay, Is.EqualTo(_contactPostModel.IsRegisteredForVatOnPay));
+            Assert.That(data.Mobile, Is.EqualTo(_contactPostModel.Mobile));
+            Assert.That(data.Note, Is.EqualTo(_contactPostModel.Note));
+            Assert.That(data.Phone, Is.EqualTo(_contactPostModel.Phone));
+            Assert.That(data.PostalCode, Is.EqualTo(_contactPostModel.PostalCode));
+            Assert.That(data.SendReminders, Is.EqualTo(_contactPostModel.SendReminders));
+            Assert.That(data.Street, Is.EqualTo(_contactPostModel.Street));
+            Assert.That(data.Surname, Is.EqualTo(_contactPostModel.Surname));
+            Assert.That(data.Swift, Is.EqualTo(_contactPostModel.Swift));
+            Assert.That(data.VatIdentificationNumber, Is.EqualTo(_contactPostModel.VatIdentificationNumber));
+            Assert.That(data.VatIdentificationNumberSk, Is.EqualTo(_contactPostModel.VatIdentificationNumberSk));
+            Assert.That(data.Www, Is.EqualTo(_contactPostModel.Www));
         }
     }
 }

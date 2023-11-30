@@ -34,7 +34,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
             _newBankAccountId = data.Id;
 
             // Assert
-            Assert.Greater(data.Id, 0);
+            Assert.That(data.Id, Is.GreaterThan(0));
             AssertData(model, data);
         }
 
@@ -46,9 +46,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
             var data = (await BankAccountClient.Detail(_newBankAccountId).Include(a => a.Bank).GetAsync()).AssertResult();
 
             // Assert
-            Assert.AreEqual(_newBankAccountId, data.Id);
-            Assert.NotNull(data.Bank);
-            Assert.AreEqual(data.Bank.Id, data.BankId);
+            Assert.That(data.Id, Is.EqualTo(_newBankAccountId));
+            Assert.That(data.Bank, Is.Not.Null);
+            Assert.That(data.BankId, Is.EqualTo(data.Bank.Id));
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
             var data = (await BankAccountClient.List().Filter(a => a.CurrencyId.IsNotEqual(0)).GetAsync()).AssertResult();
 
             // Assert
-            Assert.Greater(data.Items.Count(), 0);
+            Assert.That(data.Items.Count(), Is.GreaterThan(0));
         }
 
         [Test]
@@ -84,31 +84,31 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankAccount
             var data = (await BankAccountClient.DeleteAsync(_newBankAccountId)).AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         private void AssertData(BankAccountPatchModel patchModel, BankAccountGetModel getModel)
         {
-            Assert.AreEqual(patchModel.AccountNumber, getModel.AccountNumber);
-            Assert.AreEqual(patchModel.BankId.Value, getModel.BankId);
-            Assert.AreEqual(patchModel.CurrencyId, getModel.CurrencyId);
-            Assert.AreEqual(patchModel.Iban, getModel.Iban);
-            Assert.AreEqual(patchModel.Id, getModel.Id);
-            Assert.AreEqual(patchModel.Name, getModel.Name);
-            Assert.AreEqual(patchModel.Swift, getModel.Swift);
-            Assert.NotNull(getModel.Metadata);
+            Assert.That(getModel.AccountNumber, Is.EqualTo(patchModel.AccountNumber));
+            Assert.That(getModel.BankId, Is.EqualTo(patchModel.BankId.Value));
+            Assert.That(getModel.CurrencyId, Is.EqualTo(patchModel.CurrencyId));
+            Assert.That(getModel.Iban, Is.EqualTo(patchModel.Iban));
+            Assert.That(getModel.Id, Is.EqualTo(patchModel.Id));
+            Assert.That(getModel.Name, Is.EqualTo(patchModel.Name));
+            Assert.That(getModel.Swift, Is.EqualTo(patchModel.Swift));
+            Assert.That(getModel.Metadata, Is.Not.Null);
         }
 
         private void AssertData(BankAccountPostModel postModel, BankAccountGetModel getModel)
         {
-            Assert.AreEqual(postModel.AccountNumber, getModel.AccountNumber);
-            Assert.AreEqual(postModel.BankId, getModel.BankId);
-            Assert.AreEqual(postModel.CurrencyId, getModel.CurrencyId);
-            Assert.AreEqual(postModel.Iban, getModel.Iban);
-            Assert.AreEqual(postModel.Name, getModel.Name);
-            Assert.AreEqual(postModel.IsDefault, getModel.IsDefault);
-            Assert.AreEqual(postModel.Swift, getModel.Swift);
-            Assert.NotNull(getModel.Metadata);
+            Assert.That(getModel.AccountNumber, Is.EqualTo(postModel.AccountNumber));
+            Assert.That(getModel.BankId, Is.EqualTo(postModel.BankId));
+            Assert.That(getModel.CurrencyId, Is.EqualTo(postModel.CurrencyId));
+            Assert.That(getModel.Iban, Is.EqualTo(postModel.Iban));
+            Assert.That(getModel.Name, Is.EqualTo(postModel.Name));
+            Assert.That(getModel.IsDefault, Is.EqualTo(postModel.IsDefault));
+            Assert.That(getModel.Swift, Is.EqualTo(postModel.Swift));
+            Assert.That(getModel.Metadata, Is.Not.Null);
         }
 
         private BankAccountPatchModel CreatePatchModel()
