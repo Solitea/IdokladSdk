@@ -39,6 +39,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets value indicating, whether the item is a tax movement.
+        /// </summary>
+        public bool? IsTaxMovement { get; set; }
+
+        /// <summary>
         /// Gets or sets item name.
         /// </summary>
         [StringLength(200)]

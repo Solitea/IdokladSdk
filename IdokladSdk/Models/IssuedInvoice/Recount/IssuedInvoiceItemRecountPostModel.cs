@@ -17,6 +17,11 @@ namespace IdokladSdk.Models.IssuedInvoice
         public decimal DiscountPercentage { get; set; }
 
         /// <summary>
+        /// Gets or sets value indicating, whether the item is a tax movement.
+        /// </summary>
+        public bool? IsTaxMovement { get; set; }
+
+        /// <summary>
         /// Gets or sets item type.
         /// </summary>
         public IssuedInvoiceItemType ItemType { get; set; }
@@ -26,5 +31,10 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// </summary>
         [Required]
         public PriceType? PriceType { get; set; }
+
+        /// <summary>
+        /// Gets or sets VAT rate in percent.
+        /// </summary>
+        public decimal? VatRate { get; set; }
     }
 }

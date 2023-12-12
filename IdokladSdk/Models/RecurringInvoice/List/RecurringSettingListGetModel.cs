@@ -33,6 +33,12 @@ namespace IdokladSdk.Models.RecurringInvoice
         public DateTime? DateOfLastIssue { get; set; }
 
         /// <summary>
+        /// Gets or sets date of next issue.
+        /// </summary>
+        [JsonConverter(typeof(DateTimeConverter))]
+        public DateTime? DateOfNextIssue { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether is active.
         /// </summary>
         public bool IsActive { get; set; }
