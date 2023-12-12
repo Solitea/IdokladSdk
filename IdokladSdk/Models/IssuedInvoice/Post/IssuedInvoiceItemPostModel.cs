@@ -92,9 +92,14 @@ namespace IdokladSdk.Models.IssuedInvoice
         public int? VatCodeId { get; set; }
 
         /// <summary>
-        /// Gets or sets vAT rate type.
+        /// Gets or sets VAT rate type.
         /// </summary>
         [Required]
         public VatRateType VatRateType { get; set; }
+
+        /// <summary>
+        /// Gets or sets VAT rate in percent.
+        /// </summary>
+        public decimal? VatRate { get; set; }
     }
 }
