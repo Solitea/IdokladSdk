@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.Batch;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.PriceListItem;
 using IdokladSdk.Requests.Extensions;
 using IdokladSdk.Requests.PriceListItem;
@@ -63,14 +64,14 @@ namespace IdokladSdk.Clients
         /// <param name="deleteIfReferenced">Indicates whether items referenced on invoices or exported items will be deleted.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
-        public async Task<ApiBatchResult<bool>> DeleteAsync(List<int> idBatch, bool deleteIfReferenced, CancellationToken cancellationToken = default)
+        public async Task<ApiBatchResult<DeleteResultModel>> DeleteAsync(List<int> idBatch, bool deleteIfReferenced, CancellationToken cancellationToken = default)
         {
             var batch = new BatchModel<int>(idBatch);
             var resource = $"{BatchUrl}/{deleteIfReferenced.ToString(CultureInfo.InvariantCulture)}";
             var request = await CreateRequestAsync(resource, HttpMethod.Delete, cancellationToken).ConfigureAwait(false);
             request.AddJsonBody(batch);
 
-            return await ExecuteBatchAsync<bool>(request, cancellationToken).ConfigureAwait(false);
+            return await ExecuteBatchAsync<DeleteResultModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

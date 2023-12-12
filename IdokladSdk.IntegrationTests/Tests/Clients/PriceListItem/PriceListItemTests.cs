@@ -158,7 +158,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             var data = await PriceListItemClient.DeleteAsync(idBatch, true).AssertResult();
 
             // Assert
-            Assert.True(data.First());
+            var result = data.First();
+            Assert.That(result.Id, Is.EqualTo(_newPriceListItemId));
+            Assert.That(result.IsSuccess, Is.True);
         }
 
         [Test]
