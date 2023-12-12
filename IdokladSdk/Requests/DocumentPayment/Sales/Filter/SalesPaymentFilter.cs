@@ -24,5 +24,8 @@ namespace IdokladSdk.Requests.DocumentPayment.Sales.Filter
 
         /// <inheritdoc cref="SalesDocumentPaymentListGetModel.PaidDocument"/>
         public FilterItem<string> DocumentNumber { get; set; } = new FilterItem<string>(nameof(SalesDocumentPaymentListGetModel.PaidDocument.DocumentNumber));
+
+        /// <inheritdoc cref="SalesDocumentPaymentListGetModel.PaidDocument"/>
+        public FilterItem<int> DocumentId { get; set; } = new FilterItem<int>("DocumentId");
     }
 }

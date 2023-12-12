@@ -100,6 +100,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             var partnerId = 323823;
             var dateOfPayment = new DateTime(2020, 01, 22);
             var documentNumber = "PR2020001";
+            var documentId = 224356;
 
             // Act
             var data = await DocumentPaymentClient.Sales
@@ -109,6 +110,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
                 .Filter(f => f.PaymentOptionId.IsEqual(PaymentOptionId))
                 .Filter(f => f.DateOfPayment.IsEqual(dateOfPayment))
                 .Filter(f => f.DocumentNumber.IsEqual(documentNumber))
+                .Filter(f => f.DocumentId.IsEqual(documentId))
                 .FilterType(FilterType.And)
                 .GetAsync()
                 .AssertResult();
@@ -123,6 +125,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             Assert.That(item.PaymentOptionId, Is.EqualTo(PaymentOptionId));
             Assert.That(item.DateOfPayment, Is.EqualTo(dateOfPayment));
             Assert.That(item.PaidDocument.DocumentNumber, Is.EqualTo(documentNumber));
+            Assert.That(item.PaidDocument.Id, Is.EqualTo(documentId));
         }
 
         [Test]
