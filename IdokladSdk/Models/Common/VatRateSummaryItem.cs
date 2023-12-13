@@ -41,5 +41,10 @@ namespace IdokladSdk.Models.Common
         /// Gets or sets vAT rate type.
         /// </summary>
         public VatRateType VatRateType { get; set; }
+
+        /// <summary>
+        /// Gets or sets VAT rate in percent.
+        /// </summary>
+        public decimal VatRate { get; set; }
     }
 }
