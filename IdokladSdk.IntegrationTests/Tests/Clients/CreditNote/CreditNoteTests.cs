@@ -435,6 +435,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.AreEqual(180m, vatRateSummary.TotalWithoutVatHc);
             Assert.AreEqual(217.8m, vatRateSummary.TotalWithVat);
             Assert.AreEqual(217.8m, vatRateSummary.TotalWithVatHc);
+            Assert.AreEqual(21.0m, vatRateSummary.VatRate);
         }
 
         private static void CreatePostModel(CreditNotePostModel postModel)
@@ -560,7 +561,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         {
             var model = new CreditNoteRecountPostModel
             {
-                CurrencyId = _creditNotePostModel.CurrencyId,
+                //CurrencyId = _creditNotePostModel.CurrencyId,
+                CurrencyId = 1,
                 DateOfTaxing = DateTime.Today.SetKindUtc(),
                 DiscountPercentage = 0,
                 ExchangeRate = 1,
