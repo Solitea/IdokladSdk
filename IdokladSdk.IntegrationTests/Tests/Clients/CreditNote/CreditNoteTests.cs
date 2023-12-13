@@ -561,8 +561,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
         {
             var model = new CreditNoteRecountPostModel
             {
-                //CurrencyId = _creditNotePostModel.CurrencyId,
-                CurrencyId = 1,
+                CurrencyId = _creditNotePostModel.CurrencyId,
                 DateOfTaxing = DateTime.Today.SetKindUtc(),
                 DiscountPercentage = 0,
                 ExchangeRate = 1,
