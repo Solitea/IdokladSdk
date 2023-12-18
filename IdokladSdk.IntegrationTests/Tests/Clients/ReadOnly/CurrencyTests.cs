@@ -58,9 +58,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task ListAsync_ReturnsNonEmptyList()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .List()
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -77,12 +77,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             // Act
             var code = "CZK";
             var testDate = new DateTime(2001, 1, 1);
-            var data = (await _client
+            var data = await _client
                 .List()
                 .Filter(x => x.Code.IsEqual(code))
                 .Filter(x => x.DateLastChange.IsGreaterThan(testDate))
                 .Sort(x => x.Id.Desc())
-                .GetAsync<CurrencyTestList>())
+                .GetAsync<CurrencyTestList>()
                 .AssertResult();
 
             // Assert

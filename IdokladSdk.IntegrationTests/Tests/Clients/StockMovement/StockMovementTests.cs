@@ -74,7 +74,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         public async Task DetailAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = (await _stockMovementClient.Detail(_newStockMovement.Id).GetAsync()).AssertResult();
+            var data = await _stockMovementClient.Detail(_newStockMovement.Id).GetAsync().AssertResult();
 
             // Assert
             Assert.That(data.PriceListItemId, Is.EqualTo(PriceListItemId));
@@ -85,7 +85,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = (await _stockMovementClient.DeleteAsync(_newStockMovement.Id)).AssertResult();
+            var data = await _stockMovementClient.DeleteAsync(_newStockMovement.Id).AssertResult();
 
             // Assert
             Assert.That(data, Is.True);
@@ -95,7 +95,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         public async Task BatchAsync_SuccessfullyCreated()
         {
             // Arrange
-            var defaultStockMovement = (await _stockMovementClient.DefaultAsync(PriceListItemId)).AssertResult();
+            var defaultStockMovement = await _stockMovementClient.DefaultAsync(PriceListItemId).AssertResult();
             defaultStockMovement.Amount = 100;
 
             // Act
@@ -112,9 +112,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         public async Task GetListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = (await _stockMovementClient.List()
+            var data = await _stockMovementClient.List()
                 .Filter(f => f.PriceListItemId.IsEqual(PriceListItemId))
-                .GetAsync()).AssertResult();
+                .GetAsync()
+                .AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.Zero);

@@ -30,7 +30,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
             var model = CreatePostModel();
 
             // Act
-            var data = (await _cashRegisterClient.PostAsync(model)).AssertResult();
+            var data = await _cashRegisterClient.PostAsync(model).AssertResult();
             _newCashRegisterId = data.Id;
 
             // Assert
@@ -43,7 +43,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
         public async Task DetailAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = (await _cashRegisterClient.Detail(_newCashRegisterId).Include(c => c.Currency).GetAsync()).AssertResult();
+            var data = await _cashRegisterClient.Detail(_newCashRegisterId).Include(c => c.Currency).GetAsync().AssertResult();
 
             // Assert
             Assert.That(data.Id, Is.EqualTo(_newCashRegisterId));
@@ -59,7 +59,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
             var model = CreatePatchModel();
 
             // Act
-            var data = (await _cashRegisterClient.UpdateAsync(model)).AssertResult();
+            var data = await _cashRegisterClient.UpdateAsync(model).AssertResult();
 
             // Assert
             AssertData(model, data);
@@ -70,7 +70,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
         public async Task ListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = (await _cashRegisterClient.List().GetAsync()).AssertResult();
+            var data = await _cashRegisterClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.GreaterThan(0));
@@ -84,7 +84,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = (await _cashRegisterClient.DeleteAsync(_newCashRegisterId)).AssertResult();
+            var data = await _cashRegisterClient.DeleteAsync(_newCashRegisterId).AssertResult();
 
             // Assert
             Assert.That(data, Is.True);

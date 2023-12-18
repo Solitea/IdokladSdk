@@ -27,9 +27,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task DetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .Detail(Id)
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -41,10 +41,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task DetailAsync_WithParameters_SuccessfullyGet()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .Detail(Id)
                 .Include(x => x.Country)
-                .GetAsync<BankTestDetail>())
+                .GetAsync<BankTestDetail>()
                 .AssertResult();
 
             // Assert
@@ -59,9 +59,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task ListAsync_ReturnsNonEmptyList()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .List()
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -80,13 +80,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             var testDate = new DateTime(2018, 1, 1);
 
             // Act
-            var data = (await _client
+            var data = await _client
                 .List()
                 .Filter(x => x.CountryId.IsEqual(countryId))
                 .Filter(x => x.DateLastChange.IsGreaterThan(testDate))
                 .Filter(x => x.IsOutOfDate.IsNotEqual(true))
                 .Sort(x => x.Id.Desc())
-                .GetAsync<BankTestList>())
+                .GetAsync<BankTestList>()
                 .AssertResult();
 
             // Assert

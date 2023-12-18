@@ -168,10 +168,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         public async Task GetListWithSortAsync_ReturnsList()
         {
             // Act
-            var data = (await PriceListItemClient
+            var data = await PriceListItemClient
                 .List()
                 .Sort(x => x.Name.Desc())
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert

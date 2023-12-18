@@ -29,8 +29,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         public async Task Default_SucessfullyGetAsync()
         {
             // Act
-            var cashVoucherIssue = (await _client.DefaultAsync(MovementType.Issue)).AssertResult();
-            var cashVoucherEntry = (await _client.DefaultAsync(MovementType.Entry)).AssertResult();
+            var cashVoucherIssue = await _client.DefaultAsync(MovementType.Issue).AssertResult();
+            var cashVoucherEntry = await _client.DefaultAsync(MovementType.Entry).AssertResult();
 
             // Assert
             Assert.That(cashVoucherIssue.MovementType, Is.Not.EqualTo(cashVoucherEntry.MovementType));
@@ -43,7 +43,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         public async Task Default_SucessfullyGetAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId)
         {
             // Act
-            var cashVoucher = (await _client.DefaultAsync(movementType, invoiceType, invoiceId)).AssertResult();
+            var cashVoucher = await _client.DefaultAsync(movementType, invoiceType, invoiceId).AssertResult();
 
             // Assert
             Assert.That(cashVoucher.MovementType, Is.EqualTo(movementType));
@@ -55,7 +55,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         public async Task Detail_SucessfullyGetAsync()
         {
             // Act
-            var cashVoucher = (await _client.Detail(CashVoucherId).GetAsync()).AssertResult();
+            var cashVoucher = await _client.Detail(CashVoucherId).GetAsync().AssertResult();
 
             // Assert
             Assert.That(cashVoucher.Id, Is.EqualTo(CashVoucherId));
@@ -66,7 +66,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         public async Task List_SucessfullyGetAsync()
         {
             // Act
-            var cashVouchers = (await _client.List().GetAsync()).AssertResult();
+            var cashVouchers = await _client.List().GetAsync().AssertResult();
 
             // Assert
             Assert.That(cashVouchers.TotalItems, Is.GreaterThanOrEqualTo(1));
@@ -79,11 +79,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
             var cashVoucherName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
 
             // Act
-            var cashVoucher = (await _client.DefaultAsync(MovementType.Issue, InvoiceType.Issued, UnpaidIssuedInvoice)).AssertResult();
+            var cashVoucher = await _client.DefaultAsync(MovementType.Issue, InvoiceType.Issued, UnpaidIssuedInvoice).AssertResult();
             cashVoucher.Name = cashVoucherName;
-            var postedCashVoucher = (await _client.PostAsync(cashVoucher)).AssertResult();
-            var paired = (await _client.PairAsync(postedCashVoucher.Id, InvoiceType.Issued, UnpaidIssuedInvoice)).AssertResult();
-            var deleted = (await _client.DeleteAsync(postedCashVoucher.Id)).AssertResult();
+            var postedCashVoucher = await _client.PostAsync(cashVoucher).AssertResult();
+            var paired = await _client.PairAsync(postedCashVoucher.Id, InvoiceType.Issued, UnpaidIssuedInvoice).AssertResult();
+            var deleted = await _client.DeleteAsync(postedCashVoucher.Id).AssertResult();
 
             // Assert
             Assert.That(cashVoucher.InvoiceId, Is.EqualTo(UnpaidIssuedInvoice));

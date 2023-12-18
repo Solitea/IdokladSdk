@@ -148,8 +148,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var response = await MailClient.SalesReceiptEmail.SendAsync(settings);
-            var result = response.AssertResult();
+            var result = await MailClient.SalesReceiptEmail.SendAsync(settings).AssertResult();
 
             // Assert
             Assert.That(result.Sent.Contains(PartnerEmail), Is.True);
@@ -201,8 +200,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var response = await MailClient.IssuedInvoiceEmail.SendAsync(settings);
-            var result = response.AssertResult();
+            var result = await MailClient.IssuedInvoiceEmail.SendAsync(settings).AssertResult();
 
             // Assert
             AssertEmailResult(result);

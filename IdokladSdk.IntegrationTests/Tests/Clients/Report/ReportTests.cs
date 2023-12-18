@@ -95,12 +95,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         }
 
         [Test]
-        public void GetAsync_CashVoucherDetail_ForInvoice_SuccessfullyGetAsyncReport()
+        public async Task GetAsync_CashVoucherDetail_ForInvoice_SuccessfullyGetAsyncReport()
         {
-            var data = _reportClient.CashVoucher.DetailForInvoice(913318, InvoiceReportDocumentType.IssuedInvoice).GetAsync(new ReportOption
+            var data = await _reportClient.CashVoucher.DetailForInvoice(913318, InvoiceReportDocumentType.IssuedInvoice).GetAsync(new ReportOption
             {
                 Language = Language.Cz
-            }).Result.AssertResult();
+            }).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }

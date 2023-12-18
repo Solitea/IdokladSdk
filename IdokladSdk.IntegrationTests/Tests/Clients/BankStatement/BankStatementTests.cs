@@ -36,7 +36,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
         public async Task ListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = (await _bankStatementClient.List().GetAsync()).AssertResult();
+            var data = await _bankStatementClient.List().GetAsync().AssertResult();
 
             // Assert
             Assert.That(data.TotalItems, Is.GreaterThan(0));
@@ -50,7 +50,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
         public async Task DetailAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = (await _bankStatementClient.Detail(BankStatementId).GetAsync()).AssertResult();
+            var data = await _bankStatementClient.Detail(BankStatementId).GetAsync().AssertResult();
 
             // Assert
             Assert.That(data.Id, Is.EqualTo(BankStatementId));
@@ -78,7 +78,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             };
 
             // Act
-            var data = (await _bankStatementClient.PairAsync(model)).AssertResult();
+            var data = await _bankStatementClient.PairAsync(model).AssertResult();
             _bankStatementId = data.CreatedBankStatement.Id;
 
             // Assert
@@ -95,7 +95,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
         public async Task DeleteAsync_SuccessfullyDeletedStatement()
         {
             // Act
-            var data = (await _bankStatementClient.DeleteAsync(_bankStatementId)).AssertResult();
+            var data = await _bankStatementClient.DeleteAsync(_bankStatementId).AssertResult();
 
             // Assert
             Assert.That(data, Is.True);

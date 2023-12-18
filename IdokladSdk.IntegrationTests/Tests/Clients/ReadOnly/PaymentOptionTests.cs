@@ -76,11 +76,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         {
             // Act
             var testDate = new DateTime(2001, 1, 1);
-            var data = (await _client
+            var data = await _client
                 .List()
                 .Filter(x => x.DateLastChange.IsGreaterThan(testDate))
                 .Sort(x => x.Id.Desc())
-                .GetAsync<PaymentOptionTestList>())
+                .GetAsync<PaymentOptionTestList>()
                 .AssertResult();
 
             // Assert

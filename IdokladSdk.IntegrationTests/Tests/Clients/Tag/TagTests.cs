@@ -232,7 +232,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
+            var tagGetModel = await TagClient.UpdateAsync(tagPatchModel).AssertResult();
 
             // Assert
             Assert.That(tagGetModel.Id, Is.Not.Zero);
@@ -256,7 +256,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
+            var tagGetModel = await TagClient.UpdateAsync(tagPatchModel).AssertResult();
 
             // Assert
             Assert.That(tagGetModel.Id, Is.Not.Zero);

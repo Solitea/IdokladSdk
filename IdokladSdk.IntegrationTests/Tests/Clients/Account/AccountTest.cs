@@ -198,7 +198,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             model.Contact.HasNoIdentificationNumber = false;
 
             // Act
-            var data = (await _accountClient.Agendas.UpdateAsync(model)).AssertResult();
+            var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
             // Assert
             Assert.That(data, Is.Not.Null);

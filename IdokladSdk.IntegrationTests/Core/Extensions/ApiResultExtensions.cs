@@ -19,30 +19,11 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
         /// <param name="result">Result.</param>
         /// <typeparam name="T">T.</typeparam>
         /// <returns>Method assert result.</returns>
-        public static T AssertResult<T>(this ApiResult<T> result)
-        {
-            Assert.That(result, Is.InstanceOf<ApiResult<T>>());
-            Assert.That(result.IsSuccess, Is.True, result.Message);
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(result.Data, Is.Not.Null);
-            return result.Data;
-        }
-
-        /// <summary>
-        /// Assert result.
-        /// </summary>
-        /// <param name="result">Result.</param>
-        /// <typeparam name="T">T.</typeparam>
-        /// <returns>Method assert result.</returns>
         public static async Task<T> AssertResult<T>(this Task<ApiResult<T>> result)
         {
             var response = await result;
 
-            Assert.That(response, Is.InstanceOf<ApiResult<T>>());
-            Assert.That(response.IsSuccess, Is.True, response.Message);
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(response.Data, Is.Not.Null);
-            return response.Data;
+            return response.AssertResult();
         }
 
         /// <summary>
@@ -66,6 +47,21 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
             });
 
             return result.Results.Select(x => x.Data);
+        }
+
+        /// <summary>
+        /// Assert result.
+        /// </summary>
+        /// <param name="result">Result.</param>
+        /// <typeparam name="T">T.</typeparam>
+        /// <returns>Method assert result.</returns>
+        private static T AssertResult<T>(this ApiResult<T> result)
+        {
+            Assert.That(result, Is.InstanceOf<ApiResult<T>>());
+            Assert.That(result.IsSuccess, Is.True, result.Message);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(result.Data, Is.Not.Null);
+            return result.Data;
         }
     }
 }

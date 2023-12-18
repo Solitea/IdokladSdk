@@ -41,10 +41,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task DetailAsync_WithParameters_SuccessfullyGet()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .Detail(Id)
                 .Include(x => x.Currency)
-                .GetAsync<ExchangeRateTestDetail>())
+                .GetAsync<ExchangeRateTestDetail>()
                 .AssertResult();
 
             // Assert
@@ -60,9 +60,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task ListAsync_ReturnsNonEmptyList()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .List()
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
@@ -80,13 +80,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             var currencyId = 2;
             var testDate = new DateTime(2019, 1, 1);
             var exchangeListId = 2;
-            var data = (await _client
+            var data = await _client
                 .List()
                 .Filter(x => x.CurrencyId.IsEqual(currencyId))
                 .Filter(x => x.Date.IsGreaterThan(testDate))
                 .Filter(x => x.ExchangeListId.IsNotEqual(exchangeListId))
                 .Sort(x => x.Id.Desc())
-                .GetAsync<ExchangeRateTestList>())
+                .GetAsync<ExchangeRateTestList>()
                 .AssertResult();
 
             // Assert

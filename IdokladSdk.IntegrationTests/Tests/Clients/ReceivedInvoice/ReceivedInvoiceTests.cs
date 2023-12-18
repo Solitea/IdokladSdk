@@ -106,7 +106,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         public async Task GetAsync_SuccessfullyGet()
         {
             // Act
-            var data = (await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync()).AssertResult();
+            var data = await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync().AssertResult();
 
             // Assert
             Assert.That(data.Id, Is.EqualTo(_receivedInvoiceId));
@@ -117,8 +117,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         public async Task GetAsync_Expand_SuccessfullyGet()
         {
             // Act
-            var data = (await _receivedInvoiceClient.Detail(_receivedInvoiceId)
-                .Include(s => s.Partner).GetAsync()).AssertResult();
+            var data = await _receivedInvoiceClient.Detail(_receivedInvoiceId)
+                .Include(s => s.Partner).GetAsync().AssertResult();
 
             Assert.That(data.Id, Is.EqualTo(_receivedInvoiceId));
             Assert.That(data.Partner, Is.Not.Null);
@@ -135,7 +135,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var data = (await _receivedInvoiceClient.UpdateAsync(model)).AssertResult();
+            var data = await _receivedInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
             Assert.That(data.Description, Is.EqualTo(model.Description));
@@ -179,7 +179,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         public async Task UpdateAsync_AddNewItems_SucessfullyUpdated()
         {
             // Arrange
-            var invoiceToUpdate = (await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync()).AssertResult();
+            var invoiceToUpdate = await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync().AssertResult();
             var itemName2 = "Test2Test";
             var itemName3 = "Test3Test";
             var model = new ReceivedInvoicePatchModel
@@ -202,7 +202,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var data = (await _receivedInvoiceClient.UpdateAsync(model)).AssertResult();
+            var data = await _receivedInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
             Assert.That(data.Items.Count, Is.GreaterThanOrEqualTo(2));
@@ -215,7 +215,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = (await _receivedInvoiceClient.DeleteAsync(_receivedInvoiceId)).AssertResult();
+            var data = await _receivedInvoiceClient.DeleteAsync(_receivedInvoiceId).AssertResult();
 
             // Assert
             Assert.That(data, Is.True);
@@ -242,7 +242,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var data = (await _receivedInvoiceClient.RecountAsync(model)).AssertResult();
+            var data = await _receivedInvoiceClient.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
