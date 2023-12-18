@@ -88,7 +88,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             var exception = Assert.ThrowsAsync<ValidationException>(async () => await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model));
 
             // Assert
-            Assert.That(exception.Message, Is.GreaterThan("Model is not valid.\nThe Bkp field is required.\nThe Fik field is required.\nThe Pkp field is required.\nThe ReceiptNumber field is required."));
+            Assert.That(exception.Message, Is.EqualTo("Model is not valid.\nThe Bkp field is required.\nThe Fik field is required.\nThe Pkp field is required.\nThe ReceiptNumber field is required."));
         }
     }
 }

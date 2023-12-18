@@ -34,7 +34,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
             _newCashRegisterId = data.Id;
 
             // Assert
-            Assert.That(data.Id, Is.EqualTo(0));
+            Assert.That(data.Id, Is.Not.EqualTo(0));
             AssertData(model, data);
         }
 

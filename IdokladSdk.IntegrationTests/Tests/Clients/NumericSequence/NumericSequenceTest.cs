@@ -34,7 +34,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
                 .Filter(f => f.DocumentType.IsEqual(NumericSequenceDocumentType.IssuedInvoice)).GetAsync().AssertResult();
 
             // Assert
-            Assert.That(data.TotalItems, Is.GreaterThan(1));
+            Assert.That(data.TotalItems, Is.EqualTo(1));
         }
 
         [Test]

@@ -52,7 +52,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOffice
             // Assert
             Assert.That(data.Id, Is.EqualTo(SalesOfficeId));
             Assert.That(data.Name, Is.EqualTo("Sales office"));
-            Assert.That(data.Country, Is.Null);
+            Assert.That(data.Country, Is.Not.Null);
         }
     }
 }

@@ -87,7 +87,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             var data = await _attachmentClient.GetAsync(_attachmentId).AssertResult();
 
             // Assert
-            Assert.That(data, Is.Null);
+            Assert.That(data, Is.Not.Null);
             Assert.That(data.FileBytes, Is.Not.Null);
             Assert.That(data.FileName, Is.EqualTo(_attachmentName));
         }

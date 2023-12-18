@@ -104,7 +104,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
             // Assert
             Assert.That(data.Status, Is.EqualTo(BatchResultType.Success));
             var id = data.Results.First().Data.Id;
-            Assert.That(id, Is.EqualTo(0));
+            Assert.That(id, Is.GreaterThan(0));
             await _stockMovementClient.DeleteAsync(id);
         }
 
@@ -118,7 +118,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
                 .AssertResult();
 
             // Assert
-            Assert.That(data.TotalItems, Is.Zero);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
         }
     }
 }
