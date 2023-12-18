@@ -424,14 +424,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
 
         private static void CheckRecountVatRateSummary(VatRateSummaryItem vatRateSummary)
         {
-            Assert.AreEqual(VatRateType.Basic, vatRateSummary.VatRateType);
-            Assert.AreEqual(37.8m, vatRateSummary.TotalVat);
-            Assert.AreEqual(37.8m, vatRateSummary.TotalVatHc);
-            Assert.AreEqual(180m, vatRateSummary.TotalWithoutVat);
-            Assert.AreEqual(180m, vatRateSummary.TotalWithoutVatHc);
-            Assert.AreEqual(217.8m, vatRateSummary.TotalWithVat);
-            Assert.AreEqual(217.8m, vatRateSummary.TotalWithVatHc);
-            Assert.AreEqual(21.0m, vatRateSummary.VatRate);
+            Assert.That(vatRateSummary.VatRateType, Is.EqualTo(VatRateType.Basic));
+            Assert.That(vatRateSummary.TotalVat, Is.EqualTo(37.8m));
+            Assert.That(vatRateSummary.TotalVatHc, Is.EqualTo(37.8m));
+            Assert.That(vatRateSummary.TotalWithoutVat, Is.EqualTo(180m));
+            Assert.That(vatRateSummary.TotalWithoutVatHc, Is.EqualTo(180m));
+            Assert.That(vatRateSummary.TotalWithVat, Is.EqualTo(217.8m));
+            Assert.That(vatRateSummary.TotalWithVatHc, Is.EqualTo(217.8m));
+            Assert.That(vatRateSummary.VatRate, Is.EqualTo(21.0m));
         }
 
         private static void CreatePostModel(CreditNotePostModel postModel)
