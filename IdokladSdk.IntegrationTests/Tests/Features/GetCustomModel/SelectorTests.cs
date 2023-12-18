@@ -40,12 +40,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.GetCustomModel
                 }).AssertResult();
 
             // Assert
-            Assert.IsNotEmpty(contact.CompanyName);
-            Assert.IsNotEmpty(contact.Currency);
-            Assert.IsNotEmpty(contact.Bank);
-            Assert.IsNotEmpty(contact.Name);
-            Assert.IsNotEmpty(contact.Address);
-            Assert.NotNull(contact.Discount);
+            Assert.That(contact.CompanyName, Is.Not.Empty);
+            Assert.That(contact.Currency, Is.Not.Empty);
+            Assert.That(contact.Bank, Is.Not.Empty);
+            Assert.That(contact.Name, Is.Not.Empty);
+            Assert.That(contact.Address, Is.Not.Empty);
+            Assert.That(contact.Discount, Is.Not.Null);
         }
 
         [Test]
@@ -62,12 +62,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.GetCustomModel
                 }).AssertResult();
 
             // Assert
-            Assert.IsNotEmpty(contacts.Items);
+            Assert.That(contacts.Items, Is.Not.Empty);
             var contact = contacts.Items.First(c => !string.IsNullOrWhiteSpace(c.Name));
-            Assert.IsNotEmpty(contact.CompanyName);
-            Assert.IsNotEmpty(contact.Name);
-            Assert.IsNotEmpty(contact.Address);
-            Assert.NotNull(contact.Discount);
+            Assert.That(contact.CompanyName, Is.Not.Empty);
+            Assert.That(contact.Name, Is.Not.Empty);
+            Assert.That(contact.Address, Is.Not.Empty);
+            Assert.That(contact.Discount, Is.Not.Null);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
             var data = await _client.List().Sort(x => x.DateOfPayment.Asc()).GetAsync().AssertResult();
 
             // Assert
-            Assert.GreaterOrEqual(data.TotalItems, 1);
+            Assert.That(data.TotalItems, Is.GreaterThanOrEqualTo(1));
         }
 
         [Test]
@@ -47,11 +47,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
             var deleted = await _client.DeleteAsync(retrievedPayment.Id).AssertResult();
 
             // Assert
-            Assert.AreEqual(defaultPayment.InvoiceId, unpaidInvoiceId);
-            Assert.AreEqual(postedPayment.InvoiceId, unpaidInvoiceId);
-            Assert.AreEqual(retrievedPayment.InvoiceId, unpaidInvoiceId);
-            Assert.AreEqual(postedPayment.Id, retrievedPayment.Id);
-            Assert.IsTrue(deleted);
+            Assert.That(defaultPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
+            Assert.That(postedPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
+            Assert.That(retrievedPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
+            Assert.That(postedPayment.Id, Is.EqualTo(retrievedPayment.Id));
+            Assert.That(deleted, Is.True);
 
             // TearDown
             await DokladApi.IssuedInvoiceClient.DeleteAsync(unpaidInvoiceId);
@@ -62,17 +62,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
         {
             // Arrange
             var paidInvoiceId = (await DokladSdkTestsHelper.CreateDefaultIssuedInvoiceAsync(DokladApi)).Id;
+            var dateOfPayment = DateTime.UtcNow.AddDays(-3);
 
             // Act
-            var dateOfPayment = DateTime.UtcNow.AddDays(-3);
             var unpaid = await _client.FullyUnpayAsync(paidInvoiceId).AssertResult();
             var paid = await _client.FullyPayAsync(paidInvoiceId, dateOfPayment).AssertResult();
             var paidInvoice = await DokladApi.IssuedInvoiceClient.Detail(paidInvoiceId).GetAsync().AssertResult();
 
             // Assert
-            Assert.IsTrue(unpaid);
-            Assert.IsTrue(paid);
-            Assert.AreEqual(dateOfPayment.Date, paidInvoice.DateOfPayment);
+            Assert.That(unpaid, Is.True);
+            Assert.That(paid, Is.True);
+            Assert.That(paidInvoice.DateOfPayment, Is.EqualTo(dateOfPayment.Date));
 
             // TearDown
             await DokladApi.IssuedInvoiceClient.DeleteAsync(paidInvoiceId);
@@ -93,11 +93,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
             var deleted = await _client.DeleteAsync(retrievedPayment.Id).AssertResult();
 
             // Assert
-            Assert.AreEqual(defaultPayment.InvoiceId, unpaidInvoiceId);
-            Assert.AreEqual(postedPayment.InvoiceId, unpaidInvoiceId);
-            Assert.AreEqual(retrievedPayment.InvoiceId, unpaidInvoiceId);
-            Assert.AreEqual(postedPayment.Id, retrievedPayment.Id);
-            Assert.IsTrue(deleted);
+            Assert.That(defaultPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
+            Assert.That(postedPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
+            Assert.That(retrievedPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
+            Assert.That(postedPayment.Id, Is.EqualTo(retrievedPayment.Id));
+            Assert.That(deleted, Is.True);
 
             // TearDown
             await DokladApi.IssuedInvoiceClient.DeleteAsync(unpaidInvoiceId);
@@ -108,17 +108,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
         {
             // Arrange
             var paidInvoiceId = (await DokladSdkTestsHelper.CreateDefaultIssuedInvoiceAsync(DokladApi)).Id;
+            var dateOfPayment = DateTime.UtcNow.AddDays(-3);
 
             // Act
-            var dateOfPayment = DateTime.UtcNow.AddDays(-3);
             var unpaid = await _client.FullyUnpayAsync(paidInvoiceId).AssertResult();
             var paid = await _client.FullyPayAsync(paidInvoiceId, dateOfPayment).AssertResult();
             var paidInvoice = await DokladApi.IssuedInvoiceClient.Detail(paidInvoiceId).GetAsync().AssertResult();
 
             // Assert
-            Assert.IsTrue(unpaid);
-            Assert.IsTrue(paid);
-            Assert.AreEqual(dateOfPayment.Date, paidInvoice.DateOfPayment);
+            Assert.That(unpaid, Is.True);
+            Assert.That(paid, Is.True);
+            Assert.That(paidInvoice.DateOfPayment, Is.EqualTo(dateOfPayment.Date));
 
             // TearDown
             await DokladApi.IssuedInvoiceClient.DeleteAsync(paidInvoiceId);
@@ -141,7 +141,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
                 .GetAsync();
 
             // Assert
-            Assert.IsNotNull(paymentDetail.Data.CashVoucher);
+            Assert.That(paymentDetail.Data.CashVoucher, Is.Not.Null);
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
             var data = await _client.PaymentsForIssuedTaxDocument().GetAsync().AssertResult();
 
             // Assert
-            Assert.GreaterOrEqual(data.TotalItems, 1);
+            Assert.That(data.TotalItems, Is.GreaterThanOrEqualTo(1));
         }
     }
 }

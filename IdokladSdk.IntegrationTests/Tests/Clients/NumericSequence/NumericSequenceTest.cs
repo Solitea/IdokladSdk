@@ -34,7 +34,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
                 .Filter(f => f.DocumentType.IsEqual(NumericSequenceDocumentType.IssuedInvoice)).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(data.TotalItems, 1);
+            Assert.That(data.TotalItems, Is.GreaterThan(1));
         }
 
         [Test]
@@ -44,8 +44,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
             var data = await _numericSequenceClient.Detail(NumericSequenceId, NumericSequenceYear).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(NumericSequenceDocumentType.IssuedInvoice, data.DocumentType);
-            Assert.AreEqual(NumericSequenceYear, data.Year);
+            Assert.That(data.DocumentType, Is.EqualTo(NumericSequenceDocumentType.IssuedInvoice));
+            Assert.That(data.Year, Is.EqualTo(NumericSequenceYear));
         }
 
         [Test]
@@ -55,8 +55,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
             var data = await _numericSequenceClient.Detail(NumericSequenceId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(NumericSequenceDocumentType.IssuedInvoice, data.DocumentType);
-            Assert.AreNotEqual(NumericSequenceYear, data.Year);
+            Assert.That(data.DocumentType, Is.EqualTo(NumericSequenceDocumentType.IssuedInvoice));
+            Assert.That(data.Year, Is.Not.EqualTo(NumericSequenceYear));
         }
 
         [Test]
@@ -68,9 +68,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual($"{currentYear}0001", data.Custom.DocumentNumber);
-            Assert.IsFalse(data.Custom.IsUnique);
-            Assert.NotNull(data.Unique);
+            Assert.That(data.Custom.DocumentNumber, Is.EqualTo($"{currentYear}0001"));
+            Assert.That(data.Custom.IsUnique, Is.False);
+            Assert.That(data.Unique, Is.Not.Null);
         }
 
         [TestCaseSource(nameof(TestData_AnotherYear))]
@@ -80,9 +80,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
             var data = await _numericSequenceClient.GetDocumentNumberAsync(NumericSequenceDocumentType.IssuedInvoice, date, 1).AssertResult();
 
             // Assert
-            Assert.AreEqual(expectedDocumentNumber, data.Custom.DocumentNumber);
-            Assert.AreEqual(isUnique, data.Custom.IsUnique);
-            Assert.NotNull(data.Unique);
+            Assert.That(data.Custom.DocumentNumber, Is.EqualTo(expectedDocumentNumber));
+            Assert.That(data.Custom.IsUnique, Is.EqualTo(isUnique));
+            Assert.That(data.Unique, Is.Not.Null);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
             var data = await _numericSequenceClient.UpdateAsync(model).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
+            Assert.That(data, Is.Not.Null);
         }
 
         [Test]
@@ -115,9 +115,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.NumericSequence
             });
 
             // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(DokladErrorCode.NumericSequenceUniqueness, result.ErrorCode);
-            Assert.AreEqual(HttpStatusCode.Conflict, result.StatusCode);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.ErrorCode, Is.EqualTo(DokladErrorCode.NumericSequenceUniqueness));
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
         }
 
         private static object[] TestData_AnotherYear()

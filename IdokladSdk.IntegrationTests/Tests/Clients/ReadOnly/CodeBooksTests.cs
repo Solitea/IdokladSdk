@@ -25,41 +25,41 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task DetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .CodeBooks()
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
+            Assert.That(data, Is.Not.Null);
             AssertDetail(data);
         }
 
         private void AssertDetail(CodeBooksGetModel model)
         {
-            Assert.NotNull(model.Banks);
-            Assert.IsNotEmpty(model.Banks);
+            Assert.That(model.Banks, Is.Not.Null);
+            Assert.That(model.Banks, Is.Not.Empty);
             AssertionsHelper.AssertDetail(model.Banks.First());
-            Assert.NotNull(model.ConstantSymbols);
-            Assert.IsNotEmpty(model.ConstantSymbols);
+            Assert.That(model.ConstantSymbols, Is.Not.Null);
+            Assert.That(model.ConstantSymbols, Is.Not.Empty);
             AssertionsHelper.AssertDetail(model.ConstantSymbols.First());
-            Assert.NotNull(model.Countries);
-            Assert.IsNotEmpty(model.Countries);
+            Assert.That(model.Countries, Is.Not.Null);
+            Assert.That(model.Countries, Is.Not.Empty);
             AssertionsHelper.AssertDetail(model.Countries.First());
-            Assert.NotNull(model.Currencies);
-            Assert.IsNotEmpty(model.Currencies);
+            Assert.That(model.Currencies, Is.Not.Null);
+            Assert.That(model.Currencies, Is.Not.Empty);
             AssertionsHelper.AssertDetail(model.Currencies.First());
-            Assert.NotNull(model.PaymentOptions);
-            Assert.IsNotEmpty(model.PaymentOptions);
+            Assert.That(model.PaymentOptions, Is.Not.Null);
+            Assert.That(model.PaymentOptions, Is.Not.Empty);
             AssertionsHelper.AssertDetail(model.PaymentOptions.First());
-            Assert.NotNull(model.VatCodes);
-            Assert.IsNotEmpty(model.VatCodes);
+            Assert.That(model.VatCodes, Is.Not.Null);
+            Assert.That(model.VatCodes, Is.Not.Empty);
             AssertionsHelper.AssertDetail(model.VatCodes.First());
-            Assert.NotNull(model.VatRates);
-            Assert.IsNotEmpty(model.VatRates);
+            Assert.That(model.VatRates, Is.Not.Null);
+            Assert.That(model.VatRates, Is.Not.Empty);
             AssertionsHelper.AssertDetail(model.VatRates.First());
-            Assert.NotNull(model.VatReverseChargeCodes);
-            Assert.IsNotEmpty(model.VatReverseChargeCodes);
+            Assert.That(model.VatReverseChargeCodes, Is.Not.Null);
+            Assert.That(model.VatReverseChargeCodes, Is.Not.Empty);
             AssertionsHelper.AssertDetail(model.VatReverseChargeCodes.First());
         }
     }

@@ -330,7 +330,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             var result = await NotificationClient.GetNewNotificationCountAsync().AssertResult();
 
             // Assert
-            Assert.Greater(result.NewNotificationsCount, 0);
+            Assert.That(result.NewNotificationsCount, Is.GreaterThan(0));
         }
 
         [Test]
@@ -343,24 +343,24 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
                 .Filter(e => e.Id.IsEqual(notificationId))
                 .GetAsync()).Data.Items.First();
 
-            var notificationStatus = (NotificationUserStatus)new List<int> { 0, 1 }
-                .First(e => e != (int)notification.Status);
+            var notificationStatus = new List<NotificationUserStatus> { NotificationUserStatus.New, NotificationUserStatus.Unread }
+                .First(e => e != notification.Status);
 
             var model = new List<NotificationPutModel>()
-        {
-            new NotificationPutModel
             {
-                Id = notificationId,
-                Status = notificationStatus
-            },
-        };
+                new NotificationPutModel
+                {
+                    Id = notificationId,
+                    Status = notificationStatus
+                },
+            };
 
             // Act
             var result = await NotificationClient.ChangeStatusAsync(model).AssertResult();
 
             // Assert
-            Assert.IsNotNull(result.First());
-            Assert.AreEqual(notificationStatus, result.First().Status);
+            Assert.That(result.FirstOrDefault(), Is.Not.Null);
+            Assert.That(result.First().Status, Is.EqualTo(notificationStatus));
         }
 
         private void AssertDocumentNumberExceededNotification(NotificationListGetModel notification)

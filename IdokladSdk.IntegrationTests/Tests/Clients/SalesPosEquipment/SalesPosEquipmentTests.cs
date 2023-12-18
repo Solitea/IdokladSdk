@@ -28,7 +28,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesPosEquipment
                 .GetAsync()
                 .AssertResult();
 
-            Assert.AreEqual(_salesPosEquipmentId, data.Id);
+            Assert.That(data.Id, Is.EqualTo(_salesPosEquipmentId));
         }
 
         [Test]
@@ -38,8 +38,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesPosEquipment
             var data = await _client.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesPosEquipment
             var data = await _client.Info().GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_pairedSalesPosEquipmentId, data.Id);
+            Assert.That(data.Id, Is.EqualTo(_pairedSalesPosEquipmentId));
         }
     }
 }

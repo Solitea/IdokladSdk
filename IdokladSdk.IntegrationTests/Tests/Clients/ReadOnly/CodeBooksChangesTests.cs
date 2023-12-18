@@ -30,27 +30,27 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task DetailAsync_SuccessfullyGet(DateTime lastCheck, bool expectedWasChanged)
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .CodeBooksChanges(lastCheck)
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
+            Assert.That(data, Is.Not.Null);
             AssertDetail(data, expectedWasChanged);
         }
 
         private void AssertDetail(CodeBooksChangesGetModel model, bool expectedWasChanged)
         {
-            Assert.AreEqual(expectedWasChanged, model.Country);
-            Assert.AreEqual(expectedWasChanged, model.Bank);
-            Assert.AreEqual(expectedWasChanged, model.ConstantSymbols);
-            Assert.AreEqual(expectedWasChanged, model.Currencies);
-            Assert.AreEqual(expectedWasChanged, model.ExchangeRates);
-            Assert.AreEqual(expectedWasChanged, model.PaymentOptions);
-            Assert.AreEqual(expectedWasChanged, model.VatCodes);
-            Assert.AreEqual(expectedWasChanged, model.VatRates);
-            Assert.AreEqual(expectedWasChanged, model.VatReverseChargeCodes);
+            Assert.That(model.Country, Is.EqualTo(expectedWasChanged));
+            Assert.That(model.Bank, Is.EqualTo(expectedWasChanged));
+            Assert.That(model.ConstantSymbols, Is.EqualTo(expectedWasChanged));
+            Assert.That(model.Currencies, Is.EqualTo(expectedWasChanged));
+            Assert.That(model.ExchangeRates, Is.EqualTo(expectedWasChanged));
+            Assert.That(model.PaymentOptions, Is.EqualTo(expectedWasChanged));
+            Assert.That(model.VatCodes, Is.EqualTo(expectedWasChanged));
+            Assert.That(model.VatRates, Is.EqualTo(expectedWasChanged));
+            Assert.That(model.VatReverseChargeCodes, Is.EqualTo(expectedWasChanged));
         }
     }
 }

@@ -32,12 +32,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             var data = await _statisticsClient.InvoicingForPeriodAsync(periodType).AssertResult();
 
             // Assert
-            Assert.Greater(data.IssuedInvoices.Count, 0);
-            Assert.IsNotNull(data.IssuedInvoices.First().Period);
-            Assert.IsNotEmpty(data.IssuedInvoices.First().Period);
-            Assert.Greater(data.ReceivedInvoices.Count, 0);
-            Assert.IsNotNull(data.ReceivedInvoices.First().Period);
-            Assert.IsNotEmpty(data.ReceivedInvoices.First().Period);
+            Assert.That(data.IssuedInvoices.Count, Is.GreaterThan(0));
+            Assert.That(data.IssuedInvoices.First().Period, Is.Not.Null);
+            Assert.That(data.IssuedInvoices.First().Period, Is.Not.Empty);
+            Assert.That(data.ReceivedInvoices.Count, Is.GreaterThan(0));
+            Assert.That(data.ReceivedInvoices.First().Period, Is.Not.Null);
+            Assert.That(data.ReceivedInvoices.First().Period, Is.Not.Empty);
         }
 
         [Test]
@@ -50,8 +50,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             var data = await _statisticsClient.InvoicingForYearAsync(yearType).AssertResult();
 
             // Assert
-            Assert.Greater(data.IssuedInvoices.TotalWithVat, 0);
-            Assert.Greater(data.ReceivedInvoices.TotalWithVat, 0);
+            Assert.That(data.IssuedInvoices.TotalWithVat, Is.GreaterThan(0));
+            Assert.That(data.ReceivedInvoices.TotalWithVat, Is.GreaterThan(0));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             var data = await _statisticsClient.QuarterSummaryAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.Count, 0);
+            Assert.That(data.Count, Is.GreaterThan(0));
         }
 
         [Test]
@@ -71,8 +71,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             var data = await _statisticsClient.TopPartnersAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.Count, 0);
-            Assert.Greater(data.First().TotalWithVatHc, 0);
+            Assert.That(data.Count, Is.GreaterThan(0));
+            Assert.That(data.First().TotalWithVatHc, Is.GreaterThan(0));
         }
 
         [Test]
@@ -82,9 +82,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             var data = await _statisticsClient.AgendaSummaryAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.IssuedInvoices, 0);
-            Assert.Greater(data.ReceivedInvoices, 0);
-            Assert.Greater(data.SalesReceipts, 0);
+            Assert.That(data.IssuedInvoices, Is.GreaterThan(0));
+            Assert.That(data.ReceivedInvoices, Is.GreaterThan(0));
+            Assert.That(data.SalesReceipts, Is.GreaterThan(0));
         }
 
         [Test]
@@ -94,8 +94,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             var data = await _statisticsClient.StatisticForContactAsync(323823).AssertResult();
 
             // Assert
-            Assert.Greater(data.IssuedInvoiceCount, 0);
-            Assert.Greater(data.IssuedInvoiceTotalWithVat, 0);
+            Assert.That(data.IssuedInvoiceCount, Is.GreaterThan(0));
+            Assert.That(data.IssuedInvoiceTotalWithVat, Is.GreaterThan(0));
         }
     }
 }

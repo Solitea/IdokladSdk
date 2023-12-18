@@ -155,8 +155,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
             var data = await RecurringInvoiceClient.CopyAsync(_recurringInvoiceId).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.AreEqual(PartnerId, data.InvoiceTemplate.PartnerId);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.InvoiceTemplate.PartnerId, Is.EqualTo(PartnerId));
         }
 
         [Test]
@@ -214,9 +214,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
 
         private void AssertResultGetModel(RecurringInvoiceResultGetModel data)
         {
-            Assert.Greater(data.Id, 0);
+            Assert.That(data.Id, Is.GreaterThan(0));
             Assert.That(data.CreatedInvoice, Is.Not.Null);
-            Assert.Greater(data.CreatedInvoice.Id, 0);
+            Assert.That(data.CreatedInvoice.Id, Is.GreaterThan(0));
             AssertGetModel((RecurringInvoiceGetModel)data);
         }
 

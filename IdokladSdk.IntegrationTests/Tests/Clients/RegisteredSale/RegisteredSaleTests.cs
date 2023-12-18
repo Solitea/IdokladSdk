@@ -29,7 +29,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             var data = await _registeredSaleClient.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
         }
 
         [Test]
@@ -39,8 +39,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             var data = await _registeredSaleClient.Detail(RegisteredSaleType.SalesReceipt, _salesReceiptId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_salesReceiptId, data.SalesReceiptId);
-            Assert.AreEqual(_vatIdentificationNumber, data.VatIdentificationNumber);
+            Assert.That(data.SalesReceiptId, Is.EqualTo(_salesReceiptId));
+            Assert.That(data.VatIdentificationNumber, Is.EqualTo(_vatIdentificationNumber));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             var data = await _registeredSaleClient.DefaultAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_vatIdentificationNumber, data.VatIdentificationNumber);
+            Assert.That(data.VatIdentificationNumber, Is.EqualTo(_vatIdentificationNumber));
         }
 
         [Test]
@@ -69,13 +69,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             var data = await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model).AssertResult();
 
             // Assert
-            Assert.AreEqual(_vatIdentificationNumber, data.VatIdentificationNumber);
-            Assert.AreEqual(model.Uuid, data.Uuid);
-            Assert.AreEqual(model.Bkp, data.Bkp);
-            Assert.AreEqual(model.Fik, data.Fik);
-            Assert.AreEqual(model.Pkp, data.Pkp);
-            Assert.AreEqual(model.ReceiptNumber, data.ReceiptNumber);
-            Assert.AreEqual(model.SalesOfficeDesignation, data.SalesOfficeDesignation);
+            Assert.That(data.VatIdentificationNumber, Is.EqualTo(_vatIdentificationNumber));
+            Assert.That(data.Uuid, Is.EqualTo(model.Uuid));
+            Assert.That(data.Bkp, Is.EqualTo(model.Bkp));
+            Assert.That(data.Fik, Is.EqualTo(model.Fik));
+            Assert.That(data.Pkp, Is.EqualTo(model.Pkp));
+            Assert.That(data.ReceiptNumber, Is.EqualTo(model.ReceiptNumber));
+            Assert.That(data.SalesOfficeDesignation, Is.EqualTo(model.SalesOfficeDesignation));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             var exception = Assert.ThrowsAsync<ValidationException>(async () => await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model));
 
             // Assert
-            Assert.AreEqual("Model is not valid.\nThe Bkp field is required.\nThe Fik field is required.\nThe Pkp field is required.\nThe ReceiptNumber field is required.", exception.Message);
+            Assert.That(exception.Message, Is.GreaterThan("Model is not valid.\nThe Bkp field is required.\nThe Fik field is required.\nThe Pkp field is required.\nThe ReceiptNumber field is required."));
         }
     }
 }

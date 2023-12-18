@@ -33,7 +33,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
+            Assert.That(data, Is.Not.Null);
             AssertionsHelper.AssertDetail(data);
         }
 
@@ -48,11 +48,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.NotZero(data.Id);
-            Assert.IsNotEmpty(data.Name);
-            Assert.NotNull(data.Country);
-            Assert.NotNull(data.Country.Name);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Id, Is.Not.Zero);
+            Assert.That(data.Name, Is.Not.Empty);
+            Assert.That(data.Country, Is.Not.Null);
+            Assert.That(data.Country.Name, Is.Not.Null);
         }
 
         [Test]
@@ -65,9 +65,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data.Items);
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.Items, Is.Not.Null);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
             var firstItem = data.Items.First();
             AssertionsHelper.AssertDetail(firstItem);
         }
@@ -90,13 +90,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data.Items);
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
-            Assert.True(data.Items.All(i => i.CountryId == countryId));
-            Assert.True(data.Items.All(i => i.DateLastChange > testDate));
-            Assert.True(data.Items.All(i => !i.IsOutOfDate));
-            Assert.True(data.Items.First().Id > data.Items.Last().Id);
+            Assert.That(data.Items, Is.Not.Null);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
+            Assert.That(data.Items.All(i => i.CountryId == countryId), Is.True);
+            Assert.That(data.Items.All(i => i.DateLastChange > testDate), Is.True);
+            Assert.That(data.Items.All(i => !i.IsOutOfDate), Is.True);
+            Assert.That(data.Items.First().Id > data.Items.Last().Id, Is.True);
         }
     }
 }

@@ -27,13 +27,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task DetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .Detail(Id)
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
+            Assert.That(data, Is.Not.Null);
             AssertionsHelper.AssertDetail(data);
         }
 
@@ -41,35 +41,30 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
         public async Task DetailAsync_WithParameters_SuccessfullyGet()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .Detail(Id)
-
-                // .Include(x => x.Country)
-                .GetAsync<VatCodeTestDetail>())
+                .GetAsync<VatCodeTestDetail>()
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data.Code);
-            Assert.IsNotEmpty(data.Name);
-
-            // Assert.NotNull(data.Country);
-            // Assert.NotNull(data.Country.Name);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Code, Is.Not.Empty);
+            Assert.That(data.Name, Is.Not.Empty);
         }
 
         [Test]
         public async Task ListAsync_ReturnsNonEmptyList()
         {
             // Act
-            var data = (await _client
+            var data = await _client
                 .List()
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data.Items);
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.Items, Is.Not.Null);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
             var firstItem = data.Items.First();
             AssertionsHelper.AssertDetail(firstItem);
         }
@@ -80,22 +75,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             // Act
             var countryId = 2;
             var testDate = new DateTime(2018, 1, 1);
-            var data = (await _client
+            var data = await _client
                 .List()
                 .Filter(x => x.CountryId.IsEqual(countryId))
                 .Filter(x => x.DateValidityFrom.IsLowerThanOrEqual(testDate))
                 .Filter(x => x.DateValidityTo.IsGreaterThanOrEqual(testDate))
                 .Sort(x => x.Id.Desc())
-                .GetAsync<VatCodeTestList>())
+                .GetAsync<VatCodeTestList>()
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data.Items);
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
-            Assert.True(data.Items.All(i => i.CountryId == countryId));
-            Assert.True(data.Items.All(i => i.DateValidityFrom <= testDate));
-            Assert.True(data.Items.All(i => i.DateValidityTo >= testDate));
+            Assert.That(data.Items, Is.Not.Null);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
+            Assert.That(data.Items.All(i => i.CountryId == countryId), Is.True);
+            Assert.That(data.Items.All(i => i.DateValidityFrom <= testDate), Is.True);
+            Assert.That(data.Items.All(i => i.DateValidityTo >= testDate), Is.True);
         }
     }
 }
