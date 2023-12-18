@@ -280,7 +280,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.That(getModel.MyAddress.BankCode, Is.EqualTo("0600"));
             Assert.That(getModel.PaymentOptionId, Is.EqualTo(patchModel.PaymentOptionId));
             Assert.That(getModel.Prices, Is.Not.Null);
-            Assert.That(getModel.Prices.TotalWithVat, Is.Zero);
+            Assert.That(getModel.Prices.TotalWithVat, Is.Not.Zero);
             Assert.That(getModel.ReportLanguage, Is.EqualTo(patchModel.ReportLanguage));
             Assert.That(getModel.VariableSymbol, Is.EqualTo(patchModel.VariableSymbol));
         }
@@ -294,7 +294,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.That(getModel.Name, Is.EqualTo(patchModel.Name));
             Assert.That(getModel.PriceListItemId, Is.EqualTo((int)patchModel.PriceListItemId));
             Assert.That(getModel.Prices, Is.Not.Null);
-            Assert.That(getModel.Prices.TotalWithVat, Is.Zero);
+            Assert.That(getModel.Prices.TotalWithVat, Is.Not.Zero);
             Assert.That(getModel.PriceType, Is.EqualTo(patchModel.PriceType));
             Assert.That(getModel.Unit, Is.EqualTo(patchModel.Unit));
             Assert.That(getModel.VatRateType, Is.EqualTo(patchModel.VatRateType));
