@@ -182,7 +182,7 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
             for (int i = 0; i < returnedTags.Count(); i++)
             {
                 var returnedTag = returnedTags.ElementAt(i);
-                Assert.That(expectedIds, Contains.Value(returnedTag.TagId));
+                Assert.That(expectedIds, Contains.Item(returnedTag.TagId));
                 var expandedTag = returnedTag as TagDocumentGetModel;
 
                 if (isExpand)
