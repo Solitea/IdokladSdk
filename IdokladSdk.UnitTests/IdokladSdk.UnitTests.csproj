@@ -40,7 +40,6 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\IdokladSdk.ruleset</CodeAnalysisRuleSet>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <AnalysisLevel>5.0</AnalysisLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

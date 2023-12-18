@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <EnableNETAnalyzers>True</EnableNETAnalyzers>
-        <AnalysisLevel>5.0</AnalysisLevel>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
 

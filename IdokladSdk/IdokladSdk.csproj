@@ -8,7 +8,7 @@
         <Product>iDoklad</Product>
         <Company>Seyfor, a.s.</Company>
         <Authors>Seyfor, a.s.</Authors>
-        <Copyright>© 2016 - 2023</Copyright>
+        <Copyright>© 2016 - 2024</Copyright>
         <Description>SDK for iDoklad API</Description>
         <PackageTags>idoklad,sdk,rest,api,seyfor</PackageTags>
     </PropertyGroup>
