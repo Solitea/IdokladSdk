@@ -8,9 +8,7 @@ using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.DeliveryAddress;
 using IdokladSdk.Models.DocumentAddress;
-using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.IssuedInvoice.Get;
-using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.ProformaInvoice.Get;
 using IdokladSdk.Models.SalesOrder;
 using IdokladSdk.Requests.Core.Extensions;
@@ -44,10 +42,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var result = await _client.PostAsync(model).AssertResult();
 
             // Assert
-            Assert.Greater(result.Id, 0);
-            Assert.AreEqual(model.DateOfIssue.Date, result.DateOfIssue);
-            Assert.AreEqual(PartnerId, result.PartnerId);
-            Assert.Greater(result.Items.Count, 0);
+            Assert.That(result.Id, Is.GreaterThan(0));
+            Assert.That(result.DateOfIssue, Is.EqualTo(model.DateOfIssue.Date));
+            Assert.That(result.PartnerId, Is.EqualTo(PartnerId));
+            Assert.That(result.Items.Count, Is.GreaterThan(0));
             await _client.DeleteAsync(result.Id).AssertResult();
         }
 
@@ -62,7 +60,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var data = await _client.DeleteAsync(result.Id).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -72,8 +70,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var data = await _client.Detail(SalesOrderId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(SalesOrderId, data.Id);
-            Assert.Greater(data.Attachments.Count, 0);
+            Assert.That(data.Id, Is.EqualTo(SalesOrderId));
+            Assert.That(data.Attachments.Count, Is.GreaterThan(0));
         }
 
         [Test]
@@ -86,8 +84,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual(SalesOrderId, data.Id);
-            Assert.IsNotNull(data.Partner);
+            Assert.That(data.Id, Is.EqualTo(SalesOrderId));
+            Assert.That(data.Partner, Is.Not.Null);
         }
 
         [Test]
@@ -112,10 +110,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var data = await _client.UpdateAsync(patchModel).AssertResult();
 
             // Assert
-            Assert.AreEqual(patchModel.Description, data.Description);
-            Assert.AreEqual(PartnerId, data.PartnerId);
-            Assert.AreEqual(patchModel.MyAddress.AccountNumber, data.MyAddress.AccountNumber);
-            Assert.AreEqual(patchModel.MyAddress.Iban, data.MyAddress.Iban);
+            Assert.That(data.Description, Is.EqualTo(patchModel.Description));
+            Assert.That(data.PartnerId, Is.EqualTo(PartnerId));
+            Assert.That(data.MyAddress.AccountNumber, Is.EqualTo(patchModel.MyAddress.AccountNumber));
+            Assert.That(data.MyAddress.Iban, Is.EqualTo(patchModel.MyAddress.Iban));
             AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId2);
             await _client.DeleteAsync(result.Id).AssertResult();
         }
@@ -155,9 +153,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual(SalesOrderId, data.Id);
-            Assert.AreNotEqual(default(string), data.DocumentNumber);
-            Assert.AreNotEqual(string.Empty, data.DocumentNumber);
+            Assert.That(data.Id, Is.EqualTo(SalesOrderId));
+            Assert.That(data.DocumentNumber, Is.Not.EqualTo(default(string)));
+            Assert.That(data.DocumentNumber, Is.Not.EqualTo(string.Empty));
         }
 
         [Test]
@@ -167,8 +165,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var data = await _client.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
         }
 
         [Test]
@@ -185,8 +183,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
                 .AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.AreEqual(data.TotalItems / pageSize, data.TotalPages);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.EqualTo(data.TotalItems / pageSize));
         }
 
         [Test]
@@ -202,8 +200,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual(1, data.Items.Count());
-            Assert.AreEqual(id, data.Items.First().Id);
+            Assert.That(data.Items.Count(), Is.EqualTo(1));
+            Assert.That(data.Items.First().Id, Is.EqualTo(id));
         }
 
         [Test]
@@ -234,8 +232,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 
             // Assert
             var salesOrder = data.Items.First();
-            Assert.AreNotEqual(default(string), salesOrder.DocumentNumber);
-            Assert.AreNotEqual(string.Empty, salesOrder.DocumentNumber);
+            Assert.That(salesOrder.DocumentNumber, Is.Not.EqualTo(default(string)));
+            Assert.That(salesOrder.DocumentNumber, Is.Not.EqualTo(string.Empty));
         }
 
         [Test]
@@ -264,14 +262,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
 
             // Assert
             var recountedItem = data.Items.First(x => x.ItemType == SalesOrderItemType.ItemTypeNormal);
-            Assert.AreEqual(item.Id, recountedItem.Id);
-            Assert.AreEqual(item.Name, recountedItem.Name);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVatHc);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVat);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVatHc);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVat);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVatHc);
+            Assert.That(recountedItem.Id, Is.EqualTo(item.Id));
+            Assert.That(recountedItem.Name, Is.EqualTo(item.Name));
+            Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(242));
+            Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(242));
+            Assert.That(recountedItem.Prices.TotalVat, Is.EqualTo(42));
+            Assert.That(recountedItem.Prices.TotalVatHc, Is.EqualTo(42));
+            Assert.That(recountedItem.Prices.TotalWithoutVat, Is.EqualTo(200));
+            Assert.That(recountedItem.Prices.TotalWithoutVatHc, Is.EqualTo(200));
         }
 
         [Test]
@@ -286,81 +284,51 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOrder
             var salesOrderCopy = await _client.CopyAsync(salesOrder.Id).AssertResult();
 
             // Assert
-            Assert.AreEqual(salesOrder.Description, salesOrderCopy.Description);
-            Assert.AreEqual(PartnerId, salesOrderCopy.PartnerId);
-            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, salesOrderCopy.AccountNumber);
+            Assert.That(salesOrderCopy.Description, Is.EqualTo(salesOrder.Description));
+            Assert.That(salesOrderCopy.PartnerId, Is.EqualTo(PartnerId));
+            Assert.That(salesOrderCopy.AccountNumber, Is.EqualTo(salesOrder.MyAddress.AccountNumber));
             await _client.DeleteAsync(salesOrder.Id).AssertResult();
         }
 
         private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
         {
-            Assert.NotNull(data);
-            Assert.NotNull(data.City);
-            Assert.AreEqual(expectedDeliveryAddressId, data.ContactDeliveryAddressId);
-            Assert.NotZero(data.CountryId);
-            Assert.NotNull(data.Name);
-            Assert.NotNull(data.PostalCode);
-            Assert.NotNull(data.Street);
-        }
-
-        private void AssertIssuedInvoice(IssuedInvoicePostModel issuedInvoice, SalesOrderGetModel salesOrder)
-        {
-            Assert.AreEqual(SalesOrderId, issuedInvoice.SalesOrderId);
-            Assert.AreEqual(salesOrder.Description, issuedInvoice.Description);
-            Assert.AreEqual(salesOrder.CurrencyId, issuedInvoice.CurrencyId);
-            Assert.AreEqual(salesOrder.ExchangeRate, issuedInvoice.ExchangeRate);
-            Assert.AreEqual(salesOrder.ExchangeRateAmount, issuedInvoice.ExchangeRateAmount);
-            Assert.AreEqual(salesOrder.PartnerId, issuedInvoice.PartnerId);
-            Assert.AreEqual(salesOrder.PaymentOptionId, issuedInvoice.PaymentOptionId);
-            Assert.AreEqual(salesOrder.OrderNumber, issuedInvoice.OrderNumber);
-            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, issuedInvoice.AccountNumber);
-            Assert.AreEqual(salesOrder.MyAddress.Iban, issuedInvoice.Iban);
-            Assert.AreEqual(salesOrder.MyAddress.Swift, issuedInvoice.Swift);
-        }
-
-        private void AssertProformaInvoice(ProformaInvoicePostModel proformaInvoice, SalesOrderGetModel salesOrder)
-        {
-            Assert.AreEqual(SalesOrderId, proformaInvoice.SalesOrderId);
-            Assert.AreEqual(salesOrder.Description, proformaInvoice.Description);
-            Assert.AreEqual(salesOrder.CurrencyId, proformaInvoice.CurrencyId);
-            Assert.AreEqual(salesOrder.ExchangeRate, proformaInvoice.ExchangeRate);
-            Assert.AreEqual(salesOrder.ExchangeRateAmount, proformaInvoice.ExchangeRateAmount);
-            Assert.AreEqual(salesOrder.PartnerId, proformaInvoice.PartnerId);
-            Assert.AreEqual(salesOrder.PaymentOptionId, proformaInvoice.PaymentOptionId);
-            Assert.AreEqual(salesOrder.OrderNumber, proformaInvoice.OrderNumber);
-            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, proformaInvoice.AccountNumber);
-            Assert.AreEqual(salesOrder.MyAddress.Iban, proformaInvoice.Iban);
-            Assert.AreEqual(salesOrder.MyAddress.Swift, proformaInvoice.Swift);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.City, Is.Not.Null);
+            Assert.That(data.ContactDeliveryAddressId, Is.EqualTo(expectedDeliveryAddressId));
+            Assert.That(data.CountryId, Is.Not.Zero);
+            Assert.That(data.Name, Is.Not.Null);
+            Assert.That(data.PostalCode, Is.Not.Null);
+            Assert.That(data.Street, Is.Not.Null);
         }
 
         private void AssertInvoiceFromSalesOrderGetModel(IssuedInvoiceFromSalesOrderGetModel model, SalesOrderGetModel salesOrder)
         {
-            Assert.AreEqual(SalesOrderId, model.SalesOrderId);
-            Assert.AreEqual(salesOrder.Description, model.Description);
-            Assert.AreEqual(salesOrder.CurrencyId, model.CurrencyId);
-            Assert.AreEqual(salesOrder.ExchangeRate, model.ExchangeRate);
-            Assert.AreEqual(salesOrder.ExchangeRateAmount, model.ExchangeRateAmount);
-            Assert.AreEqual(salesOrder.PartnerId, model.PartnerId);
-            Assert.AreEqual(salesOrder.PaymentOptionId, model.PaymentOptionId);
-            Assert.AreEqual(salesOrder.OrderNumber, model.OrderNumber);
-            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, model.AccountNumber);
-            Assert.AreEqual(salesOrder.MyAddress.Iban, model.Iban);
-            Assert.AreEqual(salesOrder.MyAddress.Swift, model.Swift);
+            Assert.That(model.SalesOrderId, Is.EqualTo(SalesOrderId));
+            Assert.That(model.Description, Is.EqualTo(salesOrder.Description));
+            Assert.That(model.CurrencyId, Is.EqualTo(salesOrder.CurrencyId));
+            Assert.That(model.ExchangeRate, Is.EqualTo(salesOrder.ExchangeRate));
+            Assert.That(model.ExchangeRateAmount, Is.EqualTo(salesOrder.ExchangeRateAmount));
+            Assert.That(model.PartnerId, Is.EqualTo(salesOrder.PartnerId));
+            Assert.That(model.PaymentOptionId, Is.EqualTo(salesOrder.PaymentOptionId));
+            Assert.That(model.OrderNumber, Is.EqualTo(salesOrder.OrderNumber));
+            Assert.That(model.AccountNumber, Is.EqualTo(salesOrder.MyAddress.AccountNumber));
+            Assert.That(model.Iban, Is.EqualTo(salesOrder.MyAddress.Iban));
+            Assert.That(model.Swift, Is.EqualTo(salesOrder.MyAddress.Swift));
         }
 
         private void AssertProformaFromSalesOrderGetModel(ProformaInvoiceFromSalesOrderGetModel model, SalesOrderGetModel salesOrder)
         {
-            Assert.AreEqual(SalesOrderId, model.SalesOrderId);
-            Assert.AreEqual(salesOrder.Description, model.Description);
-            Assert.AreEqual(salesOrder.CurrencyId, model.CurrencyId);
-            Assert.AreEqual(salesOrder.ExchangeRate, model.ExchangeRate);
-            Assert.AreEqual(salesOrder.ExchangeRateAmount, model.ExchangeRateAmount);
-            Assert.AreEqual(salesOrder.PartnerId, model.PartnerId);
-            Assert.AreEqual(salesOrder.PaymentOptionId, model.PaymentOptionId);
-            Assert.AreEqual(salesOrder.OrderNumber, model.OrderNumber);
-            Assert.AreEqual(salesOrder.MyAddress.AccountNumber, model.AccountNumber);
-            Assert.AreEqual(salesOrder.MyAddress.Iban, model.Iban);
-            Assert.AreEqual(salesOrder.MyAddress.Swift, model.Swift);
+            Assert.That(model.SalesOrderId, Is.EqualTo(SalesOrderId));
+            Assert.That(model.Description, Is.EqualTo(salesOrder.Description));
+            Assert.That(model.CurrencyId, Is.EqualTo(salesOrder.CurrencyId));
+            Assert.That(model.ExchangeRate, Is.EqualTo(salesOrder.ExchangeRate));
+            Assert.That(model.ExchangeRateAmount, Is.EqualTo(salesOrder.ExchangeRateAmount));
+            Assert.That(model.PartnerId, Is.EqualTo(salesOrder.PartnerId));
+            Assert.That(model.PaymentOptionId, Is.EqualTo(salesOrder.PaymentOptionId));
+            Assert.That(model.OrderNumber, Is.EqualTo(salesOrder.OrderNumber));
+            Assert.That(model.AccountNumber, Is.EqualTo(salesOrder.MyAddress.AccountNumber));
+            Assert.That(model.Iban, Is.EqualTo(salesOrder.MyAddress.Iban));
+            Assert.That(model.Swift, Is.EqualTo(salesOrder.MyAddress.Swift));
         }
 
         private async Task<SalesOrderPostModel> GetSalesOrderPostModelAsync()

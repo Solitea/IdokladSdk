@@ -195,8 +195,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentTemplate
             var data = await IssuedDocumentTemplateClient.CopyAsync(_createdId).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.AreEqual(PartnerId, data.PartnerId);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.PartnerId, Is.EqualTo(PartnerId));
         }
 
         [Test]

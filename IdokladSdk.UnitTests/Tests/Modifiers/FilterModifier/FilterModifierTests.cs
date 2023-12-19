@@ -18,7 +18,7 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.IsNull(queryParams);
+            Assert.That(queryParams, Is.Null);
         }
 
         [TestCase]
@@ -33,12 +33,12 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(2, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
+            Assert.That(queryParams.Count, Is.EqualTo(2));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
             var filterString = GetFilterExpression(filterExpression);
-            Assert.AreEqual(filterString, filter);
-            Assert.IsTrue(queryParams.TryGetValue("filterType", out var filterType));
-            Assert.AreEqual("and", filterType);
+            Assert.That(filter, Is.EqualTo(filterString));
+            Assert.That(queryParams.TryGetValue("filterType", out var filterType), Is.True);
+            Assert.That(filterType, Is.EqualTo("and"));
         }
 
         [TestCase]
@@ -55,13 +55,13 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(2, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
+            Assert.That(queryParams.Count, Is.EqualTo(2));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
             var filter1 = GetFilterExpression(filterExpression1);
             var filter2 = GetFilterExpression(filterExpression2);
-            Assert.AreEqual($"{filter1}|{filter2}", filter);
-            Assert.IsTrue(queryParams.TryGetValue("filterType", out var filterType));
-            Assert.AreEqual("or", filterType);
+            Assert.That(filter, Is.EqualTo($"{filter1}|{filter2}"));
+            Assert.That(queryParams.TryGetValue("filterType", out var filterType), Is.True);
+            Assert.That(filterType, Is.EqualTo("or"));
         }
 
         [TestCase]
@@ -80,14 +80,14 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(2, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
+            Assert.That(queryParams.Count, Is.EqualTo(2));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
             var filter1 = GetFilterExpression(filterExpression1);
             var filter2 = GetFilterExpression(filterExpression2);
             var filter3 = GetFilterExpression(filterExpression3);
-            Assert.AreEqual($"{filter1}|{filter2}|{filter3}", filter);
-            Assert.IsTrue(queryParams.TryGetValue("filterType", out var filterType));
-            Assert.AreEqual("and", filterType);
+            Assert.That(filter, Is.EqualTo($"{filter1}|{filter2}|{filter3}"));
+            Assert.That(queryParams.TryGetValue("filterType", out var filterType), Is.True);
+            Assert.That(filterType, Is.EqualTo("and"));
         }
 
         [Test]
@@ -103,11 +103,11 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
             var filter1 = GetFilterExpression(filterExpression1);
             var filter2 = GetFilterExpression(filterExpression2);
-            Assert.AreEqual($"({filter1}~and~{filter2})", filter);
+            Assert.That(filter, Is.EqualTo($"({filter1}~and~{filter2})"));
         }
 
         [Test]
@@ -124,12 +124,12 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
             var filter1 = GetFilterExpression(filterExpression1);
             var filter2 = GetFilterExpression(filterExpression2);
             var filter3 = GetFilterExpression(filterExpression3);
-            Assert.AreEqual($"(({filter1}~or~{filter2})~or~{filter3})", filter);
+            Assert.That(filter, Is.EqualTo($"(({filter1}~or~{filter2})~or~{filter3})"));
         }
 
         [Test]
@@ -148,14 +148,14 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("filter", out var filter));
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
             var filter1 = GetFilterExpression(filterExpression1);
             var filter2 = GetFilterExpression(filterExpression2);
             var filter3 = GetFilterExpression(filterExpression3);
             var filter4 = GetFilterExpression(filterExpression4);
             var filter5 = GetFilterExpression(filterExpression5);
-            Assert.AreEqual($"(({filter1}~and~(({filter2}~or~{filter3})~or~{filter4}))~or~{filter5})", filter);
+            Assert.That(filter, Is.EqualTo($"(({filter1}~and~(({filter2}~or~{filter3})~or~{filter4}))~or~{filter5})"));
         }
 
         [Test]

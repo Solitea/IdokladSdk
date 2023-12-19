@@ -51,9 +51,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             var data3 = await _attachmentClient.UploadAsync(model3).AssertResult();
 
             // Assert
-            Assert.IsTrue(data1);
-            Assert.IsTrue(data2);
-            Assert.IsTrue(data3);
+            Assert.That(data1, Is.True);
+            Assert.That(data2, Is.True);
+            Assert.That(data3, Is.True);
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
                 data.ForEach((attachment) =>
                 {
                     Assert.That(attachment.Id, Is.Not.EqualTo(0));
-                    Assert.NotNull(attachment.FileBytes);
+                    Assert.That(attachment.FileBytes, Is.Not.Null);
                     Assert.That(attachment.FileName, Is.Not.Null.Or.Empty);
                 });
             });
@@ -87,9 +87,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             var data = await _attachmentClient.GetAsync(_attachmentId).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.NotNull(data.FileBytes);
-            Assert.AreEqual(_attachmentName, data.FileName);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.FileBytes, Is.Not.Null);
+            Assert.That(data.FileName, Is.EqualTo(_attachmentName));
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             var data = await _attachmentClient.DeleteAsync(_attachmentId).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             var data = await _attachmentClient.DeleteAsync(_documentId, AttachmentDocumentType.IssuedInvoice).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]

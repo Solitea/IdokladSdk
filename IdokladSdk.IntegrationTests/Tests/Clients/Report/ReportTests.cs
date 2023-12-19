@@ -31,8 +31,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
                 PaymentOption = PaymentOption.WithPayment,
             }).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -43,8 +42,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
                 PaymentOption = PaymentOption.WithPayment,
             }).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -52,8 +50,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.ProformaInvoice.Detail(913250).GetAsync().AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -61,8 +58,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.CreditNote.Detail(913257).GetAsync().AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -73,8 +69,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
                 Language = Language.Cz
             }).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -85,8 +80,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
                 Language = Language.Cz
             }).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -97,20 +91,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
                 Language = Language.Cz
             }).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
-        public void GetAsync_CashVoucherDetail_ForInvoice_SuccessfullyGetAsyncReport()
+        public async Task GetAsync_CashVoucherDetail_ForInvoice_SuccessfullyGetAsyncReport()
         {
-            var data = _reportClient.CashVoucher.DetailForInvoice(913318, InvoiceReportDocumentType.IssuedInvoice).GetAsync(new ReportOption
+            var data = await _reportClient.CashVoucher.DetailForInvoice(913318, InvoiceReportDocumentType.IssuedInvoice).GetAsync(new ReportOption
             {
                 Language = Language.Cz
-            }).Result.AssertResult();
+            }).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -118,8 +110,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).GetAsync(Language.En).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -129,8 +120,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
             var data = await _reportClient.IssuedTaxDocument.Detail(1542).GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -138,8 +128,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.ProformaInvoice.List().GetAsync(Language.En).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -147,8 +136,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.CreditNote.List().GetAsync(Language.Cz).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -156,8 +144,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.CashVoucher.List().GetAsync(Language.Cz).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -167,8 +154,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
             var data = await _reportClient.SalesOrder.Detail(1009).GetAsync(new ReportOption { Language = Language.Sk }).AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -176,8 +162,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.SalesReceipt.List().GetAsync(Language.Cz).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -185,8 +170,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.ReceivedInvoice.List().GetAsync(Language.Cz).AssertResult();
 
-            Assert.NotNull(data);
-            Assert.IsNotEmpty(data);
+            Assert.That(data, Is.Not.Null.Or.Empty);
         }
     }
 }

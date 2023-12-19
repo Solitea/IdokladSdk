@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace IdokladSdk.UnitTests.Tests.Validation.Exceptions
 {
@@ -16,11 +15,6 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Exceptions
 
         public CustomTestException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        protected CustomTestException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

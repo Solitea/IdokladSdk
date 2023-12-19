@@ -32,7 +32,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
             var data = await _receivedDocumentPaymentClient.List().Sort(x => x.DateOfPayment.Asc()).GetAsync().AssertResult();
 
             // Assert
-            Assert.GreaterOrEqual(data.TotalItems, 1);
+            Assert.That(data.TotalItems, Is.GreaterThanOrEqualTo(1));
         }
 
         [Test]
@@ -46,11 +46,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
             var deleted = await _receivedDocumentPaymentClient.DeleteAsync(retrievedPayment.Id).AssertResult();
 
             // Assert
-            Assert.AreEqual(defaultPayment.InvoiceId, UnpaidInvoiceId);
-            Assert.AreEqual(postedPayment.InvoiceId, UnpaidInvoiceId);
-            Assert.AreEqual(retrievedPayment.InvoiceId, UnpaidInvoiceId);
-            Assert.AreEqual(postedPayment.Id, retrievedPayment.Id);
-            Assert.IsTrue(deleted);
+            Assert.That(defaultPayment.InvoiceId, Is.EqualTo(UnpaidInvoiceId));
+            Assert.That(postedPayment.InvoiceId, Is.EqualTo(UnpaidInvoiceId));
+            Assert.That(retrievedPayment.InvoiceId, Is.EqualTo(UnpaidInvoiceId));
+            Assert.That(retrievedPayment.Id, Is.EqualTo(postedPayment.Id));
+            Assert.That(deleted, Is.True);
         }
 
         [Test]
@@ -62,8 +62,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
             var paid = await _receivedDocumentPaymentClient.FullyPayAsync(PaidInvoiceId).AssertResult();
 
             // Assert
-            Assert.IsTrue(unpaid);
-            Assert.IsTrue(paid);
+            Assert.That(unpaid, Is.True);
+            Assert.That(paid, Is.True);
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
                     .Filter(f => f.InvoiceId.IsEqual(invoiceId))
                     .GetAsync()
                     .AssertResult();
-            Assert.IsEmpty(initialPayments.Items);
+            Assert.That(initialPayments.Items, Is.Empty);
             var paymentOptionId = await PostPaymentAsync(invoiceId);
 
             // Act
@@ -86,9 +86,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
                 .GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(1, payments.Items.Count());
+            Assert.That(payments.Items.Count(), Is.EqualTo(1));
             var deleted = await _receivedInvoiceClient.DeleteAsync(invoiceId).AssertResult();
-            Assert.IsTrue(deleted);
+            Assert.That(deleted, Is.True);
         }
 
         private async Task<int> PostPaymentAsync(int invoiceId)

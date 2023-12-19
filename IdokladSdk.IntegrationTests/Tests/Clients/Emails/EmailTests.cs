@@ -58,7 +58,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             var result = await MailClient.IssuedDocumentPaymentConfirmationEmail.SendAsync(PaymentId).AssertResult();
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -102,8 +102,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             var result = await MailClient.SalesOrderEmail.SendAsync(settings).AssertResult();
 
             // Assert
-            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
-            Assert.IsTrue(!result.NotSent.Any());
+            Assert.That(result.Sent.Contains(PartnerEmail), Is.True);
+            Assert.That(!result.NotSent.Any(), Is.True);
         }
 
         [TestCase(RemindersDocumentType.ProformaInvoice, 922399)]
@@ -127,8 +127,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             var result = await MailClient.RemindersEmail.SendAsync(settings).AssertResult();
 
             // Assert
-            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
-            Assert.IsTrue(!result.NotSent.Any());
+            Assert.That(result.Sent.Contains(PartnerEmail), Is.True);
+            Assert.That(!result.NotSent.Any(), Is.True);
         }
 
         [Test]
@@ -148,12 +148,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var response = await MailClient.SalesReceiptEmail.SendAsync(settings);
-            var result = response.AssertResult();
+            var result = await MailClient.SalesReceiptEmail.SendAsync(settings).AssertResult();
 
             // Assert
-            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
-            Assert.IsTrue(!result.NotSent.Any());
+            Assert.That(result.Sent.Contains(PartnerEmail), Is.True);
+            Assert.That(!result.NotSent.Any(), Is.True);
         }
 
         [Test]
@@ -177,11 +176,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             var result = await MailClient.IssuedTaxDocumentEmail.SendAsync(settings).AssertResult();
 
             // Assert
-            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
-            Assert.IsTrue(!result.NotSent.Any());
+            Assert.That(result.Sent.Contains(PartnerEmail), Is.True);
+            Assert.That(!result.NotSent.Any(), Is.True);
             var issuedTaxDocument = await DokladApi.IssuedTaxDocumentClient.Detail(issuedTaxDocumentId).GetAsync().AssertResult();
-            Assert.AreNotEqual(MailSentType.NotSent, issuedTaxDocument.IsSentToAccountant);
-            Assert.AreNotEqual(MailSentType.NotSent, issuedTaxDocument.IsSentToPartner);
+            Assert.That(issuedTaxDocument.IsSentToAccountant, Is.Not.EqualTo(MailSentType.NotSent));
+            Assert.That(issuedTaxDocument.IsSentToPartner, Is.Not.EqualTo(MailSentType.NotSent));
         }
 
         [Test]
@@ -201,8 +200,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             };
 
             // Act
-            var response = await MailClient.IssuedInvoiceEmail.SendAsync(settings);
-            var result = response.AssertResult();
+            var result = await MailClient.IssuedInvoiceEmail.SendAsync(settings).AssertResult();
 
             // Assert
             AssertEmailResult(result);
@@ -226,8 +224,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             var result = await MailClient.ReceivedInvoiceEmail.SendAsync(settings).AssertResult();
 
             // Assert
-            Assert.IsTrue(result.Sent.Contains(MyEmail));
-            Assert.IsTrue(!result.NotSent.Any());
+            Assert.That(result.Sent.Contains(MyEmail), Is.True);
+            Assert.That(!result.NotSent.Any(), Is.True);
         }
 
         [TestCaseSource(nameof(GetCreditNoteEmailSettings))]
@@ -307,15 +305,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
 
         private void AssertEmailResult(EmailSendResult result)
         {
-            Assert.IsTrue(result.Sent.Contains(PartnerEmail));
-            Assert.IsTrue(result.Sent.Contains(MyEmail));
-            Assert.IsTrue(!result.NotSent.Any());
+            Assert.That(result.Sent.Contains(PartnerEmail), Is.True);
+            Assert.That(result.Sent.Contains(MyEmail), Is.True);
+            Assert.That(!result.NotSent.Any(), Is.True);
         }
 
         private void AssertExceptionMessage(ValidationException exception)
         {
-            Assert.IsNotNull(exception.Message);
-            Assert.IsNotEmpty(exception.Message);
+            Assert.That(exception.Message, Is.Not.Null.Or.Empty);
         }
     }
 }

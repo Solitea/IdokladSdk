@@ -56,7 +56,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.CustomHeaders
             var recountGetModel = await IssuedInvoiceClient.RecountAsync(recountPostModel).AssertResult();
 
             // Assert
-            Assert.AreEqual(expectedString, GetRoundingItem(recountGetModel));
+            Assert.That(GetRoundingItem(recountGetModel), Is.EqualTo(expectedString));
         }
 
         private static IssuedInvoiceRecountPostModel CreateRecountPostModel()

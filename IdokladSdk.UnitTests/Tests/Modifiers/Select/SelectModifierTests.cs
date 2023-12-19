@@ -17,7 +17,7 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Select
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.IsNull(queryParams);
+            Assert.That(queryParams, Is.Null);
         }
 
         [Test]
@@ -31,9 +31,9 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Select
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("select", out var select));
-            Assert.AreEqual("Id", select);
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("select", out var select), Is.True);
+            Assert.That(select, Is.EqualTo("Id"));
         }
 
         [Test]
@@ -47,9 +47,9 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Select
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("select", out var select));
-            Assert.AreEqual("Name,Model(Text),Items(Text),Id", select);
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("select", out var select), Is.True);
+            Assert.That(select, Is.EqualTo("Name,Model(Text),Items(Text),Id"));
         }
 
         [Test]
@@ -63,9 +63,9 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Select
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("select", out var select));
-            Assert.AreEqual("Name", select);
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("select", out var select), Is.True);
+            Assert.That(select, Is.EqualTo("Name"));
         }
     }
 }

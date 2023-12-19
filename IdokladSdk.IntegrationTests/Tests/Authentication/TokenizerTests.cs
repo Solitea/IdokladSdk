@@ -28,7 +28,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Authentication
             var token = await auth.GetTokenAsync(HttpClient);
 
             // Assert
-            Assert.IsNotNull(token);
+            Assert.That(token, Is.Not.Null);
             Assert.That(token.Claims, Is.Not.Null.And.Not.Empty);
             var tokenClaims = new TokenClaims(token.Claims);
             Assert.That(tokenClaims.LicenceStatus, Is.Not.Null);

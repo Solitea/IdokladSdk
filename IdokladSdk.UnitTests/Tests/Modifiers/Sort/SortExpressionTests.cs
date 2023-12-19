@@ -21,7 +21,7 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Sort
             var expressionString = expression.ToString();
 
             // Assert
-            Assert.AreEqual(expectedResult, expressionString);
+            Assert.That(expressionString, Is.EqualTo(expectedResult));
         }
     }
 }

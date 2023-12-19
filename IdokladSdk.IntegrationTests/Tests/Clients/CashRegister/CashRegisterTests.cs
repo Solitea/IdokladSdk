@@ -30,11 +30,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
             var model = CreatePostModel();
 
             // Act
-            var data = (await _cashRegisterClient.PostAsync(model)).AssertResult();
+            var data = await _cashRegisterClient.PostAsync(model).AssertResult();
             _newCashRegisterId = data.Id;
 
             // Assert
-            Assert.Greater(data.Id, 0);
+            Assert.That(data.Id, Is.Not.EqualTo(0));
             AssertData(model, data);
         }
 
@@ -43,13 +43,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
         public async Task DetailAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = (await _cashRegisterClient.Detail(_newCashRegisterId).Include(c => c.Currency).GetAsync()).AssertResult();
+            var data = await _cashRegisterClient.Detail(_newCashRegisterId).Include(c => c.Currency).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_newCashRegisterId, data.Id);
-            Assert.IsNotEmpty(data.Name);
-            Assert.NotNull(data.Currency);
-            Assert.AreEqual(data.CurrencyId, data.Currency.Id);
+            Assert.That(data.Id, Is.EqualTo(_newCashRegisterId));
+            Assert.That(data.Name, Is.Not.Empty);
+            Assert.That(data.Currency, Is.Not.Null);
+            Assert.That(data.Currency.Id, Is.EqualTo(data.CurrencyId));
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
             var model = CreatePatchModel();
 
             // Act
-            var data = (await _cashRegisterClient.UpdateAsync(model)).AssertResult();
+            var data = await _cashRegisterClient.UpdateAsync(model).AssertResult();
 
             // Assert
             AssertData(model, data);
@@ -70,13 +70,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
         public async Task ListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = (await _cashRegisterClient.List().GetAsync()).AssertResult();
+            var data = await _cashRegisterClient.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
             var cashRegister = data.Items.FirstOrDefault(c => c.Id == _newCashRegisterId);
-            Assert.NotNull(cashRegister);
-            Assert.IsNotEmpty(cashRegister.Name);
+            Assert.That(cashRegister, Is.Not.Null);
+            Assert.That(cashRegister.Name, Is.Not.Empty);
         }
 
         [Test]
@@ -84,29 +84,29 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashRegister
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = (await _cashRegisterClient.DeleteAsync(_newCashRegisterId)).AssertResult();
+            var data = await _cashRegisterClient.DeleteAsync(_newCashRegisterId).AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         private void AssertData(CashRegisterPatchModel patchModel, CashRegisterGetModel getModel)
         {
-            Assert.AreEqual(patchModel.CurrencyId, getModel.CurrencyId);
-            Assert.AreEqual(patchModel.DateInitialState.Value, getModel.DateInitialState);
-            Assert.AreEqual(patchModel.Id, getModel.Id);
-            Assert.AreEqual(patchModel.InitialState.Value, getModel.InitialState);
-            Assert.AreEqual(patchModel.IsDefault, getModel.IsDefault);
-            Assert.AreEqual(patchModel.Name, getModel.Name);
+            Assert.That(getModel.CurrencyId, Is.EqualTo(patchModel.CurrencyId));
+            Assert.That(getModel.DateInitialState, Is.EqualTo(patchModel.DateInitialState.Value));
+            Assert.That(getModel.Id, Is.EqualTo(patchModel.Id));
+            Assert.That(getModel.InitialState, Is.EqualTo(patchModel.InitialState.Value));
+            Assert.That(getModel.IsDefault, Is.EqualTo(patchModel.IsDefault));
+            Assert.That(getModel.Name, Is.EqualTo(patchModel.Name));
         }
 
         private void AssertData(CashRegisterPostModel postModel, CashRegisterGetModel getModel)
         {
-            Assert.AreEqual(postModel.CurrencyId, getModel.CurrencyId);
-            Assert.AreEqual(postModel.DateInitialState, getModel.DateInitialState);
-            Assert.AreEqual(postModel.InitialState, getModel.InitialState);
-            Assert.AreEqual(postModel.IsDefault, getModel.IsDefault);
-            Assert.AreEqual(postModel.Name, getModel.Name);
+            Assert.That(getModel.CurrencyId, Is.EqualTo(postModel.CurrencyId));
+            Assert.That(getModel.DateInitialState, Is.EqualTo(postModel.DateInitialState));
+            Assert.That(getModel.InitialState, Is.EqualTo(postModel.InitialState));
+            Assert.That(getModel.IsDefault, Is.EqualTo(postModel.IsDefault));
+            Assert.That(getModel.Name, Is.EqualTo(postModel.Name));
         }
 
         private CashRegisterPatchModel CreatePatchModel()

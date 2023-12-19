@@ -25,7 +25,7 @@ namespace IdokladSdk.UnitTests.Tests.Authentication.Models
             };
 
             // Assert
-            Assert.AreEqual(expectedResult, authError.ErrorCode);
+            Assert.That(expectedResult, Is.EqualTo(authError.ErrorCode));
         }
     }
 }

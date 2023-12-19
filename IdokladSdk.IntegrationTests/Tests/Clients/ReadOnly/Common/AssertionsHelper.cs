@@ -19,97 +19,97 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly.Common
     {
         public static void AssertDetail(BankListGetModel model)
         {
-            Assert.NotNull(model.Code);
-            Assert.NotZero(model.CountryId);
-            Assert.Greater(model.DateLastChange, DateTime.MinValue);
-            Assert.NotZero(model.Id);
-            Assert.IsNotEmpty(model.Name);
-            Assert.IsNotEmpty(model.NumberCode);
-            Assert.NotNull(model.Swift);
+            Assert.That(model.Code, Is.Not.Null);
+            Assert.That(model.CountryId, Is.Not.Zero);
+            Assert.That(model.DateLastChange, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.Id, Is.Not.Zero);
+            Assert.That(model.Name, Is.Not.Empty);
+            Assert.That(model.NumberCode, Is.Not.Empty);
+            Assert.That(model.Swift, Is.Not.Null);
         }
 
         public static void AssertDetail(ConstantSymbolListGetModel model)
         {
-            Assert.IsNotEmpty(model.Code);
-            Assert.NotZero(model.CountryId);
-            Assert.Greater(model.DateLastChange, DateTime.MinValue);
-            Assert.NotZero(model.Id);
-            Assert.IsNotEmpty(model.Name);
+            Assert.That(model.Code, Is.Not.Empty);
+            Assert.That(model.CountryId, Is.Not.Zero);
+            Assert.That(model.DateLastChange, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.Id, Is.Not.Zero);
+            Assert.That(model.Name, Is.Not.Empty);
         }
 
         public static void AssertDetail(CountryListGetModel model)
         {
-            Assert.IsNotEmpty(model.Code);
-            Assert.NotZero(model.CurrencyId);
-            Assert.Greater(model.DateLastChange, DateTime.MinValue);
-            Assert.NotZero(model.Id);
-            Assert.IsNotEmpty(model.Name);
-            Assert.IsNotEmpty(model.NameEnglish);
-            Assert.IsNotEmpty(model.NameGerman);
-            Assert.IsNotEmpty(model.NameSlovak);
+            Assert.That(model.Code, Is.Not.Empty);
+            Assert.That(model.CurrencyId, Is.Not.Zero);
+            Assert.That(model.DateLastChange, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.Id, Is.Not.Zero);
+            Assert.That(model.Name, Is.Not.Empty);
+            Assert.That(model.NameEnglish, Is.Not.Empty);
+            Assert.That(model.NameGerman, Is.Not.Empty);
+            Assert.That(model.NameSlovak, Is.Not.Empty);
         }
 
         public static void AssertDetail(CurrencyListGetModel model)
         {
-            Assert.IsNotEmpty(model.Code);
-            Assert.IsNotEmpty(model.CountryName);
-            Assert.NotZero(model.Id);
-            Assert.IsNotEmpty(model.Name);
-            Assert.IsNotEmpty(model.Symbol);
+            Assert.That(model.Code, Is.Not.Empty);
+            Assert.That(model.CountryName, Is.Not.Empty);
+            Assert.That(model.Id, Is.Not.Zero);
+            Assert.That(model.Name, Is.Not.Empty);
+            Assert.That(model.Symbol, Is.Not.Empty);
         }
 
         public static void AssertDetail(ExchangeRateListGetModel model)
         {
-            Assert.NotZero(model.Amount);
-            Assert.NotZero(model.CurrencyId);
-            Assert.Greater(model.Date, DateTime.MinValue);
-            Assert.Greater(model.DateLastChange, DateTime.MinValue);
-            Assert.NotZero(model.ExchangeListId);
-            Assert.NotZero(model.ExchangeRateValue);
-            Assert.NotZero(model.Id);
+            Assert.That(model.Amount, Is.Not.Zero);
+            Assert.That(model.CurrencyId, Is.Not.Zero);
+            Assert.That(model.Date, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.DateLastChange, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.ExchangeListId, Is.Not.Zero);
+            Assert.That(model.ExchangeRateValue, Is.Not.Zero);
+            Assert.That(model.Id, Is.Not.Zero);
         }
 
         public static void AssertDetail(PaymentOptionListGetModel model)
         {
-            Assert.IsNotEmpty(model.Code);
-            Assert.NotZero(model.Id);
-            Assert.Greater(model.DateLastChange, DateTime.MinValue);
-            Assert.IsNotEmpty(model.Name);
+            Assert.That(model.Code, Is.Not.Empty);
+            Assert.That(model.Id, Is.Not.Zero);
+            Assert.That(model.DateLastChange, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.Name, Is.Not.Empty);
         }
 
         public static void AssertDetail(VatCodeListGetModel model)
         {
-            Assert.NotNull(model.Code);
-            Assert.NotZero(model.CountryId);
-            Assert.Greater(model.DateValidityFrom, DateTime.MinValue);
-            Assert.Greater(model.DateValidityTo, DateTime.MinValue);
-            Assert.NotZero(model.Id);
-            Assert.IsNotEmpty(model.MoneyS3Code);
-            Assert.IsNotEmpty(model.MoneyS5Code);
-            Assert.IsNotEmpty(model.Name);
-            Assert.NotNull(model.VatReturnRow);
+            Assert.That(model.Code, Is.Not.Null);
+            Assert.That(model.CountryId, Is.Not.Zero);
+            Assert.That(model.DateValidityFrom, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.DateValidityTo, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.Id, Is.Not.Zero);
+            Assert.That(model.MoneyS3Code, Is.Not.Empty);
+            Assert.That(model.MoneyS5Code, Is.Not.Empty);
+            Assert.That(model.Name, Is.Not.Empty);
+            Assert.That(model.VatReturnRow, Is.Not.Null);
         }
 
         public static void AssertDetail(VatRateListGetModel model)
         {
-            Assert.NotZero(model.CountryId);
-            Assert.Greater(model.DateLastChange, DateTime.MinValue);
-            Assert.Greater(model.DateValidityFrom, DateTime.MinValue);
-            Assert.LessOrEqual(model.DateValidityTo, DateTime.MaxValue);
-            Assert.NotZero(model.Id);
-            Assert.IsNotEmpty(model.Name);
-            Assert.NotZero(model.Rate);
+            Assert.That(model.CountryId, Is.Not.Zero);
+            Assert.That(model.DateLastChange, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.DateValidityFrom, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.DateValidityTo, Is.LessThanOrEqualTo(DateTime.MaxValue));
+            Assert.That(model.Id, Is.Not.Zero);
+            Assert.That(model.Name, Is.Not.Empty);
+            Assert.That(model.Rate, Is.Not.Zero);
         }
 
         public static void AssertDetail(VatReverseChargeCodeListGetModel model)
         {
-            Assert.IsNotEmpty(model.Code);
-            Assert.Greater(model.DateCreated, DateTime.MinValue);
-            Assert.Greater(model.DateLastChange, DateTime.MinValue);
-            Assert.Greater(model.DateValidityFrom, DateTime.MinValue);
-            Assert.LessOrEqual(model.DateValidityTo, DateTime.MaxValue);
-            Assert.NotZero(model.Id);
-            Assert.IsNotEmpty(model.Name);
+            Assert.That(model.Code, Is.Not.Empty);
+            Assert.That(model.DateCreated, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.DateLastChange, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.DateValidityFrom, Is.GreaterThan(DateTime.MinValue));
+            Assert.That(model.DateValidityTo, Is.LessThanOrEqualTo(DateTime.MaxValue));
+            Assert.That(model.Id, Is.Not.Zero);
+            Assert.That(model.Name, Is.Not.Empty);
         }
     }
 }

@@ -30,8 +30,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Log
             var data = await _logClient.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
         }
 
         [Test]
@@ -41,8 +41,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Log
             var data = await _logClient.List(913242, LogEntityType.IssuedInvoice).GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.Items.Count(), 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.Items.Count(), Is.GreaterThan(0));
         }
     }
 }

@@ -8,7 +8,7 @@
         <Product>iDoklad</Product>
         <Company>Seyfor, a.s.</Company>
         <Authors>Seyfor, a.s.</Authors>
-        <Copyright>© 2016 - 2023</Copyright>
+        <Copyright>© 2016 - 2024</Copyright>
         <Description>SDK for iDoklad API</Description>
         <PackageTags>idoklad,sdk,rest,api,seyfor</PackageTags>
     </PropertyGroup>
@@ -55,7 +55,7 @@
         <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="IbanNet" Version="5.9.0" />
+        <PackageReference Include="IbanNet" Version="5.12.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
@@ -63,7 +63,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />        
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />        
     </ItemGroup>
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

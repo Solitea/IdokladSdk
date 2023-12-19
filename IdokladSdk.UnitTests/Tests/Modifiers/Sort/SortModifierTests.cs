@@ -17,7 +17,7 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Sort
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.IsNull(queryParams);
+            Assert.That(queryParams, Is.Null);
         }
 
         [Test]
@@ -32,10 +32,10 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Sort
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("sort", out var sort));
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("sort", out var sort), Is.True);
             var sortString = GetSortExpression(sortExpression);
-            Assert.AreEqual(sortString, sort);
+            Assert.That(sort, Is.EqualTo(sortString));
         }
 
         [Test]
@@ -51,11 +51,11 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Sort
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("sort", out var sort));
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("sort", out var sort), Is.True);
             var sort1 = GetSortExpression(sortExpression1);
             var sort2 = GetSortExpression(sortExpression2);
-            Assert.AreEqual($"{sort1}|{sort2}", sort);
+            Assert.That(sort, Is.EqualTo($"{sort1}|{sort2}"));
         }
 
         [Test]
@@ -72,11 +72,11 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Sort
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.AreEqual(1, queryParams.Count);
-            Assert.IsTrue(queryParams.TryGetValue("sort", out var sort));
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("sort", out var sort), Is.True);
             var sort1 = GetSortExpression(sortExpression1);
             var sort2 = GetSortExpression(sortExpression2);
-            Assert.AreEqual($"{sort1}|{sort2}", sort);
+            Assert.That(sort, Is.EqualTo($"{sort1}|{sort2}"));
         }
 
         private string GetSortExpression(Func<TestSort, SortExpression> sort)

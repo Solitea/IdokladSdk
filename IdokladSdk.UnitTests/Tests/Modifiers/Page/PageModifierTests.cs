@@ -16,8 +16,8 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Page
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.IsTrue(queryParams.TryGetValue("page", out var page));
-            Assert.AreEqual($"{Constants.DefaultPage}", page);
+            Assert.That(queryParams.TryGetValue("page", out var page), Is.True);
+            Assert.That(page, Is.EqualTo($"{Constants.DefaultPage}"));
         }
 
         [Test]
@@ -30,8 +30,8 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Page
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.IsTrue(queryParams.TryGetValue("pageSize", out var pageSize));
-            Assert.AreEqual($"{Constants.DefaultPageSize}", pageSize);
+            Assert.That(queryParams.TryGetValue("pageSize", out var pageSize), Is.True);
+            Assert.That(pageSize, Is.EqualTo($"{Constants.DefaultPageSize}"));
         }
 
         [Test]
@@ -46,8 +46,8 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Page
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.IsTrue(queryParams.TryGetValue("pageSize", out var pageSize));
-            Assert.AreEqual($"{customPageSize}", pageSize);
+            Assert.That(queryParams.TryGetValue("pageSize", out var pageSize), Is.True);
+            Assert.That(pageSize, Is.EqualTo($"{customPageSize}"));
         }
 
         [Test]
@@ -62,8 +62,8 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers.Page
             var queryParams = modifier.GetQueryParameters();
 
             // Assert
-            Assert.IsTrue(queryParams.TryGetValue("page", out var page));
-            Assert.AreEqual($"{customPage}", page);
+            Assert.That(queryParams.TryGetValue("page", out var page), Is.True);
+            Assert.That(page, Is.EqualTo($"{customPage}"));
         }
     }
 }

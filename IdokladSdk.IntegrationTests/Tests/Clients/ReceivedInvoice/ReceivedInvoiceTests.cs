@@ -37,7 +37,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             var vatCodeId = 24;
 
             // Arrange
-            _receivedInvoicePostModel = (await _receivedInvoiceClient.DefaultAsync()).AssertResult();
+            _receivedInvoicePostModel = await _receivedInvoiceClient.DefaultAsync().AssertResult();
             _receivedInvoicePostModel.PartnerId = PartnerId;
             _receivedInvoicePostModel.Description = "Invoice";
             _receivedInvoicePostModel.Items.Clear();
@@ -50,15 +50,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             });
 
             // Act
-            var data = (await _receivedInvoiceClient.PostAsync(_receivedInvoicePostModel)).AssertResult();
+            var data = await _receivedInvoiceClient.PostAsync(_receivedInvoicePostModel).AssertResult();
             _receivedInvoiceId = data.Id;
 
             // Assert
-            Assert.Greater(data.Id, 0);
-            Assert.AreEqual(_receivedInvoicePostModel.DateOfIssue, data.DateOfIssue);
-            Assert.AreEqual(PartnerId, data.PartnerId);
-            Assert.Greater(data.Items.Count, 0);
-            Assert.AreEqual(vatCodeId, data.Items.First(i => i.ItemType == IssuedInvoiceItemType.ItemTypeNormal).VatCodeId);
+            Assert.That(data.Id, Is.GreaterThan(0));
+            Assert.That(data.DateOfIssue, Is.EqualTo(_receivedInvoicePostModel.DateOfIssue));
+            Assert.That(data.PartnerId, Is.EqualTo(PartnerId));
+            Assert.That(data.Items.Count, Is.GreaterThan(0));
+            Assert.That(data.Items.First(i => i.ItemType == IssuedInvoiceItemType.ItemTypeNormal).VatCodeId, Is.EqualTo(vatCodeId));
         }
 
         [Test]
@@ -81,8 +81,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             var exception = Assert.ThrowsAsync<ValidationException>(async () => await _receivedInvoiceClient.PostAsync(receivedInvoicePostModel));
 
             // Assert
-            Assert.IsNotNull(exception.Message);
-            Assert.IsNotEmpty(exception.Message);
+            Assert.That(exception.Message, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -99,8 +98,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             var exception = Assert.ThrowsAsync<ValidationException>(async () => await _receivedInvoiceClient.UpdateAsync(model));
 
             // Assert
-            Assert.IsNotNull(exception.Message);
-            Assert.IsNotEmpty(exception.Message);
+            Assert.That(exception.Message, Is.Not.Null.Or.Empty);
         }
 
         [Test]
@@ -108,10 +106,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         public async Task GetAsync_SuccessfullyGet()
         {
             // Act
-            var data = (await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync()).AssertResult();
+            var data = await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_receivedInvoiceId, data.Id);
+            Assert.That(data.Id, Is.EqualTo(_receivedInvoiceId));
         }
 
         [Test]
@@ -119,11 +117,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         public async Task GetAsync_Expand_SuccessfullyGet()
         {
             // Act
-            var data = (await _receivedInvoiceClient.Detail(_receivedInvoiceId)
-                .Include(s => s.Partner).GetAsync()).AssertResult();
+            var data = await _receivedInvoiceClient.Detail(_receivedInvoiceId)
+                .Include(s => s.Partner).GetAsync().AssertResult();
 
-            Assert.AreEqual(_receivedInvoiceId, data.Id);
-            Assert.IsNotNull(data.Partner);
+            Assert.That(data.Id, Is.EqualTo(_receivedInvoiceId));
+            Assert.That(data.Partner, Is.Not.Null);
         }
 
         [Test]
@@ -137,10 +135,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var data = (await _receivedInvoiceClient.UpdateAsync(model)).AssertResult();
+            var data = await _receivedInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
-            Assert.AreEqual(model.Description, data.Description);
+            Assert.That(data.Description, Is.EqualTo(model.Description));
         }
 
         [Test]
@@ -150,14 +148,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             var invoiceToUpdate = await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync().AssertResult();
             var model = CreatePatchModelWithCustomVatRate(invoiceToUpdate, 13);
             var data = await _receivedInvoiceClient.UpdateAsync(model).AssertResult();
-            Assert.IsNotNull(data.Items.First().CustomVatRate);
+            Assert.That(data.Items.First().CustomVatRate, Is.Not.Null);
             model = CreatePatchModelWithCustomVatRate(invoiceToUpdate, null);
 
             // Act
             data = await _receivedInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
-            Assert.IsNull(data.Items.First().CustomVatRate);
+            Assert.That(data.Items.First().CustomVatRate, Is.Null);
         }
 
         [Test]
@@ -171,9 +169,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             var data = await _receivedInvoiceClient.CopyAsync(_receivedInvoiceId).AssertResult();
 
             // Assert
-            Assert.AreEqual(invoiceToCopy.Description, data.Description);
-            Assert.AreEqual(invoiceToCopy.PartnerId, data.PartnerId);
-            Assert.AreEqual(invoiceToCopy.CurrencyId, data.CurrencyId);
+            Assert.That(data.Description, Is.EqualTo(invoiceToCopy.Description));
+            Assert.That(data.PartnerId, Is.EqualTo(invoiceToCopy.PartnerId));
+            Assert.That(data.CurrencyId, Is.EqualTo(invoiceToCopy.CurrencyId));
         }
 
         [Test]
@@ -181,7 +179,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         public async Task UpdateAsync_AddNewItems_SucessfullyUpdated()
         {
             // Arrange
-            var invoiceToUpdate = (await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync()).AssertResult();
+            var invoiceToUpdate = await _receivedInvoiceClient.Detail(_receivedInvoiceId).GetAsync().AssertResult();
             var itemName2 = "Test2Test";
             var itemName3 = "Test3Test";
             var model = new ReceivedInvoicePatchModel
@@ -204,10 +202,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var data = (await _receivedInvoiceClient.UpdateAsync(model)).AssertResult();
+            var data = await _receivedInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
-            Assert.GreaterOrEqual(2, data.Items.Count);
+            Assert.That(data.Items.Count, Is.GreaterThanOrEqualTo(2));
             Assert.That(data.Items.Any(x => x.Name == itemName2));
             Assert.That(data.Items.Any(x => x.Name == itemName3));
         }
@@ -217,10 +215,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = (await _receivedInvoiceClient.DeleteAsync(_receivedInvoiceId)).AssertResult();
+            var data = await _receivedInvoiceClient.DeleteAsync(_receivedInvoiceId).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -244,18 +242,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var data = (await _receivedInvoiceClient.RecountAsync(model)).AssertResult();
+            var data = await _receivedInvoiceClient.RecountAsync(model).AssertResult();
 
             // Assert
             var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
-            Assert.AreEqual(item.Id, recountedItem.Id);
-            Assert.AreEqual(item.Name, recountedItem.Name);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVatHc);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVat);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVatHc);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVat);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVatHc);
+            Assert.That(recountedItem.Id, Is.EqualTo(item.Id));
+            Assert.That(recountedItem.Name, Is.EqualTo(item.Name));
+            Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(242));
+            Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(242));
+            Assert.That(recountedItem.Prices.TotalVat, Is.EqualTo(42));
+            Assert.That(recountedItem.Prices.TotalVatHc, Is.EqualTo(42));
+            Assert.That(recountedItem.Prices.TotalWithoutVat, Is.EqualTo(200));
+            Assert.That(recountedItem.Prices.TotalWithoutVatHc, Is.EqualTo(200));
         }
 
         [Test]
@@ -285,11 +283,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
             // Assert
             var recountedItem = result.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
-            Assert.AreEqual(1, result.ExchangeRateAmount);
-            Assert.AreEqual(20, result.ExchangeRate);
-            Assert.AreEqual(2, result.CurrencyId);
-            Assert.AreEqual(121, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(2420, recountedItem.Prices.TotalWithVatHc);
+            Assert.That(result.ExchangeRateAmount, Is.EqualTo(1));
+            Assert.That(result.ExchangeRate, Is.EqualTo(20));
+            Assert.That(result.CurrencyId, Is.EqualTo(2));
+            Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(121));
+            Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(2420));
         }
 
         [Test]
@@ -299,8 +297,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             var data = await _receivedInvoiceClient.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
         }
 
         private ReceivedInvoicePatchModel CreatePatchModelWithCustomVatRate(ReceivedInvoiceGetModel invoiceToUpdate, decimal? customVatRate)

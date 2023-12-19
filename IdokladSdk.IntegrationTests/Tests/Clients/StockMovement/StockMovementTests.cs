@@ -30,9 +30,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         [Order(1)]
         public async Task DefaultAsync_SuccessfullyGetDefault()
         {
-            var data = (await _stockMovementClient.DefaultAsync(PriceListItemId)).AssertResult();
+            var data = await _stockMovementClient.DefaultAsync(PriceListItemId).AssertResult();
 
-            Assert.AreEqual(PriceListItemId, data.PriceListItemId);
+            Assert.That(data.PriceListItemId, Is.EqualTo(PriceListItemId));
         }
 
         [Test]
@@ -40,15 +40,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         public async Task PostAsync_SuccessfullyCreated()
         {
             // Arrange
-            var defaultModel = (await _stockMovementClient.DefaultAsync(PriceListItemId)).AssertResult();
+            var defaultModel = await _stockMovementClient.DefaultAsync(PriceListItemId).AssertResult();
             defaultModel.Amount = 1;
 
             // Act
-            _newStockMovement = (await _stockMovementClient.PostAsync(defaultModel)).AssertResult();
+            _newStockMovement = await _stockMovementClient.PostAsync(defaultModel).AssertResult();
 
             // Assert
-            Assert.AreEqual(PriceListItemId, _newStockMovement.PriceListItemId);
-            Assert.AreEqual(1, _newStockMovement.Amount);
+            Assert.That(_newStockMovement.PriceListItemId, Is.EqualTo(PriceListItemId));
+            Assert.That(_newStockMovement.Amount, Is.EqualTo(1));
         }
 
         [Test]
@@ -63,10 +63,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
             };
 
             // Act
-            var data = (await _stockMovementClient.UpdateAsync(patch)).AssertResult();
+            var data = await _stockMovementClient.UpdateAsync(patch).AssertResult();
 
             // Assert
-            Assert.AreEqual(patch.Note, data.Note);
+            Assert.That(data.Note, Is.EqualTo(patch.Note));
         }
 
         [Test]
@@ -74,10 +74,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         public async Task DetailAsync_SuccessfullyGetDetail()
         {
             // Act
-            var data = (await _stockMovementClient.Detail(_newStockMovement.Id).GetAsync()).AssertResult();
+            var data = await _stockMovementClient.Detail(_newStockMovement.Id).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(PriceListItemId, data.PriceListItemId);
+            Assert.That(data.PriceListItemId, Is.EqualTo(PriceListItemId));
         }
 
         [Test]
@@ -85,26 +85,26 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = (await _stockMovementClient.DeleteAsync(_newStockMovement.Id)).AssertResult();
+            var data = await _stockMovementClient.DeleteAsync(_newStockMovement.Id).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
         public async Task BatchAsync_SuccessfullyCreated()
         {
             // Arrange
-            var defaultStockMovement = (await _stockMovementClient.DefaultAsync(PriceListItemId)).AssertResult();
+            var defaultStockMovement = await _stockMovementClient.DefaultAsync(PriceListItemId).AssertResult();
             defaultStockMovement.Amount = 100;
 
             // Act
             var data = await _stockMovementClient.PostAsync(new List<StockMovementPostModel> { defaultStockMovement });
 
             // Assert
-            Assert.AreEqual(BatchResultType.Success, data.Status);
+            Assert.That(data.Status, Is.EqualTo(BatchResultType.Success));
             var id = data.Results.First().Data.Id;
-            Assert.Greater(id, 0);
+            Assert.That(id, Is.GreaterThan(0));
             await _stockMovementClient.DeleteAsync(id);
         }
 
@@ -112,12 +112,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.StockMovement
         public async Task GetListAsync_SuccessfullyGetList()
         {
             // Act
-            var data = (await _stockMovementClient.List()
+            var data = await _stockMovementClient.List()
                 .Filter(f => f.PriceListItemId.IsEqual(PriceListItemId))
-                .GetAsync()).AssertResult();
+                .GetAsync()
+                .AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
         }
     }
 }

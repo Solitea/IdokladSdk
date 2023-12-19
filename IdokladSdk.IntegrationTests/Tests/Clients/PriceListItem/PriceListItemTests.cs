@@ -46,15 +46,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         public async Task PostAsync_SuccessfullyPosted()
         {
             // Arrange
-            _priceListItemPostModel = (await PriceListItemClient.DefaultAsync()).AssertResult();
+            _priceListItemPostModel = await PriceListItemClient.DefaultAsync().AssertResult();
             SetPostModel();
 
             // Act
-            var data = (await PriceListItemClient.PostAsync(_priceListItemPostModel)).AssertResult();
+            var data = await PriceListItemClient.PostAsync(_priceListItemPostModel).AssertResult();
             _newPriceListItemId = data.Id;
 
             // Assert
-            Assert.Greater(data.Id, 0);
+            Assert.That(data.Id, Is.GreaterThan(0));
             AssertModelsAreEqueal(data, _priceListItemPostModel);
         }
 
@@ -63,10 +63,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         public async Task GetDetailAsync_SuccessfullyGet()
         {
             // Act
-            var data = (await PriceListItemClient.Detail(_newPriceListItemId).GetAsync()).AssertResult();
+            var data = await PriceListItemClient.Detail(_newPriceListItemId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_newPriceListItemId, data.Id);
+            Assert.That(data.Id, Is.EqualTo(_newPriceListItemId));
             AssertModelsAreEqueal(data, _priceListItemPostModel);
         }
 
@@ -78,7 +78,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             var priceListItemPatchModel = CreatePatchModel();
 
             // Act
-            var data = (await PriceListItemClient.UpdateAsync(priceListItemPatchModel)).AssertResult();
+            var data = await PriceListItemClient.UpdateAsync(priceListItemPatchModel).AssertResult();
             _dateLastChange = data.Metadata.DateLastChange;
 
             // Assert
@@ -90,17 +90,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
-            var data = (await PriceListItemClient.DeleteAsync(_newPriceListItemId, true)).AssertResult();
+            var data = await PriceListItemClient.DeleteAsync(_newPriceListItemId, true).AssertResult();
 
             // Assert
-            Assert.True(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
         [Order(5)]
         public async Task BatchPostAsync_SuccessfullyPosted()
         {
-            _priceListItemPostModel = (await PriceListItemClient.DefaultAsync()).AssertResult();
+            // Arrange
+            _priceListItemPostModel = await PriceListItemClient.DefaultAsync().AssertResult();
             SetPostModel();
             var batch = new List<PriceListItemPostModel> { _priceListItemPostModel };
 
@@ -110,7 +111,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             _newPriceListItemId = priceListItemGetModel.Id;
 
             // Assert
-            Assert.Greater(priceListItemGetModel.Id, 0);
+            Assert.That(priceListItemGetModel.Id, Is.GreaterThan(0));
             AssertModelsAreEqueal(priceListItemGetModel, _priceListItemPostModel);
         }
 
@@ -126,9 +127,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.Greater(data.Items.Count(), 0);
-            Assert.True(data.Items.Any(i => i.Id == _newPriceListItemId));
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.GreaterThan(0));
+            Assert.That(data.Items.Any(i => i.Id == _newPriceListItemId), Is.True);
         }
 
         [Test]
@@ -167,15 +168,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         public async Task GetListWithSortAsync_ReturnsList()
         {
             // Act
-            var data = (await PriceListItemClient
+            var data = await PriceListItemClient
                 .List()
                 .Sort(x => x.Name.Desc())
-                .GetAsync())
+                .GetAsync()
                 .AssertResult();
 
             // Assert
-            Assert.NotNull(data);
-            Assert.Greater(data.Items.Count(), 0);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.GreaterThan(0));
             Assert.That(data.Items, Is.Ordered.By(nameof(PriceListItemListGetModel.Name)).Descending);
         }
 
@@ -193,14 +194,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             _newPriceListItems.Add(data.Id);
 
             // Assert
-            Assert.Greater(data.Id, 0);
+            Assert.That(data.Id, Is.GreaterThan(0));
             var stockMovements = await StockMovementClient.List()
                 .Filter(f => f.PriceListItemId.IsEqual(data.Id)).GetAsync()
                 .AssertResult();
             var initialStockMovement = stockMovements.Items.FirstOrDefault();
-            Assert.NotNull(initialStockMovement);
-            Assert.AreEqual(_priceListItemPostModel.InitialStockBalance, initialStockMovement.Amount);
-            Assert.AreEqual(_priceListItemPostModel.InitialDateStockBalance, initialStockMovement.DateOfMovement);
+            Assert.That(initialStockMovement, Is.Not.Null);
+            Assert.That(initialStockMovement.Amount, Is.EqualTo(_priceListItemPostModel.InitialStockBalance));
+            Assert.That(initialStockMovement.DateOfMovement, Is.EqualTo(_priceListItemPostModel.InitialDateStockBalance));
         }
 
         private void SetPostModel()
@@ -239,32 +240,32 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         private void AssertModelsAreEqueal(PriceListItemGetModel getModel, PriceListItemPostModel postModel)
         {
-            Assert.AreEqual(postModel.Amount, getModel.Amount);
-            Assert.AreEqual(postModel.BarCode, getModel.BarCode);
-            Assert.AreEqual(postModel.Code, getModel.Code);
-            Assert.AreEqual(postModel.CurrencyId, getModel.CurrencyId);
-            Assert.AreEqual(postModel.IsStockItem, getModel.IsStockItem);
-            Assert.AreEqual(postModel.Name, getModel.Name);
-            Assert.AreEqual(postModel.Price, getModel.Price);
-            Assert.AreEqual(postModel.PriceType, getModel.PriceType);
-            Assert.AreEqual(postModel.Unit, getModel.Unit);
-            Assert.AreEqual(postModel.VatRateType, getModel.VatRateType);
-            Assert.AreEqual(postModel.VatCodeId, getModel.VatCodeId);
+            Assert.That(getModel.Amount, Is.EqualTo(postModel.Amount));
+            Assert.That(getModel.BarCode, Is.EqualTo(postModel.BarCode));
+            Assert.That(getModel.Code, Is.EqualTo(postModel.Code));
+            Assert.That(getModel.CurrencyId, Is.EqualTo(postModel.CurrencyId));
+            Assert.That(getModel.IsStockItem, Is.EqualTo(postModel.IsStockItem));
+            Assert.That(getModel.Name, Is.EqualTo(postModel.Name));
+            Assert.That(getModel.Price, Is.EqualTo(postModel.Price));
+            Assert.That(getModel.PriceType, Is.EqualTo(postModel.PriceType));
+            Assert.That(getModel.Unit, Is.EqualTo(postModel.Unit));
+            Assert.That(getModel.VatRateType, Is.EqualTo(postModel.VatRateType));
+            Assert.That(getModel.VatCodeId, Is.EqualTo(postModel.VatCodeId));
         }
 
         private void AssertModelsAreEqueal(PriceListItemGetModel data, PriceListItemPatchModel patchModel)
         {
-            Assert.AreEqual(patchModel.Amount, data.Amount);
-            Assert.AreEqual(patchModel.BarCode, data.BarCode);
-            Assert.AreEqual(patchModel.Code, data.Code);
-            Assert.AreEqual(patchModel.CurrencyId, data.CurrencyId);
-            Assert.AreEqual(patchModel.IsStockItem, data.IsStockItem);
-            Assert.AreEqual(patchModel.Name, data.Name);
-            Assert.AreEqual(patchModel.Price, data.Price);
-            Assert.AreEqual(patchModel.PriceType, data.PriceType);
-            Assert.AreEqual(patchModel.Unit, data.Unit);
-            Assert.AreEqual(patchModel.VatRateType, data.VatRateType);
-            Assert.AreEqual(patchModel.VatCodeId, data.VatCodeId);
+            Assert.That(data.Amount, Is.EqualTo(patchModel.Amount));
+            Assert.That(data.BarCode, Is.EqualTo(patchModel.BarCode));
+            Assert.That(data.Code, Is.EqualTo(patchModel.Code));
+            Assert.That(data.CurrencyId, Is.EqualTo(patchModel.CurrencyId));
+            Assert.That(data.IsStockItem, Is.EqualTo(patchModel.IsStockItem));
+            Assert.That(data.Name, Is.EqualTo(patchModel.Name));
+            Assert.That(data.Price, Is.EqualTo(patchModel.Price));
+            Assert.That(data.PriceType, Is.EqualTo(patchModel.PriceType));
+            Assert.That(data.Unit, Is.EqualTo(patchModel.Unit));
+            Assert.That(data.VatRateType, Is.EqualTo(patchModel.VatRateType));
+            Assert.That(data.VatCodeId, Is.EqualTo(patchModel.VatCodeId));
         }
     }
 }

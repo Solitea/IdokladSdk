@@ -71,8 +71,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             var result = await TagClient.PostAsync(tagPostModel);
 
             // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
         [Test]
@@ -86,13 +86,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = (await TagClient.PostAsync(tagPostModel)).AssertResult();
+            var tagGetModel = await TagClient.PostAsync(tagPostModel).AssertResult();
             MarkForDelete(tagGetModel.Id);
 
             // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPostModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPostModel.Name, tagGetModel.Name);
+            Assert.That(tagGetModel.Id, Is.Not.Zero);
+            Assert.That(tagGetModel.Color, Is.EqualTo(Lowercase(tagPostModel.Color)));
+            Assert.That(tagGetModel.Name, Is.EqualTo(tagPostModel.Name));
         }
 
         [Test]
@@ -105,8 +105,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             var result = await TagClient.DeleteAsync(tagId);
 
             // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
         [Test]
@@ -121,10 +121,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             var id = await PostAndMarkForDeleteAsync(tagPostModel);
 
             // Act
-            var result = (await TagClient.DeleteAsync(id)).AssertResult();
+            var result = await TagClient.DeleteAsync(id).AssertResult();
 
             // Assert
-            Assert.True(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -142,14 +142,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             var data = await TagClient.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
-            Assert.NotNull(data.Items);
-            Assert.NotZero(data.Items.Count());
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
+            Assert.That(data.Items, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.Not.Zero);
             var tag = data.Items.First(t => t.Id == id);
-            Assert.AreEqual(id, tag.Id);
-            Assert.AreEqual(tagPostModel.Color, tag.Color);
-            Assert.AreEqual(tagPostModel.Name, tag.Name);
+            Assert.That(tag.Id, Is.EqualTo(id));
+            Assert.That(tag.Color, Is.EqualTo(tagPostModel.Color));
+            Assert.That(tag.Name, Is.EqualTo(tagPostModel.Name));
         }
 
         [Test]
@@ -175,14 +175,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
                 .GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(1, data.TotalItems);
-            Assert.AreEqual(1, data.TotalPages);
-            Assert.NotNull(data.Items);
-            Assert.NotZero(data.Items.Count());
+            Assert.That(data.TotalItems, Is.EqualTo(1));
+            Assert.That(data.TotalPages, Is.EqualTo(1));
+            Assert.That(data.Items, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.Not.Zero);
             var tag = data.Items.First(t => t.Id == id);
-            Assert.AreEqual(id, tag.Id);
-            Assert.AreEqual(tagPostModel.Color, tag.Color);
-            Assert.AreEqual(tagPostModel.Name, tag.Name);
+            Assert.That(tag.Id, Is.EqualTo(id));
+            Assert.That(tag.Color, Is.EqualTo(tagPostModel.Color));
+            Assert.That(tag.Name, Is.EqualTo(tagPostModel.Name));
         }
 
         [Test]
@@ -211,8 +211,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             var result = await TagClient.UpdateAsync(tagPatchModel);
 
             // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
         [Test]
@@ -232,11 +232,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
+            var tagGetModel = await TagClient.UpdateAsync(tagPatchModel).AssertResult();
 
             // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
+            Assert.That(tagGetModel.Id, Is.Not.Zero);
+            Assert.That(tagGetModel.Name, Is.EqualTo(tagPatchModel.Name));
         }
 
         [Test]
@@ -256,12 +256,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             };
 
             // Act
-            var tagGetModel = (await TagClient.UpdateAsync(tagPatchModel)).AssertResult();
+            var tagGetModel = await TagClient.UpdateAsync(tagPatchModel).AssertResult();
 
             // Assert
-            Assert.NotZero(tagGetModel.Id);
-            Assert.AreEqual(Lowercase(tagPostModel.Color), tagGetModel.Color);
-            Assert.AreEqual(tagPatchModel.Name, tagGetModel.Name);
+            Assert.That(tagGetModel.Id, Is.Not.Zero);
+            Assert.That(tagGetModel.Color, Is.EqualTo(Lowercase(tagPostModel.Color)));
+            Assert.That(tagGetModel.Name, Is.EqualTo(tagPatchModel.Name));
         }
 
         [Test]
@@ -278,8 +278,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
             var result = await TagClient.UpdateAsync(tagPatchModel);
 
             // Assert
-            Assert.False(result.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
         private string Lowercase(string str)

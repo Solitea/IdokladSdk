@@ -56,12 +56,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             _salesReceiptIds.Add(_salesReceiptId);
 
             // Assert
-            Assert.Greater(data.Id, 0);
-            Assert.AreEqual(_postModel.DateOfIssue, data.DateOfIssue);
-            Assert.AreEqual(PartnerId, data.PartnerId);
-            Assert.AreEqual(_postModel.Note, data.Note);
-            Assert.Greater(data.Items.Count, 0);
-            Assert.Greater(data.Payments.Count, 0);
+            Assert.That(data.Id, Is.GreaterThan(0));
+            Assert.That(data.DateOfIssue, Is.EqualTo(_postModel.DateOfIssue));
+            Assert.That(data.PartnerId, Is.EqualTo(PartnerId));
+            Assert.That(data.Note, Is.EqualTo(_postModel.Note));
+            Assert.That(data.Items.Count, Is.GreaterThan(0));
+            Assert.That(data.Payments.Count, Is.GreaterThan(0));
         }
 
         [Test]
@@ -72,9 +72,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var data = await _client.Detail(_salesReceiptId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_salesReceiptId, data.Id);
-            Assert.AreEqual(_postModel.Note, data.Note);
-            Assert.True(data.Items.Any(i => i.ItemType == SalesReceiptItemType.ItemTypeNormal));
+            Assert.That(data.Id, Is.EqualTo(_salesReceiptId));
+            Assert.That(data.Note, Is.EqualTo(_postModel.Note));
+            Assert.That(data.Items.Any(i => i.ItemType == SalesReceiptItemType.ItemTypeNormal), Is.True);
         }
 
         [Test]
@@ -88,10 +88,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
                 .GetAsync()
                 .AssertResult();
 
-            Assert.AreEqual(_salesReceiptId, data.Id);
-            Assert.IsNotNull(data.Partner);
-            Assert.Greater(data.Payments.Count, 0);
-            Assert.IsFalse(data.Payments.Any(i => i.PaymentOption == null));
+            Assert.That(data.Id, Is.EqualTo(_salesReceiptId));
+            Assert.That(data.Partner, Is.Not.Null);
+            Assert.That(data.Payments.Count, Is.GreaterThan(0));
+            Assert.That(data.Payments.Any(i => i.PaymentOption == null), Is.False);
         }
 
         [Test]
@@ -103,9 +103,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
                 .GetAsync<SalesReceiptSelectModel>()
                 .AssertResult();
 
-            Assert.AreEqual(_salesReceiptId, data.Id);
-            Assert.AreNotEqual(default(string), data.DocumentNumber);
-            Assert.AreNotEqual(string.Empty, data.DocumentNumber);
+            Assert.That(data.Id, Is.EqualTo(_salesReceiptId));
+            Assert.That(data.DocumentNumber, Is.Not.EqualTo(default(string)));
+            Assert.That(data.DocumentNumber, Is.Not.EqualTo(string.Empty));
         }
 
         [Test]
@@ -128,10 +128,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var data = await _client.Detail(_salesReceiptId).Include(s => s.Partner).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(model.Name, data.Name);
-            Assert.AreEqual(model.Note, data.Note);
-            Assert.AreEqual(PartnerId, data.PartnerId);
-            Assert.AreEqual(model.PartnerAddress.CompanyName, data.PartnerAddress.NickName);
+            Assert.That(data.Name, Is.EqualTo(model.Name));
+            Assert.That(data.Note, Is.EqualTo(model.Note));
+            Assert.That(data.PartnerId, Is.EqualTo(PartnerId));
+            Assert.That(data.PartnerAddress.NickName, Is.EqualTo(model.PartnerAddress.CompanyName));
         }
 
         [Test]
@@ -145,8 +145,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var data = await _client.CopyAsync(_salesReceiptId).AssertResult();
 
             // Assert
-            Assert.AreEqual(salesReceiptToCopy.PartnerId, data.PartnerId);
-            Assert.AreEqual(salesReceiptToCopy.CurrencyId, data.CurrencyId);
+            Assert.That(data.PartnerId, Is.EqualTo(salesReceiptToCopy.PartnerId));
+            Assert.That(data.CurrencyId, Is.EqualTo(salesReceiptToCopy.CurrencyId));
             Assert.That(data.Items.Count(c => c.ItemType == SalesReceiptItemType.ItemTypeRound), Is.EqualTo(1));
         }
 
@@ -158,7 +158,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var data = await _client.DeleteAsync(_salesReceiptId).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
             _salesReceiptIds.Remove(_salesReceiptId);
         }
 
@@ -169,8 +169,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var data = await _client.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
         }
 
         [Test]
@@ -187,8 +187,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
                 .AssertResult();
 
             // Assert
-            Assert.GreaterOrEqual(data.TotalItems, 3);
-            Assert.AreEqual(data.TotalItems / pageSize, data.TotalPages);
+            Assert.That(data.TotalItems, Is.GreaterThanOrEqualTo(3));
+            Assert.That(data.TotalItems / pageSize, Is.EqualTo(data.TotalPages));
         }
 
         [Test]
@@ -204,8 +204,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
                 .AssertResult();
 
             // Assert
-            Assert.AreEqual(1, data.Items.Count());
-            Assert.AreEqual(id, data.Items.First().Id);
+            Assert.That(data.Items.Count(), Is.EqualTo(1));
+            Assert.That(data.Items.First().Id, Is.EqualTo(id));
         }
 
         [Test]
@@ -220,8 +220,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var salesReceipt = data.Items.First();
 
             var payment = salesReceipt.Payments.First();
-            Assert.IsNotNull(payment);
-            Assert.AreEqual(100, payment.Prices.PaymentAmount);
+            Assert.That(payment, Is.Not.Null);
+            Assert.That(payment.Prices.PaymentAmount, Is.EqualTo(100));
         }
 
         [Test]
@@ -273,21 +273,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             // Assert
             var recountedItem = data.Items.First();
             var roundingItem = data.Items.Single(i => i.ItemType == SalesReceiptItemType.ItemTypeRound);
-            Assert.AreEqual(item.Id, recountedItem.Id);
-            Assert.AreEqual(item.Name, recountedItem.Name);
-            Assert.AreEqual(rounding.Name, roundingItem.Name);
-            Assert.AreEqual(240.06M, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(240.06M, recountedItem.Prices.TotalWithVatHc);
-            Assert.AreEqual(41.66M, recountedItem.Prices.TotalVat);
-            Assert.AreEqual(41.66M, recountedItem.Prices.TotalVatHc);
-            Assert.AreEqual(198.4M, recountedItem.Prices.TotalWithoutVat);
-            Assert.AreEqual(198.4M, recountedItem.Prices.TotalWithoutVatHc);
-            Assert.AreEqual(-0.06M, roundingItem.Prices.TotalWithVat);
-            Assert.AreEqual(-0.06M, roundingItem.Prices.TotalWithVatHc);
-            Assert.AreEqual(-0.00M, roundingItem.Prices.TotalVat);
-            Assert.AreEqual(-0.00M, roundingItem.Prices.TotalVatHc);
-            Assert.AreEqual(-0.06M, roundingItem.Prices.TotalWithoutVat);
-            Assert.AreEqual(-0.06M, roundingItem.Prices.TotalWithoutVatHc);
+            Assert.That(recountedItem.Id, Is.EqualTo(item.Id));
+            Assert.That(recountedItem.Name, Is.EqualTo(item.Name));
+            Assert.That(roundingItem.Name, Is.EqualTo(rounding.Name));
+            Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(240.06M));
+            Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(240.06M));
+            Assert.That(recountedItem.Prices.TotalVat, Is.EqualTo(41.66M));
+            Assert.That(recountedItem.Prices.TotalVatHc, Is.EqualTo(41.66M));
+            Assert.That(recountedItem.Prices.TotalWithoutVat, Is.EqualTo(198.4M));
+            Assert.That(recountedItem.Prices.TotalWithoutVatHc, Is.EqualTo(198.4M));
+            Assert.That(roundingItem.Prices.TotalWithVat, Is.EqualTo(-0.06M));
+            Assert.That(roundingItem.Prices.TotalWithVatHc, Is.EqualTo(-0.06M));
+            Assert.That(roundingItem.Prices.TotalVat, Is.EqualTo(-0.00M));
+            Assert.That(roundingItem.Prices.TotalVatHc, Is.EqualTo(-0.00M));
+            Assert.That(roundingItem.Prices.TotalWithoutVat, Is.EqualTo(-0.06M));
+            Assert.That(roundingItem.Prices.TotalWithoutVatHc, Is.EqualTo(-0.06M));
         }
 
         [Test]
@@ -318,11 +318,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
 
             // Assert
             var recountedItem = result.Items.First(x => x.ItemType == SalesReceiptItemType.ItemTypeNormal);
-            Assert.AreEqual(1, result.ExchangeRateAmount);
-            Assert.AreEqual(20, result.ExchangeRate);
-            Assert.AreEqual(2, result.CurrencyId);
-            Assert.AreEqual(121, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(2420, recountedItem.Prices.TotalWithVatHc);
+            Assert.That(result.ExchangeRateAmount, Is.EqualTo(1));
+            Assert.That(result.ExchangeRate, Is.EqualTo(20));
+            Assert.That(result.CurrencyId, Is.EqualTo(2));
+            Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(121));
+            Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(2420));
         }
 
         [Test]
@@ -338,9 +338,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var data = await _client.PostAsync(new List<SalesReceiptPostModel> { defaultSalesReceipt });
 
             // Assert
-            Assert.AreEqual(BatchResultType.Success, data.Status);
+            Assert.That(data.Status, Is.EqualTo(BatchResultType.Success));
             var id = data.Results.First().Data.Id;
-            Assert.Greater(id, 0);
+            Assert.That(id, Is.GreaterThan(0));
             _salesReceiptIds.Add(id);
         }
 
@@ -387,22 +387,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesReceipt
             var patchResult = await _client.UpdateAsync(updateModel);
 
             // Assert
-            Assert.IsFalse(patchResult.IsSuccess);
-            Assert.AreEqual(HttpStatusCode.BadRequest, patchResult.StatusCode);
+            Assert.That(patchResult.IsSuccess, Is.False);
+            Assert.That(patchResult.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
         private void AssertRecountModel(SalesReceiptRecountGetModel recountGetModel, SalesReceiptRecountPostModel recountPostModel)
         {
             var itemToRecount = recountPostModel.Items.First();
             var recountedItem = recountGetModel.Items.First();
-            Assert.AreEqual(itemToRecount.Id, recountedItem.Id);
-            Assert.AreEqual(itemToRecount.Name, recountedItem.Name);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVatHc);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVat);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVatHc);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVat);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVatHc);
+            Assert.That(recountedItem.Id, Is.EqualTo(itemToRecount.Id));
+            Assert.That(recountedItem.Name, Is.EqualTo(itemToRecount.Name));
+            Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(242));
+            Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(242));
+            Assert.That(recountedItem.Prices.TotalVat, Is.EqualTo(42));
+            Assert.That(recountedItem.Prices.TotalVatHc, Is.EqualTo(42));
+            Assert.That(recountedItem.Prices.TotalWithoutVat, Is.EqualTo(200));
+            Assert.That(recountedItem.Prices.TotalWithoutVatHc, Is.EqualTo(200));
         }
 
         private SalesReceiptRecountPostModel CreateRecountPostModel()

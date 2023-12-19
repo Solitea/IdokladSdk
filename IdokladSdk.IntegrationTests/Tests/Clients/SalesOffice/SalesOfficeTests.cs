@@ -28,7 +28,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOffice
             var data = await _salesOfficeClient.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
         }
 
         [Test]
@@ -38,9 +38,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOffice
             var data = await _salesOfficeClient.Detail(SalesOfficeId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(SalesOfficeId, data.Id);
-            Assert.AreEqual("Sales office", data.Name);
-            Assert.IsNull(data.Country);
+            Assert.That(data.Id, Is.EqualTo(SalesOfficeId));
+            Assert.That(data.Name, Is.EqualTo("Sales office"));
+            Assert.That(data.Country, Is.Null);
         }
 
         [Test]
@@ -50,9 +50,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.SalesOffice
             var data = await _salesOfficeClient.Detail(SalesOfficeId).Include(i => i.Country).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(SalesOfficeId, data.Id);
-            Assert.AreEqual("Sales office", data.Name);
-            Assert.NotNull(data.Country);
+            Assert.That(data.Id, Is.EqualTo(SalesOfficeId));
+            Assert.That(data.Name, Is.EqualTo("Sales office"));
+            Assert.That(data.Country, Is.Not.Null);
         }
     }
 }

@@ -62,10 +62,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             _issuedInvoiceId = data.Id;
 
             // Assert
-            Assert.Greater(data.Id, 0);
-            Assert.AreEqual(_issuedInvoicePostModel.DateOfIssue, data.DateOfIssue);
-            Assert.AreEqual(PartnerId, data.PartnerId);
-            Assert.Greater(data.Items.Count, 0);
+            Assert.That(data.Id, Is.GreaterThan(0));
+            Assert.That(data.DateOfIssue, Is.EqualTo(_issuedInvoicePostModel.DateOfIssue));
+            Assert.That(data.PartnerId, Is.EqualTo(PartnerId));
+            Assert.That(data.Items.Count, Is.GreaterThan(0));
             AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
 
@@ -77,7 +77,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var data = await _issuedInvoiceClient.Detail(_issuedInvoiceId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(_issuedInvoiceId, data.Id);
+            Assert.That(data.Id, Is.EqualTo(_issuedInvoiceId));
             AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId1);
         }
 
@@ -89,8 +89,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var data = await _issuedInvoiceClient.Detail(_issuedInvoiceId)
                 .Include(s => s.Partner).GetAsync().AssertResult();
 
-            Assert.AreEqual(_issuedInvoiceId, data.Id);
-            Assert.IsNotNull(data.Partner);
+            Assert.That(data.Id, Is.EqualTo(_issuedInvoiceId));
+            Assert.That(data.Partner, Is.Not.Null);
         }
 
         [Test]
@@ -113,9 +113,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var data = await _issuedInvoiceClient.UpdateAsync(model).AssertResult();
 
             // Assert
-            Assert.AreEqual(model.Description, data.Description);
-            Assert.AreEqual(model.MyAddress.AccountNumber, data.MyAddress.AccountNumber);
-            Assert.AreEqual(model.MyAddress.Iban, data.MyAddress.Iban);
+            Assert.That(data.Description, Is.EqualTo(model.Description));
+            Assert.That(data.MyAddress.AccountNumber, Is.EqualTo(model.MyAddress.AccountNumber));
+            Assert.That(data.MyAddress.Iban, Is.EqualTo(model.MyAddress.Iban));
             AssertDeliveryAddress(data.DeliveryAddress, DeliveryAddressId2);
         }
 
@@ -127,7 +127,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var data = await _issuedInvoiceClient.DeleteAsync(_issuedInvoiceId).AssertResult();
 
             // Assert
-            Assert.IsTrue(data);
+            Assert.That(data, Is.True);
         }
 
         [Test]
@@ -137,9 +137,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var data = await _issuedInvoiceClient.RecurrenceAsync(InvoiceId).AssertResult();
 
             // Assert
-            Assert.IsNotNull(data);
-            Assert.IsNotNull(data.InvoiceTemplate);
-            Assert.IsNotNull(data.RecurringSetting);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.InvoiceTemplate, Is.Not.Null);
+            Assert.That(data.RecurringSetting, Is.Not.Null);
         }
 
         [Test]
@@ -149,8 +149,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var data = await _issuedInvoiceClient.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.Greater(data.TotalItems, 0);
-            Assert.Greater(data.TotalPages, 0);
+            Assert.That(data.TotalItems, Is.GreaterThan(0));
+            Assert.That(data.TotalPages, Is.GreaterThan(0));
         }
 
         [Test]
@@ -182,15 +182,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
             // Assert
             var recountedItem = data.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeReduce);
-            Assert.AreEqual(item.Id, recountedItem.Id);
-            Assert.AreEqual(item.Name, recountedItem.Name);
-            Assert.AreEqual(item.ItemType, recountedItem.ItemType);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(242, recountedItem.Prices.TotalWithVatHc);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVat);
-            Assert.AreEqual(42, recountedItem.Prices.TotalVatHc);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVat);
-            Assert.AreEqual(200, recountedItem.Prices.TotalWithoutVatHc);
+            Assert.That(recountedItem.Id, Is.EqualTo(item.Id));
+            Assert.That(recountedItem.Name, Is.EqualTo(item.Name));
+            Assert.That(recountedItem.ItemType, Is.EqualTo(item.ItemType));
+            Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(242));
+            Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(242));
+            Assert.That(recountedItem.Prices.TotalVat, Is.EqualTo(42));
+            Assert.That(recountedItem.Prices.TotalVatHc, Is.EqualTo(42));
+            Assert.That(recountedItem.Prices.TotalWithoutVat, Is.EqualTo(200));
+            Assert.That(recountedItem.Prices.TotalWithoutVatHc, Is.EqualTo(200));
         }
 
         [Test]
@@ -223,11 +223,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
             // Assert
             var recountedItem = result.Items.First(x => x.ItemType == IssuedInvoiceItemType.ItemTypeNormal);
-            Assert.AreEqual(1, result.ExchangeRateAmount);
-            Assert.AreEqual(20, result.ExchangeRate);
-            Assert.AreEqual(2, result.CurrencyId);
-            Assert.AreEqual(121, recountedItem.Prices.TotalWithVat);
-            Assert.AreEqual(2420, recountedItem.Prices.TotalWithVatHc);
+            Assert.That(result.ExchangeRateAmount, Is.EqualTo(1));
+            Assert.That(result.ExchangeRate, Is.EqualTo(20));
+            Assert.That(result.CurrencyId, Is.EqualTo(2));
+            Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(121));
+            Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(2420));
         }
 
         [Test]
@@ -240,9 +240,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             var data = await _issuedInvoiceClient.CopyAsync(InvoiceId).AssertResult();
 
             // Assert
-            Assert.AreEqual(invoiceToCopy.Description, data.Description);
-            Assert.AreEqual(invoiceToCopy.PartnerId, data.PartnerId);
-            Assert.AreEqual(invoiceToCopy.CurrencyId, data.CurrencyId);
+            Assert.That(data.Description, Is.EqualTo(invoiceToCopy.Description));
+            Assert.That(data.PartnerId, Is.EqualTo(invoiceToCopy.PartnerId));
+            Assert.That(data.CurrencyId, Is.EqualTo(invoiceToCopy.CurrencyId));
             AssertDeliveryAddress(invoiceToCopy.DeliveryAddress, DeliveryAddressId1);
         }
 
@@ -267,9 +267,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
             // Assert
             Assert.That(data.HasVatRegimeOss, Is.True);
-            Assert.Greater(data.Id, 0);
-            Assert.Greater(data.Items.Count, 0);
-            Assert.AreEqual(data.Items.First().VatRate, 19);
+            Assert.That(data.Id, Is.GreaterThan(0));
+            Assert.That(data.Items.Count, Is.GreaterThan(0));
+            Assert.That(data.Items.First().VatRate, Is.EqualTo(19));
 
             // Teardown
             await _issuedInvoiceClient.DeleteAsync(data.Id);
@@ -286,7 +286,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
             // Assert
             var item = data.Items.Where(i => i.ItemType == IssuedInvoiceItemType.ItemTypeReduce);
-            Assert.NotNull(item);
+            Assert.That(item, Is.Not.Null);
             Assert.That(data.ProformaInvoices, Is.Not.Null.And.Count.EqualTo(1).And.Contains(ProformaInvoiceId));
 
             // Teardown
@@ -309,13 +309,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
         private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
         {
-            Assert.NotNull(data);
-            Assert.NotNull(data.City);
-            Assert.AreEqual(expectedDeliveryAddressId, data.ContactDeliveryAddressId);
-            Assert.NotZero(data.CountryId);
-            Assert.NotNull(data.Name);
-            Assert.NotNull(data.PostalCode);
-            Assert.NotNull(data.Street);
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.City, Is.Not.Null);
+            Assert.That(data.ContactDeliveryAddressId, Is.EqualTo(expectedDeliveryAddressId));
+            Assert.That(data.CountryId, Is.Not.Zero);
+            Assert.That(data.Name, Is.Not.Null);
+            Assert.That(data.PostalCode, Is.Not.Null);
+            Assert.That(data.Street, Is.Not.Null);
         }
     }
 }

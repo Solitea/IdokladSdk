@@ -24,11 +24,11 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             var result = ApiValidator.ValidateObject(entity, out var errors);
 
             // Assert
-            Assert.False(result);
-            Assert.AreEqual(2, errors.Count);
+            Assert.That(result, Is.False);
+            Assert.That(errors.Count, Is.EqualTo(2));
             var memberNames = errors.SelectMany(error => error.MemberNames).ToList();
-            Assert.Contains(nameof(TestEntity.IdentificationNumber), memberNames);
-            Assert.Contains(nameof(TestEntity.Name), memberNames);
+            Assert.That(memberNames, Contains.Item(nameof(TestEntity.IdentificationNumber)));
+            Assert.That(memberNames, Contains.Item(nameof(TestEntity.Name)));
         }
 
         [Test]
@@ -48,13 +48,13 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             var result = ApiValidator.ValidateObject(entity, out var errors);
 
             // Assert
-            Assert.False(result);
-            Assert.AreEqual(4, errors.Count);
+            Assert.That(result, Is.False);
+            Assert.That(errors.Count, Is.EqualTo(4));
             var memberNames = errors.SelectMany(error => error.MemberNames).ToList();
-            Assert.Contains(nameof(TestEntity.IdentificationNumber), memberNames);
-            Assert.Contains(nameof(TestEntity.Rating), memberNames);
-            Assert.Contains(nameof(TestEntity.NonNullableDate), memberNames);
-            Assert.Contains(nameof(TestEntity.NullableDate), memberNames);
+            Assert.That(memberNames, Contains.Item(nameof(TestEntity.IdentificationNumber)));
+            Assert.That(memberNames, Contains.Item(nameof(TestEntity.Rating)));
+            Assert.That(memberNames, Contains.Item(nameof(TestEntity.NonNullableDate)));
+            Assert.That(memberNames, Contains.Item(nameof(TestEntity.NullableDate)));
         }
 
         [Test]
@@ -74,8 +74,8 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             var result = ApiValidator.ValidateObject(entity, out var errors);
 
             // Assert
-            Assert.True(result);
-            Assert.Zero(errors.Count);
+            Assert.That(result, Is.True);
+            Assert.That(errors.Count, Is.Zero);
         }
 
         [TestCase(null)]
@@ -95,8 +95,8 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             var result = ApiValidator.ValidateObject(entity, out var errors);
 
             // Assert
-            Assert.True(result);
-            Assert.AreEqual(0, errors.Count);
+            Assert.That(result, Is.True);
+            Assert.That(errors.Count, Is.Zero);
         }
 
         [Test]
@@ -115,10 +115,10 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             var result = ApiValidator.ValidateObject(entity, out var errors);
 
             // Assert
-            Assert.False(result);
-            Assert.AreEqual(1, errors.Count);
+            Assert.That(result, Is.False);
+            Assert.That(errors.Count, Is.EqualTo(1));
             var memberNames = errors.SelectMany(error => error.MemberNames).ToList();
-            Assert.Contains(nameof(TestEntity.DiscountPercentage), memberNames);
+            Assert.That(memberNames, Contains.Item(nameof(TestEntity.DiscountPercentage)));
         }
 
         [Test]
@@ -157,8 +157,8 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             var result = ApiValidator.ValidateObject(entity, out var errors);
 
             // Assert
-            Assert.True(result);
-            Assert.AreEqual(0, errors.Count);
+            Assert.That(result, Is.True);
+            Assert.That(errors.Count, Is.Zero);
         }
 
         [Test]
@@ -187,14 +187,14 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             var result = ApiValidator.ValidateObject(entity, out var errors);
 
             // Assert
-            Assert.False(result);
-            Assert.AreEqual(7, errors.Count);
+            Assert.That(result, Is.False);
+            Assert.That(errors.Count, Is.EqualTo(7));
 
             var memberNames = errors.SelectMany(error => error.MemberNames).ToList();
-            Assert.AreEqual(1, memberNames.Count(x => x == nameof(TestEntity.Name)));
-            Assert.AreEqual(1, memberNames.Count(x => x == nameof(TestEntity.DiscountPercentage)));
-            Assert.AreEqual(2, memberNames.Count(x => x == nameof(TestEntity.NonNullableDate)));
-            Assert.AreEqual(3, memberNames.Count(x => x == nameof(TestEntity.IdentificationNumber)));
+            Assert.That(memberNames.Count(x => x == nameof(TestEntity.Name)), Is.EqualTo(1));
+            Assert.That(memberNames.Count(x => x == nameof(TestEntity.DiscountPercentage)), Is.EqualTo(1));
+            Assert.That(memberNames.Count(x => x == nameof(TestEntity.NonNullableDate)), Is.EqualTo(2));
+            Assert.That(memberNames.Count(x => x == nameof(TestEntity.IdentificationNumber)), Is.EqualTo(3));
         }
     }
 }

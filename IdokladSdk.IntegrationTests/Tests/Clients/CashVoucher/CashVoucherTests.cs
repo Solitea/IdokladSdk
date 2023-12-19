@@ -29,13 +29,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         public async Task Default_SucessfullyGetAsync()
         {
             // Act
-            var cashVoucherIssue = (await _client.DefaultAsync(MovementType.Issue)).AssertResult();
-            var cashVoucherEntry = (await _client.DefaultAsync(MovementType.Entry)).AssertResult();
+            var cashVoucherIssue = await _client.DefaultAsync(MovementType.Issue).AssertResult();
+            var cashVoucherEntry = await _client.DefaultAsync(MovementType.Entry).AssertResult();
 
             // Assert
-            Assert.AreNotEqual(cashVoucherIssue.MovementType, cashVoucherEntry.MovementType);
-            Assert.AreEqual(cashVoucherIssue.MovementType, MovementType.Issue);
-            Assert.AreEqual(cashVoucherEntry.MovementType, MovementType.Entry);
+            Assert.That(cashVoucherIssue.MovementType, Is.Not.EqualTo(cashVoucherEntry.MovementType));
+            Assert.That(cashVoucherIssue.MovementType, Is.EqualTo(MovementType.Issue));
+            Assert.That(cashVoucherEntry.MovementType, Is.EqualTo(MovementType.Entry));
         }
 
         [Test]
@@ -43,33 +43,33 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         public async Task Default_SucessfullyGetAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId)
         {
             // Act
-            var cashVoucher = (await _client.DefaultAsync(movementType, invoiceType, invoiceId)).AssertResult();
+            var cashVoucher = await _client.DefaultAsync(movementType, invoiceType, invoiceId).AssertResult();
 
             // Assert
-            Assert.AreEqual(cashVoucher.MovementType, movementType);
-            Assert.AreEqual(cashVoucher.InvoiceType, invoiceType);
-            Assert.AreEqual(cashVoucher.InvoiceId, invoiceId);
+            Assert.That(cashVoucher.MovementType, Is.EqualTo(movementType));
+            Assert.That(cashVoucher.InvoiceType, Is.EqualTo(invoiceType));
+            Assert.That(cashVoucher.InvoiceId, Is.EqualTo(invoiceId));
         }
 
         [Test]
         public async Task Detail_SucessfullyGetAsync()
         {
             // Act
-            var cashVoucher = (await _client.Detail(CashVoucherId).GetAsync()).AssertResult();
+            var cashVoucher = await _client.Detail(CashVoucherId).GetAsync().AssertResult();
 
             // Assert
-            Assert.AreEqual(cashVoucher.Id, CashVoucherId);
-            Assert.AreEqual(cashVoucher.Items.First().Price, 500m);
+            Assert.That(cashVoucher.Id, Is.EqualTo(CashVoucherId));
+            Assert.That(cashVoucher.Items.First().Price, Is.EqualTo(500m));
         }
 
         [Test]
         public async Task List_SucessfullyGetAsync()
         {
             // Act
-            var cashVouchers = (await _client.List().GetAsync()).AssertResult();
+            var cashVouchers = await _client.List().GetAsync().AssertResult();
 
             // Assert
-            Assert.GreaterOrEqual(cashVouchers.TotalItems, 1);
+            Assert.That(cashVouchers.TotalItems, Is.GreaterThanOrEqualTo(1));
         }
 
         [Test]
@@ -79,18 +79,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
             var cashVoucherName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
 
             // Act
-            var cashVoucher = (await _client.DefaultAsync(MovementType.Issue, InvoiceType.Issued, UnpaidIssuedInvoice)).AssertResult();
+            var cashVoucher = await _client.DefaultAsync(MovementType.Issue, InvoiceType.Issued, UnpaidIssuedInvoice).AssertResult();
             cashVoucher.Name = cashVoucherName;
-            var postedCashVoucher = (await _client.PostAsync(cashVoucher)).AssertResult();
-            var paired = (await _client.PairAsync(postedCashVoucher.Id, InvoiceType.Issued, UnpaidIssuedInvoice)).AssertResult();
-            var deleted = (await _client.DeleteAsync(postedCashVoucher.Id)).AssertResult();
+            var postedCashVoucher = await _client.PostAsync(cashVoucher).AssertResult();
+            var paired = await _client.PairAsync(postedCashVoucher.Id, InvoiceType.Issued, UnpaidIssuedInvoice).AssertResult();
+            var deleted = await _client.DeleteAsync(postedCashVoucher.Id).AssertResult();
 
             // Assert
-            Assert.AreEqual(cashVoucher.InvoiceId, UnpaidIssuedInvoice);
-            Assert.AreEqual(postedCashVoucher.InvoiceId, UnpaidIssuedInvoice);
-            Assert.AreEqual(postedCashVoucher.Name, cashVoucherName);
-            Assert.IsTrue(paired);
-            Assert.IsTrue(deleted);
+            Assert.That(cashVoucher.InvoiceId, Is.EqualTo(UnpaidIssuedInvoice));
+            Assert.That(postedCashVoucher.InvoiceId, Is.EqualTo(UnpaidIssuedInvoice));
+            Assert.That(postedCashVoucher.Name, Is.EqualTo(cashVoucherName));
+            Assert.That(paired, Is.True);
+            Assert.That(deleted, Is.True);
         }
 
         private static IList<object> GetDefaultVouchers()

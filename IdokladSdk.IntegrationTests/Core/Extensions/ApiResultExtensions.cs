@@ -19,30 +19,11 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
         /// <param name="result">Result.</param>
         /// <typeparam name="T">T.</typeparam>
         /// <returns>Method assert result.</returns>
-        public static T AssertResult<T>(this ApiResult<T> result)
-        {
-            Assert.IsInstanceOf<ApiResult<T>>(result);
-            Assert.IsTrue(result.IsSuccess, result.Message);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.NotNull(result.Data);
-            return result.Data;
-        }
-
-        /// <summary>
-        /// Assert result.
-        /// </summary>
-        /// <param name="result">Result.</param>
-        /// <typeparam name="T">T.</typeparam>
-        /// <returns>Method assert result.</returns>
         public static async Task<T> AssertResult<T>(this Task<ApiResult<T>> result)
         {
             var response = await result;
 
-            Assert.IsInstanceOf<ApiResult<T>>(response);
-            Assert.IsTrue(response.IsSuccess, response.Message);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.NotNull(response.Data);
-            return response.Data;
+            return response.AssertResult();
         }
 
         /// <summary>
@@ -54,8 +35,8 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
         public static async Task<IEnumerable<T>> AssertResult<T>(this Task<ApiBatchResult<T>> batchResult)
         {
             var result = await batchResult;
-            Assert.IsInstanceOf<ApiBatchResult<T>>(result);
-            Assert.AreEqual(result.Status, BatchResultType.Success);
+            Assert.That(result, Is.InstanceOf<ApiBatchResult<T>>());
+            Assert.That(result.Status, Is.EqualTo(BatchResultType.Success));
 
             Assert.Multiple(() =>
             {
@@ -66,6 +47,21 @@ namespace IdokladSdk.IntegrationTests.Core.Extensions
             });
 
             return result.Results.Select(x => x.Data);
+        }
+
+        /// <summary>
+        /// Assert result.
+        /// </summary>
+        /// <param name="result">Result.</param>
+        /// <typeparam name="T">T.</typeparam>
+        /// <returns>Method assert result.</returns>
+        private static T AssertResult<T>(this ApiResult<T> result)
+        {
+            Assert.That(result, Is.InstanceOf<ApiResult<T>>());
+            Assert.That(result.IsSuccess, Is.True, result.Message);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(result.Data, Is.Not.Null);
+            return result.Data;
         }
     }
 }
