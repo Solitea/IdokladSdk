@@ -54,7 +54,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             _issuedInvoicePostModel.Items.Add(new IssuedInvoiceItemPostModel
             {
                 Name = "Test",
-                UnitPrice = 100
+                UnitPrice = 100,
+                Amount = 1
             });
 
             // Act
