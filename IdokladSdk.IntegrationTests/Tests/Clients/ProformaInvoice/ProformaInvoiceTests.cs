@@ -189,7 +189,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         [Test]
         [Order(6)]
-        public async Task GetInvoiceForAccount_SuccessfullyGetIssuedInvoiceAccountPostModelAsync()
+        public async Task GetInvoiceForAccount_SuccessfullyGetIssuedInvoiceDefaultGetModelAsync()
         {
             // Act
             var data = await _proformaInvoiceClient.GetInvoiceForAccountAsync(_proformaInvoiceId).AssertResult();
@@ -199,6 +199,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.That(item, Is.Not.Null);
             Assert.That(data.ProformaInvoices, Is.Not.Null.And.Count.EqualTo(1).And.Contains(_proformaInvoiceId));
             Assert.That(item.UnitPrice, Is.EqualTo(-100));
+            Assert.That(data.VatRegime, Is.EqualTo(VatRegime.VatRegime));
         }
 
         [Test]

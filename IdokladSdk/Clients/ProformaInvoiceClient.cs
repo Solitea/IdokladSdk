@@ -109,10 +109,10 @@ namespace IdokladSdk.Clients
         /// <param name="id">Proforma invoice id.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method return issued invoice post model for account proforma invoice.</returns>
-        public Task<ApiResult<IssuedInvoicePostModel>> GetInvoiceForAccountAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<IssuedInvoiceDefaultGetModel>> GetInvoiceForAccountAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Account";
-            return GetAsync<IssuedInvoicePostModel>(resource, null, cancellationToken);
+            return GetAsync<IssuedInvoiceDefaultGetModel>(resource, null, cancellationToken);
         }
 
         /// <summary>
