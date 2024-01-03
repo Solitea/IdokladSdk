@@ -233,7 +233,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
                 Price = 200,
                 PriceType = PriceType.WithVat,
                 Unit = "kg",
-                VatRateType = VatRateType.Reduced2,
+                VatRateType = VatRateType.Reduced1,
                 VatCodeId = 2
             };
         }
