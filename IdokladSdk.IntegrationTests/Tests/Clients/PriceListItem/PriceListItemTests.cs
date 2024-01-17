@@ -134,6 +134,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(7)]
+        public async Task GetListWithIdsFilterAsync_ReturnsList()
+        {
+            // Act
+            var data = await PriceListItemClient
+                .List()
+                .Filter(f => f.Ids.Contains(new List<int> { _newPriceListItemId }))
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.GreaterThan(0));
+            Assert.That(data.Items.Any(i => i.Id == _newPriceListItemId), Is.True);
+        }
+
+        [Test]
+        [Order(8)]
         public async Task BatchUpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
@@ -149,7 +166,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         }
 
         [Test]
-        [Order(8)]
+        [Order(9)]
         public async Task BatchDeleteAsync_SuccessfullyDeleted()
         {
             // Arrange
