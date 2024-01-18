@@ -11,6 +11,9 @@ namespace IdokladSdk.Requests.PriceListItem.Filter
     /// </summary>
     public class PriceListItemFilter : IdFilter
     {
+        /// <inheritdoc cref="PriceListItemListGetModel.Code"/>
+        public FilterItem<string> Code { get; set; } = new FilterItem<string>(nameof(PriceListItemListGetModel.Code));
+
         /// <inheritdoc cref="PriceListItemListGetModel.CurrencyId"/>
         public FilterItem<int> CurrencyId { get; set; } = new FilterItem<int>(nameof(PriceListItemListGetModel.CurrencyId));
 
