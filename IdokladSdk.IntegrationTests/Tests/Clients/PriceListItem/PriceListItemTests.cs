@@ -16,6 +16,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
     public class PriceListItemTests : TestBase
     {
         private readonly List<int> _newPriceListItems = new List<int>();
+        private readonly int _priceListItemId1 = 109438;
+        private readonly int _priceListItemId2 = 109439;
         private int _newPriceListItemId = 0;
         private PriceListItemPostModel _priceListItemPostModel;
         private DateTime _dateLastChange;
@@ -134,6 +136,28 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
         [Test]
         [Order(7)]
+        public async Task GetListWithIdsFilterAsync_ReturnsList()
+        {
+            // Act
+            var data = await PriceListItemClient
+                .List()
+                .Filter(f => f.Ids.Contains(new List<int>()
+                {
+                    _priceListItemId1,
+                    _priceListItemId2,
+                    _newPriceListItemId,
+                }))
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.EqualTo(3));
+            Assert.That(data.Items.Any(i => i.Id == _newPriceListItemId), Is.True);
+        }
+
+        [Test]
+        [Order(8)]
         public async Task BatchUpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
@@ -149,7 +173,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         }
 
         [Test]
-        [Order(8)]
+        [Order(9)]
         public async Task BatchDeleteAsync_SuccessfullyDeleted()
         {
             // Arrange

@@ -235,48 +235,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
-        public async Task LogoGetAsync_SuccessfullyGet()
-        {
-            // Act
-            var data = await _accountClient.Agendas.GetLogoAsync().AssertResult();
-
-            // Assert
-            Assert.That(data, Is.Not.Null);
-            Assert.That(data.FileBytes, Is.Not.Null);
-        }
-
-        [Test]
-        public async Task LogoSignatureAsync_SuccessfullyGet()
-        {
-            // Act
-            var data = await _accountClient.Agendas.GetSignatureAsync().AssertResult();
-
-            // Assert
-            Assert.That(data, Is.Not.Null);
-            Assert.That(data.FileBytes, Is.Not.Null);
-        }
-
-        [Test]
-        public async Task LogoDeleteAsync_SuccessfullyDeleted()
-        {
-            // Act
-            var data = await _accountClient.Agendas.DeleteLogoAsync().AssertResult();
-
-            // Assert
-            Assert.That(data, Is.True);
-        }
-
-        [Test]
-        public async Task LogoSignatureAsync_SuccessfullyDeleted()
-        {
-            // Act
-            var data = await _accountClient.Agendas.DeleteSignatureAsync().AssertResult();
-
-            // Assert
-            Assert.That(data, Is.True);
-        }
-
-        [Test]
+        [Order(1)]
         public async Task LogoUpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
@@ -295,6 +254,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        [Order(2)]
         public async Task SignatureUpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
@@ -306,6 +266,52 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
 
             // Act
             var data = await _accountClient.Agendas.UploadSignatureAsync(model).AssertResult();
+
+            // Assert
+            Assert.That(data, Is.True);
+        }
+
+        [Test]
+        [Order(3)]
+        public async Task LogoGetAsync_SuccessfullyGet()
+        {
+            // Act
+            var data = await _accountClient.Agendas.GetLogoAsync().AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.FileBytes, Is.Not.Null);
+        }
+
+        [Test]
+        [Order(4)]
+        public async Task LogoSignatureAsync_SuccessfullyGet()
+        {
+            // Act
+            var data = await _accountClient.Agendas.GetSignatureAsync().AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.FileBytes, Is.Not.Null);
+        }
+
+        [Test]
+        [Order(5)]
+        public async Task LogoSignatureAsync_SuccessfullyDeleted()
+        {
+            // Act
+            var data = await _accountClient.Agendas.DeleteSignatureAsync().AssertResult();
+
+            // Assert
+            Assert.That(data, Is.True);
+        }
+
+        [Test]
+        [Order(6)]
+        public async Task LogoDeleteAsync_SuccessfullyDeleted()
+        {
+            // Act
+            var data = await _accountClient.Agendas.DeleteLogoAsync().AssertResult();
 
             // Assert
             Assert.That(data, Is.True);
