@@ -78,6 +78,11 @@ namespace IdokladSdk.Models.Account
         public EetRegime EetRegime { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether agenda has already created an invoice.
+        /// </summary>
+        public bool HasFirstInvoice { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether agenda has active web recurring payments.
         /// </summary>
         public bool HasActiveWebRecurringPayments { get; set; }

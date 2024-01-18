@@ -9,6 +9,9 @@ namespace IdokladSdk.Requests.PriceListItem.Sort
     /// </summary>
     public class PriceListItemSort : IdSort
     {
+        /// <inheritdoc cref="PriceListItemListGetModel.Code"/>
+        public SortItem Code { get; set; } = new SortItem(nameof(PriceListItemGetModel.Code));
+
         /// <inheritdoc cref="PriceListItemListGetModel.Name"/>
         public SortItem Name { get; set; } = new SortItem(nameof(PriceListItemListGetModel.Name));
     }
