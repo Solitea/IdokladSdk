@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.ReadOnly.VatReverseChargeCode;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReadOnly.VatReverseChargeCodes.Filter
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.ReadOnly.VatReverseChargeCodes.Filter
     /// <summary>
     /// Filterable properties of VAT reverse charge code.
     /// </summary>
-    public class VatReverseChargeCodeFilter
+    public class VatReverseChargeCodeFilter : IdFilter
     {
         /// <inheritdoc cref="VatReverseChargeCodeListGetModel.Code"/>
         public ContainFilterItem<int> Code { get; set; } = new ContainFilterItem<int>(nameof(VatReverseChargeCodeListGetModel.Code));

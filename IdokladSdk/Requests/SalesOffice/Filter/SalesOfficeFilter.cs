@@ -1,6 +1,5 @@
 ﻿using IdokladSdk.Models.SalesOffice;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
-using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.SalesOffice.Filter
 {

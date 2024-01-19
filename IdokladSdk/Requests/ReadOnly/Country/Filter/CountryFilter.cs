@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.ReadOnly.Country;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReadOnly.Country.Filter
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.ReadOnly.Country.Filter
     /// <summary>
     /// Filterable properties of country.
     /// </summary>
-    public class CountryFilter
+    public class CountryFilter : IdFilter
     {
         /// <inheritdoc cref="CountryListGetModel.Code"/>
         public ContainFilterItem<string> Code { get; set; } = new ContainFilterItem<string>(nameof(CountryListGetModel.Code));
