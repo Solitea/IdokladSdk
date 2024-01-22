@@ -95,5 +95,56 @@ namespace IdokladSdk.Clients
         {
             return GetAsync<ContactStatisticGetModel>($"{ResourceUrl}/StatisticForContact/{id}", null, cancellationToken);
         }
+
+        /// <summary>
+        /// Statistics for unpaid invoices after maturity.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="ContactStatisticGetModel"/>.</returns>
+        public Task<ApiResult<DebtIntervalsGetModel>> DebtIntervals(CancellationToken cancellationToken = default)
+        {
+            return GetAsync<DebtIntervalsGetModel>($"{ResourceUrl}/DebtIntervals", null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Statistics for contacts having highest cumulated debt.
+        /// </summary>
+        /// <param name="count">Count of top debtors to be returned.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="ContactStatisticGetModel"/>.</returns>
+        public Task<ApiResult<List<TopDebtorGetModel>>> TopDebtors(int? count = null, CancellationToken cancellationToken = default)
+        {
+            var queryParams = new Dictionary<string, string> { { nameof(count), count?.ToString() } };
+
+            return GetAsync<List<TopDebtorGetModel>>($"{ResourceUrl}/TopDebtors", queryParams, cancellationToken);
+        }
+
+        /// <summary>
+        /// Statistics for vat payer progress and its limits.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="ContactStatisticGetModel"/>.</returns>
+        public Task<ApiResult<VatPayerProgressGetModel>> VatPayerProgress(CancellationToken cancellationToken = default)
+        {
+            return GetAsync<VatPayerProgressGetModel>($"{ResourceUrl}/VatPayerProgress", null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Statistics for VAT record keeping for specific period.
+        /// </summary>
+        /// <param name="vatPeriod">VAT period.</param>
+        /// <param name="isVatOnPay">Count VAT according to SK legislation for payments.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="ContactStatisticGetModel"/>.</returns>
+        public Task<ApiResult<DashboardVatSummaryGetModel>> VatTotals(VatPeriod vatPeriod, bool isVatOnPay, CancellationToken cancellationToken = default)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                { nameof(VatPeriod), vatPeriod.ToString() },
+                { nameof(isVatOnPay), isVatOnPay.ToString() }
+            };
+
+            return GetAsync<DashboardVatSummaryGetModel>($"{ResourceUrl}/VatTotals", queryParams, cancellationToken);
+        }
     }
 }

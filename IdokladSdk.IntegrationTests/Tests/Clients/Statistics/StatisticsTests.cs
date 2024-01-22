@@ -97,5 +97,56 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             Assert.That(data.IssuedInvoiceCount, Is.GreaterThan(0));
             Assert.That(data.IssuedInvoiceTotalWithVat, Is.GreaterThan(0));
         }
+
+        [Test]
+        public async Task DebtIntervals_ReturnsDebtIntervalsStatistics()
+        {
+            // Act
+            var data = await _statisticsClient.DebtIntervals().AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Issue, Is.Not.Null);
+            Assert.That(data.Entry, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task TopDebtors_ReturnsTopDebtors()
+        {
+            // Arrange
+            var countOfDebtors = 4;
+
+            // Act
+            var data = await _statisticsClient.TopDebtors(countOfDebtors).AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Count, Is.EqualTo(countOfDebtors));
+        }
+
+        [Test]
+        public async Task VatPayerProgress_ReturnsDataForVatPayerProgress()
+        {
+            // Arrange
+            var vatPayerLimit = 2000000;
+
+            // Act
+            var data = await _statisticsClient.VatPayerProgress().AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.VatPayerLimit, Is.EqualTo(vatPayerLimit));
+        }
+
+        [TestCase(VatPeriod.Quarter)]
+        [TestCase(VatPeriod.Month)]
+        public async Task VatTotals(VatPeriod vatPeriod)
+        {
+            // Act
+            var data = await _statisticsClient.VatTotals(vatPeriod, true).AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+        }
     }
 }
