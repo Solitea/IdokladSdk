@@ -14,16 +14,16 @@ namespace IdokladSdk.Requests.DocumentPayment.Sales.Filter
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(SalesDocumentPaymentListGetModel.PaidDocument.PartnerId));
 
         /// <inheritdoc cref="SalesDocumentPaymentListGetModel.PaidDocument"/>
-        public FilterItem<string> PartnerName { get; set; } = new FilterItem<string>(nameof(SalesDocumentPaymentListGetModel.PaidDocument.PartnerName));
+        public ContainFilterItem<string> PartnerName { get; set; } = new ContainFilterItem<string>(nameof(SalesDocumentPaymentListGetModel.PaidDocument.PartnerName));
 
         /// <inheritdoc cref="SalesDocumentPaymentListGetModel"/>
         public FilterItem<int> PaymentOptionId { get; set; } = new FilterItem<int>(nameof(SalesDocumentPaymentListGetModel.PaymentOptionId));
 
         /// <inheritdoc cref="SalesDocumentPaymentListGetModel"/>
-        public FilterItem<DateTime> DateOfPayment { get; set; } = new FilterItem<DateTime>(nameof(SalesDocumentPaymentListGetModel.DateOfPayment));
+        public CompareFilterItem<DateTime> DateOfPayment { get; set; } = new CompareFilterItem<DateTime>(nameof(SalesDocumentPaymentListGetModel.DateOfPayment));
 
         /// <inheritdoc cref="SalesDocumentPaymentListGetModel.PaidDocument"/>
-        public FilterItem<string> DocumentNumber { get; set; } = new FilterItem<string>(nameof(SalesDocumentPaymentListGetModel.PaidDocument.DocumentNumber));
+        public ContainFilterItem<string> DocumentNumber { get; set; } = new ContainFilterItem<string>(nameof(SalesDocumentPaymentListGetModel.PaidDocument.DocumentNumber));
 
         /// <inheritdoc cref="SalesDocumentPaymentListGetModel.PaidDocument"/>
         public FilterItem<int> DocumentId { get; set; } = new FilterItem<int>("DocumentId");

@@ -6,8 +6,8 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Payment.DocumentPayments.Sales.List;
 using IdokladSdk.Requests.Core;
-using IdokladSdk.Requests.Core.Modifiers.Sort.BasicSorts;
 using IdokladSdk.Requests.DocumentPayment.Sales.Filter;
+using IdokladSdk.Requests.DocumentPayment.Sales.Sort;
 using IdokladSdk.Response;
 
 namespace IdokladSdk.Requests.DocumentPayment.Sales
@@ -16,7 +16,7 @@ namespace IdokladSdk.Requests.DocumentPayment.Sales
     /// SalesDocumentPaymentList.
     /// </summary>
     public class SalesDocumentPaymentList : BaseListCore<SalesDocumentPaymentList, DocumentPaymentClient,
-        SalesDocumentPaymentListGetModel, SalesPaymentFilter, IdSort>
+        SalesDocumentPaymentListGetModel, SalesPaymentFilter, SalesPaymentSort>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SalesDocumentPaymentList" /> class.

@@ -11,15 +11,15 @@ namespace IdokladSdk.Requests.IssuedDocumentPayment.Filter
     public class IssuedDocumentPaymentFilter : IdFilter
     {
         /// <inheritdoc cref="IssuedDocumentPaymentListGetModel.InvoiceId"/>
-        public FilterItem<int> InvoiceId { get; set; } = new CompareFilterItem<int>(nameof(IssuedDocumentPaymentListGetModel.InvoiceId));
+        public FilterItem<int> InvoiceId { get; set; } = new FilterItem<int>(nameof(IssuedDocumentPaymentListGetModel.InvoiceId));
 
         /// <inheritdoc cref="IssuedDocumentPaymentListGetModel.PaymentOptionId"/>
-        public FilterItem<int> PaymentOptionId { get; set; } = new CompareFilterItem<int>(nameof(IssuedDocumentPaymentListGetModel.PaymentOptionId));
+        public FilterItem<int> PaymentOptionId { get; set; } = new FilterItem<int>(nameof(IssuedDocumentPaymentListGetModel.PaymentOptionId));
 
         /// <summary>
         /// Gets or sets partner id.
         /// </summary>
-        public FilterItem<int> PartnerId { get; set; } = new CompareFilterItem<int>("PartnerId");
+        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>("PartnerId");
 
         /// <inheritdoc cref="IssuedDocumentPaymentListGetModel.DateOfPayment"/>
         public CompareFilterItem<DateTime> DateOfPayment { get; set; } = new CompareFilterItem<DateTime>(nameof(IssuedDocumentPaymentListGetModel.DateOfPayment));

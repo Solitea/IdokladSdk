@@ -106,7 +106,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             var data = await DocumentPaymentClient.Sales
                 .List()
                 .Filter(f => f.PartnerId.IsEqual(partnerId))
-                .Filter(f => f.PartnerName.IsEqual(PartnerName))
+                .Filter(f => f.PartnerName.Contains(PartnerName))
                 .Filter(f => f.PaymentOptionId.IsEqual(PaymentOptionId))
                 .Filter(f => f.DateOfPayment.IsEqual(dateOfPayment))
                 .Filter(f => f.DocumentNumber.IsEqual(documentNumber))
@@ -126,6 +126,34 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             Assert.That(item.DateOfPayment, Is.EqualTo(dateOfPayment));
             Assert.That(item.PaidDocument.DocumentNumber, Is.EqualTo(documentNumber));
             Assert.That(item.PaidDocument.Id, Is.EqualTo(documentId));
+        }
+
+        [Test]
+        public async Task GetListAsync_ApplyDescSort_ReturnsSortedSalesDocumentPayments()
+        {
+            // Act
+            var data = await DocumentPaymentClient.Sales
+                .List().Sort(s => s.DateOfPayment.Desc())
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(data.Items, Is.Not.Null);
+            Assert.That(data.Items, Is.Ordered.Descending.By("DateOfPayment"));
+        }
+
+        [Test]
+        public async Task GetListAsync_ApplyAscSort_ReturnsSortedSalesDocumentPayments()
+        {
+            // Act
+            var data = await DocumentPaymentClient.Sales
+                .List().Sort(s => s.DateOfPayment.Asc())
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(data.Items, Is.Not.Null);
+            Assert.That(data.Items, Is.Ordered.Ascending.By("DateOfPayment"));
         }
 
         [Test]
