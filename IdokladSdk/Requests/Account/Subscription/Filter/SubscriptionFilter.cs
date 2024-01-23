@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.Account;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.Account.Subscription.Filter
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.Account.Subscription.Filter
     /// <summary>
     /// Subscription filter.
     /// </summary>
-    public class SubscriptionFilter
+    public class SubscriptionFilter : IdFilter
     {
         /// <inheritdoc cref="MySubscriptionGetModel.DateFrom"/>
         public CompareFilterItem<DateTime> DateFrom { get; set; } =

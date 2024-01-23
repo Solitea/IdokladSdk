@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.ReadOnly.ConstantSymbol;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReadOnly.ConstantSymbol.Filter
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.ReadOnly.ConstantSymbol.Filter
     /// <summary>
     /// Filterable properties of constant symbol.
     /// </summary>
-    public class ConstantSymbolFilter
+    public class ConstantSymbolFilter : IdFilter
     {
         /// <inheritdoc cref="ConstantSymbolListGetModel.CountryId"/>
         public FilterItem<int> CountryId { get; set; } = new FilterItem<int>(nameof(ConstantSymbolListGetModel.CountryId));
