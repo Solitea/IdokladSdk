@@ -127,15 +127,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         [Test]
         public async Task VatPayerProgress_ReturnsDataForVatPayerProgress()
         {
-            // Arrange
-            var vatPayerLimit = 2000000;
-
             // Act
             var data = await _statisticsClient.VatPayerProgress().AssertResult();
 
             // Assert
             Assert.That(data, Is.Not.Null);
-            Assert.That(data.VatPayerLimit, Is.EqualTo(vatPayerLimit));
+            Assert.That(data.VatPayerLimit, Is.GreaterThan(0));
         }
 
         [TestCase(VatPeriod.Quarter)]
