@@ -27,6 +27,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         private const int PartnerId = 323823;
         private const int GermanPartnerId = 681606;
         private const int InvoiceId = 913242;
+        private const int InvoiceId2 = 913318;
         private const int ProformaInvoiceId = 913250;
         private int _issuedInvoiceId;
         private IssuedInvoicePostModel _issuedInvoicePostModel;
@@ -274,6 +275,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
 
             // Teardown
             await _issuedInvoiceClient.DeleteAsync(data.Id);
+        }
+
+        [Test]
+        public async Task GetListWithIdsFilterAsync_ReturnsList()
+        {
+            // Act
+            var data = await _issuedInvoiceClient
+                .List()
+                .Filter(f => f.Id.Contains(new List<int>()
+                {
+                    InvoiceId,
+                    InvoiceId2,
+                }))
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Items.Count(), Is.EqualTo(2));
         }
 
         [Test]

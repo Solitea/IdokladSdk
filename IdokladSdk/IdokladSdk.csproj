@@ -73,4 +73,7 @@
     <ItemGroup>
         <ProjectReference Include="..\IdokladSdk.SourceGenerators\IdokladSdk.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Requests\DocumentPayment\Sales\Sort\" />
+    </ItemGroup>
 </Project>

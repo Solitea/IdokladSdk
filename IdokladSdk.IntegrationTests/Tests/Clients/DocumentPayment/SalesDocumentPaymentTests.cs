@@ -106,7 +106,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             var data = await DocumentPaymentClient.Sales
                 .List()
                 .Filter(f => f.PartnerId.IsEqual(partnerId))
-                .Filter(f => f.PartnerName.IsEqual(PartnerName))
+                .Filter(f => f.PartnerName.Contains(PartnerName))
                 .Filter(f => f.PaymentOptionId.IsEqual(PaymentOptionId))
                 .Filter(f => f.DateOfPayment.IsEqual(dateOfPayment))
                 .Filter(f => f.DocumentNumber.IsEqual(documentNumber))
@@ -126,6 +126,66 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             Assert.That(item.DateOfPayment, Is.EqualTo(dateOfPayment));
             Assert.That(item.PaidDocument.DocumentNumber, Is.EqualTo(documentNumber));
             Assert.That(item.PaidDocument.Id, Is.EqualTo(documentId));
+        }
+
+        [Test]
+        public async Task GetListAsync_ApplyDateOfPaymentDescSort_ReturnsSortedSalesDocumentPayments()
+        {
+            // Act
+            var data = await DocumentPaymentClient.Sales
+                .List().Sort(s => s.DateOfPayment.Desc())
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(data.Items, Is.Not.Null);
+            var dates = data.Items.Select(o => o.DateOfPayment).ToList();
+            Assert.That(dates, Is.Ordered.Descending);
+        }
+
+        [Test]
+        public async Task GetListAsync_ApplyDateOfPaymentAscSort_ReturnsSortedSalesDocumentPayments()
+        {
+            // Act
+            var data = await DocumentPaymentClient.Sales
+                .List().Sort(s => s.DateOfPayment.Asc())
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(data.Items, Is.Not.Null);
+            var dates = data.Items.Select(o => o.DateOfPayment).ToList();
+            Assert.That(dates, Is.Ordered.Ascending);
+        }
+
+        [Test]
+        public async Task GetListAsync_ApplyDocumentIdDescSort_ReturnsSortedSalesDocumentPayments()
+        {
+            // Act
+            var data = await DocumentPaymentClient.Sales
+                .List().Sort(s => s.DocumentId.Desc())
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(data.Items, Is.Not.Null);
+            var documentIds = data.Items.Select(s => s.PaidDocument.Id);
+            Assert.That(documentIds, Is.Ordered.Descending);
+        }
+
+        [Test]
+        public async Task GetListAsync_ApplyDocumentIdAscSort_ReturnsSortedSalesDocumentPayments()
+        {
+            // Act
+            var data = await DocumentPaymentClient.Sales
+                .List().Sort(s => s.DocumentId.Asc())
+                .GetAsync()
+                .AssertResult();
+
+            //Assert
+            Assert.That(data.Items, Is.Not.Null);
+            var documentIds = data.Items.Select(s => s.PaidDocument.Id);
+            Assert.That(documentIds, Is.Ordered.Ascending);
         }
 
         [Test]

@@ -5,7 +5,7 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
     /// <summary>
     /// Contain filter item.
     /// </summary>
-    public class ContainIdFilterItem : FilterItemBase
+    public class ContainIdFilterItem : CompareFilterItem<int>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContainIdFilterItem"/> class.

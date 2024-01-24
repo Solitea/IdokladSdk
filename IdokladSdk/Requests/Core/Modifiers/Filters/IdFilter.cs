@@ -9,6 +9,6 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters
     public class IdFilter
     {
         /// <inheritdoc cref="IEntityId.Id"/>
-        public CompareFilterItem<int> Id { get; set; } = new CompareFilterItem<int>(nameof(IEntityId.Id));
+        public ContainIdFilterItem Id { get; set; } = new ContainIdFilterItem(nameof(IEntityId.Id));
     }
 }

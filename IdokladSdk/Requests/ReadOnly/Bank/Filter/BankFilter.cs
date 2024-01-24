@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.ReadOnly.Bank;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReadOnly.Bank.Filter
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.ReadOnly.Bank.Filter
     /// <summary>
     /// Filterable properties of bank.
     /// </summary>
-    public class BankFilter
+    public class BankFilter : IdFilter
     {
         /// <inheritdoc cref="BankListGetModel.CountryId"/>
         public FilterItem<int> CountryId { get; set; } = new FilterItem<int>(nameof(BankListGetModel.CountryId));

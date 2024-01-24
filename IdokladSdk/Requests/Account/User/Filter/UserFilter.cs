@@ -1,9 +1,11 @@
-﻿namespace IdokladSdk.Requests.Account.User.Filter
+﻿using IdokladSdk.Requests.Core.Modifiers.Filters;
+
+namespace IdokladSdk.Requests.Account.User.Filter
 {
     /// <summary>
     /// UserFilter.
     /// </summary>
-    public class UserFilter
+    public class UserFilter : IdFilter
     {
     }
 }

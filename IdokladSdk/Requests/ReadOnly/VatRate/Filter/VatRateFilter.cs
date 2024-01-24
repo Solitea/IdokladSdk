@@ -1,6 +1,7 @@
 ﻿using System;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.ReadOnly.VatRate;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReadOnly.VatRate.Filter
@@ -8,7 +9,7 @@ namespace IdokladSdk.Requests.ReadOnly.VatRate.Filter
     /// <summary>
     /// Filterable properties of VAT rate.
     /// </summary>
-    public class VatRateFilter
+    public class VatRateFilter : IdFilter
     {
         /// <inheritdoc cref="VatRateListGetModel.CountryId"/>
         public FilterItem<int> CountryId { get; set; } = new FilterItem<int>(nameof(VatRateListGetModel.CountryId));

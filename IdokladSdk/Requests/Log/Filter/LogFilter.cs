@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Log;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.Log.Filter
@@ -9,7 +10,7 @@ namespace IdokladSdk.Requests.Log.Filter
     /// <summary>
     /// Filterable properties of <see cref="LogGetModel" />.
     /// </summary>
-    public class LogFilter
+    public class LogFilter : IdFilter
     {
         /// <inheritdoc cref="LogGetModel.ActionType" />
         public FilterItem<LogActionType> ActionType { get; set; } =

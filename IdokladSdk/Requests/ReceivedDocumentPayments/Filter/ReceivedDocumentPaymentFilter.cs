@@ -15,13 +15,13 @@ namespace IdokladSdk.Requests.ReceivedDocumentPayments.Filter
         public CompareFilterItem<DateTime> DateOfPayment { get; set; } = new CompareFilterItem<DateTime>(nameof(ReceivedDocumentPaymentListGetModel.DateOfPayment));
 
         /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.InvoiceId"/>
-        public FilterItem<int> InvoiceId { get; set; } = new CompareFilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.InvoiceId));
+        public FilterItem<int> InvoiceId { get; set; } = new FilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.InvoiceId));
 
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.PartnerId"/>
-        public FilterItem<int> PartnerId { get; set; } = new CompareFilterItem<int>(nameof(ReceivedInvoiceListGetModel.PartnerId));
+        public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(ReceivedInvoiceListGetModel.PartnerId));
 
         /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.PaymentOptionId"/>
-        public FilterItem<int> PaymentOptionId { get; set; } = new CompareFilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.PaymentOptionId));
+        public FilterItem<int> PaymentOptionId { get; set; } = new FilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.PaymentOptionId));
 
         /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.InvoiceDocumentNumber"/>
         public ContainFilterItem<string> InvoiceDocumentNumber { get; set; } = new ContainFilterItem<string>(nameof(ReceivedDocumentPaymentListGetModel.InvoiceDocumentNumber));

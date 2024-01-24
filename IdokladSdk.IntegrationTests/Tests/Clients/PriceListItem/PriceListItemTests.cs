@@ -141,7 +141,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             // Act
             var data = await PriceListItemClient
                 .List()
-                .Filter(f => f.Ids.Contains(new List<int>()
+                .Filter(f => f.Id.Contains(new List<int>()
                 {
                     _priceListItemId1,
                     _priceListItemId2,

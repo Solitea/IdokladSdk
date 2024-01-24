@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.ReadOnly.ExchangeRate;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReadOnly.ExchangeRate.Filter
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.ReadOnly.ExchangeRate.Filter
     /// <summary>
     /// Filterable properties of exchange rate.
     /// </summary>
-    public class ExchangeRateFilter
+    public class ExchangeRateFilter : IdFilter
     {
         /// <inheritdoc cref="ExchangeRateListGetModel.CurrencyId"/>
         public FilterItem<int> CurrencyId { get; set; } = new FilterItem<int>(nameof(ExchangeRateListGetModel.CurrencyId));

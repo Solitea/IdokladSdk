@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.ReadOnly.VatCode;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.ReadOnly.VatCodes.Filter
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.ReadOnly.VatCodes.Filter
     /// <summary>
     /// Filterable properties of VAT code.
     /// </summary>
-    public class VatCodeFilter
+    public class VatCodeFilter : IdFilter
     {
         /// <inheritdoc cref="VatCodeListGetModel.CountryId"/>
         public FilterItem<int> CountryId { get; set; } = new FilterItem<int>(nameof(VatCodeListGetModel.CountryId));
