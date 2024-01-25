@@ -160,7 +160,6 @@
         /// </summary>
         VatRateType = 127,
 
-
         /// <summary>
         /// Update is not allowed if proforma invoice is already accounted.
         /// </summary>
