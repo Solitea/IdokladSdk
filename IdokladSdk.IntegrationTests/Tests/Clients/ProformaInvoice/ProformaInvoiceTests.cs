@@ -176,6 +176,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         }
 
         [Test]
+        public async Task Update_AlreadyAccounted_ReturnsCorrectErrorCodeAsync()
+        {
+            // Act
+            var result = await _proformaInvoiceClient.UpdateAsync(new ProformaInvoicePatchModel
+            {
+                Id = AccountedProformaInvoiceId,
+                DateOfIssue = DateTime.Now
+            });
+
+            // Assert
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.ErrorCode, Is.EqualTo(DokladErrorCode.UpdateProformaAlreadyAccounted));
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
+
+        [Test]
         public async Task GetInvoiceForAccount_NotPaid_ReturnsCorrectErrorCodeAsync()
         {
             // Act
