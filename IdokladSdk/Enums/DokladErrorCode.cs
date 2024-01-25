@@ -158,6 +158,46 @@
         /// <summary>
         /// Vat rate type not fond.
         /// </summary>
-        VatRateType = 127
+        VatRateType = 127,
+
+        /// <summary>
+        /// Update is not allowed if proforma invoice is already accounted.
+        /// </summary>
+        UpdateProformaAlreadyAccounted = 128,
+
+        /// <summary>
+        /// Update is not allowed for already paid invoices.
+        /// </summary>
+        UpdateProformaAlreadyPaid = 129,
+
+        /// <summary>
+        /// Update is not allowed if payment has a tax document for payment issued for it.
+        /// </summary>
+        UpdateProformaHasTaxDocuments = 130,
+
+        /// <summary>
+        /// Delete is not allowed if proforma invoice is already accounted.
+        /// </summary>
+        DeleteProformaAlreadyAccounted = 131,
+
+        /// <summary>
+        /// Delete id not allowed if payment has a tax document for payment issued for it.
+        /// </summary>
+        DeleteProformaHasTaxDocuments = 132,
+
+        /// <summary>
+        /// Post is not allowed if proforma invoice is already accounted.
+        /// </summary>
+        PostProformaAlreadyAccounted = 133,
+
+        /// <summary>
+        /// Put is not allowed if proforma invoice is already accounted.
+        /// </summary>
+        PutProformaAlreadyAccounted = 134,
+
+        /// <summary>
+        /// Put is not allowed if payment has a tax document for payment issued for it.
+        /// </summary>
+        PutProformaHasTaxDocuments = 135,
     }
 }
