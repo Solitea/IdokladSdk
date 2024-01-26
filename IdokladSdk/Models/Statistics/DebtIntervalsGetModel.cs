@@ -8,11 +8,6 @@ namespace IdokladSdk.Models.Statistics
     public class DebtIntervalsGetModel
     {
         /// <summary>
-        /// Gets or sets a value indicating whether a.
-        /// </summary>
-        public bool CurrentYearOnly { get; set; }
-
-        /// <summary>
         /// Gets or sets issued invoice after maturity statistics.
         /// </summary>
         public IEnumerable<DebtIntervalsItemGetModel> Entry { get; set; }
