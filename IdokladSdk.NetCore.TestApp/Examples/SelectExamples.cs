@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using IdokladSdk.NetCore.TestApp.Examples.Models;
-using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.NetCore.TestApp.Examples
 {
@@ -31,18 +30,6 @@ namespace IdokladSdk.NetCore.TestApp.Examples
                 .Sort(c => c.Id.Asc())
                 .PageSize(100)
                 .Page(1)
-                .GetAsync();
-        }
-
-        public async Task List_Filtering_ObsoleteAsync()
-        {
-            // Previous versions of SDK supported usage of multiple conditions in filter, but all expressions parts could be joined by the
-            // same logical operator.
-            var list = await _api.ContactClient
-                .List()
-                .Filter(c => c.CompanyName.Contains("company"))
-                .Filter(c => c.DateLastChange.IsGreaterThan(DateTime.UtcNow.AddMinutes(-10)))
-                .FilterType(FilterType.And)
                 .GetAsync();
         }
 

@@ -82,7 +82,6 @@ namespace IdokladSdk.NetCore.TestApp
             await select.List_GetWithGenericType_ReturnsCustomModelAsync();
             await select.List_GetWithLambda_SpecificTypeAsync();
             await select.List_FilteringSortingPagingAsync();
-            await select.List_Filtering_ObsoleteAsync();
             await select.Detail_DefaultGetMethod_ReturnsDefaultModelAsync(_partner1Id);
             await select.Detail_GetWithGenericType_ReturnsCustomModelAsync(_partner1Id);
             await select.Detail_WithLambda_ReturningAnonymousTypeAsync(_partner1Id);

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using IdokladSdk.Requests.Core.Interfaces;
 
 namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
@@ -13,28 +11,8 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
     public class FilterModifier<TFilter> : IQueryStringModifier
         where TFilter : new()
     {
-        private readonly HashSet<FilterExpression> _simpleFilters = new HashSet<FilterExpression>();
-
+        private FilterExpression _singleFilter = null;
         private ComplexFilterExpression _complexFilter = null;
-
-        private FilterType? _filterType = null;
-
-        /// <summary>
-        /// Add filter.
-        /// </summary>
-        /// <param name="filters">Filters.</param>
-        public void Filter(params Func<TFilter, FilterExpression>[] filters)
-        {
-            CheckExistingComplexFilter();
-
-            var filterableObject = new TFilter();
-
-            foreach (var filter in filters)
-            {
-                var simpleFilter = filter.Invoke(filterableObject);
-                _simpleFilters.Add(simpleFilter);
-            }
-        }
 
         /// <summary>
         /// Add filter.
@@ -53,44 +31,32 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
             }
             else if (filterExpression is FilterExpression simpleFilter)
             {
-                AddSimpleFilter(simpleFilter);
+                AddSingleFilter(simpleFilter);
             }
-        }
-
-        /// <summary>
-        /// Set filter type.
-        /// </summary>
-        /// <param name="filterType">Filter type.</param>
-        public void FilterType(FilterType filterType)
-        {
-            if (_complexFilter != null)
-            {
-                throw new InvalidOperationException("Cannot specify filter type when complex filter expression is used.");
-            }
-
-            _filterType = filterType;
         }
 
         /// <inheritdoc/>
         public Dictionary<string, string> GetQueryParameters()
         {
+            string filter = null;
+
             if (_complexFilter != null)
             {
-                return GetQueryParametersComplexFilter();
+                filter = _complexFilter.ToString();
             }
-            else if (_simpleFilters.Any())
+            else if (_singleFilter != null)
             {
-                return GetQueryParametersSimpleFilters();
+                filter = _singleFilter.ToString();
             }
 
-            return null;
+            return GetFilterAsQueryParameter(filter);
         }
 
         private void AddComplexFilter(ComplexFilterExpression complexFilter)
         {
-            if (_simpleFilters.Any())
+            if (_singleFilter != null)
             {
-                throw new InvalidOperationException("Individual item filters have already been used, cannot add complex filter expression.");
+                throw new InvalidOperationException("Single item filter has already been used, cannot add complex filter expression.");
             }
 
             if (_complexFilter != null)
@@ -98,18 +64,19 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
                 throw new InvalidOperationException("Only single complex expression is allowed.");
             }
 
-            if (_filterType.HasValue)
-            {
-                throw new InvalidOperationException($"Complex filter expression cannot be used together with {nameof(FilterType)} method.");
-            }
-
             _complexFilter = complexFilter;
         }
 
-        private void AddSimpleFilter(FilterExpression simpleFilter)
+        private void AddSingleFilter(FilterExpression simpleFilter)
         {
             CheckExistingComplexFilter();
-            _simpleFilters.Add(simpleFilter);
+
+            if (_singleFilter != null)
+            {
+                throw new InvalidOperationException("Multiple single filters are not allowed, they need to be chained together.");
+            }
+
+            _singleFilter = simpleFilter;
         }
 
         private void CheckExistingComplexFilter()
@@ -120,26 +87,16 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
             }
         }
 
-        private Dictionary<string, string> GetQueryParametersComplexFilter()
+        private Dictionary<string, string> GetFilterAsQueryParameter(string filter)
         {
-            var filter = _complexFilter.ToString();
+            if (string.IsNullOrWhiteSpace(filter))
+            {
+                return null;
+            }
 
             return new Dictionary<string, string>()
             {
                 { "filter", filter },
-            };
-        }
-
-        private Dictionary<string, string> GetQueryParametersSimpleFilters()
-        {
-            var filter = string.Join("|", _simpleFilters);
-            var filterType = _filterType ?? Common.FilterType.And;
-            var filterTypeStr = filterType.ToString().ToLower(CultureInfo.InvariantCulture);
-
-            return new Dictionary<string, string>()
-            {
-                { "filter", filter },
-                { "filterType", filterTypeStr }
             };
         }
     }

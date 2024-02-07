@@ -181,8 +181,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Contacts
             // Act
             var data = await ContactClient
                 .List()
-                .Filter(f => f.CompanyName.Contains(_updatedContactName))
-                .Filter(f => f.DateLastChange.IsGreaterThanOrEqual(_dateLastChange))
+                .Filter(f => f.CompanyName.Contains(_updatedContactName) && f.DateLastChange.IsGreaterThanOrEqual(_dateLastChange))
                 .GetAsync()
                 .AssertResult();
 
