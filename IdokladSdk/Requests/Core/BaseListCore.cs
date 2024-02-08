@@ -72,6 +72,7 @@ namespace IdokladSdk.Requests.Core
 
         /// <summary>
         /// Filter for a list.
+        /// If this method is called multiple times, expressions will be joined with operator AND.
         /// </summary>
         /// <param name="filter">Filter expressions.</param>
         /// <returns>List of models.</returns>

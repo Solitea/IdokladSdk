@@ -150,36 +150,66 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
         }
 
         [Test]
-        public void FilterModifier_AddSingleFilterAfterComplexFilter_ThrowsException()
+        public void FilterModifier_AddSingleFilterAfterComplexFilter_ReturnsCorrectQueryParam()
         {
             // Arrange
             var modifier = new FilterModifier<TestFilter>();
-            modifier.Filter(f => f.Name.Contains("a.s.") || f.Name.Contains("s.r.o."));
+            Func<TestFilter, ComplexFilterExpression> filterExpression1 = (f) => (ComplexFilterExpression)(f.Name.Contains("a.s.") || f.Name.Contains("s.r.o."));
+            Func<TestFilter, FilterExpression> filterExpression2 = (f) => f.Id.IsEqual(1);
+            modifier.Filter(filterExpression1);
+            modifier.Filter(filterExpression2);
 
-            // Act + Assert
-            Assert.Throws<InvalidOperationException>(() => modifier.Filter(f => f.Id.IsEqual(1)));
+            // Act
+            var queryParams = modifier.GetQueryParameters();
+
+            // Assert
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
+            var filter1 = GetFilterExpression(filterExpression1);
+            var filter2 = GetFilterExpression(filterExpression2);
+            Assert.That(filter, Is.EqualTo($"({filter1}~and~{filter2})"));
         }
 
         [Test]
-        public void FilterModifier_AddComplexFilterAfterSingleFilter_ThrowsException()
+        public void FilterModifier_AddComplexFilterAfterSingleFilter_ReturnsCorrectQueryParam()
         {
             // Arrange
             var modifier = new FilterModifier<TestFilter>();
-            modifier.Filter(f => f.Id.IsEqual(1));
+            Func<TestFilter, FilterExpression> filterExpression1 = (f) => f.Id.IsEqual(1);
+            Func<TestFilter, ComplexFilterExpression> filterExpression2 = (f) => (ComplexFilterExpression)(f.Name.Contains("a.s.") || f.Name.Contains("s.r.o."));
+            modifier.Filter(filterExpression1);
+            modifier.Filter(filterExpression2);
 
-            // Act + Assert
-            Assert.Throws<InvalidOperationException>(() => modifier.Filter(f => f.Name.Contains("a.s.") || f.Name.Contains("s.r.o.")));
+            // Act
+            var queryParams = modifier.GetQueryParameters();
+
+            // Assert
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
+            var filter1 = GetFilterExpression(filterExpression1);
+            var filter2 = GetFilterExpression(filterExpression2);
+            Assert.That(filter, Is.EqualTo($"({filter1}~and~{filter2})"));
         }
 
         [Test]
-        public void FilterModifier_AddComplexFilterAfterComplexFilter_ThrowsException()
+        public void FilterModifier_AddComplexFilterAfterComplexFilter_ReturnsCorrectQueryParam()
         {
             // Arrange
             var modifier = new FilterModifier<TestFilter>();
-            modifier.Filter(f => f.Name.Contains("a.s.") || f.Name.Contains("s.r.o."));
+            Func<TestFilter, ComplexFilterExpression> filterExpression1 = (f) => (ComplexFilterExpression)(f.Name.Contains("a.s.") || f.Name.Contains("s.r.o."));
+            Func<TestFilter, ComplexFilterExpression> filterExpression2 = (f) => (ComplexFilterExpression)(f.Name.Contains("123") || f.Name.Contains("456"));
+            modifier.Filter(filterExpression1);
+            modifier.Filter(filterExpression2);
 
-            // Act + Assert
-            Assert.Throws<InvalidOperationException>(() => modifier.Filter(f => f.Name.Contains("aaa") || f.Name.Contains("bbb")));
+            // Act
+            var queryParams = modifier.GetQueryParameters();
+
+            // Assert
+            Assert.That(queryParams.Count, Is.EqualTo(1));
+            Assert.That(queryParams.TryGetValue("filter", out var filter), Is.True);
+            var filter1 = GetFilterExpression(filterExpression1);
+            var filter2 = GetFilterExpression(filterExpression2);
+            Assert.That(filter, Is.EqualTo($"({filter1}~and~{filter2})"));
         }
 
         private string GetFilterExpression(Func<TestFilter, FilterExpressionBase> filter)

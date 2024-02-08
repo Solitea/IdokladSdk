@@ -104,12 +104,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             // Act
             var data = await DocumentPaymentClient.Sales
                 .List()
-                .Filter(f => f.PartnerId.IsEqual(partnerId)
-                            && f.PartnerName.Contains(PartnerName)
-                            && f.PaymentOptionId.IsEqual(PaymentOptionId)
-                            && f.DateOfPayment.IsEqual(dateOfPayment)
-                            && f.DocumentNumber.IsEqual(documentNumber)
-                            && f.DocumentId.IsEqual(documentId))
+                .Filter(f => f.PartnerId.IsEqual(partnerId))
+                .Filter(f => f.PartnerName.Contains(PartnerName))
+                .Filter(f => f.PaymentOptionId.IsEqual(PaymentOptionId))
+                .Filter(f => f.DateOfPayment.IsEqual(dateOfPayment))
+                .Filter(f => f.DocumentNumber.IsEqual(documentNumber))
+                .Filter(f => f.DocumentId.IsEqual(documentId))
                 .GetAsync()
                 .AssertResult();
 

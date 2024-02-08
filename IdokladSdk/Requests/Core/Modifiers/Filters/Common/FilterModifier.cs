@@ -54,36 +54,55 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
 
         private void AddComplexFilter(ComplexFilterExpression complexFilter)
         {
-            if (_singleFilter != null)
-            {
-                throw new InvalidOperationException("Single item filter has already been used, cannot add complex filter expression.");
-            }
-
             if (_complexFilter != null)
             {
-                throw new InvalidOperationException("Only single complex expression is allowed.");
+                _complexFilter = new ComplexFilterExpression
+                {
+                    FirstExpression = _complexFilter,
+                    SecondExpression = complexFilter,
+                    LogicalOperator = FilterType.And,
+                };
             }
-
-            _complexFilter = complexFilter;
+            else if (_singleFilter != null)
+            {
+                _complexFilter = new ComplexFilterExpression
+                {
+                    FirstExpression = _singleFilter,
+                    SecondExpression = complexFilter,
+                    LogicalOperator = FilterType.And,
+                };
+                _singleFilter = null;
+            }
+            else
+            {
+                _complexFilter = complexFilter;
+            }
         }
 
-        private void AddSingleFilter(FilterExpression simpleFilter)
+        private void AddSingleFilter(FilterExpression singleFilter)
         {
-            CheckExistingComplexFilter();
-
             if (_singleFilter != null)
             {
-                throw new InvalidOperationException("Multiple single filters are not allowed, they need to be chained together.");
+                _complexFilter = new ComplexFilterExpression
+                {
+                    FirstExpression = _singleFilter,
+                    SecondExpression = singleFilter,
+                    LogicalOperator = FilterType.And,
+                };
+                _singleFilter = null;
             }
-
-            _singleFilter = simpleFilter;
-        }
-
-        private void CheckExistingComplexFilter()
-        {
-            if (_complexFilter != null)
+            else if (_complexFilter != null)
             {
-                throw new InvalidOperationException("Complex filter expression has already been used, cannot add another expression filters.");
+                _complexFilter = new ComplexFilterExpression
+                {
+                    FirstExpression = _complexFilter,
+                    SecondExpression = singleFilter,
+                    LogicalOperator = FilterType.And,
+                };
+            }
+            else
+            {
+                _singleFilter = singleFilter;
             }
         }
 
