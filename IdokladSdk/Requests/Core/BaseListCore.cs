@@ -23,7 +23,8 @@ namespace IdokladSdk.Requests.Core
     /// <typeparam name="TFilter">Filter type.</typeparam>
     /// <typeparam name="TSort">Sort type.</typeparam>
     public abstract class BaseListCore<TList, TClient, TGetModel, TFilter, TSort> :
-        IFilterable<TList, TFilter>, ISortable<TList, TSort>, IPageable<TList>
+        IFilterable<TList, TFilter>,
+        ISortable<TList, TSort>, IPageable<TList>
         where TList : BaseListCore<TList, TClient, TGetModel, TFilter, TSort>
         where TClient : BaseClient
         where TFilter : new()
@@ -71,34 +72,13 @@ namespace IdokladSdk.Requests.Core
 
         /// <summary>
         /// Filter for a list.
-        /// </summary>
-        /// <param name="filter">Filter expressions.</param>
-        /// <returns>List of models.</returns>
-        public TList Filter(params Func<TFilter, FilterExpression>[] filter)
-        {
-            _filter.Filter(filter);
-            return This;
-        }
-
-        /// <summary>
-        /// Filter for a list.
+        /// If this method is called multiple times, expressions will be joined with operator AND.
         /// </summary>
         /// <param name="filter">Filter expressions.</param>
         /// <returns>List of models.</returns>
         public TList Filter(Func<TFilter, FilterExpressionBase> filter)
         {
             _filter.Filter(filter);
-            return This;
-        }
-
-        /// <summary>
-        /// Filter type for a list.
-        /// </summary>
-        /// <param name="filterType">Filter type.</param>
-        /// <returns>List of models.</returns>
-        public TList FilterType(FilterType filterType)
-        {
-            _filter.FilterType(filterType);
             return This;
         }
 

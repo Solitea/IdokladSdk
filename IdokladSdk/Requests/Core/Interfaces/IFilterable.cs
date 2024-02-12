@@ -13,15 +13,8 @@ namespace IdokladSdk.Requests.Core.Interfaces
         /// <summary>
         /// Filters a list.
         /// </summary>
-        /// <param name="filters">Filter expressions.</param>
+        /// <param name="filter">Filter expressions.</param>
         /// <returns>List of models.</returns>
-        TList Filter(params Func<TFilter, FilterExpression>[] filters);
-
-        /// <summary>
-        /// Filters a list.
-        /// </summary>
-        /// <param name="filterType">Filter type.</param>
-        /// <returns>List of models.</returns>
-        TList FilterType(FilterType filterType);
+        TList Filter(Func<TFilter, FilterExpressionBase> filter);
     }
 }

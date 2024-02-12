@@ -77,9 +77,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             var testDate = new DateTime(2018, 1, 1);
             var data = await _client
                 .List()
-                .Filter(x => x.CountryId.IsEqual(countryId))
-                .Filter(x => x.DateValidityFrom.IsLowerThanOrEqual(testDate))
-                .Filter(x => x.DateValidityTo.IsGreaterThanOrEqual(testDate))
+                .Filter(x => x.CountryId.IsEqual(countryId)
+                            && x.DateValidityFrom.IsLowerThanOrEqual(testDate)
+                            && x.DateValidityTo.IsGreaterThanOrEqual(testDate))
                 .Sort(x => x.Id.Desc())
                 .GetAsync<VatCodeTestList>()
                 .AssertResult();

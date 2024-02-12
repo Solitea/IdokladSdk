@@ -3,7 +3,7 @@
     /// <summary>
     /// Filter type.
     /// </summary>
-    public enum FilterType
+    internal enum FilterType
     {
         /// <summary>
         /// AND

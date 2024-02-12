@@ -82,7 +82,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
             // Act
             var payments = await _receivedDocumentPaymentClient
                 .List()
-                .Filter(f => f.InvoiceId.IsEqual(invoiceId), f => f.PaymentOptionId.IsEqual(paymentOptionId))
+                .Filter(f => f.InvoiceId.IsEqual(invoiceId) && f.PaymentOptionId.IsEqual(paymentOptionId))
                 .GetAsync().AssertResult();
 
             // Assert

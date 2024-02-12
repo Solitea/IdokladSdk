@@ -81,8 +81,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             var testDate = new DateTime(2001, 1, 1);
             var data = await _client
                 .List()
-                .Filter(x => x.CountryId.IsEqual(countryId))
-                .Filter(x => x.DateLastChange.IsGreaterThan(testDate))
+                .Filter(x => x.CountryId.IsEqual(countryId) && x.DateLastChange.IsGreaterThan(testDate))
                 .Sort(x => x.Id.Desc())
                 .GetAsync<ConstantSymbolTestList>()
                 .AssertResult();

@@ -84,10 +84,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             var rateType = VatRateType.Basic;
             var data = await _client
                 .List()
-                .Filter(x => x.CountryId.IsEqual(countryId))
-                .Filter(x => x.DateValidityFrom.IsLowerThanOrEqual(testDate))
-                .Filter(x => x.DateValidityTo.IsGreaterThanOrEqual(testDate))
-                .Filter(x => x.RateType.IsEqual(rateType))
+                .Filter(x => x.CountryId.IsEqual(countryId)
+                            && x.DateValidityFrom.IsLowerThanOrEqual(testDate)
+                            && x.DateValidityTo.IsGreaterThanOrEqual(testDate)
+                            && x.RateType.IsEqual(rateType))
                 .Sort(x => x.Id.Desc())
                 .GetAsync<VatRateTestList>()
                 .AssertResult();

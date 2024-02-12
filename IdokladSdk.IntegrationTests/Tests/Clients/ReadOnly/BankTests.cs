@@ -82,9 +82,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             // Act
             var data = await _client
                 .List()
-                .Filter(x => x.CountryId.IsEqual(countryId))
-                .Filter(x => x.DateLastChange.IsGreaterThan(testDate))
-                .Filter(x => x.IsOutOfDate.IsNotEqual(true))
+                .Filter(x => x.CountryId.IsEqual(countryId)
+                            && x.DateLastChange.IsGreaterThan(testDate)
+                            && x.IsOutOfDate.IsNotEqual(true))
                 .Sort(x => x.Id.Desc())
                 .GetAsync<BankTestList>()
                 .AssertResult();

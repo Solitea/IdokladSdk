@@ -5,7 +5,6 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
-using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
@@ -111,7 +110,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
                 .Filter(f => f.DateOfPayment.IsEqual(dateOfPayment))
                 .Filter(f => f.DocumentNumber.IsEqual(documentNumber))
                 .Filter(f => f.DocumentId.IsEqual(documentId))
-                .FilterType(FilterType.And)
                 .GetAsync()
                 .AssertResult();
 
