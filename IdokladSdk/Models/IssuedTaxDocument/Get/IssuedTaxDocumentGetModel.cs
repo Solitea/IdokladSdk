@@ -22,7 +22,6 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Get
         /// </summary>
         public CurrencyGetModel Currency { get; set; }
 
-
         /// <summary>
         /// Gets or sets Partner.
         /// </summary>
