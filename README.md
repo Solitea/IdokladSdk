@@ -124,7 +124,6 @@ var list = api.ContactClient
     .List()
     .Filter(c => c.CompanyName.Contains("company"))
     .Filter(c => c.DateLastChange.IsGreaterThan(DateTime.UtcNow.AddMinutes(-10)))
-    .FilterType(FilterType.And)
     .Sort(c => c.Id.Asc())
     .PageSize(100)
     .Page(1)
