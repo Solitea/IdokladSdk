@@ -42,8 +42,7 @@ var api = new DokladApiBuilder("your application name", "your application versio
 ### 2. Use it!
 
 ```csharp
-// All methods are exposed as synchronous and asynchronous.
-// Use whichever is more convenient to you.
+// Getting Issued Invoice Detail.
 var issuedInvoiceResult = await api.IssuedInvoiceClient.Detail(123456).GetAsync();
 
 // All of our methods return ApiResult or ApiBatchResult containing information about response and the data you requested.
@@ -147,6 +146,17 @@ var detail = api.ContactClient
     });
 ```
 
-### 5. Additional examples
+### 5. Logging handler
+You can create your own Logging Handling logic and add it to the HttpClient via configuring the Service Provider.
+See the example of Logging Handler in **IdokladSdk.NetCore.TestApp** in **LoggingHandler.cs** class.
+Add your custom Logging Handler to the Service Collection.
+```csharp
+_serviceProvider = new ServiceCollection()
+    .AddHttpClient("IdokladApi")
+    .AddHttpMessageHandler(() => new LoggingHandler())
+    .Services.BuildServiceProvider();
+```
+
+### 6. Additional examples
 
 More examples can be found in test application **IdokladSdk.NetCore.TestApp**.

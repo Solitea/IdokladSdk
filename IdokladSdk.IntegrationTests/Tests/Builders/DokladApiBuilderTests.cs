@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using NUnit.Framework;
