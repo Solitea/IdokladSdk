@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.DocumentAddress;
+using IdokladSdk.Models.IssuedTaxDocument.Get;
 
 namespace IdokladSdk.Models.IssuedTaxDocument.List
 {
@@ -76,6 +78,11 @@ namespace IdokladSdk.Models.IssuedTaxDocument.List
         public MailSentType IsSentToPartner { get; set; }
 
         /// <summary>
+        /// Gets or sets Issued tax document Items.
+        /// </summary>
+        public List<IssuedTaxDocumentItemGetModel> Items { get; set; }
+
+        /// <summary>
         /// Gets or sets Metadata.
         /// </summary>
         public Metadata Metadata { get; set; }
@@ -101,14 +108,14 @@ namespace IdokladSdk.Models.IssuedTaxDocument.List
         public int PaymentId { get; set; }
 
         /// <summary>
-        /// Gets or sets ProformaInvoiceId.
-        /// </summary>
-        public int ProformaInvoiceId { get; set; }
-
-        /// <summary>
         /// Gets or sets Prices.
         /// </summary>
         public TaxDocumentItemPrices Prices { get; set; }
+
+        /// <summary>
+        /// Gets or sets ProformaInvoiceId.
+        /// </summary>
+        public int ProformaInvoiceId { get; set; }
 
         /// <summary>
         /// Gets or sets ReportLanguage.
