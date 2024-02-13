@@ -208,10 +208,10 @@ namespace IdokladSdk.IntegrationTests.Core.Tags
 
         protected IGetListRequest<TGetListModel> List() => (IGetListRequest<TGetListModel>)((IEntityList<TList>)Client).List();
 
-        protected ContainIdFilterItem TagIdsFilterItem(TFilterModel filterModel)
+        protected ContainTagIdFilterItem TagIdsFilterItem(TFilterModel filterModel)
         {
             var tagIdsProperty = typeof(TFilterModel).GetProperty(TagIdsFilterPropertyName);
-            return (ContainIdFilterItem)tagIdsProperty.GetValue(filterModel);
+            return (ContainTagIdFilterItem)tagIdsProperty.GetValue(filterModel);
         }
 
         protected Expression<Func<TExpandModel, ExpandableEntity>> TagIncludeExpression()

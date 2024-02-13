@@ -15,7 +15,7 @@ namespace IdokladSdk.Requests.ReceivedDocumentPayments.Filter
         public CompareFilterItem<DateTime> DateOfPayment { get; set; } = new CompareFilterItem<DateTime>(nameof(ReceivedDocumentPaymentListGetModel.DateOfPayment));
 
         /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.InvoiceId"/>
-        public FilterItem<int> InvoiceId { get; set; } = new FilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.InvoiceId));
+        public ContainArrayFilterItem InvoiceId { get; set; } = new ContainArrayFilterItem(nameof(ReceivedDocumentPaymentListGetModel.InvoiceId));
 
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(ReceivedInvoiceListGetModel.PartnerId));
