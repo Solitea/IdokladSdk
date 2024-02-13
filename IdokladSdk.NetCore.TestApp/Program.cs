@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IdokladSdk.Builders;
 using IdokladSdk.Enums;
 using IdokladSdk.NetCore.TestApp.Examples;
+using IdokladSdk.NetCore.TestApp.Examples.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -49,7 +50,11 @@ namespace IdokladSdk.NetCore.TestApp
 
         private static void InitializeServiceProvider()
         {
-            _serviceProvider = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+            _serviceProvider = new ServiceCollection()
+                .AddScoped<HttpLogger>()
+                .AddHttpClient("IdokladApi")
+                .AddLogger<HttpLogger>(wrapHandlersPipeline: true)
+                .Services.BuildServiceProvider();
         }
 
         private static void SetIdokladApi()
