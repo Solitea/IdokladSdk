@@ -82,9 +82,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReadOnly
             var exchangeListId = 2;
             var data = await _client
                 .List()
-                .Filter(x => x.CurrencyId.IsEqual(currencyId))
-                .Filter(x => x.Date.IsGreaterThan(testDate))
-                .Filter(x => x.ExchangeListId.IsNotEqual(exchangeListId))
+                .Filter(x => x.CurrencyId.IsEqual(currencyId)
+                            && x.Date.IsGreaterThan(testDate)
+                            && x.ExchangeListId.IsNotEqual(exchangeListId))
                 .Sort(x => x.Id.Desc())
                 .GetAsync<ExchangeRateTestList>()
                 .AssertResult();

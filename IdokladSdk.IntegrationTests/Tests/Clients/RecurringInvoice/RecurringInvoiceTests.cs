@@ -135,8 +135,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RecurringInvoice
         {
             // Act
             var data = await RecurringInvoiceClient.List()
-                .Filter(i => i.CompanyName.IsEqual(PartnerName))
-                .Filter(i => i.Id.IsEqual(_recurringInvoiceId))
+                .Filter(i => i.CompanyName.IsEqual(PartnerName)
+                            && i.Id.IsEqual(_recurringInvoiceId))
                 .GetAsync()
                 .AssertResult();
 

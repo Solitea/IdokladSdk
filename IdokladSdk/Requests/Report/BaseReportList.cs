@@ -51,20 +51,9 @@ namespace IdokladSdk.Requests.Report
         /// </summary>
         /// <param name="filter">Filter expressions.</param>
         /// <returns>List of models.</returns>
-        public TList Filter(params Func<TFilter, FilterExpression>[] filter)
+        public TList Filter(Func<TFilter, FilterExpressionBase> filter)
         {
             _filter.Filter(filter);
-            return This;
-        }
-
-        /// <summary>
-        /// Filter type for a list.
-        /// </summary>
-        /// <param name="filterType">Filter type.</param>
-        /// <returns>List of models.</returns>
-        public TList FilterType(FilterType filterType)
-        {
-            _filter.FilterType(filterType);
             return This;
         }
 

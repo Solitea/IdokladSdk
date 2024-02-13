@@ -162,8 +162,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentTemplate
         {
             // Act
             var data = await IssuedDocumentTemplateClient.List()
-                .Filter(i => i.CompanyName.IsEqual(PartnerName))
-                .Filter(i => i.Id.IsEqual(_createdId))
+                .Filter(i => i.CompanyName.IsEqual(PartnerName) && i.Id.IsEqual(_createdId))
                 .GetAsync()
                 .AssertResult();
 
