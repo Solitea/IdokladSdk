@@ -62,6 +62,6 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Filter
         /// <summary>
         /// Gets or sets numeric tag ids.
         /// </summary>
-        public ContainIdFilterItem TagIds { get; set; } = new ContainIdFilterItem("TagIds");
+        public ContainTagIdFilterItem TagIds { get; set; } = new ContainTagIdFilterItem("TagIds");
     }
 }
