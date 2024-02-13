@@ -23,11 +23,6 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Get
         public CurrencyGetModel Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets Issued tax document Items.
-        /// </summary>
-        public List<IssuedTaxDocumentItemGetModel> Items { get; set; }
-
-        /// <summary>
         /// Gets or sets Partner.
         /// </summary>
         public ContactGetModel Partner { get; set; }
