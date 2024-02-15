@@ -30,7 +30,7 @@ namespace IdokladSdk
         /// <summary>
         /// DateTime format.
         /// </summary>
-        public const string DateFormat = "yyyy-MM-dd HH:mm:ss";
+        public const string DateFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
         /// <summary>
         /// Maximum length of document number.
