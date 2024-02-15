@@ -68,11 +68,14 @@ namespace IdokladSdk.Clients
         /// <summary>
         /// Statistics for top partners.
         /// </summary>
+        /// <param name="count">Count of top partners to be returned.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="List{TopPartnerGetModel}"/>.</returns>
-        public Task<ApiResult<List<TopPartnerGetModel>>> TopPartnersAsync(CancellationToken cancellationToken = default)
+        public Task<ApiResult<List<TopPartnerGetModel>>> TopPartnersAsync(int? count = null, CancellationToken cancellationToken = default)
         {
-            return GetAsync<List<TopPartnerGetModel>>($"{ResourceUrl}/TopPartners", null, cancellationToken);
+            var queryParams = new Dictionary<string, string> { { nameof(count), count?.ToString() } };
+
+            return GetAsync<List<TopPartnerGetModel>>($"{ResourceUrl}/TopPartners", queryParams, cancellationToken);
         }
 
         /// <summary>
