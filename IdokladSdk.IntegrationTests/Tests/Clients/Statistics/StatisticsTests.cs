@@ -67,11 +67,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
         [Test]
         public async Task TopPartnersAsync_ReturnsTopPartners()
         {
+            // Arrange
+            var countOfTopPartners = 4;
+
             // Act
-            var data = await _statisticsClient.TopPartnersAsync().AssertResult();
+            var data = await _statisticsClient.TopPartnersAsync(countOfTopPartners).AssertResult();
 
             // Assert
-            Assert.That(data.Count, Is.GreaterThan(0));
+            Assert.That(data.Count, Is.EqualTo(countOfTopPartners));
             Assert.That(data.First().TotalWithVatHc, Is.GreaterThan(0));
         }
 
