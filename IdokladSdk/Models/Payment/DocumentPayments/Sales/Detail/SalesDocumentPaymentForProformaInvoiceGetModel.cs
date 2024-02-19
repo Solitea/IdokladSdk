@@ -1,5 +1,6 @@
 ﻿using IdokladSdk.Models.BankStatement;
 using IdokladSdk.Models.CashVoucher;
+using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.IssuedTaxDocument.Get;
 using IdokladSdk.Models.ProformaInvoice;
 using IdokladSdk.Models.ReadOnly.Currency;
@@ -11,6 +12,16 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
     /// </summary>
     public class SalesDocumentPaymentForProformaInvoiceGetModel : SalesPaymentBaseGetModel
     {
+        /// <summary>
+        /// Gets or sets accounted invoice.
+        /// </summary>
+        public IssuedInvoiceGetModel AccountedByInvoice { get; set; }
+
+        /// <summary>
+        /// Gets or sets id of accounting invoice.
+        /// </summary>
+        public int? AccountedByInvoiceId { get; set; }
+
         /// <summary>
         /// Gets or sets bank statement.
         /// </summary>

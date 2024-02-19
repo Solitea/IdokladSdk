@@ -10,6 +10,11 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.List
     public class SalesDocumentPaymentListGetModel : IEntityId
     {
         /// <summary>
+        /// Gets or sets id of accounting invoice (available for type ProformaInvoice).
+        /// </summary>
+        public int? AccountedByInvoiceId { get; set; }
+
+        /// <summary>
         /// Gets or sets currency id.
         /// </summary>
         public int CurrencyId { get; set; }
@@ -28,7 +33,7 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.List
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether payment is accounted.
+        /// Gets or sets a value indicating whether payment is accounted (available for type ProformaInvoice).
         /// </summary>
         public bool IsAccounted { get; set; }
 
@@ -53,13 +58,13 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.List
         public PaymentDocument PaymentDocument { get; set; }
 
         /// <summary>
-        /// Gets or sets prices.
-        /// </summary>
-        public PaymentPrices Prices { get; set; }
-
-        /// <summary>
         /// Gets or sets payment option id.
         /// </summary>
         public int PaymentOptionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets prices.
+        /// </summary>
+        public PaymentPrices Prices { get; set; }
     }
 }
