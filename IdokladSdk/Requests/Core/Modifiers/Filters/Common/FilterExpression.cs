@@ -28,7 +28,7 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
         /// <inheritdoc/>
         public override string ToString()
         {
-            return _name + "~" + _operator.ToString().ToLowerInvariant().Replace("n", "!") + "~" + GetValue();
+            return "(" + _name + "~" + _operator.ToString().ToLowerInvariant().Replace("n", "!") + "~" + GetValue() + ")";
         }
 
         private string GetValue()
