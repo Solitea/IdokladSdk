@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Requests.Core.Modifiers.Expand.Common;
+﻿using IdokladSdk.Models.IssuedInvoice;
+using IdokladSdk.Requests.Core.Modifiers.Expand.Common;
 
 namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
 {
@@ -7,6 +8,11 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
     /// </summary>
     public class SalesDocumentPaymentForProformaInvoiceExpand : ExpandableEntity
     {
+        /// <summary>
+        /// Gets or sets accounting invoice.
+        /// </summary>
+        public IssuedInvoiceGetModel AccountedByInvoice { get; set; }
+
         /// <summary>
         /// Gets or sets bank statement.
         /// </summary>
