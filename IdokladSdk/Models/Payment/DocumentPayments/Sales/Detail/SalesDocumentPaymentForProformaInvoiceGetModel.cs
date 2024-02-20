@@ -13,7 +13,7 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
     public class SalesDocumentPaymentForProformaInvoiceGetModel : SalesPaymentBaseGetModel
     {
         /// <summary>
-        /// Gets or sets accounted invoice.
+        /// Gets or sets accounting invoice.
         /// </summary>
         public IssuedInvoiceGetModel AccountedByInvoice { get; set; }
 
