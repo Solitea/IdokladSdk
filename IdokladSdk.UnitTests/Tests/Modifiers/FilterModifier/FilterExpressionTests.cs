@@ -15,15 +15,16 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
             new object[] { "PaymentStatus", FilterOperator.Gte, 1, "(PaymentStatus~gte~1)" },
             new object[] { "IsPaid", FilterOperator.Eq, true, "(IsPaid~eq~true)" },
             new object[] { "Exported", FilterOperator.Neq, false, "(Exported~!eq~false)" },
-            new object[] { "Name", FilterOperator.Ct, "x", "(Name~ct~x)" },
-            new object[] { "Name", FilterOperator.Nct, "x", "(Name~!ct~x)" }
+            new object[] { "Name", FilterOperator.Ct, "x", "(Name~ct:base64~eA==)", FilterValueCoding.Base64 },
+            new object[] { "Name", FilterOperator.Nct, "x", "(Name~!ct:base64~eA==)", FilterValueCoding.Base64 },
+            new object[] { "Name", FilterOperator.Eq, "Sey, #, (( )~and~or;'", "(Name~eq:base64~U2V5LCAjLCAoKCApfmFuZH5vcjsn)", FilterValueCoding.Base64 }
         };
 
         [TestCaseSource(nameof(TestData))]
-        public void FilterExpression_ReturnsCorrectString(string name, FilterOperator @operator, object value, string expectedResult)
+        public void FilterExpression_ReturnsCorrectString(string name, FilterOperator @operator, object value, string expectedResult, FilterValueCoding valueCoding = FilterValueCoding.None)
         {
             // Arrange
-            var expression = new FilterExpression(name, @operator, value);
+            var expression = new FilterExpression(name, @operator, value, valueCoding);
 
             // Act
             var expressionString = expression.ToString();

@@ -22,7 +22,7 @@
         /// <returns>Filter expression.</returns>
         public FilterExpression Contains(T value)
         {
-            return new FilterExpression(Name, FilterOperator.Ct, value);
+            return new FilterExpression(Name, FilterOperator.Ct, value, GetCoding(value));
         }
 
         /// <summary>
@@ -32,7 +32,7 @@
         /// <returns>Filter expression.</returns>
         public FilterExpression NotContains(T value)
         {
-            return new FilterExpression(Name, FilterOperator.Nct, value);
+            return new FilterExpression(Name, FilterOperator.Nct, value, GetCoding(value));
         }
     }
 }

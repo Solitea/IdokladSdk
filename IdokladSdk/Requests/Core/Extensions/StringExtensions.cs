@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Text;
 
 namespace IdokladSdk.Requests.Core.Extensions
 {
@@ -18,6 +20,22 @@ namespace IdokladSdk.Requests.Core.Extensions
         public static bool IsNotNullOrEmpty(this string value)
         {
             return !string.IsNullOrEmpty(value);
+        }
+
+        /// <summary>
+        /// Covert to base64.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The value in base64 format.</returns>
+        public static string ToBase64(this string value)
+        {
+            if (value.IsNotNullOrEmpty())
+            {
+                var valueBytes = Encoding.UTF8.GetBytes(value);
+                return Convert.ToBase64String(valueBytes);
+            }
+
+            return value;
         }
     }
 }

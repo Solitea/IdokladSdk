@@ -1,4 +1,6 @@
-﻿namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
+﻿using IdokladSdk.Requests.Core.Extensions;
+
+namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
 {
     /// <summary>
     /// Filter item.
@@ -22,7 +24,7 @@
         /// <returns>Filter expression.</returns>
         public FilterExpression IsEqual(T value)
         {
-            return new FilterExpression(Name, FilterOperator.Eq, value);
+            return new FilterExpression(Name, FilterOperator.Eq, value, GetCoding(value));
         }
 
         /// <summary>
@@ -32,7 +34,22 @@
         /// <returns>Filter expression.</returns>
         public FilterExpression IsNotEqual(T value)
         {
-            return new FilterExpression(Name, FilterOperator.Neq, value);
+            return new FilterExpression(Name, FilterOperator.Neq, value, GetCoding(value));
+        }
+
+        /// <summary>
+        /// Determine value coding.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>Value coding.</returns>
+        protected FilterValueCoding GetCoding(T value)
+        {
+            if (value is string stringValue && stringValue.IsNotNullOrEmpty())
+            {
+                return FilterValueCoding.Base64;
+            }
+
+            return FilterValueCoding.None;
         }
     }
 }

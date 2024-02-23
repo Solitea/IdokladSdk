@@ -5,7 +5,7 @@ using IdokladSdk.Requests.Core.Interfaces;
 namespace IdokladSdk.Requests.Core.Modifiers.Filters.Common
 {
     /// <summary>
-    /// Qery string filter modifier.
+    /// Query string filter modifier.
     /// </summary>
     /// <typeparam name="TFilter">Filter type.</typeparam>
     public class FilterModifier<TFilter> : IQueryStringModifier
