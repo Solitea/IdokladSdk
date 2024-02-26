@@ -153,7 +153,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Tag
         }
 
         [Test]
-        [Ignore("Wait to fix - value with special characters")]
         public async Task Get_WithFilter_ReturnsFilteredListAsync()
         {
             // Arrange
