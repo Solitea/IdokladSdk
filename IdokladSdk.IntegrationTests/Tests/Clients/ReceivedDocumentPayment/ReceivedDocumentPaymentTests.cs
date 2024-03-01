@@ -115,6 +115,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
             Assert.That(retrievedPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
             Assert.That(postedPayment.Id, Is.EqualTo(retrievedPayment.Id));
             Assert.That(deleted, Is.True);
+
+            // TearDown
+            await DokladApi.IssuedInvoiceClient.DeleteAsync(unpaidInvoiceId);
         }
 
         [Test]
@@ -136,6 +139,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
             Assert.That(postedPayment.Id, Is.EqualTo(retrievedPayment.Id));
             var deletedResult = deleteBatchResult.Single(i => i.Id == postedPayment.Id);
             Assert.That(deletedResult.IsSuccess, Is.True);
+
+            // TearDown
+            await DokladApi.IssuedInvoiceClient.DeleteAsync(unpaidInvoiceId);
         }
 
         private async Task<int> PostPaymentAsync(int invoiceId)
