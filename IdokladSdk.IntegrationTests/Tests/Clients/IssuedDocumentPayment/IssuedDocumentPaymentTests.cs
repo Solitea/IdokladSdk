@@ -194,7 +194,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedDocumentPayment
             var retrievedPayment = await _client.Detail(postedPayment.Id).GetAsync().AssertResult();
 
             // Act
-            var ids = new List<int> { unpaidInvoiceId };
+            var ids = new List<int> { postedPayment.Id };
             var deleteBatchResult = await _client.DeleteAsync(ids).AssertResult();
 
             // Assert

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
-using IdokladSdk.IntegrationTests.Core.Helpers;
 using IdokladSdk.Models.ReceivedDocumentPayments;
 using IdokladSdk.Models.ReceivedInvoice;
 using NUnit.Framework;
@@ -120,9 +119,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
         public async Task BatchDeleteAsync_SuccessfullyPosted()
         {
             // Arrange
-            var model = DokladSdkTestsHelper.GetDefaultIssuedInvoicePostModel();
-            model.DateOfPayment = null;
-            var unpaidInvoiceId = (await DokladSdkTestsHelper.CreateDefaultIssuedInvoiceAsync(DokladApi, model)).Id;
+            var unpaidInvoiceId = await PostReceivedInvoiceAsync();
             var defaultPayment = await _receivedDocumentPaymentClient.DefaultAsync(unpaidInvoiceId).AssertResult();
             var batch = new List<ReceivedDocumentPaymentPostModel> { defaultPayment };
             var postedPayments = await _receivedDocumentPaymentClient.PostAsync(batch).AssertResult();
@@ -130,7 +127,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
             var retrievedPayment = await _receivedDocumentPaymentClient.Detail(postedPayment.Id).GetAsync().AssertResult();
 
             // Act
-            var ids = new List<int> { unpaidInvoiceId };
+            var ids = new List<int> { postedPayment.Id };
             var deleteBatchResult = await _receivedDocumentPaymentClient.DeleteAsync(ids).AssertResult();
 
             // Assert
