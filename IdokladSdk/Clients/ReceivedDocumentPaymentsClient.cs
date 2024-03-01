@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Models.Batch;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.ReceivedDocumentPayments;
+using IdokladSdk.Requests.Extensions;
 using IdokladSdk.Requests.ReceivedDocumentPayments;
 using IdokladSdk.Response;
 
@@ -20,7 +24,8 @@ namespace IdokladSdk.Clients
         IEntityDetail<ReceivedDocumentPaymentDetail>,
         IEntityList<ReceivedDocumentPaymentList>,
         IFullyUnpayRequest,
-        IPostRequest<ReceivedDocumentPaymentPostModel, ReceivedDocumentPaymentGetModel>
+        IPostRequest<ReceivedDocumentPaymentPostModel, ReceivedDocumentPaymentGetModel>,
+        IPostBatchRequest<ReceivedDocumentPaymentPostModel, ReceivedDocumentPaymentGetModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReceivedDocumentPaymentsClient"/> class.
@@ -44,6 +49,22 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
             return DeleteAsync<bool>(id, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deletes entities.
+        /// </summary>
+        /// <param name="idBatch">List of entity ids.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiBatchResult{TData}"/> instance.</returns>
+        public async Task<ApiBatchResult<DeleteResultModel>> DeleteAsync(List<int> idBatch, CancellationToken cancellationToken = default)
+        {
+            var batch = new BatchModel<int>(idBatch);
+            var resource = $"{BatchUrl}";
+            var request = await CreateRequestAsync(resource, HttpMethod.Delete, cancellationToken).ConfigureAwait(false);
+            request.AddJsonBody(batch);
+
+            return await ExecuteBatchAsync<DeleteResultModel>(request, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -83,6 +104,12 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<ReceivedDocumentPaymentGetModel>> PostAsync(ReceivedDocumentPaymentPostModel model, CancellationToken cancellationToken = default)
         {
             return PostAsync<ReceivedDocumentPaymentPostModel, ReceivedDocumentPaymentGetModel>(model, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<ApiBatchResult<ReceivedDocumentPaymentGetModel>> PostAsync(List<ReceivedDocumentPaymentPostModel> models, CancellationToken cancellationToken = default)
+        {
+            return PostAsync<ReceivedDocumentPaymentPostModel, ReceivedDocumentPaymentGetModel>(models, cancellationToken);
         }
 
         private Dictionary<string, string> GetQueryParamsForFullyPay(DateTime? dateOfPayment)
