@@ -41,13 +41,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
         [Order(1)]
         public async Task Payment_Post_SuccessfullyAsync()
         {
-            // Act
+            // Arrange
             var defaultPayment = await _receivedDocumentPaymentClient.DefaultAsync(UnpaidInvoiceId).AssertResult();
+
+            // Act
             var postedPayment = await _receivedDocumentPaymentClient.PostAsync(defaultPayment).AssertResult();
-            var retrievedPayment = await _receivedDocumentPaymentClient.Detail(postedPayment.Id).GetAsync().AssertResult();
-            var deleted = await _receivedDocumentPaymentClient.DeleteAsync(retrievedPayment.Id).AssertResult();
 
             // Assert
+            var retrievedPayment = await _receivedDocumentPaymentClient.Detail(postedPayment.Id).GetAsync().AssertResult();
+            var deleted = await _receivedDocumentPaymentClient.DeleteAsync(retrievedPayment.Id).AssertResult();
             Assert.That(defaultPayment.InvoiceId, Is.EqualTo(UnpaidInvoiceId));
             Assert.That(postedPayment.InvoiceId, Is.EqualTo(UnpaidInvoiceId));
             Assert.That(retrievedPayment.InvoiceId, Is.EqualTo(UnpaidInvoiceId));
@@ -98,16 +100,16 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
         {
             // Arrange
             var unpaidInvoiceId = await PostReceivedInvoiceAsync();
-
-            // Act
             var defaultPayment = await _receivedDocumentPaymentClient.DefaultAsync(unpaidInvoiceId).AssertResult();
             var batch = new List<ReceivedDocumentPaymentPostModel> { defaultPayment };
+
+            // Act
             var postedPayments = await _receivedDocumentPaymentClient.PostAsync(batch).AssertResult();
+
+            // Assert
             var postedPayment = postedPayments.First();
             var retrievedPayment = await _receivedDocumentPaymentClient.Detail(postedPayment.Id).GetAsync().AssertResult();
             var deleted = await _receivedDocumentPaymentClient.DeleteAsync(retrievedPayment.Id).AssertResult();
-
-            // Assert
             Assert.That(defaultPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
             Assert.That(postedPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
             Assert.That(retrievedPayment.InvoiceId, Is.EqualTo(unpaidInvoiceId));
@@ -125,9 +127,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedDocumentPayment
             var postedPayments = await _receivedDocumentPaymentClient.PostAsync(batch).AssertResult();
             var postedPayment = postedPayments.First();
             var retrievedPayment = await _receivedDocumentPaymentClient.Detail(postedPayment.Id).GetAsync().AssertResult();
+            var ids = new List<int> { postedPayment.Id };
 
             // Act
-            var ids = new List<int> { postedPayment.Id };
             var deleteBatchResult = await _receivedDocumentPaymentClient.DeleteAsync(ids).AssertResult();
 
             // Assert
