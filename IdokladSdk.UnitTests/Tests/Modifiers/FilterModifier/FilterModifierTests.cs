@@ -64,9 +64,10 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
         {
             // Arrange
             var modifier = new FilterModifier<TestFilter>();
+            var now = DateTime.Now;
             Func<TestFilter, FilterExpressionBase> filterExpression1 = (f) => f.Id.IsEqual(100);
             Func<TestFilter, FilterExpressionBase> filterExpression2 = (f) => f.Name.Contains("a.s.");
-            Func<TestFilter, FilterExpressionBase> filterExpression3 = (f) => f.Date.IsEqual(DateTime.Now);
+            Func<TestFilter, FilterExpressionBase> filterExpression3 = (f) => f.Date.IsEqual(now);
             modifier.Filter(f => filterExpression1(f) && filterExpression2(f) && filterExpression3(f));
 
             // Act
