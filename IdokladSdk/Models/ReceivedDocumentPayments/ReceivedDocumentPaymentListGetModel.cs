@@ -1,6 +1,7 @@
 ﻿using System;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.ReceivedDocumentPayments.SubModels;
 
 namespace IdokladSdk.Models.ReceivedDocumentPayments
 {
@@ -66,6 +67,11 @@ namespace IdokladSdk.Models.ReceivedDocumentPayments
         /// Gets or sets payment option id.
         /// </summary>
         public int PaymentOptionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets payment document.
+        /// </summary>
+        public ReceivedPaymentDocument PaymentDocument { get; set; }
 
         /// <summary>
         /// Gets or sets prices and calculations.
