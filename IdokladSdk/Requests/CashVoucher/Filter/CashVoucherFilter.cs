@@ -22,7 +22,7 @@ namespace IdokladSdk.Requests.CashVoucher.Filter
         public CompareFilterItem<ExportedState> Exported { get; set; } = new CompareFilterItem<ExportedState>(nameof(CashVoucherListGetModel.Exported));
 
         /// <inheritdoc cref="CashVoucherListGetModel.IsSummarySalesReceipt"/>
-        public CompareFilterItem<string> IsSummarySalesReceipt { get; set; } = new CompareFilterItem<string>(nameof(CashVoucherListGetModel.IsSummarySalesReceipt));
+        public CompareFilterItem<bool> IsSummarySalesReceipt { get; set; } = new CompareFilterItem<bool>(nameof(CashVoucherListGetModel.IsSummarySalesReceipt));
 
         /// <inheritdoc cref="CashVoucherListGetModel.MovementType"/>
         public CompareFilterItem<MovementType> MovementType { get; set; } = new CompareFilterItem<MovementType>(nameof(CashVoucherListGetModel.MovementType));
