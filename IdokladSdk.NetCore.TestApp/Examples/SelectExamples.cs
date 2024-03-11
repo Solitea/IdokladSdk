@@ -35,7 +35,7 @@ namespace IdokladSdk.NetCore.TestApp.Examples
 
         public async Task List_DefaultGetMethod_ReturnsDefaultModelAsync()
         {
-            // Get with Default model return whole entity
+            // Get with Default model return whole entity.
             var list = await _api.ContactClient
                 .List()
                 .GetAsync();
