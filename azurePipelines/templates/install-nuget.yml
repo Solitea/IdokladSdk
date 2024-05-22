@@ -2,4 +2,9 @@ steps:
   - task: NuGetToolInstaller@1
     displayName: Install Nuget
     inputs:
-      versionSpec: '6.8.0'
+      versionSpec: '6.10.0'
+  - task: NuGetCommand@2
+    inputs:
+      command: 'restore'
+      restoreSolution: '$(solution)'
+      feedsToUse: 'select'
