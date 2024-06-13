@@ -43,6 +43,7 @@ stages:
         command: 'test'
         projects: '**/*UnitTests.csproj'
         arguments: '--configuration $(buildConfiguration)'
+        testRunTitle: 'Unit tests'
 
     - task: DotNetCoreCLI@2
       displayName: 'Run Integration tests'
@@ -50,6 +51,7 @@ stages:
         command: 'test'
         projects: '**/*IntegrationTests.csproj'
         arguments: '--configuration $(buildConfiguration)'
+        testRunTitle: 'Integration tests'
 
     - task: DotNetCoreCLI@2
       displayName: 'Package SDK'
