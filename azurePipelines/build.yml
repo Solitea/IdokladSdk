@@ -79,10 +79,7 @@ stages:
       displayName: 'Delete files'
       inputs:
         SourceFolder: '$(Agent.BuildDirectory)'
-        Contents: |
-          /a
-          /b
-          /s
+        Contents: '**/*'
         RemoveDotFiles: true
       continueOnError: true
       condition: always()

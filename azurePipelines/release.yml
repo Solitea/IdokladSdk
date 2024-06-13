@@ -75,6 +75,8 @@ stages:
     - task: DeleteFiles@1
       displayName: 'Delete files'
       inputs:
+        SourceFolder: '$(Agent.BuildDirectory)'
         Contents: '**/*'
+        RemoveDotFiles: true
       continueOnError: true
       condition: always()
