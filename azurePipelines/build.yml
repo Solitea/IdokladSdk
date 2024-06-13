@@ -44,6 +44,7 @@ stages:
         projects: '**/*UnitTests.csproj'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --logger trx'
         publishTestResults: true
+        testRunTitle: 'Unit tests'
 
     - task: DotNetCoreCLI@2
       displayName: 'Run Integration tests'
@@ -52,6 +53,7 @@ stages:
         projects: '**/*IntegrationTests.csproj'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --logger trx'
         publishTestResults: true
+        testRunTitle: 'Integration tests'
 
     - task: DotNetCoreCLI@2
       displayName: "Create NuGet package"
