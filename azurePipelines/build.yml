@@ -44,6 +44,7 @@ stages:
         projects: '**/*UnitTests.csproj'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --logger trx'
         publishTestResults: true
+        testRunTitle: 'Unit tests'
 
     - task: DotNetCoreCLI@2
       displayName: 'Run Integration tests'
@@ -52,6 +53,7 @@ stages:
         projects: '**/*IntegrationTests.csproj'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --logger trx'
         publishTestResults: true
+        testRunTitle: 'Integration tests'
 
     - task: DotNetCoreCLI@2
       displayName: "Create NuGet package"
@@ -73,15 +75,5 @@ stages:
         allowPackageConflicts: true
       condition: and(succeeded(), not(eq(variables['Build.Reason'], 'Schedule')), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       
-    - task: DeleteFiles@1
-      displayName: 'Delete files'
-      inputs:
-        SourceFolder: '$(Agent.BuildDirectory)'
-        Contents: |
-          /a
-          /b
-          /s
-        RemoveDotFiles: true
-      continueOnError: true
-      condition: always()
+    - template: templates/delete-files.yml
 

@@ -43,6 +43,7 @@ stages:
         command: 'test'
         projects: '**/*UnitTests.csproj'
         arguments: '--configuration $(buildConfiguration)'
+        testRunTitle: 'Unit tests'
 
     - task: DotNetCoreCLI@2
       displayName: 'Run Integration tests'
@@ -50,6 +51,7 @@ stages:
         command: 'test'
         projects: '**/*IntegrationTests.csproj'
         arguments: '--configuration $(buildConfiguration)'
+        testRunTitle: 'Integration tests'
 
     - task: DotNetCoreCLI@2
       displayName: 'Package SDK'
@@ -70,9 +72,4 @@ stages:
         publishFeedCredentials: 'iDoklad Nuget.org'
       condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
       
-    - task: DeleteFiles@1
-      displayName: 'Delete files'
-      inputs:
-        Contents: '**/*'
-      continueOnError: true
-      condition: always()
+    - template: templates/delete-files.yml
