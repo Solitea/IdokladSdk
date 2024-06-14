@@ -75,12 +75,5 @@ stages:
         allowPackageConflicts: true
       condition: and(succeeded(), not(eq(variables['Build.Reason'], 'Schedule')), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       
-    - task: DeleteFiles@1
-      displayName: 'Delete files'
-      inputs:
-        SourceFolder: '$(Agent.BuildDirectory)'
-        Contents: '**/*'
-        RemoveDotFiles: true
-      continueOnError: true
-      condition: always()
+    - template: templates/delete-files.yml
 

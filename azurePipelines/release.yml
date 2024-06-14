@@ -72,11 +72,4 @@ stages:
         publishFeedCredentials: 'iDoklad Nuget.org'
       condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
       
-    - task: DeleteFiles@1
-      displayName: 'Delete files'
-      inputs:
-        SourceFolder: '$(Agent.BuildDirectory)'
-        Contents: '**/*'
-        RemoveDotFiles: true
-      continueOnError: true
-      condition: always()
+    - template: templates/delete-files.yml

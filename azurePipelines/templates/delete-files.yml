@@ -1,0 +1,8 @@
+steps:
+  - task: DeleteFiles@1
+    displayName: 'Delete files'
+    inputs:
+      Contents: '**/*'
+      RemoveDotFiles: true
+    continueOnError: true
+    condition: always()
