@@ -199,5 +199,10 @@
         /// Put is not allowed if payment has a tax document for payment issued for it.
         /// </summary>
         PutProformaHasTaxDocuments = 135,
+
+        /// <summary>
+        /// Update is not allowed. Cannot be paired with another document.
+        /// </summary>
+        UpdateCashVoucherFromSalesReceipt = 136,
     }
 }
