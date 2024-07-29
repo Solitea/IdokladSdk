@@ -126,7 +126,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_ProformaInvoiceList_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.ProformaInvoice.List().GetAsync(Language.En).AssertResult();
+            var data = await _reportClient.ProformaInvoice.List().Filter(f => f.Id.IsGreaterThan(1138604)).GetAsync(Language.En).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }

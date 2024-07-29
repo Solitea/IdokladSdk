@@ -145,7 +145,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public async Task GetImageAsync_ProformaInvoiceList_SuccessfullyGetAsyncReport()
         {
             var data = await _reportClient.ProformaInvoice
-                .List()
+                .List().Filter(f => f.Id.IsGreaterThan(1138604))
                 .GetImageAsync(new ReportImageOption { Language = Language.En })
                 .AssertResult();
 

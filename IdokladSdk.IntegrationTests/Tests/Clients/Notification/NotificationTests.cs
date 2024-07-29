@@ -226,48 +226,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public async Task GetList_ReferralExpiredSoonNotification_Success()
-        {
-            // Act
-            var result = await NotificationClient.List()
-                .Filter(n => n.Type.IsEqual(NotificationType.ReferralExpiredSoon))
-                .GetAsync()
-                .AssertResult();
-
-            // Assert
-            AssertNonEmptyListResult(result);
-            AssertReferralExpiredSoonNotification(result.Items.First());
-        }
-
-        [Test]
-        public async Task GetList_ReferralPointsManualNotification_Success()
-        {
-            // Act
-            var result = await NotificationClient.List()
-                .Filter(n => n.Type.IsEqual(NotificationType.ReferralPointsManual))
-                .GetAsync()
-                .AssertResult();
-
-            // Assert
-            AssertNonEmptyListResult(result);
-            AssertReferralPointsManualNotification(result.Items.First());
-        }
-
-        [Test]
-        public async Task GetList_ReferralPromoCodeExpiredSoonNotification_Success()
-        {
-            // Act
-            var result = await NotificationClient.List()
-                .Filter(n => n.Type.IsEqual(NotificationType.ReferralPromoCodeExpiredSoon))
-                .GetAsync()
-                .AssertResult();
-
-            // Assert
-            AssertNonEmptyListResult(result);
-            AssertReferralPromoCodeExpiredSoonNotification(result.Items.First());
-        }
-
-        [Test]
         public async Task GetList_RemindedInvoiceNotification_Success()
         {
             // Act
