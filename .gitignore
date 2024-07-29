@@ -334,4 +334,6 @@ ASALocalRun/
 /IdokladSdk.NetCore.TestApp/IdokladSdk.NetCore.TestApp.xml
 /IdokladSdk.IntegrationTests/IdokladSdk.IntegrationTests.xml
 /IdokladSdk.IntegrationTests/localsettings.json
+/IdokladSdk.IntegrationTests/testsettings.json
 /localsettings.json
+/testsettings.json
