@@ -1,0 +1,27 @@
+{
+  "Urls": {
+    "ApiUrl": "https://idoklad-candidate-api-sdk.azurewebsites.net",
+    "IdentityServerTokenUrl": "https://idoklad-candidate-identity-server-sdk.azurewebsites.net/server/connect/token"
+  },
+  "ResourceOwnerGrant": {
+    "ClientId": "a5943b07-7a46-446c-b2b8-c2286b9b851d",
+    "ClientSecret": "16094149-3086-4247-af8f-e3015aaf3db7",
+    "Users": [
+      {
+        "Id": 1,
+        "UserName": "qquc@furusato.tokyo",
+        "Password": "Heslo123",
+        "RefreshToken": "ef92b4b4e50cb48f70a4a91b1fb8d212"
+      },
+      {
+        "Id": 2,
+        "UserName": "oxld@tvchd.com",
+        "Password": "Heslo123"
+      }
+    ]
+  },
+  "PrivateClientCredentials": {
+    "ClientId": "83be8e8d-24cf-4e82-8ca6-ff704d2e3d78",
+    "ClientSecret": "31825ed0-9c97-46f2-87c6-390811fd982b"
+  }
+}

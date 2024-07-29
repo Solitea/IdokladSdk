@@ -1,16 +1,16 @@
 {
-    "Urls": {
-        "ApiUrl": "testApiUrl",
-        "IdentityServerTokenUrl": "testIdentityServerTokenUrl"
-    },
-    "ClientCredentials": {
-        "ClientId": "testClientId",
-        "ClientSecret": "testClientSecret"
-    },
-    "PinFlow": {
-        "ClientId": "testClientId",
-        "ClientSecret": "testClientSecret",
-        "Pin": "testPin",
-        "RefreshToken": "testRefreshToken"
-    }
+  "Urls": {
+    "ApiUrl": "http://idoklad-candidate-api-sdk.azurewebsites.net",
+    "IdentityServerTokenUrl": "http://idoklad-candidate-identity-server-sdk.azurewebsites.net/server/connect/token"
+  },
+  "ClientCredentials": {
+    "ClientId": "2c898919-ac23-40fe-9344-62b9b4e51efa",
+    "ClientSecret": "bcfa9d6f-b6b9-4680-bb73-f8a256c9cf06"
+  },
+  "PinFlow": {
+    "ClientId": "c41b1548-770a-4f9a-a09a-15460446890c",
+    "ClientSecret": "c59a6642-32d4-4e4c-95a9-3cb285621f61",
+    "Pin": "kcwnxRbo",
+    "RefreshToken": "62452515ecec32cc8ce45f76b9a3eeec"
+  }
 }
