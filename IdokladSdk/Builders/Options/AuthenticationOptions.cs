@@ -8,6 +8,11 @@ namespace IdokladSdk.Builders.Options
     public class AuthenticationOptions
     {
         /// <summary>
+        /// Gets or sets ApplicationId.
+        /// </summary>
+        public string ApplicationId { get; set; }
+
+        /// <summary>
         /// Gets or sets ClientId.
         /// </summary>
         public string ClientId { get; set; }

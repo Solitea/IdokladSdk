@@ -7,6 +7,9 @@ namespace IdokladSdk
     /// </summary>
     public class DokladConfiguration
     {
+        private const string TokenEndpoint = "server/connect/token";
+        private const string ClientCredentialsTokenEndpoint = "server/v2/connect/token";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DokladConfiguration"/> class.
         /// </summary>
@@ -14,18 +17,21 @@ namespace IdokladSdk
         {
             ApiUrl = new Uri($"https://api.idoklad.cz/{Constants.ApiVersion}");
             IdentityServerTokenUrl = new Uri("https://identity.idoklad.cz/server/connect/token");
+            ClientCredentialsServerTokenUrl = new Uri("https://identity.idoklad.cz/server/v2/connect/token");
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DokladConfiguration"/> class.
         /// </summary>
         /// <param name="apiUrl">URL of iDoklad API.</param>
-        /// <param name="identityServerTokenUrl">URL of token endpoint of Identity server.</param>
-        public DokladConfiguration(string apiUrl, string identityServerTokenUrl)
+        /// <param name="identityServerUrl">URL of Identity server.</param>
+        public DokladConfiguration(string apiUrl, string identityServerUrl)
         {
-            IdentityServerTokenUrl = CheckUrl(identityServerTokenUrl, nameof(identityServerTokenUrl));
-            var apiUri = CheckUrl(apiUrl, nameof(apiUrl));
+            var identityServerUri = CheckUrl(identityServerUrl, nameof(identityServerUrl));
+            IdentityServerTokenUrl = BuildTokenUrl(identityServerUri, TokenEndpoint);
+            ClientCredentialsServerTokenUrl = BuildTokenUrl(identityServerUri, ClientCredentialsTokenEndpoint);
 
+            var apiUri = CheckUrl(apiUrl, nameof(apiUrl));
             ApiUrl = new Uri(apiUri, Constants.ApiVersion);
         }
 
@@ -38,6 +44,11 @@ namespace IdokladSdk
         /// Gets URL of token endpoint of Identity server.
         /// </summary>
         public Uri IdentityServerTokenUrl { get; }
+
+        /// <summary>
+        /// Gets URL of token endpoint of Identity server token endpoint for ClientCredentials flow.
+        /// </summary>
+        public Uri ClientCredentialsServerTokenUrl { get; }
 
         private Uri CheckUrl(string url, string paramName)
         {
@@ -52,6 +63,13 @@ namespace IdokladSdk
             }
 
             return uri;
+        }
+
+        private Uri BuildTokenUrl(Uri uri, string tokenEndpoint)
+        {
+            var builder = new UriBuilder(uri);
+            builder.Path += tokenEndpoint;
+            return builder.Uri;
         }
     }
 }

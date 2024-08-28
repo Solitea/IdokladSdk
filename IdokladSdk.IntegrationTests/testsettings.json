@@ -1,9 +1,10 @@
 {
     "Urls": {
         "ApiUrl": "testApiUrl",
-        "IdentityServerTokenUrl": "testIdentityServerTokenUrl"
+        "IdentityServerUrl": "testIdentityServerUrl"
     },
     "ClientCredentials": {
+        "ApplicationId": "testApplicationId",
         "ClientId": "testClientId",
         "ClientSecret": "testClientSecret"
     },

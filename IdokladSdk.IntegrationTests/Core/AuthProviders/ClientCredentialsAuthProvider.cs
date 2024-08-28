@@ -7,7 +7,7 @@ namespace IdokladSdk.IntegrationTests.Core.AuthProviders
     {
         public IAuthentication GetAuthentication(TestConfiguration config)
         {
-            return new ClientCredentialsAuthentication(config.ClientCredentials.ClientId, config.ClientCredentials.ClientSecret);
+            return new ClientCredentialsAuthentication(config.ClientCredentials.ClientId, config.ClientCredentials.ClientSecret, config.ClientCredentials.ApplicationId);
         }
     }
 }

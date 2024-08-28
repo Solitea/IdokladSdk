@@ -108,16 +108,16 @@ namespace IdokladSdk.Builders
         /// <summary>
         /// Create configuration for iDoklad API.
         /// </summary>
-        /// <returns>Instance of Dokladconfiguration.</returns>
+        /// <returns>Instance of DokladConfiguration.</returns>
         protected DokladConfiguration GetConfiguration()
         {
             var urlOptions = UrlOptionsProvider?.Invoke();
-            if (urlOptions == null || (string.IsNullOrWhiteSpace(urlOptions.ApiUrl) && string.IsNullOrWhiteSpace(urlOptions.IdentityServerTokenUrl)))
+            if (urlOptions == null || (string.IsNullOrWhiteSpace(urlOptions.ApiUrl) && string.IsNullOrWhiteSpace(urlOptions.IdentityServerUrl)))
             {
                 return new DokladConfiguration();
             }
 
-            return new DokladConfiguration(urlOptions.ApiUrl, urlOptions.IdentityServerTokenUrl);
+            return new DokladConfiguration(urlOptions.ApiUrl, urlOptions.IdentityServerUrl);
         }
     }
 }

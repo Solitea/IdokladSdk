@@ -20,8 +20,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Authentication
         public async Task Claims_ParsedSucessfullyAsync()
         {
             // Arrange
-            var auth = new ClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret);
-            var config = new DokladConfiguration(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl);
+            var auth = new ClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret, Configuration.ClientCredentials.ApplicationId);
+            var config = new DokladConfiguration(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerUrl);
             auth.Configuration = config;
 
             // Act

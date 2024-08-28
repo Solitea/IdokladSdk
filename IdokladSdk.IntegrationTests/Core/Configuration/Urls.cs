@@ -4,6 +4,6 @@
     {
         public string ApiUrl { get; set; }
 
-        public string IdentityServerTokenUrl { get; set; }
+        public string IdentityServerUrl { get; set; }
     }
 }

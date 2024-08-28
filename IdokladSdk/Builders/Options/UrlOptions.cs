@@ -11,8 +11,8 @@
         public string ApiUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets IdentityServerTokenUrl.
+        /// Gets or sets IdentityServerUrl.
         /// </summary>
-        public string IdentityServerTokenUrl { get; set; }
+        public string IdentityServerUrl { get; set; }
     }
 }
