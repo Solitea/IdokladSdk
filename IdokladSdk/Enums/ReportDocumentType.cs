@@ -36,6 +36,11 @@
         CashVoucher,
 
         /// <summary>
+        /// BankStatement.
+        /// </summary>
+        BankStatement,
+
+        /// <summary>
         /// SalesOrder.
         /// </summary>
         SalesOrder,

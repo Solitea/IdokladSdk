@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Enums;
+using IdokladSdk.Requests.Report.BankStatement;
 using IdokladSdk.Requests.Report.CashVoucher;
 using IdokladSdk.Requests.Report.IssuedInvoice;
 using IdokladSdk.Requests.Report.IssuedTaxDocument;
@@ -14,6 +15,7 @@ namespace IdokladSdk.Clients
     public class ReportClient : BaseClient
     {
         private CashVoucherReport _cashVoucher;
+        private BankStatementReport _bankStatement;
         private IssuedInvoiceReport _creditNote;
         private IssuedInvoiceReport _issuedInvoice;
         private IssuedTaxDocumentReport _issuedTaxDocument;
@@ -35,6 +37,11 @@ namespace IdokladSdk.Clients
         /// Gets cash voucher reports.
         /// </summary>
         public CashVoucherReport CashVoucher => _cashVoucher ?? (_cashVoucher = new CashVoucherReport(this));
+
+        /// <summary>
+        /// Gets bank statement reports.
+        /// </summary>
+        public BankStatementReport BankStatement => _bankStatement ?? (_bankStatement = new BankStatementReport(this));
 
         /// <summary>
         /// Gets credit note reports.
