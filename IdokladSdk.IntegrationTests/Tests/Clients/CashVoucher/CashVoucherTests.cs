@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
@@ -6,6 +7,8 @@ using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.CashVoucher;
+using IdokladSdk.Models.CashVoucher.Recount;
+using IdokladSdk.Models.IssuedInvoice;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
@@ -18,12 +21,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         private const int UnpaidReceivedInvoice = 165460;
 
         private CashVoucherClient _client;
+        private IssuedInvoiceClient _issuedInvoiceClient;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
             InitDokladApi();
             _client = DokladApi.CashVoucherClient;
+            _issuedInvoiceClient = DokladApi.IssuedInvoiceClient;
         }
 
         [Test]
@@ -73,30 +78,116 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         }
 
         [Test]
+        public async Task Pair_SuccessfullyPaired()
+        {
+            // Arrange
+            var invoice = await CreateInvoice();
+            var pairModel = new CashVoucherPairPostModel { CashVoucherId = CashVoucherId, DocumentId = invoice.Id, DocumentType = PairedDocumentType.IssuedInvoice };
+
+            // Act
+            var pairResult = await _client.PairAsync(pairModel).AssertResult();
+            var cashVoucher = await _client.Detail(CashVoucherId).GetAsync().AssertResult();
+
+            // Assert
+            Assert.That(pairResult, Is.True);
+            Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(invoice.Id));
+            Assert.That(cashVoucher.PairedDocument.DocumentType, Is.EqualTo(PairedDocumentType.IssuedInvoice));
+        }
+
+        [Test]
         public async Task Post_SuccessfullyAsync()
         {
             // Arrange
             var cashVoucherName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
 
             // Act
-            var cashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice).AssertResult();
-            cashVoucher.Name = cashVoucherName;
-            var postedCashVoucher = await _client.PostAsync(cashVoucher).AssertResult();
-            var pairModel = new CashVoucherPairPostModel { CashVoucherId = postedCashVoucher.Id, DocumentId = UnpaidIssuedInvoice, DocumentType = PairedDocumentType.IssuedInvoice };
-            var paired = await _client.PairAsync(pairModel).AssertResult();
-            var deleted = await _client.DeleteAsync(postedCashVoucher.Id).AssertResult();
+            var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice).AssertResult();
+            defaultCashVoucher.Name = cashVoucherName;
+            var cashVoucher = await _client.PostAsync(defaultCashVoucher).AssertResult();
 
             // Assert
             Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(UnpaidIssuedInvoice));
-            Assert.That(postedCashVoucher.InvoiceId, Is.EqualTo(UnpaidIssuedInvoice));
-            Assert.That(postedCashVoucher.Name, Is.EqualTo(cashVoucherName));
-            Assert.That(paired, Is.True);
-            Assert.That(deleted, Is.True);
+            Assert.That(cashVoucher.PairedDocument.DocumentType, Is.EqualTo(PairedDocumentType.IssuedInvoice));
+            Assert.That(cashVoucher.Name, Is.EqualTo(cashVoucherName));
+        }
+
+        [Test]
+        public async Task Delete_CashVoucherDeletedSuccessfully()
+        {
+            // Arrange
+            var cashVoucherName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
+            var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice).AssertResult();
+            defaultCashVoucher.Name = cashVoucherName;
+            var cashVoucher = await _client.PostAsync(defaultCashVoucher).AssertResult();
+
+            // Act
+            var deleteResult = await _client.DeleteAsync(cashVoucher.Id).AssertResult();
+
+            // Assert
+            Assert.That(deleteResult, Is.True);
+        }
+
+        [Test]
+        public async Task Recount_SuccessfullyRecounted()
+        {
+            // Arrange
+            var recountModel = new CashVoucherRecountPostModel
+            {
+                CurrencyId = 1,
+                DateOfTransaction = DateTime.UtcNow,
+                ExchangeRate = 1,
+                ExchangeRateAmount = 1,
+                Items =
+                [
+                    new ()
+                    {
+                        CustomVat = 10,
+                        Id = 1,
+                        UnitPrice = 100,
+                        PriceType = PriceType.WithoutVat,
+                        VatRateType = VatRateType.Basic,
+                    },
+                ],
+            };
+
+            // Act
+            var result = await _client.RecountAsync(recountModel).AssertResult();
+
+            // Assert
+            var vatRateSummaryItem = result.Prices.VatRateSummary.First();
+            Assert.That(vatRateSummaryItem.TotalWithoutVat, Is.EqualTo(100));
+            Assert.That(vatRateSummaryItem.TotalWithVat, Is.EqualTo(110));
+        }
+
+        [Test]
+        public async Task Update_SuccessfullyUpdates()
+        {
+            // Arrange
+            var originalCashVoucher = await _client.Detail(CashVoucherId).GetAsync().AssertResult();
+            var updatedName = $"UpdatedName_{DateTime.UtcNow:dd/MM/yyyy/mm/ss}";
+            Assert.That(originalCashVoucher.Name, Is.Not.EqualTo(updatedName));
+            var cashVoucherPatchModel = new CashVoucherPatchModel { Id = CashVoucherId, Name = updatedName };
+
+            // Act
+            var patchResult = await _client.UpdateAsync(cashVoucherPatchModel).AssertResult();
+
+            // Assert
+            Assert.That(patchResult.Name, Is.EqualTo(updatedName));
         }
 
         private static IList<object> GetDefaultVouchers()
         {
             return new List<object> { new object[] { PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice }, new object[] { PairedDocumentType.ReceivedInvoice, UnpaidReceivedInvoice } };
+        }
+
+        private async Task<IssuedInvoiceGetModel> CreateInvoice()
+        {
+            var defaultInvoice = await _issuedInvoiceClient.DefaultAsync().AssertResult();
+            defaultInvoice.Description = "Invoice for pair";
+            defaultInvoice.Items.Clear();
+            defaultInvoice.Items.Add(new IssuedInvoiceItemPostModel { Name = "Test", Amount = 1, UnitPrice = 150 });
+            var invoice = await _issuedInvoiceClient.PostAsync(defaultInvoice).AssertResult();
+            return invoice;
         }
     }
 }
