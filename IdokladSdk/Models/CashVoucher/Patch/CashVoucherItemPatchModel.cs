@@ -6,14 +6,14 @@ using IdokladSdk.Validation.Attributes;
 namespace IdokladSdk.Models.CashVoucher
 {
     /// <summary>
-    /// Pathc model for CashVoucherItem.
+    /// Patch model for CashVoucherItem.
     /// </summary>
     public class CashVoucherItemPatchModel : ValidatableModel
     {
         /// <summary>
-        /// Gets or sets item amount.
+        /// Gets or sets Custom VAT rate.
         /// </summary>
-        public decimal? Amount { get; set; }
+        public decimal? CustomVat { get; set; }
 
         /// <summary>
         /// Gets or sets item name.
@@ -25,7 +25,6 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets unit price.
         /// </summary>
-        [DecimalGreaterThanZero]
         public decimal? Price { get; set; }
 
         /// <summary>
@@ -34,9 +33,9 @@ namespace IdokladSdk.Models.CashVoucher
         public PriceTypeWithoutOnlyBase? PriceType { get; set; }
 
         /// <summary>
-        /// Gets or sets pairing status.
+        /// Gets or sets Vat code id.
         /// </summary>
-        public PairingStatus? Status { get; set; }
+        public int? VatCodeId { get; set; }
 
         /// <summary>
         /// Gets or sets VAT rate type.

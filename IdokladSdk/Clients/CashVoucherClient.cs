@@ -49,14 +49,13 @@ namespace IdokladSdk.Clients
         /// <summary>
         /// Returns new entity with default property values suitable for subsequent editing and storing.
         /// </summary>
-        /// <param name="movementType">Movement type.</param>
-        /// <param name="invoiceType">Invoice type.</param>
-        /// <param name="invoiceId">Id of invoice.</param>
+        /// <param name="documentType">Document type.</param>
+        /// <param name="documentId">Id of document.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <see cref="CashVoucherDefaultGetModel"/>.</returns>
-        public async Task<ApiResult<CashVoucherDefaultGetModel>> DefaultAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
+        public async Task<ApiResult<CashVoucherDefaultGetModel>> DefaultAsync(PairedDocumentType documentType, int documentId, CancellationToken cancellationToken = default)
         {
-            var resource = $"{ResourceUrl}/Default/{movementType}/{invoiceType}/{invoiceId}";
+            var resource = $"{ResourceUrl}/Default/{documentType}/{documentId}";
             var request = await CreateRequestAsync(resource, HttpMethod.Get, cancellationToken).ConfigureAwait(false);
 
             return await ExecuteAsync<CashVoucherDefaultGetModel>(request, cancellationToken).ConfigureAwait(false);
@@ -83,17 +82,13 @@ namespace IdokladSdk.Clients
         /// <summary>
         /// Pairs cash voucher with unpaid invoice.
         /// </summary>
-        /// <param name="cashVoucherId">Id of cash voucher.</param>
-        /// <param name="invoiceType">Invoice type.</param>
-        /// <param name="invoiceId">Id of invoice.</param>
+        /// <param name="model">Model.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if pairing was successful, otherwise <c>false</c>.</returns>
-        public async Task<ApiResult<bool>> PairAsync(int cashVoucherId, InvoiceType invoiceType, int invoiceId, CancellationToken cancellationToken = default)
+        public Task<ApiResult<bool>> PairAsync(CashVoucherPairPostModel model, CancellationToken cancellationToken = default)
         {
-            var resource = $"{ResourceUrl}/Pair/{cashVoucherId}/{invoiceType}/{invoiceId}";
-            var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
-
-            return await ExecuteAsync<bool>(request, cancellationToken).ConfigureAwait(false);
+            var resource = $"{ResourceUrl}/Pair";
+            return PostAsync<CashVoucherPairPostModel, bool>(resource, model, cancellationToken);
         }
 
         /// <inheritdoc/>

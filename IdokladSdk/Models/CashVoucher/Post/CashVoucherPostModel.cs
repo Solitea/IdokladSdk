@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Models.RegisteredSale;
 using IdokladSdk.Validation.Attributes;
 
@@ -35,6 +36,7 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets electronic records of sales information.
         /// </summary>
+        [Obsolete]
         public ElectronicRecordsOfSalesPostModel ElectronicRecordsOfSales { get; set; }
 
         /// <summary>
@@ -46,17 +48,6 @@ namespace IdokladSdk.Models.CashVoucher
         /// Gets or sets exchange rate amount.
         /// </summary>
         public decimal? ExchangeRateAmount { get; set; }
-
-        /// <summary>
-        /// Gets or sets id of paired invoice.
-        /// </summary>
-        [NullableForeignKey]
-        public int? InvoiceId { get; set; }
-
-        /// <summary>
-        /// Gets or sets type of paired invoice.
-        /// </summary>
-        public InvoiceType? InvoiceType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether include subject to income tax.
@@ -82,6 +73,11 @@ namespace IdokladSdk.Models.CashVoucher
         [StringLength(200)]
         [Required]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets Paired document.
+        /// </summary>
+        public PairedDocumentPostModel PairedDocument { get; set; }
 
         /// <summary>
         /// Gets or sets id of the partner's contact.

@@ -6,7 +6,7 @@ using IdokladSdk.Validation.Attributes;
 namespace IdokladSdk.Models.BankStatement.Patch
 {
     /// <summary>
-    /// Pathc model for BankStatementItem.
+    /// Patch model for BankStatementItem.
     /// </summary>
     public class BankStatementItemPatchModel : ValidatableModel
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher
@@ -54,11 +55,17 @@ namespace IdokladSdk.Models.CashVoucher
         [NotEmptyString]
         public string Name { get; set; }
 
+
+        /// <summary>
+        /// Gets or sets Paired document.
+        /// </summary>
+        public PairedDocumentPatchModel PairedDocument { get; set; }
+
         /// <summary>
         /// Gets or sets id of the partner's contact.
         /// </summary>
         [NullableForeignKey]
-        public int? PartnerContactId { get; set; }
+        public int? PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets name of the supplier/customer. Can also be used as a note.

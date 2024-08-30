@@ -5,6 +5,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.CashVoucher;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
@@ -26,7 +27,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         }
 
         [Test]
-        public async Task Default_SucessfullyGetAsync()
+        public async Task Default_SuccessfullyGetAsync()
         {
             // Act
             var cashVoucherIssue = await _client.DefaultAsync(MovementType.Issue).AssertResult();
@@ -40,19 +41,18 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 
         [Test]
         [TestCaseSource(nameof(GetDefaultVouchers))]
-        public async Task Default_SucessfullyGetAsync(MovementType movementType, InvoiceType invoiceType, int invoiceId)
+        public async Task Default_SuccessfullyGetAsync(PairedDocumentType documentType, int documentId)
         {
             // Act
-            var cashVoucher = await _client.DefaultAsync(movementType, invoiceType, invoiceId).AssertResult();
+            var cashVoucher = await _client.DefaultAsync(documentType, documentId).AssertResult();
 
             // Assert
-            Assert.That(cashVoucher.MovementType, Is.EqualTo(movementType));
-            Assert.That(cashVoucher.InvoiceType, Is.EqualTo(invoiceType));
-            Assert.That(cashVoucher.InvoiceId, Is.EqualTo(invoiceId));
+            Assert.That(cashVoucher.PairedDocument.DocumentType, Is.EqualTo(documentType));
+            Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(documentId));
         }
 
         [Test]
-        public async Task Detail_SucessfullyGetAsync()
+        public async Task Detail_SuccessfullyGetAsync()
         {
             // Act
             var cashVoucher = await _client.Detail(CashVoucherId).GetAsync().AssertResult();
@@ -73,20 +73,21 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         }
 
         [Test]
-        public async Task Post_SucessfullyAsync()
+        public async Task Post_SuccessfullyAsync()
         {
             // Arrange
             var cashVoucherName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
 
             // Act
-            var cashVoucher = await _client.DefaultAsync(MovementType.Issue, InvoiceType.Issued, UnpaidIssuedInvoice).AssertResult();
+            var cashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice).AssertResult();
             cashVoucher.Name = cashVoucherName;
             var postedCashVoucher = await _client.PostAsync(cashVoucher).AssertResult();
-            var paired = await _client.PairAsync(postedCashVoucher.Id, InvoiceType.Issued, UnpaidIssuedInvoice).AssertResult();
+            var pairModel = new CashVoucherPairPostModel { CashVoucherId = postedCashVoucher.Id, DocumentId = UnpaidIssuedInvoice, DocumentType = PairedDocumentType.IssuedInvoice };
+            var paired = await _client.PairAsync(pairModel).AssertResult();
             var deleted = await _client.DeleteAsync(postedCashVoucher.Id).AssertResult();
 
             // Assert
-            Assert.That(cashVoucher.InvoiceId, Is.EqualTo(UnpaidIssuedInvoice));
+            Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(UnpaidIssuedInvoice));
             Assert.That(postedCashVoucher.InvoiceId, Is.EqualTo(UnpaidIssuedInvoice));
             Assert.That(postedCashVoucher.Name, Is.EqualTo(cashVoucherName));
             Assert.That(paired, Is.True);
@@ -95,11 +96,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 
         private static IList<object> GetDefaultVouchers()
         {
-            return new List<object>
-        {
-            new object[] { MovementType.Issue, InvoiceType.Issued, UnpaidIssuedInvoice },
-            new object[] { MovementType.Entry, InvoiceType.Received, UnpaidReceivedInvoice }
-        };
+            return new List<object> { new object[] { PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice }, new object[] { PairedDocumentType.ReceivedInvoice, UnpaidReceivedInvoice } };
         }
     }
 }

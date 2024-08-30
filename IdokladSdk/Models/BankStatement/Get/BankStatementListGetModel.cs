@@ -86,7 +86,7 @@ namespace IdokladSdk.Models.BankStatement
         public List<BankStatementItemListGetModel> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets additional information about the entity..
+        /// Gets or sets additional information about the entity.
         /// </summary>
         public Metadata Metadata { get; set; }
 
