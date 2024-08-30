@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
+using IdokladSdk.Models.CashVoucher.Recount;
 using IdokladSdk.Requests.CashVoucher;
 using IdokladSdk.Response;
 
@@ -18,7 +19,8 @@ namespace IdokladSdk.Clients
         IEntityDetail<CashVoucherDetail>,
         IEntityList<CashVoucherList>,
         IPatchRequest<CashVoucherPatchModel, CashVoucherGetModel>,
-        IPostRequest<CashVoucherPostModel, CashVoucherGetModel>
+        IPostRequest<CashVoucherPostModel, CashVoucherGetModel>,
+        IRecountRequest<CashVoucherRecountPostModel, CashVoucherRecountGetModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CashVoucherClient"/> class.
@@ -101,6 +103,13 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<CashVoucherGetModel>> UpdateAsync(CashVoucherPatchModel model, CancellationToken cancellationToken = default)
         {
             return PatchAsync<CashVoucherPatchModel, CashVoucherGetModel>(model, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<ApiResult<CashVoucherRecountGetModel>> RecountAsync(CashVoucherRecountPostModel model, CancellationToken cancellationToken = default)
+        {
+            var resource = $"{ResourceUrl}/Recount";
+            return PostAsync<CashVoucherRecountPostModel, CashVoucherRecountGetModel>(resource, model, cancellationToken);
         }
     }
 }
