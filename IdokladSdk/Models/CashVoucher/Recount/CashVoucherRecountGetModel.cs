@@ -3,6 +3,9 @@ using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.CashVoucher.Recount
 {
+    /// <summary>
+    /// CashVoucherRecountGetModel.
+    /// </summary>
     public class CashVoucherRecountGetModel
     {
         /// <summary>

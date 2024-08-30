@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 
-namespace IdokladSdk.Models.CashVoucher
+namespace IdokladSdk.Models.CashVoucher.Pair
 {
+    /// <summary>
+    /// CashVoucherPairPostModel.
+    /// </summary>
     public class CashVoucherPairPostModel
     {
         /// <summary>

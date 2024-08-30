@@ -21,9 +21,6 @@ namespace IdokladSdk.Requests.CashVoucher.Filter
         /// <inheritdoc cref="CashVoucherListGetModel.Exported"/>
         public CompareFilterItem<ExportedState> Exported { get; set; } = new CompareFilterItem<ExportedState>(nameof(CashVoucherListGetModel.Exported));
 
-        /// <inheritdoc cref="CashVoucherListGetModel.IsSummarySalesReceipt"/>
-        public CompareFilterItem<bool> IsSummarySalesReceipt { get; set; } = new CompareFilterItem<bool>(nameof(CashVoucherListGetModel.IsSummarySalesReceipt));
-
         /// <inheritdoc cref="CashVoucherListGetModel.MovementType"/>
         public CompareFilterItem<MovementType> MovementType { get; set; } = new CompareFilterItem<MovementType>(nameof(CashVoucherListGetModel.MovementType));
 
@@ -36,6 +33,7 @@ namespace IdokladSdk.Requests.CashVoucher.Filter
         /// <inheritdoc cref="CashVoucherListGetModel.DocumentNumber"/>
         public CompareFilterItem<string> DocumentNumber { get; set; } = new CompareFilterItem<string>(nameof(CashVoucherListGetModel.DocumentNumber));
 
+        /// <inheritdoc cref="CashVoucherListGetModel.Status"/>
         public CompareFilterItem<CashVoucherDependencyStatus> Status { get; set; } = new CompareFilterItem<CashVoucherDependencyStatus>(nameof(CashVoucherListGetModel.Status));
 
         /// <summary>

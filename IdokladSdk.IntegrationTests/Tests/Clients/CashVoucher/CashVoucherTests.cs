@@ -7,6 +7,7 @@ using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.CashVoucher;
+using IdokladSdk.Models.CashVoucher.Pair;
 using IdokladSdk.Models.CashVoucher.Recount;
 using IdokladSdk.Models.IssuedInvoice;
 using NUnit.Framework;

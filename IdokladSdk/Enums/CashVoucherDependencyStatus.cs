@@ -1,5 +1,8 @@
 ﻿namespace IdokladSdk.Enums
 {
+    /// <summary>
+    /// CashVoucherDependencyStatus.
+    /// </summary>
     public enum CashVoucherDependencyStatus
     {
         /// <summary>

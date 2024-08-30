@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
+using IdokladSdk.Models.CashVoucher.Pair;
 using IdokladSdk.Models.CashVoucher.Recount;
 using IdokladSdk.Requests.CashVoucher;
 using IdokladSdk.Response;

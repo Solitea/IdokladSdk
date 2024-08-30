@@ -6,6 +6,9 @@ using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher.Recount
 {
+    /// <summary>
+    /// CashVoucherRecountPostModel.
+    /// </summary>
     public class CashVoucherRecountPostModel : ValidatableModel
     {
         /// <summary>

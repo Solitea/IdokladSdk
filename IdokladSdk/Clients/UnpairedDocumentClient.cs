@@ -24,7 +24,7 @@ namespace IdokladSdk.Clients
 
         /// <summary>
         /// List of unpaired document. Returns an instance which allows operations on a list of documents (filtering, sorting, etc.)
-        /// and retrieving data by calling <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}.GetAsync(CancellationToken)"/>
+        /// and retrieving data by calling <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}.GetAsync(CancellationToken)"/>.
         /// </summary>
         /// <param name="movementType">Movement type.</param>
         /// <returns>Instance of descendant of <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}"/>.</returns>

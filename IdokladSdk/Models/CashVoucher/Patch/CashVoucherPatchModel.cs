@@ -55,7 +55,6 @@ namespace IdokladSdk.Models.CashVoucher
         [NotEmptyString]
         public string Name { get; set; }
 
-
         /// <summary>
         /// Gets or sets Paired document.
         /// </summary>

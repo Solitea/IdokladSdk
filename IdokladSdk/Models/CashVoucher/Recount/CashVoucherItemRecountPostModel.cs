@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.CashVoucher.Recount
 {
+    /// <summary>
+    /// CashVoucherItemRecountPostModel.
+    /// </summary>
     public class CashVoucherItemRecountPostModel
     {
         /// <summary>
