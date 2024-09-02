@@ -20,6 +20,12 @@ namespace IdokladSdk.Requests.BankStatement.Filter
         /// <inheritdoc cref="BankStatementListGetModel.NumericSequenceId"/>
         public FilterItem<int> NumericSequenceId { get; set; } = new FilterItem<int>(nameof(BankStatementListGetModel.NumericSequenceId));
 
+        /// <inheritdoc cref="BankStatementListGetModel.PeriodDateFrom"/>
+        public CompareFilterItem<DateTime> PeriodDateFrom { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.DateOfTransaction));
+
+        /// <inheritdoc cref="BankStatementListGetModel.PeriodDateTo"/>
+        public CompareFilterItem<DateTime> PeriodDateTo { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.DateOfTransaction));
+
         /// <inheritdoc cref="BankStatementListGetModel.Status"/>
         public CompareFilterItem<BankStatementPairingStatus> Status { get; set; } = new CompareFilterItem<BankStatementPairingStatus>(nameof(BankStatementListGetModel.Status));
 
