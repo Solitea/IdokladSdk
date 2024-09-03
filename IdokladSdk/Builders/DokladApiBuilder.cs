@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 using IdokladSdk.Authentication;
 using IdokladSdk.Builders.Options;
 using IdokladSdk.Enums;

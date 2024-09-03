@@ -3,17 +3,23 @@ using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.Models.CashVoucher
+namespace IdokladSdk.Models.BankStatement.Patch
 {
     /// <summary>
-    /// Patch model for CashVoucherItem.
+    /// Patch model for BankStatementItem.
     /// </summary>
-    public class CashVoucherItemPatchModel : ValidatableModel
+    public class BankStatementItemPatchModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets Custom VAT rate.
         /// </summary>
         public decimal? CustomVat { get; set; }
+
+        /// <summary>
+        /// Gets or sets The entity's Id.
+        /// </summary>
+        [Required]
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets item name.
@@ -23,23 +29,23 @@ namespace IdokladSdk.Models.CashVoucher
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets unit price.
+        /// Gets or sets Unit price.
         /// </summary>
         public decimal? Price { get; set; }
 
         /// <summary>
-        /// Gets or sets price type.
+        /// Gets or sets Price type.
         /// </summary>
         public PriceTypeWithoutOnlyBase? PriceType { get; set; }
-
-        /// <summary>
-        /// Gets or sets Vat code id.
-        /// </summary>
-        public int? VatCodeId { get; set; }
 
         /// <summary>
         /// Gets or sets VAT rate type.
         /// </summary>
         public VatRateType? VatRateType { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat code id.
+        /// </summary>
+        public int? VatCodeId { get; set; }
     }
 }

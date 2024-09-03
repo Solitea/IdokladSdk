@@ -31,6 +31,7 @@ namespace IdokladSdk.Models.BankStatement
         /// <summary>
         /// Gets or sets account balance.
         /// </summary>
+        [Obsolete]
         [Required]
         public decimal Balance { get; set; }
 
