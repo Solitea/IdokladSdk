@@ -143,11 +143,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             bankStatement.Description = bankStatementName;
             var postedBankStatement = await _bankStatementClient.PostAsync(bankStatement).AssertResult();
             _bankStatementId = postedBankStatement.Id;
+            var deletedResult = await _bankStatementClient.DeleteAsync(_bankStatementId).AssertResult();
 
             // Assert
             Assert.That(bankStatement.PairedDocument.DocumentId, Is.EqualTo(UnpaidIssuedInvoice));
             Assert.That(postedBankStatement.PairedDocument.DocumentId, Is.EqualTo(UnpaidIssuedInvoice));
             Assert.That(postedBankStatement.Description, Is.EqualTo(bankStatementName));
+            Assert.That(deletedResult, Is.True);
         }
 
         [Test]

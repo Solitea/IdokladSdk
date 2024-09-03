@@ -18,6 +18,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
     public class CashVoucherTests : TestBase
     {
         private const int CashVoucherId = 587154;
+        private const int PartnerId = 323823;
         private const int UnpaidIssuedInvoice = 914456;
         private const int UnpaidReceivedInvoice = 165460;
 
@@ -83,7 +84,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         {
             // Arrange
             var invoice = await CreateInvoice();
-            var pairModel = new CashVoucherPairPostModel { CashVoucherId = CashVoucherId, DocumentId = invoice.Id, DocumentType = PairedDocumentType.IssuedInvoice };
+            var pairModel = new CashVoucherPairPostModel
+            {
+                CashVoucherId = CashVoucherId,
+                DocumentId = invoice.Id,
+                DocumentType = PairedDocumentType.IssuedInvoice
+            };
 
             // Act
             var pairResult = await _client.PairAsync(pairModel).AssertResult();
@@ -105,11 +111,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
             var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice).AssertResult();
             defaultCashVoucher.Name = cashVoucherName;
             var cashVoucher = await _client.PostAsync(defaultCashVoucher).AssertResult();
+            var deleteResult = await _client.DeleteAsync(cashVoucher.Id).AssertResult();
 
             // Assert
             Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(UnpaidIssuedInvoice));
             Assert.That(cashVoucher.PairedDocument.DocumentType, Is.EqualTo(PairedDocumentType.IssuedInvoice));
             Assert.That(cashVoucher.Name, Is.EqualTo(cashVoucherName));
+            Assert.That(deleteResult, Is.True);
         }
 
         [Test]
@@ -184,6 +192,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         private async Task<IssuedInvoiceGetModel> CreateInvoice()
         {
             var defaultInvoice = await _issuedInvoiceClient.DefaultAsync().AssertResult();
+            defaultInvoice.PartnerId = PartnerId;
             defaultInvoice.Description = "Invoice for pair";
             defaultInvoice.Items.Clear();
             defaultInvoice.Items.Add(new IssuedInvoiceItemPostModel { Name = "Test", Amount = 1, UnitPrice = 150 });
