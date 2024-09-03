@@ -106,6 +106,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         }
 
         [Test]
+        public async Task GetAsync_BankStatementDetail_SuccessfullyGetAsyncReport()
+        {
+            var data = await _reportClient.BankStatement.Detail(990771).GetAsync(new ReportOption
+            {
+                Language = Language.Cz
+            }).AssertResult();
+
+            Assert.That(data, Is.Not.Null.Or.Empty);
+        }
+
+        [Test]
         public async Task GetAsync_IssuedInvoiceList_SuccessfullyGetAsyncReport()
         {
             var data = await _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).GetAsync(Language.En).AssertResult();
@@ -143,6 +154,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public async Task GetAsync_CashVoucherList_SuccessfullyGetAsyncReport()
         {
             var data = await _reportClient.CashVoucher.List().GetAsync(Language.Cz).AssertResult();
+
+            Assert.That(data, Is.Not.Null.Or.Empty);
+        }
+
+        [Test]
+        public async Task GetAsync_BankStatementList_SuccessfullyGetAsyncReport()
+        {
+            var data = await _reportClient.BankStatement.List().GetAsync(Language.Cz).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }
