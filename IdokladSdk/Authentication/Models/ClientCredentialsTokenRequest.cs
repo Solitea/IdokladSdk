@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 
 namespace IdokladSdk.Authentication.Models
@@ -13,8 +12,6 @@ namespace IdokladSdk.Authentication.Models
 
         internal string ApplicationId { get; set; }
 
-        internal Uri ClientCredentialsIdentityServerTokenUrl { get; set; }
-
         internal override HttpRequestMessage ToHttpRequestMessage()
         {
             var postData = new List<KeyValuePair<string, string>>
@@ -26,7 +23,7 @@ namespace IdokladSdk.Authentication.Models
                 new KeyValuePair<string, string>("scope", Scope),
             };
 
-            return new HttpRequestMessage(HttpMethod.Post, ClientCredentialsIdentityServerTokenUrl) { Content = new FormUrlEncodedContent(postData) };
+            return new HttpRequestMessage(HttpMethod.Post, IdentityServerTokenUrl) { Content = new FormUrlEncodedContent(postData) };
         }
     }
 }
