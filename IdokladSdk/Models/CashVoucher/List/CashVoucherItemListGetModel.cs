@@ -1,4 +1,5 @@
-﻿using IdokladSdk.Enums;
+﻿using System;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.CashVoucher
@@ -11,7 +12,18 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets item amount.
         /// </summary>
+        [Obsolete]
         public decimal Amount { get; set; }
+
+        /// <summary>
+        /// Gets or sets custom VAT rate.
+        /// </summary>
+        public decimal? CustomVat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the item has a custom VAT value.
+        /// </summary>
+        public bool HasCustomVat { get; set; }
 
         /// <inheritdoc/>
         public int Id { get; set; }
@@ -19,6 +31,7 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets issued tax document id.
         /// </summary>
+        [Obsolete("Moved to Document header")]
         public int? IssuedTaxDocumentId { get; set; }
 
         /// <summary>
@@ -44,7 +57,13 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets pairing status.
         /// </summary>
-        public PairingStatus Status { get; set; }
+        [Obsolete]
+        public CashVoucherDependencyStatus Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets VAT classification code.
+        /// </summary>
+        public int? VatCodeId { get; set; }
 
         /// <summary>
         /// Gets or sets VAT rate amount.

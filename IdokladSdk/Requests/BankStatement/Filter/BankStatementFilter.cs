@@ -1,4 +1,5 @@
 ﻿using System;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.BankStatement;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
@@ -20,10 +21,22 @@ namespace IdokladSdk.Requests.BankStatement.Filter
         public FilterItem<int> NumericSequenceId { get; set; } = new FilterItem<int>(nameof(BankStatementListGetModel.NumericSequenceId));
 
         /// <inheritdoc cref="BankStatementListGetModel.PeriodDateFrom"/>
-        public CompareFilterItem<DateTime> PeriodDateFrom { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.PeriodDateFrom));
+        public CompareFilterItem<DateTime> PeriodDateFrom { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.DateOfTransaction));
 
         /// <inheritdoc cref="BankStatementListGetModel.PeriodDateTo"/>
-        public CompareFilterItem<DateTime> PeriodDateTo { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.PeriodDateTo));
+        public CompareFilterItem<DateTime> PeriodDateTo { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.DateOfTransaction));
+
+        /// <inheritdoc cref="BankStatementListGetModel.Status"/>
+        public CompareFilterItem<BankStatementPairingStatus> Status { get; set; } = new CompareFilterItem<BankStatementPairingStatus>(nameof(BankStatementListGetModel.Status));
+
+        /// <inheritdoc cref="BankStatementListGetModel.MovementType"/>
+        public CompareFilterItem<MovementType> MovementType { get; set; } = new CompareFilterItem<MovementType>(nameof(BankStatementListGetModel.MovementType));
+
+        /// <inheritdoc cref="BankStatementListGetModel.DateOfTransaction"/>
+        public CompareFilterItem<DateTime> DateOfTransaction { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.DateOfTransaction));
+
+        /// <inheritdoc cref="BankStatementListGetModel.PartnerName"/>
+        public CompareFilterItem<string> PartnerName { get; set; } = new CompareFilterItem<string>(nameof(BankStatementListGetModel.PartnerName));
 
         /// <summary>
         /// Gets or sets numeric tag ids.

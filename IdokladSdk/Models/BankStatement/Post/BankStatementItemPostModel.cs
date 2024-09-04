@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.Base;
 
-namespace IdokladSdk.Models.CashVoucher
+namespace IdokladSdk.Models.BankStatement.Post
 {
     /// <summary>
-    /// Item post model for CashVoucherItem.
+    /// Item post model for BankStatementItem.
     /// </summary>
-    public class CashVoucherItemPostModel : ValidatableModel
+    public class BankStatementItemPostModel
     {
         /// <summary>
         /// Gets or sets custom VAT rate.
@@ -15,20 +14,19 @@ namespace IdokladSdk.Models.CashVoucher
         public decimal? CustomVat { get; set; }
 
         /// <summary>
-        /// Gets or sets item name.
+        /// Gets or sets Item name.
         /// </summary>
-        [Required]
         [StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets unit price.
+        /// Gets or sets Unit price.
         /// </summary>
         [Required]
         public decimal Price { get; set; }
 
         /// <summary>
-        /// Gets or sets price type.
+        /// Gets or sets Price type.
         /// </summary>
         [Required]
         public PriceTypeWithoutOnlyBase PriceType { get; set; }
@@ -39,7 +37,7 @@ namespace IdokladSdk.Models.CashVoucher
         public int? VatCodeId { get; set; }
 
         /// <summary>
-        /// Gets or sets vAT rate type.
+        /// Gets or sets VAT rate type.
         /// </summary>
         [Required]
         public VatRateType VatRateType { get; set; }

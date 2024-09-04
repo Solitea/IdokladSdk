@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Models.RegisteredSale;
 
@@ -40,6 +41,7 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets responsibility for handling of electronic records of sales.
         /// </summary>
+        [Obsolete]
         public EetResponsibility EetResponsibility { get; set; }
 
         /// <summary>
@@ -68,11 +70,13 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets id of paired invoice.
         /// </summary>
+        [Obsolete("Moved to PairedDocument ")]
         public int? InvoiceId { get; set; }
 
         /// <summary>
         /// Gets or sets type of paired invoice.
         /// </summary>
+        [Obsolete("Moved to PairedDocument ")]
         public InvoiceType? InvoiceType { get; set; }
 
         /// <summary>
@@ -86,8 +90,14 @@ namespace IdokladSdk.Models.CashVoucher
         public bool IsIncomeTax { get; set; }
 
         /// <summary>
+        /// Gets or sets issued tax document id.
+        /// </summary>
+        public int? IssuedTaxDocumentId { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether flag for summary cash vouchers from sales receipts.
         /// </summary>
+        [Obsolete]
         public bool IsSummarySalesReceipt { get; set; }
 
         /// <summary>
@@ -111,7 +121,12 @@ namespace IdokladSdk.Models.CashVoucher
         public DocumentAddressModel MyAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets document name or descritpion.
+        /// Gets or sets Paired document.
+        /// </summary>
+        public PairedDocumentGetModel PairedDocument { get; set; }
+
+        /// <summary>
+        /// Gets or sets document name or description.
         /// </summary>
         public string Name { get; set; }
 
@@ -139,7 +154,13 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets registered sale.
         /// </summary>
+        [Obsolete]
         public RegisteredSaleListGetModel RegisteredSale { get; set; }
+
+        /// <summary>
+        /// Gets or sets status.
+        /// </summary>
+        public CashVoucherDependencyStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets tags.
