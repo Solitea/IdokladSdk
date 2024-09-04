@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.CashVoucher.Recount
 {
     /// <summary>
     /// CashVoucherItemRecountPostModel.
     /// </summary>
-    public class CashVoucherItemRecountPostModel
+    public class CashVoucherItemRecountPostModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets Custom VAT rate.

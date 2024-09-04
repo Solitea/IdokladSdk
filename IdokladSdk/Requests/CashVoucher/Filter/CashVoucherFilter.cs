@@ -2,6 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
@@ -35,6 +36,9 @@ namespace IdokladSdk.Requests.CashVoucher.Filter
 
         /// <inheritdoc cref="CashVoucherListGetModel.DocumentNumber"/>
         public CompareFilterItem<string> DocumentNumber { get; set; } = new CompareFilterItem<string>(nameof(CashVoucherListGetModel.DocumentNumber));
+
+        /// <inheritdoc cref="DocumentAddressModel.NickName"/>
+        public ContainFilterItem<string> PartnerName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));
 
         /// <inheritdoc cref="CashVoucherListGetModel.Status"/>
         public CompareFilterItem<CashVoucherDependencyStatus> Status { get; set; } = new CompareFilterItem<CashVoucherDependencyStatus>(nameof(CashVoucherListGetModel.Status));

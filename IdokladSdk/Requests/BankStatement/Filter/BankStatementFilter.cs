@@ -36,7 +36,7 @@ namespace IdokladSdk.Requests.BankStatement.Filter
         public CompareFilterItem<DateTime> DateOfTransaction { get; set; } = new CompareFilterItem<DateTime>(nameof(BankStatementListGetModel.DateOfTransaction));
 
         /// <inheritdoc cref="BankStatementListGetModel.PartnerName"/>
-        public CompareFilterItem<string> PartnerName { get; set; } = new CompareFilterItem<string>(nameof(BankStatementListGetModel.PartnerName));
+        public ContainFilterItem<string> PartnerName { get; set; } = new ContainFilterItem<string>(nameof(BankStatementListGetModel.PartnerName));
 
         /// <summary>
         /// Gets or sets numeric tag ids.
