@@ -68,7 +68,6 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             Assert.That(defaultConfiguration.IdentityServerTokenUrl.ToString(), Is.Not.EqualTo(api.ApiContext.Configuration.IdentityServerTokenUrl.ToString()));
             Assert.That(apiUrl, Is.EqualTo(api.ApiContext.Configuration.ApiUrl.ToString()));
             Assert.That(identityServerTokenUrl, Is.EqualTo(api.ApiContext.Configuration.IdentityServerTokenUrl.ToString()));
-            //Assert.That(clientCredentialsIdentityServerTokenUrl, Is.EqualTo(api.ApiContext.Configuration.ClientCredentialsServerTokenUrl.ToString()));
         }
 
         [TestCase(Language.Cz, "cs-CZ")]
