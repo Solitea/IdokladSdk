@@ -49,7 +49,7 @@ namespace IdokladSdk.Builders
             return AddCustomApiUrls(options =>
             {
                 options.ApiUrl = apiUrl;
-                options.IdentityServerTokenUrl = identityServerUrl;
+                options.IdentityServerUrl = identityServerUrl;
             });
         }
 
@@ -58,11 +58,13 @@ namespace IdokladSdk.Builders
         /// </summary>
         /// <param name="clientId">ClientId.</param>
         /// <param name="clientSecret">ClientSecret.</param>
+        /// <param name="applicationId">ApplicationId.</param>
         /// <returns>Current instance of DokladApiBuilder.</returns>
-        public DokladApiBuilder AddClientCredentialsAuthentication(string clientId, string clientSecret)
+        public DokladApiBuilder AddClientCredentialsAuthentication(string clientId, string clientSecret, string applicationId)
         {
             return AddAuthentication(options =>
             {
+                options.ApplicationId = applicationId;
                 options.ClientId = clientId;
                 options.ClientSecret = clientSecret;
                 options.GrantType = GrantType.ClientCredentials;
@@ -163,7 +165,7 @@ namespace IdokladSdk.Builders
                         ? new AuthorizationCodeAuthentication(authOptions.ClientId, authOptions.ClientSecret, authOptions.RefreshToken)
                         : new AuthorizationCodeAuthentication(authOptions.ClientId, authOptions.ClientSecret, authOptions.AuthorizationCode, authOptions.RedirectUri);
                 case GrantType.ClientCredentials:
-                    return new ClientCredentialsAuthentication(authOptions.ClientId, authOptions.ClientSecret);
+                    return new ClientCredentialsAuthentication(authOptions.ClientId, authOptions.ClientSecret, authOptions.ApplicationId);
                 case GrantType.Pin:
                     return new PinAuthentication(authOptions.ClientId, authOptions.ClientSecret, authOptions.Pin, authOptions.RefreshToken);
                 default:

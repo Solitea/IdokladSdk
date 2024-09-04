@@ -55,7 +55,7 @@
         <NoWarn>1701;1702;CA1308;CA1716;CA1724;CA1822</NoWarn>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="IbanNet" Version="5.14.0" />
+        <PackageReference Include="IbanNet" Version="5.15.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

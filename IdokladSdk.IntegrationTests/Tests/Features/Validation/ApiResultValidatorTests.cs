@@ -49,8 +49,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
         {
             var invalidApiUrl = Configuration.Urls.ApiUrl + "/dev/v3";
             var api = new DokladApiBuilder("Tests", "1.0")
-                .AddClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret)
-                .AddCustomApiUrls(invalidApiUrl, Configuration.Urls.IdentityServerTokenUrl)
+                .AddClientCredentialsAuthentication(Configuration.ClientCredentials.ClientId, Configuration.ClientCredentials.ClientSecret, Configuration.ClientCredentials.ApplicationId)
+                .AddCustomApiUrls(invalidApiUrl, Configuration.Urls.IdentityServerUrl)
                 .AddHttpClient(HttpClient)
                 .Build();
 

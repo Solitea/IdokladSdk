@@ -6,6 +6,8 @@
 
         public const string RequiredAuthenticationCode = "Authentication code has to be specified.";
 
+        public const string RequiredApplicationId = "Application Id has to be specified.";
+
         public const string RequiredClientId = "Client Id has to be specified.";
 
         public const string RequiredClientSecret = "Client secret has to be specified.";

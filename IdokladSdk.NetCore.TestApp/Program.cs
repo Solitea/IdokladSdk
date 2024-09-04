@@ -13,6 +13,7 @@ namespace IdokladSdk.NetCore.TestApp
 {
     internal class Program
     {
+        private static string _applicationId;
         private static string _clientId;
         private static string _clientSecret;
 
@@ -63,7 +64,7 @@ namespace IdokladSdk.NetCore.TestApp
             var httpClient = httpClientFactory.CreateClient("IdokladApi");
 
             _api = new DokladApiBuilder("Test", "1.0")
-                .AddClientCredentialsAuthentication(_clientId, _clientSecret)
+                .AddClientCredentialsAuthentication(_clientId, _clientSecret, _applicationId)
                 .AddHttpClient(httpClient)
                 .Build();
         }
@@ -111,8 +112,10 @@ namespace IdokladSdk.NetCore.TestApp
         /// {
         ///    "ClientId": "7048b683-520c-43c9-b466-792a8a3b47ed",
         ///    "ClientSecret": "1357dee5-439c-4074-a701-172129401ec3"
+        ///    "ApplicationId": "99B94F0B-F056-4002-8D73-5B70A04E1B8D"
         /// }
         /// ClientId and ClientSecret have to be valid API keys (from User setting in iDoklad).
+        /// ApplicationId has to be a valid Id for a registered application (from ApplicationId in Developer portal).
         /// </remarks>
         private static void LoadConfiguration()
         {
@@ -121,6 +124,7 @@ namespace IdokladSdk.NetCore.TestApp
                 .AddJsonFile("localsettings.json")
                 .Build();
 
+            _applicationId = configuration.GetValue<string>("ApplicationId");
             _clientId = configuration.GetValue<string>("ClientId");
             _clientSecret = configuration.GetValue<string>("ClientSecret");
         }

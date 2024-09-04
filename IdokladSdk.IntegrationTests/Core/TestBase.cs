@@ -25,7 +25,7 @@ namespace IdokladSdk.IntegrationTests.Core
         }
 
         public void InitDokladApi<TAuthProvider>(Action<ApiResult> apiResultHandler = null, Action<ApiBatchResult> apiBatchResultHandler = null)
-         where TAuthProvider : IAuthorizationProvider, new()
+            where TAuthProvider : IAuthorizationProvider, new()
         {
             LoadConfiguration();
             HttpClient = new HttpClient();
@@ -63,7 +63,7 @@ namespace IdokladSdk.IntegrationTests.Core
         {
             return new DokladApiTestBuilder("Tests", "1.0")
                 .AddAuthorizationProvider<TAuthProvider>(Configuration)
-                .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl)
+                .AddCustomApiUrls(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerUrl)
                 .AddHttpClient(HttpClient);
         }
     }

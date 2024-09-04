@@ -11,6 +11,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
     [TestFixture]
     public class DokladApiBuilderTests
     {
+        private const string ApplicationId = "applicationId";
         private const string AppName = "test";
         private const string AppVersion = "1.0";
         private const string ClientId = "clientId";
@@ -39,7 +40,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             // Arrange
             var defaultConfiguration = new DokladConfiguration();
             var api = new DokladApiBuilder(AppName, AppVersion)
-                .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret, ApplicationId)
                 .AddHttpClient(_httpClient)
                 .Build();
 
@@ -54,9 +55,10 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             // Arrange
             var apiUrl = $"https://customapi.url/{Constants.ApiVersion}";
             var identityServerUrl = "https://customidentityserver.url/";
+            var identityServerTokenUrl = "https://customidentityserver.url/server/v2/connect/token";
             var defaultConfiguration = new DokladConfiguration();
             var api = new DokladApiBuilder(AppName, AppVersion)
-                .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret, ApplicationId)
                 .AddCustomApiUrls(apiUrl, identityServerUrl)
                 .AddHttpClient(_httpClient)
                 .Build();
@@ -65,7 +67,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             Assert.That(defaultConfiguration.ApiUrl.ToString(), Is.Not.EqualTo(api.ApiContext.Configuration.ApiUrl.ToString()));
             Assert.That(defaultConfiguration.IdentityServerTokenUrl.ToString(), Is.Not.EqualTo(api.ApiContext.Configuration.IdentityServerTokenUrl.ToString()));
             Assert.That(apiUrl, Is.EqualTo(api.ApiContext.Configuration.ApiUrl.ToString()));
-            Assert.That(identityServerUrl, Is.EqualTo(api.ApiContext.Configuration.IdentityServerTokenUrl.ToString()));
+            Assert.That(identityServerTokenUrl, Is.EqualTo(api.ApiContext.Configuration.IdentityServerTokenUrl.ToString()));
         }
 
         [TestCase(Language.Cz, "cs-CZ")]
@@ -76,7 +78,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
         {
             // Arrange
             var api = new DokladApiBuilder(AppName, AppVersion)
-                .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret, ApplicationId)
                 .AddApiContextOptions(options =>
                 {
                     options.Language = language;
@@ -92,12 +94,12 @@ namespace IdokladSdk.UnitTests.Tests.Builder
         public void ApiContext_ResultHandlers_CorrectllySet()
         {
             // Arrange
-            Action<ApiResult> apiResultHandler = (ApiResult result) => { };
-            Action<ApiResult> apiResultHandler2 = (ApiResult result) => { };
-            Action<ApiBatchResult> apiBatchResultHandler = (ApiBatchResult result) => { };
+            Action<ApiResult> apiResultHandler = result => { };
+            Action<ApiResult> apiResultHandler2 = result => { };
+            Action<ApiBatchResult> apiBatchResultHandler = result => { };
 
             var api = new DokladApiBuilder(AppName, AppVersion)
-                .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret, ApplicationId)
                 .AddApiContextOptions(options =>
                 {
                     options.ApiResultHandler = apiResultHandler;
@@ -117,12 +119,12 @@ namespace IdokladSdk.UnitTests.Tests.Builder
         {
             // Arrange
             var builder = new DokladApiBuilder(AppName, AppVersion)
-                .AddClientCredentialsAuthentication(ClientId, ClientSecret);
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret, ApplicationId);
             TestDelegate action = () => builder.Build();
 
             // Assert
             Assert.That(action, Throws.Exception.AssignableTo<IdokladSdkException>()
-                                .With.Message.EqualTo("Missing HttpClient instance. Use method AddHttpClient to add new instance."));
+                .With.Message.EqualTo("Missing HttpClient instance. Use method AddHttpClient to add new instance."));
         }
 
         [Test]
@@ -134,7 +136,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                 BaseAddress = new Uri("https://api.idoklad.cz")
             };
             var builder = new DokladApiBuilder(AppName, AppVersion)
-                .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret, ApplicationId)
                 .AddHttpClient(httpclient);
             TestDelegate action = () => builder.Build();
 
@@ -152,7 +154,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
                 BaseAddress = new Uri("https://api.idoklad.cz")
             };
             var builder = new DokladApiBuilder(AppName, AppVersion)
-                .AddClientCredentialsAuthentication(ClientId, ClientSecret)
+                .AddClientCredentialsAuthentication(ClientId, ClientSecret, ApplicationId)
                 .AddHttpClient(httpclient);
             TestDelegate action = () => builder.Build();
 

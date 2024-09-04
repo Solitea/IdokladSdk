@@ -20,7 +20,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Authentication
         {
             // Arrange
             var auth = new PinAuthentication(Configuration.PinFlow.ClientId, Configuration.PinFlow.ClientSecret, Configuration.PinFlow.Pin, Configuration.PinFlow.RefreshToken);
-            var config = new DokladConfiguration(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerTokenUrl);
+            var config = new DokladConfiguration(Configuration.Urls.ApiUrl, Configuration.Urls.IdentityServerUrl);
             auth.Configuration = config;
 
             // Act

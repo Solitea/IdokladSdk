@@ -14,13 +14,15 @@ namespace IdokladSdk.Authentication
     {
         private readonly string _clientId;
         private readonly string _clientSecret;
+        private readonly string _applicationId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientCredentialsAuthentication"/> class.
         /// </summary>
         /// <param name="clientId">ClientId from iDoklad.</param>
         /// <param name="clientSecret">ClientSecret from iDoklad.</param>
-        public ClientCredentialsAuthentication(string clientId, string clientSecret)
+        /// <param name="applicationId">ApplicationId from Developer portal.</param>
+        public ClientCredentialsAuthentication(string clientId, string clientSecret, string applicationId)
         {
             if (string.IsNullOrWhiteSpace(clientId))
             {
@@ -32,8 +34,14 @@ namespace IdokladSdk.Authentication
                 throw new ArgumentException(AuthenticationMessageConstants.RequiredClientSecret, nameof(clientSecret));
             }
 
+            if (string.IsNullOrWhiteSpace(applicationId))
+            {
+                throw new ArgumentException(AuthenticationMessageConstants.RequiredApplicationId, nameof(applicationId));
+            }
+
             _clientId = clientId;
             _clientSecret = clientSecret;
+            _applicationId = applicationId;
         }
 
         /// <inheritdoc/>
@@ -72,9 +80,10 @@ namespace IdokladSdk.Authentication
         {
             return new ClientCredentialsTokenRequest
             {
+                ApplicationId = _applicationId,
                 ClientId = _clientId,
                 ClientSecret = _clientSecret,
-                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl
+                IdentityServerTokenUrl = Configuration.IdentityServerTokenUrl,
             };
         }
     }
