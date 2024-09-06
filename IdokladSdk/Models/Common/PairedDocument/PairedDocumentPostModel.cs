@@ -17,7 +17,6 @@ namespace IdokladSdk.Models.Common.PairedDocument
         /// <summary>
         /// Gets or sets Document Type.
         /// </summary>
-        [RequiredNonDefault]
         public PairedDocumentType DocumentType { get; set; }
     }
 }
