@@ -48,6 +48,7 @@ namespace IdokladSdk
         private StockMovementClient _stockMovementClient;
         private SystemClient _systemClient;
         private TagClient _tagClient;
+        private UnpairedDocumentClient _unpairedDocumentClient;
         private VatCodeClient _vatCodeClient;
         private VatRateClient _vatRateClient;
         private VatReverseChargeCodeClient _vatReverseChargeCodeClient;
@@ -286,6 +287,12 @@ namespace IdokladSdk
         /// Gets system data.
         /// </summary>
         public SystemClient SystemClient => _systemClient ?? (_systemClient = new SystemClient(ApiContext));
+
+        /// <summary>
+        /// Gets unpaired documents.
+        /// </summary>
+        public UnpairedDocumentClient UnpairedDocumentClient =>
+            _unpairedDocumentClient ?? (_unpairedDocumentClient = new UnpairedDocumentClient(ApiContext));
 
         /// <summary>
         /// Gets tags.

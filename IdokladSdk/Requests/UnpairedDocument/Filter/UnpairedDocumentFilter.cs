@@ -1,12 +1,13 @@
 ﻿using System;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.UnpairedDocument.List;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.UnpairedDocument.Filter
 {
     /// <inheritdoc cref="UnpairedDocumentListGetModel"/>>
-    public class UnpairedDocumentFilter
+    public class UnpairedDocumentFilter : IdFilter
     {
         /// <inheritdoc cref="UnpairedDocumentListGetModel.VariableSymbol"/>
         public ContainFilterItem<string> VariableSymbol { get; set; } = new ContainFilterItem<string>(nameof(UnpairedDocumentListGetModel.VariableSymbol));

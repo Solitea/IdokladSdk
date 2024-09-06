@@ -1,8 +1,8 @@
 ﻿using IdokladSdk.Clients;
 using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.Requests.CashVoucher.Filter;
+using IdokladSdk.Requests.CashVoucher.Sort;
 using IdokladSdk.Requests.Core;
-using IdokladSdk.Requests.Core.Modifiers.Sort.BasicSorts;
 
 namespace IdokladSdk.Requests.CashVoucher
 {
@@ -10,7 +10,7 @@ namespace IdokladSdk.Requests.CashVoucher
     /// List of CashVouchers.
     /// </summary>
     public class CashVoucherList :
-        BaseList<CashVoucherList, CashVoucherClient, CashVoucherListGetModel, CashVoucherFilter, IdSort>
+        BaseList<CashVoucherList, CashVoucherClient, CashVoucherListGetModel, CashVoucherFilter, CashVoucherSort>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CashVoucherList"/> class.

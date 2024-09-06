@@ -1,14 +1,14 @@
 ﻿using IdokladSdk.Clients;
 using IdokladSdk.Enums;
-using IdokladSdk.Requests.BankStatement.Filter;
-using IdokladSdk.Requests.Core.Modifiers.Sort.BasicSorts;
+using IdokladSdk.Requests.Report.BankStatement.Filter;
+using IdokladSdk.Requests.Report.BankStatement.Sort;
 
 namespace IdokladSdk.Requests.Report.BankStatement
 {
     /// <summary>
     /// BankStatementReportList.
     /// </summary>
-    public class BankStatementReportList : BaseReportList<BankStatementReportList, ReportClient, string, BankStatementFilter, IdSort>
+    public class BankStatementReportList : BaseReportList<BankStatementReportList, ReportClient, string, BankStatementReportFilter, BankStatementReportSort>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BankStatementReportList"/> class.

@@ -90,7 +90,7 @@ namespace IdokladSdk.Clients
         /// <returns><see cref="ApiResult{TData}"/> instance containing <c>true</c> if pairing was successful, otherwise <c>false</c>.</returns>
         public Task<ApiResult<bool>> PairAsync(CashVoucherPairPostModel model, CancellationToken cancellationToken = default)
         {
-            var resource = $"{ResourceUrl}/Pair";
+            var resource = $"{ResourceUrl}/PairWithDocument";
             return PostAsync<CashVoucherPairPostModel, bool>(resource, model, cancellationToken);
         }
 

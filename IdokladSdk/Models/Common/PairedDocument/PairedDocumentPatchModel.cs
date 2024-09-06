@@ -1,5 +1,6 @@
 ﻿using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Common.PairedDocument
 {

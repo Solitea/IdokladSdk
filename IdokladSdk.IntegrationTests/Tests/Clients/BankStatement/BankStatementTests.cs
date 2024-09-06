@@ -187,7 +187,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
                 {
                     new BankStatementItemRecountPostModel
                     {
-                        Amount = 1,
                         Id = 1,
                         UnitPrice = 100,
                         PriceType = PriceType.WithoutVat,

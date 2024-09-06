@@ -20,7 +20,7 @@ namespace IdokladSdk.Clients
         }
 
         /// <inheritdoc />
-        public override string ResourceUrl => "/UnpairedDocument";
+        public override string ResourceUrl => "/UnpairedDocuments";
 
         /// <summary>
         /// List of unpaired document. Returns an instance which allows operations on a list of documents (filtering, sorting, etc.)
