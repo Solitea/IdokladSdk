@@ -10,7 +10,7 @@ namespace IdokladSdk.Models.BankStatement.Patch
     /// <summary>
     /// BankStatementPatchModel.
     /// </summary>
-    public class BankStatementPatchModel : ValidatableModel
+    public class BankStatementPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets Bank account id.

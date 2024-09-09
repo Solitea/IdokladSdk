@@ -8,12 +8,18 @@ namespace IdokladSdk.Models.CashVoucher
     /// <summary>
     /// Patch model for CashVoucherItem.
     /// </summary>
-    public class CashVoucherItemPatchModel : ValidatableModel
+    public class CashVoucherItemPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets Custom VAT rate.
         /// </summary>
         public decimal? CustomVat { get; set; }
+
+        /// <summary>
+        /// Gets or sets The entity's Id.
+        /// </summary>
+        [Required]
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets item name.
