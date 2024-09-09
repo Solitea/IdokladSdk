@@ -8,7 +8,7 @@ namespace IdokladSdk.Models.BankStatement.Patch
     /// <summary>
     /// Patch model for BankStatementItem.
     /// </summary>
-    public class BankStatementItemPatchModel : ValidatableModel
+    public class BankStatementItemPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets Custom VAT rate.
