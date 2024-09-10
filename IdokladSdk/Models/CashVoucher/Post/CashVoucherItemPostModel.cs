@@ -17,7 +17,7 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets item name.
         /// </summary>
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [StringLength(200)]
         public string Name { get; set; }
 
