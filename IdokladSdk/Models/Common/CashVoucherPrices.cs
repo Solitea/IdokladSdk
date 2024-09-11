@@ -5,7 +5,7 @@ namespace IdokladSdk.Models.Common
     /// <summary>
     /// Cash voucher prices.
     /// </summary>
-    public class CashVoucherPrices
+    public class CashVoucherPrices : Prices
     {
         /// <summary>
         /// Gets or sets vat rate summary.
