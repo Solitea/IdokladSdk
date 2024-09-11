@@ -204,5 +204,35 @@
         /// Update is not allowed. Cannot be paired with another document.
         /// </summary>
         UpdateCashVoucherFromSalesReceipt = 136,
+
+        /// <summary>
+        /// Pairing is not allowed. Proforma Invoice is already accounted.
+        /// </summary>
+        PairRestricted_ProformaAlreadyAccounted = 137,
+
+        /// <summary>
+        /// Pairing is not allowed. Proforma Invoice has Issued Tax Document.
+        /// </summary>
+        PairRestricted_ProformaHasTaxDocuments = 138,
+
+        /// <summary>
+        /// Pairing is not allowed. Document is already paid.
+        /// </summary>
+        PairRestricted_DocumentIsPaid = 139,
+
+        /// <summary>
+        /// Pairing is not allowed. Document is deleted.
+        /// </summary>
+        PairRestricted_DocumentIsDeleted = 140,
+
+        /// <summary>
+        /// Pairing is not allowed. Document has different currency other than cash register or bank account.
+        /// </summary>
+        PairRestricted_DocumentHasDifferentCurrency = 141,
+
+        /// <summary>
+        /// Only certain properties are allowed to be patched for this model.
+        /// </summary>
+        UpdateRestrictedNotAllowedProperties = 142,
     }
 }
