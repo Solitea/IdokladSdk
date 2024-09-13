@@ -32,7 +32,6 @@ namespace IdokladSdk.Models.BankStatement
         /// Gets or sets account balance.
         /// </summary>
         [Obsolete]
-        [Required]
         public decimal Balance { get; set; }
 
         /// <summary>
@@ -84,6 +83,7 @@ namespace IdokladSdk.Models.BankStatement
         /// <summary>
         /// Gets or sets the partner's account number.
         /// </summary>
+        [BankAccountNumber]
         [StringLength(50)]
         public string PartnerAccountNumber { get; set; }
 

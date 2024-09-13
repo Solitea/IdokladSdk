@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher
 {
@@ -36,6 +37,7 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets VAT classification code.
         /// </summary>
+        [NullableForeignKey]
         public int? VatCodeId { get; set; }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.BankStatement.Patch
@@ -13,12 +14,12 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// <summary>
         /// Gets or sets Custom VAT rate.
         /// </summary>
-        public decimal? CustomVat { get; set; }
+        public NullableProperty<decimal> CustomVat { get; set; }
 
         /// <summary>
         /// Gets or sets The entity's Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int Id { get; set; }
 
         /// <summary>
@@ -46,6 +47,7 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// <summary>
         /// Gets or sets Vat code id.
         /// </summary>
-        public int? VatCodeId { get; set; }
+        [NullableForeignKey]
+        public NullableProperty<int> VatCodeId { get; set; }
     }
 }

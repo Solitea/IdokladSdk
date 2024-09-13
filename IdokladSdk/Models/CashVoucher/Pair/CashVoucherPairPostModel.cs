@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher.Pair
 {
@@ -11,7 +12,7 @@ namespace IdokladSdk.Models.CashVoucher.Pair
         /// <summary>
         /// Gets or sets cash voucher id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int CashVoucherId { get; set; }
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace IdokladSdk.Models.CashVoucher.Pair
         /// <summary>
         /// Gets or sets Document Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int DocumentId { get; set; }
     }
 }

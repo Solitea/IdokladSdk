@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.BankStatement.Post
 {
@@ -34,6 +35,7 @@ namespace IdokladSdk.Models.BankStatement.Post
         /// <summary>
         /// Gets or sets VAT classification code.
         /// </summary>
+        [NullableForeignKey]
         public int? VatCodeId { get; set; }
 
         /// <summary>
