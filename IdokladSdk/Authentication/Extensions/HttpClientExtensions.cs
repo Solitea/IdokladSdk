@@ -35,6 +35,21 @@ namespace IdokladSdk.Authentication.Extensions
 
         private static async Task<Tokenizer> ProcessResponseAsync(HttpResponseMessage response, GrantType grantType)
         {
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var tokenizer = JsonConvert.DeserializeObject<Tokenizer>(content);
+                tokenizer.GrantType = grantType;
+
+                if (string.IsNullOrEmpty(tokenizer.AccessToken))
+                {
+                    var authResponse = JsonConvert.DeserializeObject<AuthenticationError>(content);
+                    throw new IdokladAuthenticationException(authResponse);
+                }
+
+                return tokenizer;
+            }
+
             if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
             {
                 throw new IdokladUnavailableException(response);
@@ -45,17 +60,13 @@ namespace IdokladSdk.Authentication.Extensions
                 throw new IdokladAuthorizationException(response);
             }
 
-            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var tokenizer = JsonConvert.DeserializeObject<Tokenizer>(content);
-            tokenizer.GrantType = grantType;
-
-            if (string.IsNullOrEmpty(tokenizer.AccessToken))
+            if (response.StatusCode == HttpStatusCode.BadRequest)
             {
-                var authResponse = JsonConvert.DeserializeObject<AuthenticationError>(content);
-                throw new IdokladAuthenticationException(authResponse);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                throw new IdokladAuthenticationException(content);
             }
 
-            return tokenizer;
+            throw new IdokladAuthenticationException();
         }
     }
 }

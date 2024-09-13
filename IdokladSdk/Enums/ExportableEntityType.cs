@@ -8,61 +8,56 @@
         /// <summary>
         /// Cash voucher
         /// </summary>
-        CashVoucher,
+        CashVoucher = 0,
 
         /// <summary>
         /// Contact
         /// </summary>
-        Contact,
+        Contact = 1,
 
         /// <summary>
         /// Credit node
         /// </summary>
-        CreditNote,
+        CreditNote = 2,
 
         /// <summary>
         /// Issued invoice
         /// </summary>
-        IssuedInvoice,
+        IssuedInvoice = 3,
 
         /// <summary>
         /// Issued invoice payment
         /// </summary>
-        IssuedInvoicePayment,
+        IssuedInvoicePayment = 4,
 
         /// <summary>
         /// Received invoice payment
         /// </summary>
-        ReceivedInvoicePayment,
+        ReceivedInvoicePayment = 5,
 
         /// <summary>
         /// Proforma invoice
         /// </summary>
-        ProformaInvoice,
+        ProformaInvoice = 6,
 
         /// <summary>
         /// Received invoice
         /// </summary>
-        ReceivedInvoice,
+        ReceivedInvoice = 7,
 
         /// <summary>
         /// Sales receipt
         /// </summary>
-        SalesReceipt,
-
-        /// <summary>
-        /// Document address
-        /// </summary>
-        DocumentAddress,
-
+        SalesReceipt = 8,
+        
         /// <summary>
         /// Item of a price list
         /// </summary>
-        PriceListItem,
+        PriceListItem = 10,
 
         /// <summary>
         /// Issued tax document
         /// </summary>
-        IssuedTaxDocument
+        IssuedTaxDocument = 11,
     }
 }
