@@ -16,12 +16,13 @@ namespace IdokladSdk.Models.BankStatement.Post
         /// <summary>
         /// Gets or sets Bank account id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int BankAccountId { get; set; }
 
         /// <summary>
         /// Gets or sets Constant symbol Id.
         /// </summary>
+        [NullableForeignKey]
         public int? ConstantSymbolId { get; set; }
 
         /// <summary>
@@ -84,6 +85,7 @@ namespace IdokladSdk.Models.BankStatement.Post
         /// <summary>
         /// Gets or sets The partner's account number.
         /// </summary>
+        [BankAccountNumber]
         [StringLength(50)]
         public string PartnerAccountNumber { get; set; }
 
@@ -102,6 +104,7 @@ namespace IdokladSdk.Models.BankStatement.Post
         /// <summary>
         /// Gets or sets Id of the partner's contact.
         /// </summary>
+        [NullableForeignKey]
         public int? PartnerId { get; set; }
 
         /// <summary>

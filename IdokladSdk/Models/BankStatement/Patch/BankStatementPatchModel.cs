@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Validation.Attributes;
 
@@ -15,12 +16,14 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// <summary>
         /// Gets or sets Bank account id.
         /// </summary>
+        [NullableForeignKey]
         public int? BankAccountId { get; set; }
 
         /// <summary>
         /// Gets or sets Constant symbol Id.
         /// </summary>
-        public int? ConstantSymbolId { get; set; }
+        [NullableForeignKey]
+        public NullableProperty<int> ConstantSymbolId { get; set; }
 
         /// <summary>
         /// Gets or sets Description.
@@ -46,7 +49,7 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// <summary>
         /// Gets or sets The entity's Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int Id { get; set; }
 
         /// <summary>
@@ -67,6 +70,7 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// <summary>
         /// Gets or sets The partner's account number.
         /// </summary>
+        [BankAccountNumber]
         [StringLength(50)]
         public string PartnerAccountNumber { get; set; }
 
@@ -85,7 +89,8 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// <summary>
         /// Gets or sets Supplier contact id.
         /// </summary>
-        public int? PartnerId { get; set; }
+        [NullableForeignKey]
+        public NullableProperty<int> PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets Specific symbol.

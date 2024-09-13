@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.BankStatement.Pair
 {
@@ -11,7 +12,7 @@ namespace IdokladSdk.Models.BankStatement.Pair
         /// <summary>
         /// Gets or sets Bank Statement Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int BankStatementId { get; set; }
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace IdokladSdk.Models.BankStatement.Pair
         /// <summary>
         /// Gets or sets Document Id.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int DocumentId { get; set; }
     }
 }
