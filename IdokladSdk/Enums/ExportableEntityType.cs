@@ -1,4 +1,4 @@
-﻿namespace IdokladSdk.Enums
+namespace IdokladSdk.Enums
 {
     /// <summary>
     /// Set of types of exportable entitites.
@@ -49,7 +49,7 @@
         /// Sales receipt
         /// </summary>
         SalesReceipt = 8,
-        
+
         /// <summary>
         /// Item of a price list
         /// </summary>
