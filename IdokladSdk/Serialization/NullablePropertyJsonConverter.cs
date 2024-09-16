@@ -20,7 +20,7 @@ namespace IdokladSdk.Clients
 
             var nullablePropertyType = value.GetType();
             var nullablePropertyValue = nullablePropertyType.GetProperty(nameof(NullableProperty<int>.Value)).GetValue(value);
-
+            
             if (nullablePropertyValue != null)
             {
                 JToken.FromObject(nullablePropertyValue).WriteTo(writer);
