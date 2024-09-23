@@ -19,7 +19,6 @@ namespace IdokladSdk.Models.CashVoucher
         /// <summary>
         /// Gets or sets The entity's Id.
         /// </summary>
-        [Required]
         public int Id { get; set; }
 
         /// <summary>
