@@ -19,7 +19,6 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// <summary>
         /// Gets or sets The entity's Id.
         /// </summary>
-        [RequiredNonDefault]
         public int Id { get; set; }
 
         /// <summary>
