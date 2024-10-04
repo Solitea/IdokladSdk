@@ -92,7 +92,7 @@ namespace IdokladSdk.Clients
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Return bank mail notifications.</returns>
         public Task<ApiResult<Page<BankMailNotificationHistoryGetModel>>> NotificationsAsync(
-            int? previousNotificationId = null,
+            long? previousNotificationId = null,
             CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/BankMailHistory";

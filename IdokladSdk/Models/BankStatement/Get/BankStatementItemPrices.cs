@@ -1,11 +1,12 @@
 ﻿using System;
+using IdokladSdk.Models.Common;
 
 namespace IdokladSdk.Models.BankStatement
 {
     /// <summary>
     /// BankStatementItemPrices.
     /// </summary>
-    public class BankStatementItemPrices
+    public class BankStatementItemPrices : ItemPrices
     {
         /// <summary>
         /// Gets or sets payment ammount.
