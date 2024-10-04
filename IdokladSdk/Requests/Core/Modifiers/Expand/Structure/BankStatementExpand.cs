@@ -18,6 +18,11 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         public BankAccountExpand BankAccount { get; set; }
 
         /// <summary>
+        /// Gets or sets partner.
+        /// </summary>
+        public ContactExpand Partner { get; set; }
+
+        /// <summary>
         /// Gets or sets tags.
         /// </summary>
         public TagsExpand Tags { get; set; }
