@@ -91,14 +91,14 @@ namespace IdokladSdk.Clients
         /// <param name="previousNotificationId">Previous notification id.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Return bank mail notifications.</returns>
-        public Task<ApiResult<Page<BankMailNotificationHistoryGetModel>>> NotificationsAsync(
+        public Task<ApiResult<List<BankMailNotificationHistoryGetModel>>> NotificationsAsync(
             long? previousNotificationId = null,
             CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/BankMailHistory";
             var queryParams =
                 new Dictionary<string, string> { { "previousNotificationId", previousNotificationId.ToString() } };
-            return GetAsync<Page<BankMailNotificationHistoryGetModel>>(resource, queryParams, cancellationToken);
+            return GetAsync<List<BankMailNotificationHistoryGetModel>>(resource, queryParams, cancellationToken);
         }
 
         /// <summary>
