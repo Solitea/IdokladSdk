@@ -174,6 +174,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
         }
 
         [Test]
+        [Order(5)]
+        public async Task Notifications_AreNotEmpty()
+        {
+            // Act
+            var result = await _bankStatementClient.NotificationsAsync();
+
+            // Assert
+            Assert.That(result.Data, Is.Not.Empty);
+        }
+
+        [Test]
         public async Task Recount_SuccessfullyRecounted()
         {
             // Arrange
