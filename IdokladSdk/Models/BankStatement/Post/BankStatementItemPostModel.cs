@@ -24,6 +24,7 @@ namespace IdokladSdk.Models.BankStatement.Post
         /// Gets or sets Unit price.
         /// </summary>
         [Required]
+        [DecimalGreaterThanZero]
         public decimal Price { get; set; }
 
         /// <summary>

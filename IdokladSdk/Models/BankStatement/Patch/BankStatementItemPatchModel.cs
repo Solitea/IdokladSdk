@@ -30,6 +30,7 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// <summary>
         /// Gets or sets Unit price.
         /// </summary>
+        [DecimalGreaterThanZero]
         public decimal? Price { get; set; }
 
         /// <summary>
