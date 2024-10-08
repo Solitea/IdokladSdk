@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.BankStatement.Post
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.BankStatement.Post
     /// <summary>
     /// Item post model for BankStatementItem.
     /// </summary>
-    public class BankStatementItemPostModel
+    public class BankStatementItemPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets custom VAT rate.
@@ -24,6 +25,7 @@ namespace IdokladSdk.Models.BankStatement.Post
         /// Gets or sets Unit price.
         /// </summary>
         [Required]
+        [DecimalGreaterThanZero]
         public decimal Price { get; set; }
 
         /// <summary>

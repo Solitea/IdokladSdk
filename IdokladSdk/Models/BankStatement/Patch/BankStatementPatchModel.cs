@@ -87,6 +87,12 @@ namespace IdokladSdk.Models.BankStatement.Patch
         public string PartnerIban { get; set; }
 
         /// <summary>
+        /// Gets or sets The partner's Swift code.
+        /// </summary>
+        [StringLength(11)]
+        public string PartnerSwift { get; set; }
+
+        /// <summary>
         /// Gets or sets Supplier contact id.
         /// </summary>
         [NullableForeignKey]
