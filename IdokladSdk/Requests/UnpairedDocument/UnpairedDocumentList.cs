@@ -17,10 +17,11 @@ namespace IdokladSdk.Requests.UnpairedDocument
         /// </summary>
         /// <param name="client">Unpaired document client.</param>
         /// <param name="movementType">Movement type.</param>
-        public UnpairedDocumentList(UnpairedDocumentClient client, MovementType movementType)
+        /// <param name="pairingDocumentType">Pairing document type.</param>
+        public UnpairedDocumentList(UnpairedDocumentClient client, MovementType movementType, PairingDocumentType pairingDocumentType)
             : base(client)
         {
-            ListName = $"{movementType}";
+            ListName = $"{movementType}/{pairingDocumentType}";
         }
     }
 }

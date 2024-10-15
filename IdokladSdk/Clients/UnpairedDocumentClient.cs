@@ -27,10 +27,11 @@ namespace IdokladSdk.Clients
         /// and retrieving data by calling <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}.GetAsync(CancellationToken)"/>.
         /// </summary>
         /// <param name="movementType">Movement type.</param>
+        /// <param name="pairingDocumentType">Pairing document type.</param>
         /// <returns>Instance of descendant of <see cref="BaseList{TList,TClient,TGetModel,TFilter,TSort}"/>.</returns>
-        public UnpairedDocumentList List(MovementType movementType)
+        public UnpairedDocumentList List(MovementType movementType, PairingDocumentType pairingDocumentType)
         {
-            return new UnpairedDocumentList(this, movementType);
+            return new UnpairedDocumentList(this, movementType, pairingDocumentType);
         }
     }
 }
