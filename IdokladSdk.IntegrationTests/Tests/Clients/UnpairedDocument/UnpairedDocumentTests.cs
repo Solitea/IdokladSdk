@@ -25,7 +25,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.UnpairedDocument
         public async Task GetListAsync_SuccessfullyReturned(MovementType movementType)
         {
             // Act
-            var result = await _unpairedDocumentClient.List(movementType).GetAsync();
+            var result = await _unpairedDocumentClient.List(movementType, PairingDocumentType.BankStatement).GetAsync();
             var data = result.Data;
 
             // Assert
@@ -38,7 +38,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.UnpairedDocument
         {
             // Act
             var result = await _unpairedDocumentClient
-                .List(movementType)
+                .List(movementType, PairingDocumentType.CashVoucher)
                 .Filter(f => f.DocumentType.IsEqual(PairedDocumentType.IssuedInvoice))
                 .Sort(s => s.DateOfIssue.Desc())
                 .GetAsync();
