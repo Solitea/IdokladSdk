@@ -121,11 +121,11 @@ namespace IdokladSdk.Clients
         /// <param name="model">Model.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns><see cref="ApiResult{TData}"/> instance containing pairing result.</returns>
-        public Task<ApiResult<bool>> PairAsync(
+        public Task<ApiResult<bool>> PairWithDocumentAsync(
             BankStatementPairDocumentPostModel model,
             CancellationToken cancellationToken = default)
         {
-            var resource = $"{ResourceUrl}/Pair";
+            var resource = $"{ResourceUrl}/PairWithDocument";
             return PostAsync<BankStatementPairDocumentPostModel, bool>(resource, model, cancellationToken);
         }
 
