@@ -70,7 +70,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         }
 
         [Test]
-        public async Task List_SucessfullyGetAsync()
+        public async Task List_SuccessfullyGetAsync()
         {
             // Act
             var cashVouchers = await _client.List().GetAsync().AssertResult();
@@ -80,7 +80,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         }
 
         [Test]
-        public async Task Pair_SuccessfullyPaired()
+        public async Task PairWithDocument_SuccessfullyPaired()
         {
             // Arrange
             var invoice = await CreateInvoice();
@@ -92,7 +92,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
             };
 
             // Act
-            var pairResult = await _client.PairAsync(pairModel).AssertResult();
+            var pairResult = await _client.PairWithDocumentAsync(pairModel).AssertResult();
             var cashVoucher = await _client.Detail(CashVoucherId).GetAsync().AssertResult();
 
             // Assert
