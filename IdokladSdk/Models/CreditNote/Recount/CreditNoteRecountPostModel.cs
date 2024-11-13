@@ -64,7 +64,7 @@ namespace IdokladSdk.Models.CreditNote
         public int? VatRateCountryId { get; set; }
 
         /// <summary>
-        /// List of date taxing of issued tax documents
+        /// Gets or Sets List of date taxing of issued tax documents.
         /// </summary>
         public IList<DateTime> VatRatePeriods { get; set; }
     }

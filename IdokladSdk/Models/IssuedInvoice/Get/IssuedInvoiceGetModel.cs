@@ -61,7 +61,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         public new List<IssuedInvoiceItemGetModel> Items { get; set; }
 
         /// <summary>
-        /// List of date taxing of issued tax documents
+        /// Gets or sets List of date taxing of issued tax documents.
         /// </summary>
         public IList<DateTime> VatRatePeriods { get; set; }
     }
