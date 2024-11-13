@@ -56,7 +56,7 @@ namespace IdokladSdk.Models.CreditNote
         public VatReverseChargeCodeGetModel VatReverseChargeCode { get; set; }
 
         /// <summary>
-        /// List of date taxing of issued tax documents
+        /// List of date taxing of issued tax documents for credited invoice.
         /// </summary>
         public IList<DateTime> VatRatePeriods { get; set; }
     }
