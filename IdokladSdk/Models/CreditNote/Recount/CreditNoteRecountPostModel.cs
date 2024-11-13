@@ -62,5 +62,10 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or Sets country Id fo vat rate.
         /// </summary>
         public int? VatRateCountryId { get; set; }
+
+        /// <summary>
+        /// List of date taxing of issued tax documents
+        /// </summary>
+        public IList<DateTime> VatRatePeriods { get; set; }
     }
 }
