@@ -1,4 +1,6 @@
-﻿using IdokladSdk.Enums;
+﻿using System;
+using System.Collections.Generic;
+using IdokladSdk.Enums;
 
 namespace IdokladSdk.Models.IssuedInvoice
 {
@@ -7,6 +9,11 @@ namespace IdokladSdk.Models.IssuedInvoice
     /// </summary>
     public class IssuedInvoiceDefaultGetModel : IssuedInvoicePostModel
     {
+        /// <summary>
+        /// Gets or sets List of date taxing of issued tax documents.
+        /// </summary>
+        public IList<DateTime> VatRatePeriods { get; set; }
+
         /// <summary>
         /// Gets or sets Vat regime.
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Enums;
 
 namespace IdokladSdk.Models.CreditNote.Post
@@ -22,5 +23,10 @@ namespace IdokladSdk.Models.CreditNote.Post
         /// Gets or sets Vat regime.
         /// </summary>
         public VatRegime VatRegime { get; set; }
+
+        /// <summary>
+        /// Gets or sets List of date taxing of issued tax documents for credited invoice.
+        /// </summary>
+        public IList<DateTime> VatRatePeriods { get; set; }
     }
 }

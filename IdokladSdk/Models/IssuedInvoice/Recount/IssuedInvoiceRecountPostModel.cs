@@ -62,5 +62,10 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or Sets country Id fo vat rate.
         /// </summary>
         public int? VatRateCountryId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets List of date taxing of issued tax documents.
+        /// </summary>
+        public IList<DateTime> VatRatePeriods { get; set; }
     }
 }

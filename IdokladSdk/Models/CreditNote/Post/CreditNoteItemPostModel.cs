@@ -84,5 +84,10 @@ namespace IdokladSdk.Models.CreditNote
         /// </summary>
         [Required]
         public VatRateType VatRateType { get; set; }
+
+        /// <summary>
+        /// Gets or sets vat rate in percent.
+        /// </summary>
+        public decimal? VatRate { get; set; }
     }
 }

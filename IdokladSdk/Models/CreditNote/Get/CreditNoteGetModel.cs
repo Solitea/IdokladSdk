@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.IssuedInvoice;
@@ -53,5 +54,10 @@ namespace IdokladSdk.Models.CreditNote
         /// Gets or sets VAT reverse charge code id.
         /// </summary>
         public VatReverseChargeCodeGetModel VatReverseChargeCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets List of date taxing of issued tax documents for credited invoice.
+        /// </summary>
+        public IList<DateTime> VatRatePeriods { get; set; }
     }
 }

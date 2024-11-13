@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.ReadOnly.ConstantSymbol;
@@ -58,5 +59,10 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// Gets or sets invoice items.
         /// </summary>
         public new List<IssuedInvoiceItemGetModel> Items { get; set; }
+
+        /// <summary>
+        /// Gets or sets List of date taxing of issued tax documents.
+        /// </summary>
+        public IList<DateTime> VatRatePeriods { get; set; }
     }
 }
