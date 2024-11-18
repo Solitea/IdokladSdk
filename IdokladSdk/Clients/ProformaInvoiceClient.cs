@@ -108,6 +108,7 @@ namespace IdokladSdk.Clients
         /// Returns new issued invoice for accounting of proforma invoice with given id. The proforma invoice must be fully paid.
         /// </summary>
         /// <param name="id">Proforma invoice id.</param>
+        /// <param name="dateForAccounting">Date for accounting.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method return issued invoice post model for account proforma invoice.</returns>
         public Task<ApiResult<IssuedInvoiceDefaultGetModel>> GetInvoiceForAccountAsync(int id, DateTime? dateForAccounting = null, CancellationToken cancellationToken = default)
