@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
 
@@ -9,7 +10,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Patch
     /// <summary>
     /// ReceivedReceiptPatchModel.
     /// </summary>
-    public class ReceivedReceiptPatchModel
+    public class ReceivedReceiptPatchModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets the currency ID.
@@ -46,7 +47,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Patch
         /// <summary>
         /// Gets or sets the entity's ID.
         /// </summary>
-        [Required]
+        [RequiredNonDefault]
         public int Id { get; set; }
 
         /// <summary>

@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.ReceivedReceipt.Post
 {
     /// <summary>
     /// ReceivedReceiptItemRecountPostModel.
     /// </summary>
-    public class ReceivedReceiptItemRecountPostModel
+    public class ReceivedReceiptItemRecountPostModel : ValidatableModel, IEntityId
     {
         /// <summary>
         /// Gets or sets the item amount.

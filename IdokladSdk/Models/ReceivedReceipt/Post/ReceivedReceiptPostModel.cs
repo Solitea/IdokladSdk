@@ -30,6 +30,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Post
         /// <summary>
         /// Gets or sets the document serial number.
         /// </summary>
+        [Required]
         public int DocumentSerialNumber { get; set; }
 
         /// <summary>

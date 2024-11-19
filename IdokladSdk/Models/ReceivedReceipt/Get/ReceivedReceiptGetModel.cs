@@ -10,7 +10,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Get
     /// <summary>
     /// ReceivedReceiptGetModel.
     /// </summary>
-    public class ReceivedReceiptGetModel
+    public class ReceivedReceiptGetModel : IEntityId
     {
         /// <summary>
         /// Gets or sets the accountant sent status.
