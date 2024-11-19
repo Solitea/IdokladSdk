@@ -35,7 +35,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public List<ReceivedInvoiceItemRecountPostModel> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets date of taxing.
+        /// Gets or sets date of taxing. Date of taxable received for SK legislation.
         /// </summary>
         [RequiredIf(nameof(DateOfReceiving), null)]
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]

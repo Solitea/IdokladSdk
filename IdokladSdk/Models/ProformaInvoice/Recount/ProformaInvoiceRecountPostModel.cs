@@ -35,7 +35,7 @@ namespace IdokladSdk.Models.ProformaInvoice
         public List<ProformaInvoiceItemRecountPostModel> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets date of taxing.
+        /// Gets or sets date of taxing. Date of taxable supply for SK legislation.
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
         [Required]
