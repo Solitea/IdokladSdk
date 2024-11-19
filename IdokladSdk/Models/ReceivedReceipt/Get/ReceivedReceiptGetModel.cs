@@ -12,8 +12,6 @@ namespace IdokladSdk.Models.ReceivedReceipt.Get
     /// </summary>
     public class ReceivedReceiptGetModel
     {
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the accountant sent status.
         /// </summary>
@@ -128,7 +126,5 @@ namespace IdokladSdk.Models.ReceivedReceipt.Get
         /// Gets or sets the VAT regime.
         /// </summary>
         public VatRegime VatRegime { get; set; }
-
-        #endregion
     }
 }
