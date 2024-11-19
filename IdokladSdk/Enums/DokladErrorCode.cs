@@ -234,5 +234,15 @@
         /// Only certain properties are allowed to be patched for this model.
         /// </summary>
         UpdateRestrictedNotAllowedProperties = 142,
+
+        /// <summary>
+        /// Reduced items are not allowed to change.
+        /// </summary>
+        UpdateRestrictedReducedItems = 143,
+
+        /// <summary>
+        /// Contains unsupported vat rates with positive total sum.
+        /// </summary>
+        UnsupportedVatRateWithPositiveSum = 144,
     }
 }
