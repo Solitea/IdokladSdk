@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading;
@@ -107,12 +108,19 @@ namespace IdokladSdk.Clients
         /// Returns new issued invoice for accounting of proforma invoice with given id. The proforma invoice must be fully paid.
         /// </summary>
         /// <param name="id">Proforma invoice id.</param>
+        /// <param name="dateForAccounting">Date for accounting.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Method return issued invoice post model for account proforma invoice.</returns>
-        public Task<ApiResult<IssuedInvoiceDefaultGetModel>> GetInvoiceForAccountAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<IssuedInvoiceDefaultGetModel>> GetInvoiceForAccountAsync(int id, DateTime? dateForAccounting = null, CancellationToken cancellationToken = default)
         {
+            var queryParams = new Dictionary<string, string>();
+            if (dateForAccounting != null)
+            {
+                queryParams.Add("dateForAccounting", dateForAccounting.GetValueOrDefault().ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+            }
+
             var resource = $"{ResourceUrl}/{id}/Account";
-            return GetAsync<IssuedInvoiceDefaultGetModel>(resource, null, cancellationToken);
+            return GetAsync<IssuedInvoiceDefaultGetModel>(resource, queryParams, cancellationToken);
         }
 
         /// <summary>
