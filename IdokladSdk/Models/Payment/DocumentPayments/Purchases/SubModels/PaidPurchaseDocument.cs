@@ -6,7 +6,7 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Purchases.SubModels
     /// <summary>
     /// PaidPurchaseDocument.
     /// </summary>
-    public class PaidPurchaseDocument
+    public class PaidPurchaseDocument : IEntityId
     {
         /// <summary>
         /// Gets or sets the date of maturity.

@@ -8,7 +8,7 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Purchases.List
     /// <summary>
     /// PurchaseDocumentPaymentListGetModel.
     /// </summary>
-    public class PurchaseDocumentPaymentListGetModel
+    public class PurchaseDocumentPaymentListGetModel : IEntityId
     {
         /// <summary>
         /// Gets or sets the currency ID.

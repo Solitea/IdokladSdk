@@ -6,7 +6,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.List
     /// <summary>
     /// ReceivedReceiptItemListGetModel.
     /// </summary>
-    public class ReceivedReceiptItemListGetModel
+    public class ReceivedReceiptItemListGetModel : IEntityId
     {
         /// <summary>
         /// Gets or sets the item amount.
