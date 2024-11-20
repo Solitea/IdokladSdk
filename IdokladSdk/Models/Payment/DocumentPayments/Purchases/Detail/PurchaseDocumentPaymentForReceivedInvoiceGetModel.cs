@@ -1,15 +1,14 @@
-﻿using IdokladSdk.Enums;
-using IdokladSdk.Models.BankStatement;
+﻿using IdokladSdk.Models.BankStatement;
 using IdokladSdk.Models.CashVoucher;
-using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.ReadOnly.Currency;
+using IdokladSdk.Models.ReceivedInvoice;
 
-namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
+namespace IdokladSdk.Models.Payment.DocumentPayments.Purchases.Detail
 {
     /// <summary>
-    /// SalesDocumentPaymentForIssuedInvoiceGetModel.
+    /// PurchaseDocumentPaymentForReceivedInvoiceGetModel.
     /// </summary>
-    public class SalesDocumentPaymentForIssuedInvoiceGetModel : PaymentBaseGetModel
+    public class PurchaseDocumentPaymentForReceivedInvoiceGetModel : PaymentBaseGetModel
     {
         /// <summary>
         /// Gets or sets bank statement.
@@ -37,23 +36,13 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
         public CurrencyGetModel Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether confirmation is sent.
+        /// Gets or sets received invoice.
         /// </summary>
-        public bool IsConfirmationSent { get; set; }
+        public ReceivedInvoiceGetModel ReceivedInvoice { get; set; }
 
         /// <summary>
-        /// Gets or sets issued invoice.
+        /// Gets or sets received invoice id.
         /// </summary>
-        public IssuedInvoiceGetModel IssuedInvoice { get; set; }
-
-        /// <summary>
-        /// Gets or sets issued invoice id.
-        /// </summary>
-        public int IssuedInvoiceId { get; set; }
-
-        /// <summary>
-        /// Gets or sets vat on pay status.
-        /// </summary>
-        public VatOnPayStatus VatOnPayStatus { get; set; }
+        public int ReceivedInvoiceId { get; set; }
     }
 }

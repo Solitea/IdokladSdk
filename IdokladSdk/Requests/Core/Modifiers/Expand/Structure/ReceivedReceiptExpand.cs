@@ -14,17 +14,17 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// <summary>
         /// Gets or sets the associated bank statement.
         /// </summary>
-        public BankStatementGetModel BankStatement { get; set; }
+        public BankStatementExpand BankStatement { get; set; }
 
         /// <summary>
         /// Gets or sets the associated cash voucher.
         /// </summary>
-        public CashVoucherGetModel CashVoucher { get; set; }
+        public CashVoucherExpand CashVoucher { get; set; }
 
         /// <summary>
         /// Gets or sets the associated currency.
         /// </summary>
-        public CurrencyGetModel Currency { get; set; }
+        public CurrencyExpand Currency { get; set; }
 
         /// <summary>
         /// Gets or sets items.
@@ -39,6 +39,6 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// <summary>
         /// Gets or sets the associated payment option.
         /// </summary>
-        public PaymentOptionGetModel PaymentOption { get; set; }
+        public PaymentOptionExpand PaymentOption { get; set; }
     }
 }

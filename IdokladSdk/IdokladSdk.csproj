@@ -75,6 +75,8 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models\ReceivedReceipt\Patch\" />
+      <Folder Include="Requests\DocumentPayment\Purchases\Filter\" />
+      <Folder Include="Requests\DocumentPayment\Purchases\Sort\" />
       <Folder Include="Requests\DocumentPayment\Sales\Sort\" />
       <Folder Include="Requests\ReceivedReceipt\Sort\" />
     </ItemGroup>
