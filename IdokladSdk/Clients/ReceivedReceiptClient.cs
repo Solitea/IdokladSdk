@@ -4,6 +4,7 @@ using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.ReceivedReceipt.Get;
 using IdokladSdk.Models.ReceivedReceipt.Patch;
 using IdokladSdk.Models.ReceivedReceipt.Post;
+using IdokladSdk.Models.ReceivedReceipt.Recount;
 using IdokladSdk.Requests.ReceivedReceipt;
 using IdokladSdk.Response;
 

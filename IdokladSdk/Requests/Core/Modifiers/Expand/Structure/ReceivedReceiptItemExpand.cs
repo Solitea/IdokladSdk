@@ -1,6 +1,4 @@
-﻿using IdokladSdk.Models.ReadOnly.VatCode;
-
-namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
+﻿namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
 {
     /// <summary>
     /// ReceivedReceiptItemExpand.
@@ -10,6 +8,6 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// <summary>
         /// Gets or sets the associated vat code ID.
         /// </summary>
-        public VatCodeGetModel VatCode { get; set; }
+        public VatCodeExpand VatCode { get; set; }
     }
 }

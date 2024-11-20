@@ -9,6 +9,7 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.ReceivedReceipt.Get;
 using IdokladSdk.Models.ReceivedReceipt.Patch;
 using IdokladSdk.Models.ReceivedReceipt.Post;
+using IdokladSdk.Models.ReceivedReceipt.Recount;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
 

@@ -1,8 +1,4 @@
-﻿using IdokladSdk.Models.BankStatement;
-using IdokladSdk.Models.CashVoucher;
-using IdokladSdk.Models.ReadOnly.Currency;
-using IdokladSdk.Models.ReadOnly.PaymentOption;
-using IdokladSdk.Requests.Core.Modifiers.Expand.Common;
+﻿using IdokladSdk.Requests.Core.Modifiers.Expand.Common;
 
 namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
 {

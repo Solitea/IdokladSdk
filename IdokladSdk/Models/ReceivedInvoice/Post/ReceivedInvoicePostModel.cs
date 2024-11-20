@@ -58,7 +58,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public DateTime DateOfReceiving { get; set; }
 
         /// <summary>
-        /// Gets or sets date of taxing. Date of taxable received for SK legislation.
+        /// Gets or sets date of taxing. Date of taxable supply for SK legislation.
         /// </summary>
         public DateTime? DateOfTaxing { get; set; }
 

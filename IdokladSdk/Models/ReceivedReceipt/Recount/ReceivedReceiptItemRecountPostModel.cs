@@ -2,7 +2,7 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 
-namespace IdokladSdk.Models.ReceivedReceipt.Post
+namespace IdokladSdk.Models.ReceivedReceipt.Recount
 {
     /// <summary>
     /// ReceivedReceiptItemRecountPostModel.

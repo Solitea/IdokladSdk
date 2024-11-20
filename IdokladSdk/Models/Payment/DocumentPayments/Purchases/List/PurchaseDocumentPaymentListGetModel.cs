@@ -36,7 +36,7 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Purchases.List
         public PaidPurchaseDocument PaidDocument { get; set; }
 
         /// <summary>
-        /// Gets or sets the payment document (available for types IssuedInvoice, CreditNote, ProformaInvoice).
+        /// Gets or sets the payment document (available for types ReceivedInvoice, ReceivedReceipt).
         /// </summary>
         public PaymentDocument PaymentDocument { get; set; }
 

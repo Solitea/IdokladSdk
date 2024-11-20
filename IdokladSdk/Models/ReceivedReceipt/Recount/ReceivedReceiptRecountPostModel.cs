@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.Models.ReceivedReceipt.Post
+namespace IdokladSdk.Models.ReceivedReceipt.Recount
 {
     /// <summary>
     /// ReceivedReceiptRecountPostModel.
     /// </summary>
-    public class ReceivedReceiptRecountPostModel
+    public class ReceivedReceiptRecountPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets the currency ID.
