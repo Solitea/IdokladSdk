@@ -9,6 +9,8 @@ using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
 {
+    [TestFixture]
+    [Ignore("Remove ignore after candidate creation")]
     public class PurchasesDocumentPaymentTests : TestBase
     {
         private const string CurrencySymbol = "Kč";
