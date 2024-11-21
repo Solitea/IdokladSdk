@@ -9,7 +9,7 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
     /// <summary>
     /// SalesDocumentPaymentForIssuedInvoiceGetModel.
     /// </summary>
-    public class SalesDocumentPaymentForIssuedInvoiceGetModel : SalesPaymentBaseGetModel
+    public class SalesDocumentPaymentForIssuedInvoiceGetModel : PaymentBaseGetModel
     {
         /// <summary>
         /// Gets or sets bank statement.

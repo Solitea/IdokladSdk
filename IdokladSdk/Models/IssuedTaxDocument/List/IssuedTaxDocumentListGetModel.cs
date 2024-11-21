@@ -33,7 +33,7 @@ namespace IdokladSdk.Models.IssuedTaxDocument.List
         public DateTime DateOfIssue { get; set; }
 
         /// <summary>
-        /// Gets or sets DateOfTaxing.
+        /// Gets or sets DateOfTaxing. Date of taxable supply for SK legislation.
         /// </summary>
         public DateTime DateOfTaxing { get; set; }
 

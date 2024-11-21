@@ -6,7 +6,7 @@ namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
     /// <summary>
     /// SalesDocumentPaymentForSalesReceiptGetModel.
     /// </summary>
-    public class SalesDocumentPaymentForSalesReceiptGetModel : SalesPaymentBaseGetModel
+    public class SalesDocumentPaymentForSalesReceiptGetModel : PaymentBaseGetModel
     {
         /// <summary>
         /// Gets or sets currency.

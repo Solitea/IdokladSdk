@@ -68,7 +68,7 @@ namespace IdokladSdk.Models.CreditNote
         public DateTime DateOfPayment { get; set; }
 
         /// <summary>
-        /// Gets or sets date of taxing.
+        /// Gets or sets date of taxing. Date of taxable supply for SK legislation.
         /// </summary>
         public DateTime DateOfTaxing { get; set; }
 

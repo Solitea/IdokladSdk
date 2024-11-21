@@ -2,12 +2,12 @@
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Common;
 
-namespace IdokladSdk.Models.Payment.DocumentPayments.Sales.Detail
+namespace IdokladSdk.Models.Payment.DocumentPayments
 {
     /// <summary>
     /// SalesPaymentBaseGetModel.
     /// </summary>
-    public class SalesPaymentBaseGetModel : IEntityId
+    public class PaymentBaseGetModel : IEntityId
     {
         /// <summary>
         /// Gets or sets currency.
