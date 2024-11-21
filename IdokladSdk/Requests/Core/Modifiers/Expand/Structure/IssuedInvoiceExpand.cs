@@ -8,9 +8,9 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
     public class IssuedInvoiceExpand : ExpandableEntity
     {
         /// <summary>
-        /// Gets or sets partner.
+        /// Gets or sets constantSymbol.
         /// </summary>
-        public ContactExpand Partner { get; set; }
+        public ConstantSymbolExpand ConstantSymbol { get; set; }
 
         /// <summary>
         /// Gets or sets currency.
@@ -18,19 +18,19 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         public CurrencyExpand Currency { get; set; }
 
         /// <summary>
+        /// Gets or sets tags.
+        /// </summary>
+        public IssuedInvoiceItemExpand Items { get; set; }
+
+        /// <summary>
+        /// Gets or sets partner.
+        /// </summary>
+        public ContactExpand Partner { get; set; }
+
+        /// <summary>
         /// Gets or sets paymentOption.
         /// </summary>
         public PaymentOptionExpand PaymentOption { get; set; }
-
-        /// <summary>
-        /// Gets or sets constantSymbol.
-        /// </summary>
-        public ConstantSymbolExpand ConstantSymbol { get; set; }
-
-        /// <summary>
-        /// Gets or sets vatReverseChargeCode.
-        /// </summary>
-        public VatReverseChargeCodeExpand VatReverseChargeCode { get; set; }
 
         /// <summary>
         /// Gets or sets salesPosEquipment.
@@ -41,5 +41,10 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// Gets or sets tags.
         /// </summary>
         public TagsExpand Tags { get; set; }
+
+        /// <summary>
+        /// Gets or sets vatReverseChargeCode.
+        /// </summary>
+        public VatReverseChargeCodeExpand VatReverseChargeCode { get; set; }
     }
 }
