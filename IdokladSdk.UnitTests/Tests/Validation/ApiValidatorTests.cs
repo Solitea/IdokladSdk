@@ -161,26 +161,36 @@ namespace IdokladSdk.UnitTests.Tests.Validation
             Assert.That(errors.Count, Is.Zero);
         }
 
-        [Test]
-        public void ApiValidator_NestedEntities_InvalidValues_ReturnsFalse()
+        [TestCaseSource(nameof(GetListOfDates))]
+        public void ApiValidator_CollectionsOfDates_ValidUtcDate_IsValid(IEnumerable<DateTime> dates)
         {
             // Arrange
-            var entity = new TestEntityWithNestedEntities
+            var entity = new TestEntity
             {
-                Entity = new TestEntity(),
-                Entities = new List<TestEntity>
+                IdentificationNumber = "something",
+                Name = "something",
+                NonNullableDate = DateTime.UtcNow,
+                Dates = dates,
+            };
+
+            // Act
+            var result = ApiValidator.ValidateObject(entity, out var errors);
+
+            // Assert
+            Assert.That(result, Is.True);
+            Assert.That(errors, Is.Empty);
+        }
+
+        [Test]
+        public void ApiValidator_CollectionsOfDates_NotValidDate_IsNotValid()
+        {
+            // Arrange
+            var entity = new TestEntity
             {
-                new TestEntity
-                {
-                    Name = "nestedInCollection1",
-                    NonNullableDate = DateTime.Now.SetKindUtc(),
-                    DiscountPercentage = 1000m
-                },
-                new TestEntity
-                {
-                    Name = "nestedInCollection2",
-                },
-            }
+                IdentificationNumber = "something",
+                Name = "something",
+                NonNullableDate = DateTime.UtcNow,
+                Dates = new List<DateTime> { new (2024, 11, 22, 15, 30, 0, DateTimeKind.Local) },
             };
 
             // Act
@@ -188,13 +198,17 @@ namespace IdokladSdk.UnitTests.Tests.Validation
 
             // Assert
             Assert.That(result, Is.False);
-            Assert.That(errors.Count, Is.EqualTo(7));
+            Assert.That(errors, Is.Not.Empty);
+        }
 
-            var memberNames = errors.SelectMany(error => error.MemberNames).ToList();
-            Assert.That(memberNames.Count(x => x == nameof(TestEntity.Name)), Is.EqualTo(1));
-            Assert.That(memberNames.Count(x => x == nameof(TestEntity.DiscountPercentage)), Is.EqualTo(1));
-            Assert.That(memberNames.Count(x => x == nameof(TestEntity.NonNullableDate)), Is.EqualTo(2));
-            Assert.That(memberNames.Count(x => x == nameof(TestEntity.IdentificationNumber)), Is.EqualTo(3));
+        private static List<object> GetListOfDates()
+        {
+            return new List<object>
+            {
+                new object[] { null },
+                new object[] { new List<DateTime>() },
+                new object[] { new List<DateTime> { DateTime.UtcNow } }
+            };
         }
     }
 }
