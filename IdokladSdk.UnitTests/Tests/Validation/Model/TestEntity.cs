@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
@@ -25,5 +26,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Model
         public DateTime NonNullableDate { get; set; }
 
         public DateTime? NullableDate { get; set; }
+
+        public IEnumerable<DateTime> Dates { get; set; }
     }
 }

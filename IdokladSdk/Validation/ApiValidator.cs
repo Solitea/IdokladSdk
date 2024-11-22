@@ -49,6 +49,18 @@ namespace IdokladSdk
         private static bool CheckIfDateTimePropertiesAreUtc(object entity, IList<ValidationResult> validationResults)
         {
             var type = entity.GetType();
+            if (type == typeof(DateTime) || Nullable.GetUnderlyingType(type) == typeof(DateTime))
+            {
+                var dateTime = entity as DateTime?;
+                if (dateTime.HasValue && dateTime.Value.Kind != DateTimeKind.Utc)
+                {
+                    validationResults.Add(new ValidationResult("DateTime must be in UTC."));
+                    return false;
+                }
+
+                return true;
+            }
+
             var dateTimeProperties = type.GetProperties()
                 .Where(p => p.PropertyType == typeof(DateTime) || Nullable.GetUnderlyingType(p.PropertyType) == typeof(DateTime));
             var result = true;
