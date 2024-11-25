@@ -10,7 +10,6 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
 {
     [TestFixture]
-    [Ignore("Remove ignore after candidate creation")]
     public class PurchasesDocumentPaymentTests : TestBase
     {
         private const string CurrencySymbol = "Kč";
@@ -135,7 +134,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.DocumentPayment
             var partnerId = 323823;
             var dateOfPayment = new DateTime(2024, 11, 20);
             var documentNumber = "UC20240001";
-            var documentId = 4393;
+            var documentId = 1;
 
             // Act
             var data = await DocumentPaymentClient.Purchases

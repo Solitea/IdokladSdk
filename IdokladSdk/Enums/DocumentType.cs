@@ -61,6 +61,11 @@
         IssuedTaxDocument = 10,
 
         /// <summary>
+        /// Received Receipt
+        /// </summary>
+        ReceivedReceipt = 11,
+
+        /// <summary>
         /// Registered sale
         /// </summary>
         RegisteredSale = 101,
