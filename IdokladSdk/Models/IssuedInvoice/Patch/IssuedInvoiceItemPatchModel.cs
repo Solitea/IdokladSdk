@@ -81,6 +81,7 @@ namespace IdokladSdk.Models.IssuedInvoice
         /// <summary>
         /// Gets or sets vat rate type.
         /// </summary>
+        [RequiredIfHasValue(nameof(VatRate))]
         public VatRateType? VatRateType { get; set; }
 
         /// <summary>

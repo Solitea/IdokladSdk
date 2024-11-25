@@ -236,13 +236,48 @@
         UpdateRestrictedNotAllowedProperties = 142,
 
         /// <summary>
+        /// No cash register has been found for given currency Id.
+        /// </summary>
+        NoCashRegisterFoundForCurrency = 143,
+
+        /// <summary>
+        /// No bank account has been found for given currency Id.
+        /// </summary>
+        NoBankAccountFoundForCurrency = 144,
+
+        /// <summary>
+        /// Pairing forbidden. Document is already paired.
+        /// </summary>
+        PairRestrictedDocumentIsPaired = 145,
+
+        /// <summary>
+        /// Pairing forbidden. Total price does not match with paired document.
+        /// </summary>
+        PairRestrictedTotalDoesNotMatch = 146,
+
+        /// <summary>
+        /// Pairing forbidden. Document must have one item.
+        /// </summary>
+        PairRestrictedNotExactlyOneItem = 147,
+
+        /// <summary>
+        /// CustomVat is available only for MovementType Issue.
+        /// </summary>
+        CustomVatRestriction = 148,
+
+        /// <summary>
         /// Reduced items are not allowed to change.
         /// </summary>
-        UpdateRestrictedReducedItems = 143,
+        UpdateRestrictedReducedItems = 149,
 
         /// <summary>
         /// Contains unsupported vat rates with positive total sum.
         /// </summary>
-        UnsupportedVatRateWithPositiveSum = 144,
+        UnsupportedVatRateWithPositiveSum = 150,
+
+        /// <summary>
+        /// Conflict with vat rate and date for vat rate.
+        /// </summary>
+        ConflictVatRateAndDate = 151,
     }
 }
