@@ -24,5 +24,10 @@
         /// Gets or sets UnpairedFoundManyVariableSymbol.
         /// </summary>
         UnpairedFoundManyVariableSymbol = 3,
+
+        /// <summary>
+        /// Paired with receipt
+        /// </summary>
+        PairedWithReceipt = 4,
     }
 }

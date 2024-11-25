@@ -16,6 +16,11 @@
         PairedWithInvoice = 1,
 
         /// <summary>
+        /// Paired with receipt
+        /// </summary>
+        PairedWithReceipt = 2,
+
+        /// <summary>
         /// Originate from sales receipt accounting
         /// </summary>
         IsSummarySalesReceipt = 3,

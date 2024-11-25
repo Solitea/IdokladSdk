@@ -24,5 +24,10 @@
         /// Received invoice
         /// </summary>
         ReceivedInvoice = DocumentType.ReceivedInvoice,
+
+        /// <summary>
+        /// Received Receipt
+        /// </summary>
+        ReceivedReceipt = DocumentType.ReceivedReceipt,
     }
 }
