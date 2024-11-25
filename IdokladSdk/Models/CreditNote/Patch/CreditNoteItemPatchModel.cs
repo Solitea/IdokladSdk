@@ -81,6 +81,7 @@ namespace IdokladSdk.Models.CreditNote
         /// <summary>
         /// Gets or sets VAT rate type.
         /// </summary>
+        [RequiredIfHasValue(nameof(VatRate))]
         public VatRateType? VatRateType { get; set; }
 
         /// <summary>
