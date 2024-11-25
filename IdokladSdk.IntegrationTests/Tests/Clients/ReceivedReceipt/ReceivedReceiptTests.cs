@@ -16,7 +16,6 @@ using NUnit.Framework;
 namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedReceipt
 {
     [TestFixture]
-    [Ignore("Remove ignore after candidate creation")]
     public class ReceivedReceiptTests : TestBase
     {
         private const int PartnerId = 323823;
