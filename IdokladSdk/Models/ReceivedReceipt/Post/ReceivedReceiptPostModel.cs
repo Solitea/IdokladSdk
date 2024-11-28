@@ -57,6 +57,8 @@ namespace IdokladSdk.Models.ReceivedReceipt.Post
         /// <summary>
         /// Gets or sets the invoice items.
         /// </summary>
+        [Required]
+        [MinCollectionLength(1)]
         public List<ReceivedReceiptItemPostModel> Items { get; set; }
 
         /// <summary>
