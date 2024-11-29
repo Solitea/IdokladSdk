@@ -31,6 +31,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Patch
         /// Gets or sets the item name.
         /// </summary>
         [StringLength(200)]
+        [NotEmptyString]
         public string Name { get; set; }
 
         /// <summary>
