@@ -12,11 +12,11 @@ namespace IdokladSdk.Models.Common.PairedDocument
         /// <summary>
         /// Gets or sets Document Id.
         /// </summary>
-        public int? DocumentId { get; set; }
+        public NullableProperty<int> DocumentId { get; set; }
 
         /// <summary>
         /// Gets or sets Document Type.
         /// </summary>
-        public PairedDocumentType? DocumentType { get; set; }
+        public NullableProperty<PairedDocumentType> DocumentType { get; set; }
     }
 }
