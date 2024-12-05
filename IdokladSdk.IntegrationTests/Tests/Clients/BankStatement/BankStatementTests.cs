@@ -9,6 +9,7 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.BankStatement;
 using IdokladSdk.Models.BankStatement.Patch;
 using IdokladSdk.Models.BankStatement.Recount;
+using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Models.IssuedInvoice;
 using NUnit.Framework;
 
@@ -133,7 +134,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
 
         [Test]
         [Order(3)]
-        public async Task Post_SucessfullyAsync()
+        public async Task Post_SuccessfullyAsync()
         {
             // Arrange
             var bankStatementName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
@@ -212,6 +213,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             // Assert
             Assert.That(result.Prices.TotalWithoutVat, Is.EqualTo(100));
             Assert.That(result.Prices.TotalWithVat, Is.EqualTo(121));
+        }
+
+        [Test]
+        public async Task Update_SuccessfullyUnpairs()
+        {
+            // Arrange
+            var issuedInvoice = await CreateInvoiceAsync();
+            _invoiceId = issuedInvoice.Id;
+            var defaultBankStatement = await _bankStatementClient.DefaultAsync(PairedDocumentType.IssuedInvoice, _invoiceId).AssertResult();
+            var postedBankStatement = await _bankStatementClient.PostAsync(defaultBankStatement).AssertResult();
+            Assert.That(postedBankStatement.PairedDocument, Is.Not.Null);
+            _bankStatementId = postedBankStatement.Id;
+            var bankStatementPatchModel = new BankStatementPatchModel { Id = _bankStatementId, PairedDocument = new PairedDocumentPatchModel { DocumentId = null, DocumentType = null }, };
+
+            // Act
+            var patchResult = await _bankStatementClient.UpdateAsync(bankStatementPatchModel).AssertResult();
+
+            // Assert
+            Assert.That(patchResult.PairedDocument, Is.Null);
         }
 
         [OneTimeTearDown]

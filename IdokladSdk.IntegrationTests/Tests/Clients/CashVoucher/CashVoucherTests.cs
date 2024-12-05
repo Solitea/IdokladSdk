@@ -9,6 +9,7 @@ using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.Models.CashVoucher.Pair;
 using IdokladSdk.Models.CashVoucher.Recount;
+using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Models.IssuedInvoice;
 using NUnit.Framework;
 
@@ -182,6 +183,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 
             // Assert
             Assert.That(patchResult.Name, Is.EqualTo(updatedName));
+        }
+
+        [Test]
+        public async Task Update_SuccessfullyUnpairs()
+        {
+            // Arrange
+            var issuedInvoice = await CreateInvoice();
+            var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, issuedInvoice.Id).AssertResult();
+            var postedCashVoucher = await _client.PostAsync(defaultCashVoucher).AssertResult();
+            Assert.That(postedCashVoucher.PairedDocument, Is.Not.Null);
+            var bankStatementPatchModel = new CashVoucherPatchModel { Id = postedCashVoucher.Id, PairedDocument = new PairedDocumentPatchModel { DocumentId = null, DocumentType = null }, };
+
+            // Act
+            var patchResult = await _client.UpdateAsync(bankStatementPatchModel).AssertResult();
+
+            // Assert
+            Assert.That(patchResult.PairedDocument, Is.Null);
         }
 
         private static IList<object> GetDefaultVouchers()
