@@ -259,6 +259,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             _issuedInvoicePostModel.Items.Clear();
             _issuedInvoicePostModel.Items.Add(new IssuedInvoiceItemPostModel
             {
+                Amount = 1,
                 Name = "Test",
                 UnitPrice = 100,
                 VatRateType = VatRateType.Basic
