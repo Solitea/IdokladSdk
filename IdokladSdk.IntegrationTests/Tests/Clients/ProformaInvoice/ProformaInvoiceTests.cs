@@ -34,6 +34,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
 
         private ProformaInvoiceClient _proformaInvoiceClient;
         private IssuedInvoiceClient _issuedInvoiceClient;
+        private IssuedDocumentPaymentClient _issuedDocumentPaymentClient;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -41,6 +42,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             InitDokladApi();
             _proformaInvoiceClient = DokladApi.ProformaInvoiceClient;
             _issuedInvoiceClient = DokladApi.IssuedInvoiceClient;
+            _issuedDocumentPaymentClient = DokladApi.IssuedDocumentPaymentClient;
         }
 
         [SetUp]
@@ -352,6 +354,57 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.That(result.CurrencyId, Is.EqualTo(2));
             Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(121));
             Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(2420));
+        }
+
+        [Test]
+        public async Task GetInvoiceForAccount_WithVatRateChangeBetweenYears_ReturnsCorrectModel()
+        {
+            // Arrange
+            var model = await _proformaInvoiceClient.DefaultAsync().AssertResult();
+            model.DateOfIssue = new DateTime(2023, 12, 5, 0, 0, 0, DateTimeKind.Utc);
+            model.PartnerId = PartnerId;
+            model.Description = "Accounting Test";
+            model.Items =
+            [
+                new ProformaInvoiceItemPostModel
+                {
+                    Amount = 1, Name = "Test 15", UnitPrice = 100, VatRateType = VatRateType.Reduced1,
+                },
+                new ProformaInvoiceItemPostModel
+                {
+                    Amount = 1, Name = "Test 10", UnitPrice = 100, VatRateType = VatRateType.Reduced2
+                },
+            ];
+
+            var proformaResult = await _proformaInvoiceClient.PostAsync(model).AssertResult();
+            var issuedDocumentPayment = await _issuedDocumentPaymentClient.DefaultAsync(proformaResult.Id).AssertResult();
+            issuedDocumentPayment.PaymentAmount = 100;
+            issuedDocumentPayment.DateOfPayment = new DateTime(2023, 12, 6, 0, 0, 0, DateTimeKind.Utc);
+            issuedDocumentPayment.CreateIssuedTaxDocument = true;
+            var issuedDocumentPaymentResult = await _issuedDocumentPaymentClient.PostAsync(issuedDocumentPayment).AssertResult();
+            var issuedDocumentPayment2 = await _issuedDocumentPaymentClient.DefaultAsync(proformaResult.Id).AssertResult();
+            issuedDocumentPayment2.PaymentAmount = 100;
+            issuedDocumentPayment2.DateOfPayment = new DateTime(2024, 12, 6, 0, 0, 0, DateTimeKind.Utc);
+            issuedDocumentPayment.CreateIssuedTaxDocument = false;
+            var issuedDocumentPaymentResult2 = await _issuedDocumentPaymentClient.PostAsync(issuedDocumentPayment).AssertResult();
+
+            // Act
+            var accountingModel = await _proformaInvoiceClient.GetInvoiceForAccountAsync(proformaResult.Id, new DateTime(2024, 12, 6, 0, 0, 0, DateTimeKind.Utc)).AssertResult();
+
+            // Assert
+            Assert.That(accountingModel.Items.Count, Is.EqualTo(5));
+            Assert.That(accountingModel.Items.Count(i => i.ItemType == PostIssuedInvoiceItemType.ItemTypeNormal), Is.EqualTo(2));
+            Assert.That(accountingModel.Items.Count(i => i.ItemType == PostIssuedInvoiceItemType.ItemTypeReduce && i.IsTaxMovement), Is.EqualTo(2));
+            Assert.That(accountingModel.Items.Count(i => i.ItemType == PostIssuedInvoiceItemType.ItemTypeReduce && !i.IsTaxMovement), Is.EqualTo(1));
+            Assert.That(accountingModel.VatRatePeriods.Contains(issuedDocumentPayment.DateOfPayment), Is.True);
+            Assert.That(accountingModel.Items.Count(i => i.VatRate == 10), Is.EqualTo(2));
+            Assert.That(accountingModel.Items.Count(i => i.VatRate == 15), Is.EqualTo(2));
+            Assert.That(accountingModel.Items.Count(i => i.VatRate == 0), Is.EqualTo(1));
+
+            // Teardown
+            await _issuedDocumentPaymentClient.DeleteAsync(issuedDocumentPaymentResult.Id);
+            await _issuedDocumentPaymentClient.DeleteAsync(issuedDocumentPaymentResult2.Id);
+            await _proformaInvoiceClient.DeleteAsync(proformaResult.Id);
         }
 
         private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
