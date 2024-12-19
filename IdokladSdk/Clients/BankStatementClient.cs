@@ -10,6 +10,7 @@ using IdokladSdk.Models.BankStatement.Pair;
 using IdokladSdk.Models.BankStatement.Patch;
 using IdokladSdk.Models.BankStatement.Post;
 using IdokladSdk.Models.BankStatement.Recount;
+using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Requests.BankStatement;
 using IdokladSdk.Response;
 

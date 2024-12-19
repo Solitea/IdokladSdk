@@ -159,7 +159,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         public async Task Send_IssuedTaxDocument_SuccessfullySent()
         {
             // Arrange
-            var issuedTaxDocumentId = 1542;
+            var issuedTaxDocumentId = 8222;
             var settings = new IssuedTaxDocumentEmailSettings
             {
                 DocumentId = issuedTaxDocumentId,
