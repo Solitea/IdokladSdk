@@ -10,6 +10,7 @@ using IdokladSdk.Models.BankStatement.Pair;
 using IdokladSdk.Models.BankStatement.Patch;
 using IdokladSdk.Models.BankStatement.Post;
 using IdokladSdk.Models.BankStatement.Recount;
+using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Requests.BankStatement;
 using IdokladSdk.Response;
 
@@ -146,6 +147,26 @@ namespace IdokladSdk.Clients
         {
             var resource = $"{ResourceUrl}/Recount";
             return PostAsync<BankStatementRecountPostModel, BankStatementRecountGetModel>(resource, model, cancellationToken);
+        }
+
+        /// <summary>
+        /// Unpairs bank statement from document.
+        /// </summary>
+        /// <param name="id">Bank statement Id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api result.</returns>
+        public Task<ApiResult<BankStatementGetModel>> Unpair(int id, CancellationToken cancellationToken = default)
+        {
+            var unpairModel = new BankStatementPatchModel
+            {
+                Id = id,
+                PairedDocument = new PairedDocumentPatchModel
+                {
+                    DocumentId = null,
+                    DocumentType = null,
+                }
+            };
+            return PatchAsync<BankStatementPatchModel, BankStatementGetModel>(unpairModel, cancellationToken);
         }
     }
 }

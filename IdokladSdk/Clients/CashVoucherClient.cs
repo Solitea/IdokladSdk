@@ -6,6 +6,7 @@ using IdokladSdk.Enums;
 using IdokladSdk.Models.CashVoucher;
 using IdokladSdk.Models.CashVoucher.Pair;
 using IdokladSdk.Models.CashVoucher.Recount;
+using IdokladSdk.Models.Common.PairedDocument;
 using IdokladSdk.Requests.CashVoucher;
 using IdokladSdk.Response;
 
@@ -111,6 +112,26 @@ namespace IdokladSdk.Clients
         {
             var resource = $"{ResourceUrl}/Recount";
             return PostAsync<CashVoucherRecountPostModel, CashVoucherRecountGetModel>(resource, model, cancellationToken);
+        }
+
+        /// <summary>
+        /// Unpairs cash voucher from document.
+        /// </summary>
+        /// <param name="id">Cash voucher Id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api result.</returns>
+        public Task<ApiResult<CashVoucherGetModel>> Unpair(int id, CancellationToken cancellationToken = default)
+        {
+            var unpairModel = new CashVoucherPatchModel
+            {
+                Id = id,
+                PairedDocument = new PairedDocumentPatchModel
+                {
+                    DocumentId = null,
+                    DocumentType = null,
+                }
+            };
+            return PatchAsync<CashVoucherPatchModel, CashVoucherGetModel>(unpairModel, cancellationToken);
         }
     }
 }
