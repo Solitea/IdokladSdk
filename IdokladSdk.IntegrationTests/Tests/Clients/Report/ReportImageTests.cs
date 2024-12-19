@@ -133,7 +133,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             // Act
             var data = await _reportClient.IssuedTaxDocument
-                .Detail(1542)
+                .Detail(8222)
                 .GetImageAsync(new ReportImageOption { Language = Language.Cz })
                 .AssertResult();
 

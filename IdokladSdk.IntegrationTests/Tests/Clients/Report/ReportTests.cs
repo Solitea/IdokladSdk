@@ -128,7 +128,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public async Task Get_IssuedTaxDocumentDetail_SuccessfullyGetReport()
         {
             // Act
-            var data = await _reportClient.IssuedTaxDocument.Detail(1542).GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
+            var data = await _reportClient.IssuedTaxDocument.Detail(8222).GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
             // Assert
             Assert.That(data, Is.Not.Null.Or.Empty);
