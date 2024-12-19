@@ -114,5 +114,17 @@ namespace IdokladSdk.Models.BankStatement.Patch
         /// </summary>
         [StringLength(10)]
         public string VariableSymbol { get; set; }
+
+        /// <summary>
+        /// Sets patch model for unpairing bank statement.
+        /// </summary>
+        public void SetModelForUnpairing()
+        {
+            PairedDocument = new PairedDocumentPatchModel
+            {
+                DocumentId = null,
+                DocumentType = null,
+            };
+        }
     }
 }

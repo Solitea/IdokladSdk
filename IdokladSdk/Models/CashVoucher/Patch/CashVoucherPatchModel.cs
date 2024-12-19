@@ -83,5 +83,17 @@ namespace IdokladSdk.Models.CashVoucher
         /// </summary>
         [StringLength(10)]
         public string VariableSymbol { get; set; }
+
+        /// <summary>
+        /// Sets patch model for unpairing cash voucher.
+        /// </summary>
+        public void SetModelForUnpairing()
+        {
+            PairedDocument = new PairedDocumentPatchModel
+            {
+                DocumentId = null,
+                DocumentType = null,
+            };
+        }
     }
 }
