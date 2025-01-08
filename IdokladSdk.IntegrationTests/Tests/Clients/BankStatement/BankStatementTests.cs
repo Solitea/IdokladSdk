@@ -116,7 +116,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             Assert.That(data.WasPaired, Is.True);
             Assert.That(data.PairedInvoiceId, Is.EqualTo(invoice.Id));
             var item = data.CreatedBankStatement.Items.First();
-            Assert.That(item.VariableSymbol, Is.EqualTo(invoice.VariableSymbol));
+            Assert.That(data.CreatedBankStatement.VariableSymbol, Is.EqualTo(invoice.VariableSymbol));
             Assert.That(item.Prices.PaidAmount, Is.EqualTo(invoice.Prices.TotalWithVat));
             Assert.That(data.CreatedBankStatement.Tags.FirstOrDefault(t => t.TagId == Tag1Id), Is.Not.Null);
         }
