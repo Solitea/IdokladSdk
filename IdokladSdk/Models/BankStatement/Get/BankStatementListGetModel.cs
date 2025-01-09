@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.BankStatement.Get;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Common.PairedDocument;
 
