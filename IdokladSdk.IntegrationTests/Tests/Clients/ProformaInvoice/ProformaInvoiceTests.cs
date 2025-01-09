@@ -35,6 +35,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
         private ProformaInvoiceClient _proformaInvoiceClient;
         private IssuedInvoiceClient _issuedInvoiceClient;
         private IssuedDocumentPaymentClient _issuedDocumentPaymentClient;
+        private IssuedTaxDocumentClient _issuedTaxDocumentClient;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -43,6 +44,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             _proformaInvoiceClient = DokladApi.ProformaInvoiceClient;
             _issuedInvoiceClient = DokladApi.IssuedInvoiceClient;
             _issuedDocumentPaymentClient = DokladApi.IssuedDocumentPaymentClient;
+            _issuedTaxDocumentClient = DokladApi.IssuedTaxDocumentClient;
         }
 
         [SetUp]
@@ -402,9 +404,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ProformaInvoice
             Assert.That(accountingModel.Items.Count(i => i.VatRate == 0), Is.EqualTo(1));
 
             // Teardown
-            await _issuedDocumentPaymentClient.DeleteAsync(issuedDocumentPaymentResult.Id);
-            await _issuedDocumentPaymentClient.DeleteAsync(issuedDocumentPaymentResult2.Id);
-            await _proformaInvoiceClient.DeleteAsync(proformaResult.Id);
+            var taxDocumentDeleteResult = await _issuedTaxDocumentClient.DeleteAsync((int)issuedDocumentPaymentResult.IssuedTaxDocumentId).AssertResult();
+            var paymentDeleteResult = await _issuedDocumentPaymentClient.DeleteAsync(issuedDocumentPaymentResult.Id).AssertResult();
+            var payment2DeleteResult = await _issuedDocumentPaymentClient.DeleteAsync(issuedDocumentPaymentResult2.Id).AssertResult();
+            var proformaDeleteResult = await _proformaInvoiceClient.DeleteAsync(proformaResult.Id).AssertResult();
+
+            Assert.That(taxDocumentDeleteResult, Is.True);
+            Assert.That(paymentDeleteResult, Is.True);
+            Assert.That(payment2DeleteResult, Is.True);
+            Assert.That(proformaDeleteResult, Is.True);
         }
 
         private void AssertDeliveryAddress(DeliveryDocumentAddressGetModel data, int expectedDeliveryAddressId)
