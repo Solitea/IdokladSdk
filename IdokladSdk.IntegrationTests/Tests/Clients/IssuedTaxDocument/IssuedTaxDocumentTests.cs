@@ -69,7 +69,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedTaxDocument
             Assert.That(result.Items.Count, Is.EqualTo(postData.Items.Count));
 
             // Teardown
-            await _issuedTaxDocumentClient.DeleteAsync(result.Id).AssertResult();
+            var deleted = await _issuedTaxDocumentClient.DeleteAsync(result.Id).AssertResult();
+            Assert.That(deleted, Is.True);
         }
 
         [Test]
