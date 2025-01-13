@@ -27,11 +27,6 @@ namespace IdokladSdk.Models.BankStatement
         public int CurrencyId { get; set; }
 
         /// <summary>
-        /// Gets or sets current account balance.
-        /// </summary>
-        public decimal CurrentBalance { get; set; }
-
-        /// <summary>
         /// Gets or sets Date of transaction.
         /// </summary>
         public DateTime DateOfTransaction { get; set; }
@@ -138,18 +133,6 @@ namespace IdokladSdk.Models.BankStatement
         /// Gets or sets All recounted prices.
         /// </summary>
         public Prices Prices { get; set; }
-
-        /// <summary>
-        /// Gets or sets start date of the statement.
-        /// </summary>
-        [Obsolete]
-        public DateTime PeriodDateFrom { get; set; }
-
-        /// <summary>
-        /// Gets or sets end date of the statement.
-        /// </summary>
-        [Obsolete]
-        public DateTime PeriodDateTo { get; set; }
 
         /// <summary>
         /// Gets or sets Specific symbol.

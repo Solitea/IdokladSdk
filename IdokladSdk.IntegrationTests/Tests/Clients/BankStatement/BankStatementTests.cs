@@ -74,7 +74,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             var bankStatement = data.Items.FirstOrDefault();
             Assert.That(bankStatement, Is.Not.Null);
             Assert.That(bankStatement.Id, Is.EqualTo(BankStatementId));
-            Assert.That(bankStatement.Items.First().Prices.PaidAmount, Is.EqualTo(100));
+            Assert.That(bankStatement.Items.First().Prices.TotalWithVat, Is.EqualTo(100));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
 
             // Assert
             Assert.That(data.Id, Is.EqualTo(BankStatementId));
-            Assert.That(data.Items.First().Prices.PaidAmount, Is.EqualTo(100));
+            Assert.That(data.Items.First().Prices.TotalWithVat, Is.EqualTo(100));
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             Assert.That(data.PairedInvoiceId, Is.EqualTo(invoice.Id));
             var item = data.CreatedBankStatement.Items.First();
             Assert.That(data.CreatedBankStatement.VariableSymbol, Is.EqualTo(invoice.VariableSymbol));
-            Assert.That(item.Prices.PaidAmount, Is.EqualTo(invoice.Prices.TotalWithVat));
+            Assert.That(item.Prices.TotalWithVat, Is.EqualTo(invoice.Prices.TotalWithVat));
             Assert.That(data.CreatedBankStatement.Tags.FirstOrDefault(t => t.TagId == Tag1Id), Is.Not.Null);
         }
 
