@@ -136,6 +136,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             // Assert
             Assert.That(data, Is.Not.Null);
             Assert.That(data.VatPayerLimit, Is.GreaterThan(0));
+            Assert.That(data.VatPayerLimitImmediately, Is.GreaterThan(0));
         }
 
         [TestCase(VatPeriod.Quarter)]

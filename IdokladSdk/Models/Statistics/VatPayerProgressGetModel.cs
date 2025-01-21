@@ -26,5 +26,10 @@ namespace IdokladSdk.Models.Statistics
         /// Gets or sets vat payer limit.
         /// </summary>
         public decimal VatPayerLimit { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat payer limit with immediate effect.
+        /// </summary>
+        public decimal VatPayerLimitImmediately { get; set; }
     }
 }
