@@ -278,7 +278,27 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
 
             // Assert
             AssertNonEmptyListResult(result);
-            AssertVatPayerLimitReachedNotification(result.Items.First());
+            var notification = result.Items
+                .First(n => n.NotificationType == nameof(VatPayerLimitReachedNotificationV1GetModel));
+            Assert.That(notification, Is.Not.Null);
+            AssertVatPayerLimitReachedV1Notification(notification);
+        }
+
+        [Test]
+        public async Task GetList_VatPayerLimitReachedNotificationV2_Success()
+        {
+            // Act
+            var result = await NotificationClient.List()
+                .Filter(n => n.Type.IsEqual(NotificationType.VatPayerLimitReached))
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            Assert.That(result.TotalItems, Is.GreaterThan(0));
+            var notification = result.Items
+                .FirstOrDefault(n => n.NotificationType == nameof(VatPayerLimitReachedNotificationV2GetModel));
+            Assert.That(notification, Is.Not.Null);
+            AssertVatPayerLimitReachedV2Notification(notification);
         }
 
         [Test]
@@ -487,7 +507,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             Assert.That(notificationData.ThreadName, Is.Not.Null.And.Not.Empty);
         }
 
-        private void AssertVatPayerLimitReachedNotification(NotificationListGetModel notification)
+        private void AssertVatPayerLimitReachedV1Notification(NotificationListGetModel notification)
         {
             AssertNotification(notification);
             var notificationData = notification.NotificationData as VatPayerLimitReachedNotificationV1GetModel;
@@ -495,6 +515,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             Assert.That(notificationData.AccountingType, Is.EqualTo(AccountingType.ActualExpenses));
             Assert.That(notificationData.DateOfEvent, Is.Not.EqualTo(DateTime.MinValue));
             Assert.That(notificationData.Legislation, Is.Not.Zero);
+        }
+
+        private void AssertVatPayerLimitReachedV2Notification(NotificationListGetModel notification)
+        {
+            AssertNotification(notification);
+            var notificationData = notification.NotificationData as VatPayerLimitReachedNotificationV2GetModel;
+            Assert.That(notificationData, Is.Not.Null);
+            Assert.That(notificationData.DateFrom, Is.Not.EqualTo(DateTime.MinValue));
+            Assert.That(notificationData.DateTo, Is.Not.EqualTo(DateTime.MinValue));
         }
     }
 }
