@@ -1,4 +1,5 @@
 ﻿using System;
+using IdokladSdk.Enums;
 
 namespace IdokladSdk.Models.Notification.NotificationData
 {
@@ -16,5 +17,10 @@ namespace IdokladSdk.Models.Notification.NotificationData
         /// Gets or sets end date of VAT payer limit.
         /// </summary>
         public DateTime DateTo { get; set; }
+
+        /// <summary>
+        /// Gets or sets VAT Payer Limit Type.
+        /// </summary>
+        public VatPayerNotificationLimitType VatPayerNotificationLimitType { get; set; }
     }
 }
