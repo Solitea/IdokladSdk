@@ -524,6 +524,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             Assert.That(notificationData, Is.Not.Null);
             Assert.That(notificationData.DateFrom, Is.Not.EqualTo(DateTime.MinValue));
             Assert.That(notificationData.DateTo, Is.Not.EqualTo(DateTime.MinValue));
+            Assert.That(notificationData.VatPayerNotificationLimitType, Is.EqualTo(VatPayerNotificationLimitType.Lower));
         }
     }
 }
