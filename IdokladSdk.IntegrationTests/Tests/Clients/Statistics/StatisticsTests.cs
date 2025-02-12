@@ -88,6 +88,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Statistics
             Assert.That(data.IssuedInvoices, Is.GreaterThan(0));
             Assert.That(data.ReceivedInvoices, Is.GreaterThan(0));
             Assert.That(data.SalesReceipts, Is.GreaterThan(0));
+            Assert.That(data.ReceivedReceipts, Is.GreaterThan(0));
         }
 
         [Test]

@@ -28,6 +28,11 @@ namespace IdokladSdk.Models.Statistics
         public bool IncludeSalesReceipt { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether to Include Received Receipt Statistics.
+        /// </summary>
+        public bool IncludeReceivedReceipt { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets number of periods.
         /// </summary>
         [MinValue(1)]
