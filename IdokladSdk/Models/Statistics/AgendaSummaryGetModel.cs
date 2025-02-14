@@ -69,5 +69,10 @@
         /// Gets or sets Number of sales receipts.
         /// </summary>
         public int SalesReceipts { get; set; }
+
+        /// <summary>
+        /// Gets or sets Number of received receipts.
+        /// </summary>
+        public int ReceivedReceipts { get; set; }
     }
 }
