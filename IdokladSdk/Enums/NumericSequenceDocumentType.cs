@@ -8,51 +8,56 @@
         /// <summary>
         /// Issued invoice
         /// </summary>
-        IssuedInvoice = 0,
+        IssuedInvoice = DocumentType.IssuedInvoice,
 
         /// <summary>
         /// Proforma invoice
         /// </summary>
-        ProformaInvoice = 1,
+        ProformaInvoice = DocumentType.ProformaInvoice,
 
         /// <summary>
         /// Cash voucher
         /// </summary>
-        CashVoucher = 2,
+        CashVoucher = DocumentType.CashVoucher,
 
         /// <summary>
         /// Credit note - you need define own numeric sequence for credit note
         /// </summary>
-        CreditNote = 3,
+        CreditNote = DocumentType.CreditNote,
 
         /// <summary>
         /// Bank statement
         /// </summary>
-        BankStatement = 4,
+        BankStatement = DocumentType.BankStatement,
 
         /// <summary>
         /// Received invoice
         /// </summary>
-        ReceivedInvoice = 5,
+        ReceivedInvoice = DocumentType.ReceivedInvoice,
 
         /// <summary>
         /// Sales receipt
         /// </summary>
-        SalesReceipt = 6,
+        SalesReceipt = DocumentType.SalesReceipt,
 
         /// <summary>
         /// Sales Order
         /// </summary>
-        SalesOrder = 7,
+        SalesOrder = DocumentType.SalesOrder,
 
         /// <summary>
         /// Internal document
         /// </summary>
-        InternalDocument = 9,
+        InternalDocument = DocumentType.InternalDocument,
 
         /// <summary>
         /// Issued tax document
         /// </summary>
-        IssuedTaxDocument = 10,
+        IssuedTaxDocument = DocumentType.IssuedTaxDocument,
+
+        /// <summary>
+        /// Received Receipt
+        /// </summary>
+        ReceivedReceipt = DocumentType.ReceivedReceipt,
     }
 }
