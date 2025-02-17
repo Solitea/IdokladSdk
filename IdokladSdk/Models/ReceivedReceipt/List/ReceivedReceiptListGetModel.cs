@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.Contact;
 
 namespace IdokladSdk.Models.ReceivedReceipt.List
 {
@@ -105,6 +106,11 @@ namespace IdokladSdk.Models.ReceivedReceipt.List
         /// Gets or sets the prices and calculations.
         /// </summary>
         public Prices Prices { get; set; }
+
+        /// <summary>
+        /// Gets or sets contact information of the partner.
+        /// </summary>
+        public ContactGetModel Partner { get; set; }
 
         /// <summary>
         /// Gets or sets the receipt's status.
