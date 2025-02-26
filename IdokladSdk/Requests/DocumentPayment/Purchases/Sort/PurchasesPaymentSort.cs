@@ -1,5 +1,6 @@
 ﻿using IdokladSdk.Models.Payment.DocumentPayments.Purchases.List;
 using IdokladSdk.Models.Payment.DocumentPayments.Sales.SubModels;
+using IdokladSdk.Requests.Core.Modifiers.Sort.BasicSorts;
 using IdokladSdk.Requests.Core.Modifiers.Sort.Common;
 
 namespace IdokladSdk.Requests.DocumentPayment.Purchases.Sort
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.DocumentPayment.Purchases.Sort
     /// <summary>
     /// PurchasesPaymentSort.
     /// </summary>
-    public class PurchasesPaymentSort
+    public class PurchasesPaymentSort : IdSort
     {
         /// <inheritdoc cref="PurchaseDocumentPaymentListGetModel.DateOfPayment" />
         public SortItem DateOfPayment { get; set; } =

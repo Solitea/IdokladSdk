@@ -1,5 +1,6 @@
 ﻿using System;
 using IdokladSdk.Models.Payment.DocumentPayments.Purchases.List;
+using IdokladSdk.Requests.Core.Modifiers.Filters;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 
 namespace IdokladSdk.Requests.DocumentPayment.Purchases.Filter
@@ -7,7 +8,7 @@ namespace IdokladSdk.Requests.DocumentPayment.Purchases.Filter
     /// <summary>
     /// PurchasesPaymentFilter.
     /// </summary>
-    public class PurchasesPaymentFilter
+    public class PurchasesPaymentFilter : IdFilter
     {
         /// <inheritdoc cref="PurchaseDocumentPaymentListGetModel"/>
         public CompareFilterItem<DateTime> DateOfPayment { get; set; } =
