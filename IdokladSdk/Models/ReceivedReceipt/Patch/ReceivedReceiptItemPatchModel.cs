@@ -14,7 +14,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Patch
         /// <summary>
         /// Gets or sets the item amount.
         /// </summary>
-        [Range(0.0, double.MaxValue)]
+        [DecimalRange]
         public decimal? Amount { get; set; }
 
         /// <summary>

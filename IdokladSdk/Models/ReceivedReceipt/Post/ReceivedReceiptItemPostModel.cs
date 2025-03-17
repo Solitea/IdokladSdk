@@ -14,7 +14,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Post
         /// Gets or sets the item amount.
         /// </summary>
         [DecimalRange]
-
+        [Required]
         public decimal Amount { get; set; }
 
         /// <summary>
