@@ -51,7 +51,7 @@ namespace IdokladSdk.Models.UnpairedDocument.List
         /// <summary>
         /// Gets or sets partner id.
         /// </summary>
-        public int PartnerId { get; set; }
+        public int? PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets partner name.
