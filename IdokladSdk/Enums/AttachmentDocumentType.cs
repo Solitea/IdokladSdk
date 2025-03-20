@@ -29,5 +29,10 @@
         /// Sales order
         /// </summary>
         SalesOrder = 7,
+
+        /// <summary>
+        /// Received receipt
+        /// </summary>
+        ReceivedReceipt = 11,
     }
 }
