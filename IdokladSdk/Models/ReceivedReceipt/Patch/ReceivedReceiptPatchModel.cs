@@ -42,6 +42,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Patch
         /// <summary>
         /// Gets or sets the external document number.
         /// </summary>
+        [StringLength(20)]
         public string ExternalDocumentNumber { get; set; }
 
         /// <summary>
