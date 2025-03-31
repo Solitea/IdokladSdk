@@ -26,5 +26,8 @@ namespace IdokladSdk.Requests.UnpairedDocument.Filter
 
         /// <inheritdoc cref="UnpairedDocumentListGetModel.CurrencyId"/>
         public FilterItem<int> CurrencyId { get; set; } = new FilterItem<int>(nameof(UnpairedDocumentListGetModel.CurrencyId));
+
+        /// <inheritdoc cref="UnpairedDocumentListGetModel.PartnerId"/>
+        public CompareFilterItem<decimal> TotalAmountRemainingToPay { get; set; } = new CompareFilterItem<decimal>(nameof(UnpairedDocumentListGetModel.TotalAmountRemainingToPay));
     }
 }

@@ -12,7 +12,7 @@ namespace IdokladSdk.Requests.StockMovement.Filter
         /// <summary>
         /// Gets or sets Amount.
         /// </summary>
-        public FilterItem<decimal> Amount { get; set; } = new FilterItem<decimal>("Amount");
+        public CompareFilterItem<decimal> Amount { get; set; } = new CompareFilterItem<decimal>("Amount");
 
         /// <summary>
         /// Gets or sets DateOfMovement.
