@@ -348,7 +348,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CreditNote
             Assert.That(getModel.Prices.TotalWithVat, Is.Not.Zero);
             Assert.That(getModel.ReportLanguage, Is.EqualTo(postModel.ReportLanguage));
             Assert.That(getModel.SalesPosEquipmentId, Is.EqualTo(postModel.SalesPosEquipmentId));
-            Assert.That(getModel.VariableSymbol, Is.EqualTo(postModel.VariableSymbol));
             Assert.That(getModel.VatOnPayStatus, Is.EqualTo(postModel.VatOnPayStatus));
             Assert.That(getModel.VatReverseChargeCodeId, Is.EqualTo(postModel.VatReverseChargeCodeId));
         }

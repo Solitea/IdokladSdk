@@ -53,6 +53,7 @@ namespace IdokladSdk
         private VatCodeClient _vatCodeClient;
         private VatRateClient _vatRateClient;
         private VatReverseChargeCodeClient _vatReverseChargeCodeClient;
+        private WebhookClient _webhookClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DokladApi" /> class.
@@ -321,5 +322,10 @@ namespace IdokladSdk
         /// </summary>
         public VatReverseChargeCodeClient VatReverseChargeCodeClient =>
             _vatReverseChargeCodeClient ?? (_vatReverseChargeCodeClient = new VatReverseChargeCodeClient(ApiContext));
+
+        /// <summary>
+        /// Gets Webhooks.
+        /// </summary>
+        public WebhookClient WebhookClient => _webhookClient ?? (_webhookClient = new WebhookClient(ApiContext));
     }
 }
