@@ -53,6 +53,7 @@ namespace IdokladSdk.Models.PriceListItem
         /// <summary>
         /// Gets or sets unit price.
         /// </summary>
+        [DecimalRange]
         public decimal? Price { get; set; }
 
         /// <summary>
