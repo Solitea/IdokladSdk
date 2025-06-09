@@ -40,7 +40,6 @@ namespace IdokladSdk.UnitTests.Tests.Validation
                 IdentificationNumber = "123456789012345678901",
                 Name = "something",
                 Rating = 0,
-                Price = 2000000000000000000,
                 NonNullableDate = DateTime.Now,
                 NullableDate = DateTime.Now
             };
