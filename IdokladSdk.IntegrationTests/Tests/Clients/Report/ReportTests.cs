@@ -86,7 +86,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_CashVoucherDetail_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.CashVoucher.Detail(587154).GetAsync(new ReportOption
+            var data = await _reportClient.CashVoucher.Detail(640075).GetAsync(new ReportOption
             {
                 Language = Language.Cz
             }).AssertResult();

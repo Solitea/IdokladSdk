@@ -18,7 +18,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
     [TestFixture]
     public class CashVoucherTests : TestBase
     {
-        private const int CashVoucherId = 587154;
+        private const int CashVoucherId = 640075;
         private const int PartnerId = 323823;
         private const int UnpaidIssuedInvoice = 914456;
         private const int UnpaidReceivedInvoice = 165460;
@@ -67,7 +67,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 
             // Assert
             Assert.That(cashVoucher.Id, Is.EqualTo(CashVoucherId));
-            Assert.That(cashVoucher.Items.First().Price, Is.EqualTo(500m));
+            Assert.That(cashVoucher.Items.First().Price, Is.EqualTo(150m));
         }
 
         [Test]
