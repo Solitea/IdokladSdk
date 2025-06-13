@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Email
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.Email
     /// <summary>
     /// Base settings for sending email.
     /// </summary>
-    public abstract class EmailSettings
+    public abstract class EmailSettings : ValidatableModel
     {
         /// <summary>
         /// Gets or sets id of the document to send.
