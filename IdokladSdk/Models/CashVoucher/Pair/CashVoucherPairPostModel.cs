@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher.Pair
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.CashVoucher.Pair
     /// <summary>
     /// CashVoucherPairPostModel.
     /// </summary>
-    public class CashVoucherPairPostModel
+    public class CashVoucherPairPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets cash voucher id.

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedDocumentTemplate.Recount
@@ -8,7 +9,7 @@ namespace IdokladSdk.Models.IssuedDocumentTemplate.Recount
     /// <summary>
     /// IssuedDocumentTemplateRecountPostModel.
     /// </summary>
-    public class IssuedDocumentTemplateRecountPostModel
+    public class IssuedDocumentTemplateRecountPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets currency id.
