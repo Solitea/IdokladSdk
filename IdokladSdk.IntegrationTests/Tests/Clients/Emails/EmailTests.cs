@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Email;
@@ -231,7 +231,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         [TestCaseSource(nameof(GetCreditNoteEmailSettings))]
         public void Send_CreditNoteEmailWithoutRecipient_ThrowsValidationException(CreditNoteEmailSettings setting)
         {
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.CreditNoteEmail.SendAsync(setting));
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await DokladApi.MailClient.CreditNoteEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
@@ -239,7 +239,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         [TestCaseSource(nameof(GetIssuedInvoiceEmailSettings))]
         public void Send_IssuedInvoiceEmailWithoutRecipient_ThrowsValidationException(IssuedInvoiceEmailSettings setting)
         {
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.IssuedInvoiceEmail.SendAsync(setting));
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await DokladApi.MailClient.IssuedInvoiceEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
@@ -247,7 +247,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         [TestCaseSource(nameof(GetProformaInvoiceEmailSettings))]
         public void Send_ProformaInvoiceEmailWithoutRecipient_ThrowsValidationException(ProformaInvoiceEmailSettings setting)
         {
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.ProformaInvoiceEmail.SendAsync(setting));
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await DokladApi.MailClient.ProformaInvoiceEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
@@ -255,7 +255,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         [TestCaseSource(nameof(GetReceivedInvoiceEmailSettings))]
         public void Send_ReceivedInvoiceEmailWithoutRecipient_ThrowsValidationException(ReceivedInvoiceEmailSettings setting)
         {
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.ReceivedInvoiceEmail.SendAsync(setting));
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await DokladApi.MailClient.ReceivedInvoiceEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
@@ -263,7 +263,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
         [TestCaseSource(nameof(GetSalesOrderEmailSettings))]
         public void Send_SalesOrderEmailWithoutRecipient_ThrowsValidationException(SalesOrderEmailSettings setting)
         {
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.MailClient.SalesOrderEmail.SendAsync(setting));
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await DokladApi.MailClient.SalesOrderEmail.SendAsync(setting));
 
             AssertExceptionMessage(exception);
         }
@@ -299,7 +299,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             return new List<TSettings>
         {
             new TSettings(),
-            new TSettings { OtherRecipients = new List<string> { "qquc@furusato" } }
+            new TSettings { OtherRecipients = new List<string> { "qquc@furusato" }, DocumentId = 1 }
         };
         }
 
@@ -310,7 +310,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             Assert.That(!result.NotSent.Any(), Is.True);
         }
 
-        private void AssertExceptionMessage(ValidationException exception)
+        private void AssertExceptionMessage(IdokladValidationException exception)
         {
             Assert.That(exception.Message, Is.Not.Null.Or.Empty);
         }

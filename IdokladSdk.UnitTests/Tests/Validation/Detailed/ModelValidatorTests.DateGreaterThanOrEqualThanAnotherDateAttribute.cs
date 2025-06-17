@@ -15,7 +15,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             // Arrange
             var model = new ModelWithDateGreaterOrEqualThanAnotherDateAttribute()
             {
-                DateOfIssue = new DateTime(2020, 10, 10),
+                DateOfIssue = new DateTime(2020, 10, 10).ToUniversalTime(),
             };
             model.DateOfExpiration = model.DateOfIssue.AddDays(-1);
 
@@ -33,7 +33,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithDateGreaterOrEqualThanAnotherDateAttribute()
             {
                 DateOfExpiration = Constants.DefaultDateTime,
-                DateOfIssue = new DateTime(2020, 10, 10),
+                DateOfIssue = new DateTime(2020, 10, 10).ToUniversalTime(),
             };
 
             // Act
@@ -50,7 +50,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithDateGreaterOrEqualThanAnotherDateAttributeDefaultDate()
             {
                 DateOfExpiration = Constants.DefaultDateTime,
-                DateOfIssue = new DateTime(2020, 10, 10),
+                DateOfIssue = new DateTime(2020, 10, 10).ToUniversalTime(),
             };
 
             // Act
@@ -66,7 +66,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             // Arrange
             var model = new ModelWithNullableDateGreaterOrEqualThanAnotherDateAttribute()
             {
-                DateOfIssue = new DateTime(2020, 10, 10),
+                DateOfIssue = new DateTime(2020, 10, 10).ToUniversalTime(),
             };
             model.DateOfVatClaim = model.DateOfIssue.AddDays(-1);
 
@@ -83,7 +83,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             // Arrange
             var model = new ModelWithNullableDateGreaterOrEqualThanAnotherNullableDateAttribute()
             {
-                DateOfIssue = new DateTime(2020, 10, 10),
+                DateOfIssue = new DateTime(2020, 10, 10).ToUniversalTime(),
             };
             model.DateOfVatClaim = model.DateOfIssue.Value.AddDays(-1);
 
@@ -110,7 +110,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             // Arrange
             var model = new ModelWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute()
             {
-                DateOfIssue = new DateTime(2020, 10, 10),
+                DateOfIssue = new DateTime(2020, 10, 10).ToUniversalTime(),
             };
             model.DateOfVatClaim = model.DateOfIssue.Value.AddDays(-1);
 
@@ -133,7 +133,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 
         private static IList<object> GetValidModelsWithNullableDateGreaterOrEqualThanAnotherDateAttribute()
         {
-            var defaultDateTime = new DateTime(2020, 10, 10);
+            var defaultDateTime = new DateTime(2020, 10, 10).ToUniversalTime();
 
             return new List<object>
         {
@@ -144,7 +144,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
 
         private static IList<object> GetValidModelsWithNullablePropertyDateGreaterOrEqualThanAnotherNullableDateAttribute()
         {
-            var defaultDateTime = new DateTime(2020, 10, 10);
+            var defaultDateTime = new DateTime(2020, 10, 10).ToUniversalTime();
 
             return new List<object>
         {

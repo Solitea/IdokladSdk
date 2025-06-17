@@ -89,6 +89,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(DecimalZeroOrDefaultIfAttribute): return ValidationType.DecimalZeroOrDefaultIf;
 
+                case nameof(UtcDateTimeAttribute): return ValidationType.DateTimeInUtc;
+
                 default:
                     throw new NotImplementedException($"{nameof(ValidationType)} doesn't contain value for {attribute.GetType().Name}.");
             }

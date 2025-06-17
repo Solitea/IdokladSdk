@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.UnitTests.Tests.Validation.Model
 {
-    public class TestEntity
+    public class TestEntity : ValidatableModel
     {
         public string Id { get; set; }
 
@@ -28,5 +29,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Model
         public DateTime? NullableDate { get; set; }
 
         public IEnumerable<DateTime> Dates { get; set; }
+
+        public IEnumerable<DateTime?> NullableDates { get; set; }
     }
 }

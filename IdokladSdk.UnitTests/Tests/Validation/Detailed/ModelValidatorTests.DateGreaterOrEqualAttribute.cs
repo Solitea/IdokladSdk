@@ -14,7 +14,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             // Arrange
             var model = new ModelWithDateGreaterOrEqualThanAttribute
             {
-                DateOfIssue = new DateTime(2020, 12, 3)
+                DateOfIssue = new DateTime(2020, 12, 3).ToUniversalTime()
             };
 
             // Act

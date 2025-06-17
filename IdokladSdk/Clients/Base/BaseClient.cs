@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +14,7 @@ using IdokladSdk.Requests.Extensions;
 using IdokladSdk.Response;
 using IdokladSdk.Serialization;
 using IdokladSdk.Validation;
+using IdokladSdk.Validation.Detailed.Model;
 using Newtonsoft.Json;
 
 namespace IdokladSdk.Clients
@@ -137,6 +138,7 @@ namespace IdokladSdk.Clients
             TPatchModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPatchModel : ValidatableModel, new()
         {
             ValidateModel(model);
             var request = await CreateRequestAsync(resource, new HttpMethod("PATCH"), cancellationToken).ConfigureAwait(false);
@@ -157,6 +159,7 @@ namespace IdokladSdk.Clients
             TPatchModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPatchModel : ValidatableModel, new()
         {
             return PatchAsync<TPatchModel, TGetModel>(ResourceUrl, model, cancellationToken);
         }
@@ -174,7 +177,7 @@ namespace IdokladSdk.Clients
             string resource,
             IList<TPatchModel> models,
             CancellationToken cancellationToken)
-            where TPatchModel : new()
+            where TPatchModel : ValidatableModel, new()
             where TGetModel : new()
         {
             var batch = new BatchModel<TPatchModel>(models);
@@ -197,7 +200,7 @@ namespace IdokladSdk.Clients
         protected internal Task<ApiBatchResult<TGetModel>> PatchAsync<TPatchModel, TGetModel>(
             IList<TPatchModel> models,
             CancellationToken cancellationToken)
-            where TPatchModel : new()
+            where TPatchModel : ValidatableModel, new()
             where TGetModel : new()
         {
             return PatchAsync<TPatchModel, TGetModel>(BatchUrl, models, cancellationToken);
@@ -217,6 +220,7 @@ namespace IdokladSdk.Clients
             TPostModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPostModel : ValidatableModel, new()
         {
             ValidateModel(model);
             var request = await CreateRequestAsync(resource, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
@@ -237,6 +241,7 @@ namespace IdokladSdk.Clients
             TPostModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPostModel : ValidatableModel, new()
         {
             return PostAsync<TPostModel, TGetModel>(ResourceUrl, model, cancellationToken);
         }
@@ -254,7 +259,7 @@ namespace IdokladSdk.Clients
             string resource,
             IList<TPostModel> models,
             CancellationToken cancellationToken)
-            where TPostModel : new()
+            where TPostModel : ValidatableModel, new()
             where TGetModel : new()
         {
             var batch = new BatchModel<TPostModel>(models);
@@ -292,7 +297,7 @@ namespace IdokladSdk.Clients
         protected internal Task<ApiBatchResult<TGetModel>> PostAsync<TPostModel, TGetModel>(
             IList<TPostModel> models,
             CancellationToken cancellationToken)
-            where TPostModel : new()
+            where TPostModel : ValidatableModel, new()
             where TGetModel : new()
         {
             return PostAsync<TPostModel, TGetModel>(BatchUrl, models, cancellationToken);
@@ -331,6 +336,7 @@ namespace IdokladSdk.Clients
             TPutModel model,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPutModel : ValidatableModel, new()
         {
             ValidateModel(model);
             var request = await CreateRequestAsync(resource, HttpMethod.Put, cancellationToken).ConfigureAwait(false);
@@ -353,6 +359,7 @@ namespace IdokladSdk.Clients
             IList<TPutModel> models,
             CancellationToken cancellationToken)
             where TGetModel : new()
+            where TPutModel : ValidatableModel, new()
         {
             var batch = new BatchModel<TPutModel>(models);
             ValidateModel(batch);
@@ -459,10 +466,7 @@ namespace IdokladSdk.Clients
             return GetAsync<T>($"{ResourceUrl}/Default", queryParams, cancellationToken);
         }
 
-        private static bool IsValidObject(object obj, out List<ValidationMessage> results)
-        {
-            return ApiValidator.ValidateObject(obj, out results);
-        }
+        private static ModelValidationResult IsValidModel(ValidatableModel model) => model.Validate();
 
         private async Task<string> GetQueryStringAsync(string resource, Dictionary<string, string> queryParams)
         {
@@ -490,10 +494,36 @@ namespace IdokladSdk.Clients
         private string GetSdkVersion() => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         private void ValidateModel<T>(T model)
+            where T : ValidatableModel, new()
         {
-            if (!IsValidObject(model, out List<ValidationMessage> errors))
+            var validationResult = IsValidModel(model);
+
+            if (!validationResult.IsValid)
             {
-                throw new ValidationException("Model is not valid.\n" + string.Join("\n", errors));
+                throw new IdokladValidationException(validationResult.InvalidProperties);
+            }
+        }
+
+        private void ValidateModel<T>(BatchModel<T> batchModel)
+            where T : ValidatableModel, new()
+        {
+            var invalidProperties = new Dictionary<string, PropertyValidationResult>();
+
+            var validationResult = batchModel.Validate();
+
+            if (!validationResult.IsValid)
+            {
+                throw new IdokladValidationException(validationResult.InvalidProperties);
+            }
+
+            foreach (var model in batchModel.Items)
+            {
+                validationResult = IsValidModel(model);
+
+                if (!validationResult.IsValid)
+                {
+                    throw new IdokladValidationException(validationResult.InvalidProperties);
+                }
             }
         }
     }
