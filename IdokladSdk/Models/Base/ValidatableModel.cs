@@ -12,10 +12,6 @@ namespace IdokladSdk.Models.Base
         /// Validates model on client based on validation attributes.
         /// </summary>
         /// <returns><see cref="ModelValidationResult"/>.</returns>
-        public virtual ModelValidationResult Validate()
-        {
-            var validator = new ModelValidator();
-            return validator.Validate(this);
-        }
+        public virtual ModelValidationResult Validate() => new ModelValidator().Validate(this);
     }
 }

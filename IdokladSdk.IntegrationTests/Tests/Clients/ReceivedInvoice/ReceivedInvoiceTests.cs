@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.ReceivedInvoice;
@@ -78,7 +78,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             });
 
             // Act
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await _receivedInvoiceClient.PostAsync(receivedInvoicePostModel));
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await _receivedInvoiceClient.PostAsync(receivedInvoicePostModel));
 
             // Assert
             Assert.That(exception.Message, Is.Not.Null.Or.Empty);
@@ -95,7 +95,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
             };
 
             // Act
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await _receivedInvoiceClient.UpdateAsync(model));
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await _receivedInvoiceClient.UpdateAsync(model));
 
             // Assert
             Assert.That(exception.Message, Is.Not.Null.Or.Empty);

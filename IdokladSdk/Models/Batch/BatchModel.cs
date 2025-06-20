@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Batch
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.Batch
     /// Model for batch operations.
     /// </summary>
     /// <typeparam name="T">Return type.</typeparam>
-    public class BatchModel<T>
+    public class BatchModel<T> : ValidatableModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchModel{T}"/> class.

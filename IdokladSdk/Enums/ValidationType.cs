@@ -181,6 +181,11 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property must be default or zero if dependent property is target value. <see cref="DecimalZeroOrDefaultIfAttribute"/>
         /// </summary>
-        DecimalZeroOrDefaultIf = 35
+        DecimalZeroOrDefaultIf = 35,
+
+        /// <summary>
+        /// Property must have a value indicating that the date and time are in Coordinated Universal Time (UTC).
+        /// </summary>
+        DateTimeInUtc = 36
     }
 }

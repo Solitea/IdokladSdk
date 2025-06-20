@@ -50,14 +50,14 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
         {
             return new List<object[]>
         {
-            new object[] { new ModelWithDateTimeAttribute { DateOfIssue = DateTime.MinValue }, nameof(ModelWithDateTimeAttribute.DateOfIssue) },
-            new object[] { new ModelWithDateTimeAttribute { DateOfIssue = DateTime.Now, DateOfPayment = DateTime.MinValue }, nameof(ModelWithDateTimeAttribute.DateOfPayment) }
+            new object[] { new ModelWithDateTimeAttribute { DateOfIssue = DateTime.MinValue.ToUniversalTime() }, nameof(ModelWithDateTimeAttribute.DateOfIssue) },
+            new object[] { new ModelWithDateTimeAttribute { DateOfIssue = DateTime.UtcNow, DateOfPayment = DateTime.MinValue.ToUniversalTime() }, nameof(ModelWithDateTimeAttribute.DateOfPayment) }
         };
         }
 
         private static IList<object> GetValidModelsWithDateTimeAttribute()
         {
-            var date = new DateTime(2020, 12, 3);
+            var date = new DateTime(2020, 12, 3).ToUniversalTime();
 
             return new List<object>
         {

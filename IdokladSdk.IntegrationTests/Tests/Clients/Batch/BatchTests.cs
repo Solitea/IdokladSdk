@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Batch;
@@ -91,7 +91,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             var modelsToUpdate = new List<UpdateExportedModel>();
 
             // Act + Assert
-            Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
+            Assert.ThrowsAsync<IdokladValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Batch
             }
 
             // Act + Assert
-            Assert.ThrowsAsync<ValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
+            Assert.ThrowsAsync<IdokladValidationException>(async () => await DokladApi.BatchClient.UpdateAsync(modelsToUpdate));
         }
     }
 }

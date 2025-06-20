@@ -38,7 +38,7 @@ namespace IdokladSdk.Validation
             catch (Exception)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                throw new ValidationException($"Response is not valid: {content}");
+                throw new IdokladValidationException($"Response is not valid: {content}");
             }
 
             handler?.Invoke(data);

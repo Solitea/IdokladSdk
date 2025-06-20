@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.DeliveryAddress;
@@ -323,7 +323,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
             model.Items[0].ItemType = PostIssuedInvoiceItemType.ItemTypeReduce;
 
             // Act
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await _issuedInvoiceClient.PostAsync(model).AssertResult());
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await _issuedInvoiceClient.PostAsync(model).AssertResult());
 
             // Assert
             Assert.That(exception, Has.Message.Contains("normal items"));

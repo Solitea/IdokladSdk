@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.Webhook
 {
     /// <summary>
     /// AgendaWebhookSettingsPostModel.
     /// </summary>
-    public class AgendaWebhookSettingsPostModel
+    public class AgendaWebhookSettingsPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets type of actions for which the webhook should be called.

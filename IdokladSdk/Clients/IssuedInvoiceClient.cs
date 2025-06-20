@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Doklad.Shared.Enums.Api;
 using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Exceptions;
 using IdokladSdk.Models.IssuedInvoice;
 using IdokladSdk.Models.RecurringInvoice;
 using IdokladSdk.Requests.IssuedInvoice;
@@ -115,14 +116,14 @@ namespace IdokladSdk.Clients
             {
                 if (model.Items.Any(i => i.ItemType != PostIssuedInvoiceItemType.ItemTypeNormal))
                 {
-                    throw new ValidationException("Issued invoice can contain only normal items.");
+                    throw new IdokladValidationException("Issued invoice can contain only normal items.");
                 }
             }
             else
             {
                 if (model.Items.Any(i => i.ItemType != PostIssuedInvoiceItemType.ItemTypeNormal && i.ItemType != PostIssuedInvoiceItemType.ItemTypeReduce))
                 {
-                    throw new ValidationException("Issued invoice can contain only normal or deductive items.");
+                    throw new IdokladValidationException("Issued invoice can contain only normal or deductive items.");
                 }
             }
         }
