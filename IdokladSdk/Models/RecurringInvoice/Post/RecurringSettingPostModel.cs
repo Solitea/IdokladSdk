@@ -74,6 +74,7 @@ namespace IdokladSdk.Models.RecurringInvoice
         /// Gets or sets name of recurring invoice.
         /// </summary>
         [Required]
+        [StringLength(200)]
         public string TemplateName { get; set; }
 
         /// <summary>
