@@ -18,7 +18,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
     [TestFixture]
     public class CashVoucherTests : TestBase
     {
-        private const int CashVoucherId = 640075;
+        private const int CashVoucherId = 628885;
         private const int PartnerId = 323823;
         private const int UnpaidIssuedInvoice = 914456;
         private const int UnpaidReceivedInvoice = 165460;
