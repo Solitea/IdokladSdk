@@ -100,6 +100,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
             Assert.That(pairResult, Is.True);
             Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(invoice.Id));
             Assert.That(cashVoucher.PairedDocument.DocumentType, Is.EqualTo(PairedDocumentType.IssuedInvoice));
+
+            // Teardown
+            await _issuedInvoiceClient.DeleteAsync(invoice.Id);
         }
 
         [Test]
@@ -200,6 +203,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 
             // Assert
             Assert.That(patchResult.PairedDocument, Is.Null);
+
+            // Teardown
+            await _issuedInvoiceClient.DeleteAsync(issuedInvoice.Id);
         }
 
         private static IList<object> GetDefaultVouchers()

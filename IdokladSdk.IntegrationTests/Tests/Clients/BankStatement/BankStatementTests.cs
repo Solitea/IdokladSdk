@@ -119,6 +119,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
             Assert.That(data.CreatedBankStatement.VariableSymbol, Is.EqualTo(invoice.VariableSymbol));
             Assert.That(item.Prices.TotalWithVat, Is.EqualTo(invoice.Prices.TotalWithVat));
             Assert.That(data.CreatedBankStatement.Tags.FirstOrDefault(t => t.TagId == Tag1Id), Is.Not.Null);
+
+            // Teardown
+            await _issuedInvoiceClient.DeleteAsync(invoice.Id);
         }
 
         [Test]
@@ -232,6 +235,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
 
             // Assert
             Assert.That(patchResult.PairedDocument, Is.Null);
+
+            // Teardown
+            await _issuedInvoiceClient.DeleteAsync(issuedInvoice.Id);
         }
 
         [OneTimeTearDown]
