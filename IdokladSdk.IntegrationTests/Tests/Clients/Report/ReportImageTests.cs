@@ -94,7 +94,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public async Task GetImageAsync_CashVoucherDetail_SuccessfullyGetAsyncReport()
         {
             var data = await _reportClient.CashVoucher
-                .Detail(628885)
+                .Detail(643208)
                 .GetImageAsync(new ReportImageOption
                 {
                     Language = Language.Cz
