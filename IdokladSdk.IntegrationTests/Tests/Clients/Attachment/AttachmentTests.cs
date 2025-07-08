@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.IntegrationTests.Core.Helpers;
@@ -127,7 +127,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Attachment
             AsyncTestDelegate action = async () => await _attachmentClient.UploadAsync(model).AssertResult();
 
             // Assert
-            Assert.That(action, Throws.Exception.TypeOf<ValidationException>()
+            Assert.That(action, Throws.Exception.TypeOf<IdokladValidationException>()
                 .And.Message.EqualTo("File name contains one or more unsupported characters"));
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.BankStatement.Pair
@@ -7,7 +8,7 @@ namespace IdokladSdk.Models.BankStatement.Pair
     /// <summary>
     /// BankStatementPairDocumentPostModel.
     /// </summary>
-    public class BankStatementPairDocumentPostModel
+    public class BankStatementPairDocumentPostModel : ValidatableModel
     {
         /// <summary>
         /// Gets or sets Bank Statement Id.

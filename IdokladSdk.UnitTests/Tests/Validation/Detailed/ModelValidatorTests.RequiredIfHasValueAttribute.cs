@@ -26,7 +26,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             // Arrange
             var model = new ModelWithRequiredIfHasValueAttribute
             {
-                DateInitialState = new DateTime(2020, 12, 3),
+                DateInitialState = new DateTime(2020, 12, 3).ToUniversalTime(),
                 InitialState = null,
                 Amount = 50m,
                 CurrencyId = null
@@ -54,7 +54,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             new ModelWithRequiredIfHasValueAttribute(),
             new ModelWithRequiredIfHasValueAttribute
             {
-                DateInitialState = new DateTime(2020, 12, 3),
+                DateInitialState = new DateTime(2020, 12, 3).ToUniversalTime(),
                 InitialState = 100000m
             },
             new ModelWithRequiredIfHasValueAttribute

@@ -40,7 +40,7 @@ namespace IdokladSdk
         /// <summary>
         /// DateTime format.
         /// </summary>
-        public static readonly DateTime DefaultDateTime = new DateTime(1753, 1, 1, 0, 0, 0);
+        public static readonly DateTime DefaultDateTime = new DateTime(1753, 1, 1, 0, 0, 0).ToUniversalTime();
 
         /// <summary>
         /// Constants for header.

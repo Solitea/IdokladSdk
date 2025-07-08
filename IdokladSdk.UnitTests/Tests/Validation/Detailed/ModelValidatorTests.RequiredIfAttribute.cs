@@ -15,7 +15,7 @@ namespace IdokladSdk.UnitTests.Tests.Validation.Detailed
             var model = new ModelWithRequiredIfAttribute
             {
                 WasSent = true,
-                DateOfSent = new DateTime(2020, 12, 3)
+                DateOfSent = new DateTime(2020, 12, 3).ToUniversalTime(),
             };
 
             // Act

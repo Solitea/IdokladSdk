@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
+using IdokladSdk.Exceptions;
 using IdokladSdk.Models.Email;
 using IdokladSdk.Requests.Mail.Interfaces;
 using IdokladSdk.Response;
@@ -52,7 +53,7 @@ namespace IdokladSdk.Requests.Mail
 
             if (!settings.HasRecipients())
             {
-                throw new ValidationException("Email has to have at least one recipient.");
+                throw new IdokladValidationException("Email has to have at least one recipient.");
             }
 
             if (string.IsNullOrWhiteSpace(DocumentType))

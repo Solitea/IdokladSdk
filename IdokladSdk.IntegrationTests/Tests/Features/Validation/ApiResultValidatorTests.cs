@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using IdokladSdk.Builders;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.Models.Batch;
 using IdokladSdk.Response;
@@ -54,7 +54,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Features.Validation
                 .AddHttpClient(HttpClient)
                 .Build();
 
-            Assert.ThrowsAsync<ValidationException>(async () => await api.ContactClient.List().GetAsync());
+            Assert.ThrowsAsync<IdokladValidationException>(async () => await api.ContactClient.List().GetAsync());
         }
 
         [Test]

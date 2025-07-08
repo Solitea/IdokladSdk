@@ -1,10 +1,10 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Account;
@@ -221,7 +221,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             };
 
             // Assert
-            Assert.ThrowsAsync<ValidationException>(async () => await _accountClient.Agendas.UpdateAsync(model));
+            Assert.ThrowsAsync<IdokladValidationException>(async () => await _accountClient.Agendas.UpdateAsync(model));
         }
 
         [Test]

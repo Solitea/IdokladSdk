@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using NUnit.Framework;
@@ -85,10 +85,10 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             var model = await _registeredSaleClient.DefaultAsync().AssertResult();
 
             // Act
-            var exception = Assert.ThrowsAsync<ValidationException>(async () => await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model));
+            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model));
 
             // Assert
-            Assert.That(exception.Message, Is.EqualTo("Model is not valid.\nThe Bkp field is required.\nThe Fik field is required.\nThe Pkp field is required.\nThe ReceiptNumber field is required."));
+            Assert.That(exception.Message, Is.EqualTo("Model is not valid.\r\nThe Bkp field is required.\r\nThe Fik field is required.\r\nThe Pkp field is required.\r\nThe ReceiptNumber field is required."));
         }
     }
 }

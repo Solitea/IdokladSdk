@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Enums;
+using IdokladSdk.Exceptions;
 using IdokladSdk.Models.Attachment;
 using IdokladSdk.Response;
 
@@ -73,7 +74,7 @@ namespace IdokladSdk.Clients
 
             if (!IsAttachmentNameValid(model))
             {
-                throw new ValidationException("File name contains one or more unsupported characters");
+                throw new IdokladValidationException("File name contains one or more unsupported characters");
             }
 
             var resource = ResourceUrl + $"{model.DocumentId}/{model.DocumentType}";

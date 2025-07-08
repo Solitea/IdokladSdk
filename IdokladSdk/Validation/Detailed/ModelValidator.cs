@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Validation.Attributes;
 using IdokladSdk.Validation.Detailed.Model;
 
 namespace IdokladSdk.Validation
@@ -32,6 +33,25 @@ namespace IdokladSdk.Validation
             InvalidProperties = new Dictionary<string, PropertyValidationResult>();
             ValidateProperties(model, string.Empty);
             return CreateValidationResult();
+        }
+
+        private static bool IsCollectionOfDatetimes(Type type) => type.IsAssignableFrom(typeof(IEnumerable<DateTime>)) || type.IsAssignableFrom(typeof(IEnumerable<DateTime?>));
+
+        private static void CheckIfPropertyIsUtcKindDateTime(PropertyInfo propertyInfo, object propertyValue, ref List<AttributeValidationResult> validationAttributes)
+        {
+            if (propertyInfo.PropertyType == typeof(DateTime) || Nullable.GetUnderlyingType(propertyInfo.PropertyType) == typeof(DateTime))
+            {
+                var dateTime = (DateTime?)propertyValue;
+
+                if (dateTime.HasValue && dateTime.Value.Kind != DateTimeKind.Utc)
+                {
+                    validationAttributes.Add(new AttributeValidationResult()
+                    {
+                        ValidationAttribute = new UtcDateTimeAttribute(),
+                        ValidationResult = new ValidationResult("DateTime must be in UTC.", new[] { propertyInfo.Name })
+                    });
+                }
+            }
         }
 
         private static string GetIdokladModelNamespacePrefix()
@@ -150,7 +170,49 @@ namespace IdokladSdk.Validation
             }
         }
 
-        private void ValidateNestedCollection(object instance, PropertyInfo propertyInfo, string propertyNamePrefix)
+        /// <summary>
+        /// Checks if property is collection of DateTime and validates each DateTime in the collection.
+        /// If any DateTime is not in UTC, it marks the property as invalid.
+        /// </summary>
+        private void ValidateNestedDateTimeCollection(object instance, PropertyInfo propertyInfo, ref ValidationContext context, string propertyNamePrefix)
+        {
+            var dtCollection = Enumerable.Empty<DateTime?>();
+            var propertyName = GetPropertyName(propertyInfo, propertyNamePrefix);
+
+            if (instance is IEnumerable<DateTime> dts)
+            {
+                dtCollection = dts.Cast<DateTime?>();
+            }
+            else if (instance is IEnumerable<DateTime?> nullableDts)
+            {
+                dtCollection = nullableDts;
+            }
+            else
+            {
+                throw new ApplicationException($"Property {propertyName} should be cast as IEnumerable<DateTime> or IEnumerable<DateTime?>");
+            }
+
+            foreach (var dt in dtCollection)
+            {
+                if (dt.HasValue && dt.Value.Kind != DateTimeKind.Utc)
+                {
+                    var validationResult = new ValidationResult("DateTime must be in UTC.", new[] { propertyName });
+                    var invalidAttributes = new List<AttributeValidationResult>
+                    {
+                        new AttributeValidationResult
+                        {
+                            ValidationAttribute = new UtcDateTimeAttribute(),
+                            ValidationResult = validationResult
+                        }
+                    };
+
+                    ProcessPropertyValidationResult(propertyInfo, propertyNamePrefix, context, invalidAttributes);
+                    break; // No need to continue checking the rest of the collection if one invalid date is found.
+                }
+            }
+        }
+
+        private void ValidateNestedModelCollection(object instance, PropertyInfo propertyInfo, string propertyNamePrefix)
         {
             var modelCollection = instance as IEnumerable<object> ?? throw new ApplicationException("Property should be cast as IEnumerable");
             foreach (var item in modelCollection.Select((model, index) => (model, index)))
@@ -185,7 +247,11 @@ namespace IdokladSdk.Validation
                     }
                     else if (IsCollectionOfIdokladModels(propertyInfo.PropertyType))
                     {
-                        ValidateNestedCollection(propertyValue, propertyInfo, propertyNamePrefix);
+                        ValidateNestedModelCollection(propertyValue, propertyInfo, propertyNamePrefix);
+                    }
+                    else if (IsCollectionOfDatetimes(propertyInfo.PropertyType))
+                    {
+                        ValidateNestedDateTimeCollection(propertyValue, propertyInfo, ref propertyValidationContext, propertyNamePrefix);
                     }
                 }
             }
@@ -195,6 +261,8 @@ namespace IdokladSdk.Validation
         {
             var validationAttributes = GetPropertyAttributes(propertyInfo);
             var invalidAttributes = new List<AttributeValidationResult>();
+
+            CheckIfPropertyIsUtcKindDateTime(propertyInfo, propertyValue, ref invalidAttributes);
 
             var requiredAttribute = GetRequiredAttribute(validationAttributes);
             if (requiredAttribute != null)

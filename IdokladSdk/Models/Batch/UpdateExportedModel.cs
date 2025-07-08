@@ -1,11 +1,12 @@
 ﻿using IdokladSdk.Enums;
+using IdokladSdk.Models.Base;
 
 namespace IdokladSdk.Models.Batch
 {
     /// <summary>
     /// Model for updating exported status of entities.
     /// </summary>
-    public class UpdateExportedModel : IEntityId
+    public class UpdateExportedModel : ValidatableModel, IEntityId
     {
         /// <inheritdoc/>
         public int Id { get; set; }
