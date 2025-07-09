@@ -18,10 +18,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
     [TestFixture]
     public class CashVoucherTests : TestBase
     {
-        private const int CashVoucherId = 643208;
+        private const int CashVoucherId = 643249;
         private const int PartnerId = 323823;
         private const int UnpaidIssuedInvoice = 914456;
         private const int UnpaidReceivedInvoice = 165460;
+        private readonly List<int> _invoiceIdsToDelete = new List<int>();
 
         private CashVoucherClient _client;
         private IssuedInvoiceClient _issuedInvoiceClient;
@@ -85,24 +86,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         {
             // Arrange
             var invoice = await CreateInvoice();
+            _invoiceIdsToDelete.Add(invoice.Id);
+            var cashVoucherForPairing = await CreateCashVoucher();
             var pairModel = new CashVoucherPairPostModel
             {
-                CashVoucherId = CashVoucherId,
+                CashVoucherId = cashVoucherForPairing.Id,
                 DocumentId = invoice.Id,
                 DocumentType = PairedDocumentType.IssuedInvoice
             };
 
             // Act
             var pairResult = await _client.PairWithDocumentAsync(pairModel).AssertResult();
-            var cashVoucher = await _client.Detail(CashVoucherId).GetAsync().AssertResult();
+            var cashVoucher = await _client.Detail(cashVoucherForPairing.Id).GetAsync().AssertResult();
 
             // Assert
             Assert.That(pairResult, Is.True);
             Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(invoice.Id));
             Assert.That(cashVoucher.PairedDocument.DocumentType, Is.EqualTo(PairedDocumentType.IssuedInvoice));
-
-            // Teardown
-            await _issuedInvoiceClient.DeleteAsync(invoice.Id);
         }
 
         [Test]
@@ -193,6 +193,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         {
             // Arrange
             var issuedInvoice = await CreateInvoice();
+            _invoiceIdsToDelete.Add(issuedInvoice.Id);
             var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, issuedInvoice.Id).AssertResult();
             var postedCashVoucher = await _client.PostAsync(defaultCashVoucher).AssertResult();
             Assert.That(postedCashVoucher.PairedDocument, Is.Not.Null);
@@ -203,9 +204,13 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
 
             // Assert
             Assert.That(patchResult.PairedDocument, Is.Null);
+        }
 
-            // Teardown
-            await _issuedInvoiceClient.DeleteAsync(issuedInvoice.Id);
+        [OneTimeTearDown]
+        public async Task TearDown()
+        {
+            var tasks = _invoiceIdsToDelete.Select(id => _issuedInvoiceClient.DeleteAsync(id));
+            await Task.WhenAll(tasks);
         }
 
         private static IList<object> GetDefaultVouchers()
@@ -222,6 +227,34 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
             defaultInvoice.Items.Add(new IssuedInvoiceItemPostModel { Name = "Test", Amount = 1, UnitPrice = 150 });
             var invoice = await _issuedInvoiceClient.PostAsync(defaultInvoice).AssertResult();
             return invoice;
+        }
+
+        private async Task<CashVoucherGetModel> CreateCashVoucher()
+        {
+            var model = new CashVoucherPostModel
+            {
+                CashRegisterId = 173503,
+                DateOfTransaction = DateTime.UtcNow,
+                DocumentSerialNumber = 300,
+                IsIncomeTax = true,
+                Items = new List<CashVoucherItemPostModel>()
+                {
+                    new CashVoucherItemPostModel
+                    {
+                        Name = "Test",
+                        Price = 150,
+                        PriceType = PriceTypeWithoutOnlyBase.WithoutVat,
+                        VatRateType = VatRateType.Zero,
+                    }
+                },
+                MovementType = MovementType.Entry,
+                Name = "Test",
+                Person = "TestPerson",
+                VariableSymbol = "20250500",
+            };
+
+            var casVoucher = await _client.PostAsync(model).AssertResult();
+            return casVoucher;
         }
     }
 }
