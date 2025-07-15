@@ -279,5 +279,20 @@
         /// Conflict with vat rate and date for vat rate.
         /// </summary>
         ConflictVatRateAndDate = 151,
+
+        /// <summary>
+        /// Current subscription is not valid for changing owner.
+        /// </summary>
+        AgendaChangeOwner_InsufficientSubscription = 152,
+
+        /// <summary>
+        /// Target user is not in agenda.
+        /// </summary>
+        AgendaChangeOwner_UserNotInAgenda = 153,
+
+        /// <summary>
+        /// Target user has not verified their email.
+        /// </summary>
+        AgendaChangeOwner_UserNotVerified = 154
     }
 }
