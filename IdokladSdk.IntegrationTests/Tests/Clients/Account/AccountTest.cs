@@ -325,9 +325,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
 
             // Assert
             Assert.That(data.TotalItems, Is.GreaterThan(0));
-            var user = data.Items.FirstOrDefault();
+            var user = data.Items.FirstOrDefault(u => u.Id == UserId);
             Assert.That(user, Is.Not.Null);
-            Assert.That(user.Id, Is.EqualTo(UserId));
         }
 
         [Test]
