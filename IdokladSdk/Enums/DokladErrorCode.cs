@@ -293,6 +293,11 @@
         /// <summary>
         /// Target user has not verified their email.
         /// </summary>
-        AgendaChangeOwner_UserNotVerified = 154
+        AgendaChangeOwner_UserNotVerified = 154,
+
+        /// <summary>
+        /// Mail of accountant is not specified in the agenda.
+        /// </summary>
+        AccountantNotSpecified = 155
     }
 }
