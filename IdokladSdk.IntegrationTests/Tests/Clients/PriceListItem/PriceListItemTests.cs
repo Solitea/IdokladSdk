@@ -6,6 +6,7 @@ using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Models.PriceListItem;
 using IdokladSdk.Requests.Core.Extensions;
 using NUnit.Framework;
@@ -57,7 +58,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
             // Assert
             Assert.That(data.Id, Is.GreaterThan(0));
-            AssertModelsAreEqueal(data, _priceListItemPostModel);
+            AssertModelsAreEqual(data, _priceListItemPostModel);
         }
 
         [Test]
@@ -69,7 +70,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
             // Assert
             Assert.That(data.Id, Is.EqualTo(_newPriceListItemId));
-            AssertModelsAreEqueal(data, _priceListItemPostModel);
+            AssertModelsAreEqual(data, _priceListItemPostModel);
         }
 
         [Test]
@@ -84,11 +85,26 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             _dateLastChange = data.Metadata.DateLastChange;
 
             // Assert
-            AssertModelsAreEqueal(data, priceListItemPatchModel);
+            AssertModelsAreEqual(data, priceListItemPatchModel);
         }
 
         [Test]
         [Order(4)]
+        public async Task UpdateAsync_SuccessfullyUpdatedWithoutVatCodeId()
+        {
+            // Arrange
+            var priceListItemPatchModel = CreatePatchModelWithoutVatCodeId();
+
+            // Act
+            var data = await PriceListItemClient.UpdateAsync(priceListItemPatchModel).AssertResult();
+
+            // Assert
+            // value of VatCodeId did not change
+            Assert.That(data.VatCodeId, Is.EqualTo(2));
+        }
+
+        [Test]
+        [Order(5)]
         public async Task DeleteAsync_SuccessfullyDeleted()
         {
             // Act
@@ -99,7 +115,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         }
 
         [Test]
-        [Order(5)]
+        [Order(6)]
         public async Task BatchPostAsync_SuccessfullyPosted()
         {
             // Arrange
@@ -114,11 +130,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
 
             // Assert
             Assert.That(priceListItemGetModel.Id, Is.GreaterThan(0));
-            AssertModelsAreEqueal(priceListItemGetModel, _priceListItemPostModel);
+            AssertModelsAreEqual(priceListItemGetModel, _priceListItemPostModel);
         }
 
         [Test]
-        [Order(6)]
+        [Order(7)]
         public async Task GetListWithFilterAsync_ReturnsList()
         {
             // Act
@@ -135,7 +151,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         }
 
         [Test]
-        [Order(7)]
+        [Order(8)]
         public async Task GetListWithIdsFilterAsync_ReturnsList()
         {
             // Act
@@ -157,7 +173,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
         }
 
         [Test]
-        [Order(8)]
+        [Order(9)]
         public async Task BatchUpdateAsync_SuccessfullyUpdated()
         {
             // Arrange
@@ -169,11 +185,11 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             var priceListItemGetModel = data.First();
 
             // Assert
-            AssertModelsAreEqueal(priceListItemGetModel, priceListItemPatchModel);
+            AssertModelsAreEqual(priceListItemGetModel, priceListItemPatchModel);
         }
 
         [Test]
-        [Order(9)]
+        [Order(10)]
         public async Task BatchDeleteAsync_SuccessfullyDeleted()
         {
             // Arrange
@@ -262,7 +278,25 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             };
         }
 
-        private void AssertModelsAreEqueal(PriceListItemGetModel getModel, PriceListItemPostModel postModel)
+        private PriceListItemPatchModel CreatePatchModelWithoutVatCodeId()
+        {
+            return new PriceListItemPatchModel
+            {
+                Amount = 3,
+                BarCode = "9876543210",
+                Code = "XYZ",
+                CurrencyId = 1,
+                Id = _newPriceListItemId,
+                IsStockItem = false,
+                Name = "New name",
+                Price = 200,
+                PriceType = PriceType.WithVat,
+                Unit = "kg",
+                VatRateType = VatRateType.Reduced1
+            };
+        }
+
+        private void AssertModelsAreEqual(PriceListItemGetModel getModel, PriceListItemPostModel postModel)
         {
             Assert.That(getModel.Amount, Is.EqualTo(postModel.Amount));
             Assert.That(getModel.BarCode, Is.EqualTo(postModel.BarCode));
@@ -277,7 +311,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             Assert.That(getModel.VatCodeId, Is.EqualTo(postModel.VatCodeId));
         }
 
-        private void AssertModelsAreEqueal(PriceListItemGetModel data, PriceListItemPatchModel patchModel)
+        private void AssertModelsAreEqual(PriceListItemGetModel data, PriceListItemPatchModel patchModel)
         {
             Assert.That(data.Amount, Is.EqualTo(patchModel.Amount));
             Assert.That(data.BarCode, Is.EqualTo(patchModel.BarCode));
@@ -289,7 +323,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.PriceListItem
             Assert.That(data.PriceType, Is.EqualTo(patchModel.PriceType));
             Assert.That(data.Unit, Is.EqualTo(patchModel.Unit));
             Assert.That(data.VatRateType, Is.EqualTo(patchModel.VatRateType));
-            Assert.That(data.VatCodeId, Is.EqualTo(patchModel.VatCodeId));
+            Assert.That(data.VatCodeId, Is.EqualTo(patchModel.VatCodeId.Value));
         }
     }
 }
