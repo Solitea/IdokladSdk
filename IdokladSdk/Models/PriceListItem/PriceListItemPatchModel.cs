@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Models.Common;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.PriceListItem
@@ -70,7 +71,7 @@ namespace IdokladSdk.Models.PriceListItem
         /// Gets or sets VAT classification code.
         /// </summary>
         [NullableForeignKey]
-        public int? VatCodeId { get; set; }
+        public NullableProperty<int> VatCodeId { get; set; }
 
         /// <summary>
         /// Gets or sets vAT rate type.
