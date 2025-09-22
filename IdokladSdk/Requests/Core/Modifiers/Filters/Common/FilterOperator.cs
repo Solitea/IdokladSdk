@@ -43,6 +43,11 @@
         /// <summary>
         /// Not contains
         /// </summary>
-        Nct
+        Nct,
+
+        /// <summary>
+        /// Semantic search
+        /// </summary>
+        Ss
     }
 }

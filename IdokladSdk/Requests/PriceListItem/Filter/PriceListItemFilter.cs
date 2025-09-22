@@ -26,7 +26,7 @@ namespace IdokladSdk.Requests.PriceListItem.Filter
         public FilterItem<bool> HasStockMovement { get; set; } = new FilterItem<bool>("HasStockMovement");
 
         /// <inheritdoc cref="PriceListItemListGetModel.Name"/>
-        public ContainFilterItem<string> Name { get; set; } = new ContainFilterItem<string>(nameof(PriceListItemListGetModel.Name));
+        public SemanticSearchFilterItem<string> Name { get; set; } = new SemanticSearchFilterItem<string>(nameof(PriceListItemListGetModel.Name));
 
         /// <inheritdoc cref="PriceListItemListGetModel.StockBalance"/>
         public CompareFilterItem<decimal> StockBalance { get; set; } = new CompareFilterItem<decimal>(nameof(PriceListItemListGetModel.StockBalance));

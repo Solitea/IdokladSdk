@@ -17,7 +17,7 @@ namespace IdokladSdk.Requests.Core.Modifiers.Filters
         public ContainFilterItem<string> IdentificationNumber { get; set; } = new ContainFilterItem<string>(nameof(ContactListGetModel.IdentificationNumber));
 
         /// <inheritdoc cref="ContactListGetModel.CompanyName"/>
-        public ContainFilterItem<string> CompanyName { get; set; } = new ContainFilterItem<string>(nameof(ContactListGetModel.CompanyName));
+        public SemanticSearchFilterItem<string> CompanyName { get; set; } = new SemanticSearchFilterItem<string>(nameof(ContactListGetModel.CompanyName));
 
         /// <inheritdoc cref="ContactListGetModel.Email"/>
         public ContainFilterItem<string> Email { get; set; } = new ContainFilterItem<string>(nameof(ContactListGetModel.Email));
