@@ -113,7 +113,14 @@ namespace IdokladSdk.Requests.Core.Modifiers.Select.Common
             List<string> paths = new List<string>();
             var name = info.Name;
             var infoPropertyType = info.PropertyType;
-            var isEnumerable = typeof(IEnumerable).IsAssignableFrom(infoPropertyType) && infoPropertyType != typeof(string);
+
+            if (infoPropertyType.IsArray)
+            {
+                infoPropertyType = infoPropertyType.GetElementType() ?? infoPropertyType;
+            }
+
+            var isEnumerable = typeof(IEnumerable).IsAssignableFrom(infoPropertyType) && infoPropertyType != typeof(string)
+                && !infoPropertyType.IsArray;
             if (isEnumerable)
             {
                 infoPropertyType = infoPropertyType.GetGenericArguments()[0];
