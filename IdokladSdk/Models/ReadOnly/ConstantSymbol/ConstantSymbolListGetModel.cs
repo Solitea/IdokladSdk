@@ -34,5 +34,10 @@ namespace IdokladSdk.Models.ReadOnly.ConstantSymbol
         /// Gets or sets name of constant symbol.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets vector.
+        /// </summary>
+        public float[] Vector { get; set; }
     }
 }

@@ -32,5 +32,10 @@
         /// Gets or sets currency symbol.
         /// </summary>
         public string Symbol { get; set; }
+
+        /// <summary>
+        /// Gets or sets vector.
+        /// </summary>
+        public float[] Vector { get; set; }
     }
 }

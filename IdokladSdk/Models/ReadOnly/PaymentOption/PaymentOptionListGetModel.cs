@@ -34,5 +34,10 @@ namespace IdokladSdk.Models.ReadOnly.PaymentOption
         /// Gets or sets payment option name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets vector.
+        /// </summary>
+        public float[] Vector { get; set; }
     }
 }
