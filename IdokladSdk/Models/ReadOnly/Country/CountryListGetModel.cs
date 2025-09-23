@@ -49,5 +49,10 @@ namespace IdokladSdk.Models.ReadOnly.Country
         /// Gets or sets slovak name of country.
         /// </summary>
         public string NameSlovak { get; set; }
+
+        /// <summary>
+        /// Gets or sets vector.
+        /// </summary>
+        public float[] Vector { get; set; }
     }
 }

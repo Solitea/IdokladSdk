@@ -45,5 +45,10 @@ namespace IdokladSdk.Models.ReadOnly.VatRate
         /// Gets or sets VAT rate type.
         /// </summary>
         public VatRateType RateType { get; set; }
+
+        /// <summary>
+        /// Gets or sets vector.
+        /// </summary>
+        public float[] Vector { get; set; }
     }
 }

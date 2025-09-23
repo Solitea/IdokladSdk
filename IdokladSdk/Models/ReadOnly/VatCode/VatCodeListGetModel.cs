@@ -70,5 +70,10 @@ namespace IdokladSdk.Models.ReadOnly.VatCode
         /// Gets or sets VAT return row.
         /// </summary>
         public string VatReturnRow { get; set; }
+
+        /// <summary>
+        /// Gets or sets vector.
+        /// </summary>
+        public float[] Vector { get; set; }
     }
 }

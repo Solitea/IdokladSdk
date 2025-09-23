@@ -44,5 +44,10 @@ namespace IdokladSdk.Models.ReadOnly.Bank
         /// Gets or sets swift code.
         /// </summary>
         public string Swift { get; set; }
+
+        /// <summary>
+        /// Gets or sets vector.
+        /// </summary>
+        public float[] Vector { get; set; }
     }
 }

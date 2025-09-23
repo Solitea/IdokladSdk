@@ -39,5 +39,10 @@ namespace IdokladSdk.Models.ReadOnly.VatReverseChargeCode
         /// Gets or sets description of the code.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets vector.
+        /// </summary>
+        public float[] Vector { get; set; }
     }
 }

@@ -24,10 +24,11 @@ namespace IdokladSdk.Clients.Readonly
         /// <summary>
         /// System tables.
         /// </summary>
+        /// <param name="includeVectorData">Include vector data.</param>
         /// <returns>Content of all system tables.</returns>
-        public CodeBooksDetail CodeBooks()
+        public CodeBooksDetail CodeBooks(bool includeVectorData = false)
         {
-            return new CodeBooksDetail(this);
+            return new CodeBooksDetail(this, includeVectorData);
         }
 
         /// <summary>
