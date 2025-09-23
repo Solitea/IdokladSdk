@@ -18,7 +18,7 @@ namespace IdokladSdk.Requests.ReadOnly.CodeBooks
         /// </summary>
         /// <param name="includeVectorData">Include vector data.</param>
         /// <param name="client">System client.</param>
-        public CodeBooksDetail(bool includeVectorData, SystemClient client)
+        public CodeBooksDetail(SystemClient client, bool includeVectorData = false)
             : base(client)
         {
             _includeVectorData = includeVectorData;

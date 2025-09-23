@@ -28,7 +28,7 @@ namespace IdokladSdk.Clients.Readonly
         /// <returns>Content of all system tables.</returns>
         public CodeBooksDetail CodeBooks(bool includeVectorData = false)
         {
-            return new CodeBooksDetail(includeVectorData, this);
+            return new CodeBooksDetail(this, includeVectorData);
         }
 
         /// <summary>
