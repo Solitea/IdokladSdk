@@ -298,6 +298,41 @@
         /// <summary>
         /// Mail of accountant is not specified in the agenda.
         /// </summary>
-        AccountantNotSpecified = 155
+        AccountantNotSpecified = 155,
+
+        /// <summary>
+        /// Inbox is not registered for current agenda.
+        /// </summary>
+        Inbox_NotRegistered = 156,
+
+        /// <summary>
+        /// Inbox basic mining has not completed yet.
+        /// </summary>
+        Inbox_BasicMiningNotCompletedYet = 159,
+
+        /// <summary>
+        /// Inbox attachment format is not supported.
+        /// </summary>
+        Inbox_UnsupportedAttachmentFormat = 160,
+
+        /// <summary>
+        /// Inbox attachment is already processed to document.
+        /// </summary>
+        Inbox_AttachmentAlreadyProcessedToDocument = 161,
+
+        /// <summary>
+        /// Inbox attachment is not processed to document.
+        /// </summary>
+        Inbox_AttachmentNotProcessedToDocument = 162,
+
+        /// <summary>
+        /// Inbox attachment has already been processed by AI.
+        /// </summary>
+        Inbox_AttachmentAiProcessed = 163,
+
+        /// <summary>
+        /// Inbox AI review credit is not available.
+        /// </summary>
+        Inbox_NoCredit = 164
     }
 }

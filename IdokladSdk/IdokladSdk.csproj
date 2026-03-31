@@ -78,6 +78,7 @@
       <Folder Include="Requests\DocumentPayment\Purchases\Filter\" />
       <Folder Include="Requests\DocumentPayment\Purchases\Sort\" />
       <Folder Include="Requests\DocumentPayment\Sales\Sort\" />
+      <Folder Include="Requests\Inbox\" />
       <Folder Include="Requests\ReceivedReceipt\Sort\" />
     </ItemGroup>
 </Project>
