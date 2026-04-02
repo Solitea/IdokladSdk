@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
 using IdokladSdk.Models.ReceivedInvoice;
@@ -44,6 +46,20 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<ReceivedInvoiceDefaultGetModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
             return DefaultAsync<ReceivedInvoiceDefaultGetModel>(cancellationToken);
+        }
+
+        /// <summary>
+        /// Returns new entity with property values based on inbox record suitable for subsequent editing and storing.
+        /// </summary>
+        /// <param name="inboxId">Inbox record ID.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><see cref="ApiResult{ReceivedInvoiceDefaultGetModel}"/> instance.</returns>
+        public Task<ApiResult<ReceivedInvoiceDefaultGetModel>> DefaultAsync(
+            int inboxId,
+            CancellationToken cancellationToken = default)
+        {
+            var queryParams = new Dictionary<string, string>() { { "inboxId", inboxId.ToString(CultureInfo.InvariantCulture) } };
+            return DefaultAsync<ReceivedInvoiceDefaultGetModel>(queryParams, cancellationToken);
         }
 
         /// <inheritdoc />

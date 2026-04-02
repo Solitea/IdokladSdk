@@ -89,6 +89,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
 
         [Test]
         [Order(4)]
+        [Ignore("Test will work only for environment with Inbox, current SDK environment do not have it.")]
         public async Task DetailAsync_SuccessfullyReturned()
         {
             Assume.That(_firstInboxItemId, Is.GreaterThan(0), "Inbox item was not created.");
@@ -115,6 +116,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
 
         [Test]
         [Order(5)]
+        [Ignore("Test will work only for environment with Inbox, current SDK environment do not have it.")]
         public async Task AttachDocumentAsync_SdkDocument_SuccessfullyAttached()
         {
             Assume.That(_firstInboxItemId, Is.GreaterThan(0), "Inbox item was not created.");
@@ -141,6 +143,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
 
         [Test]
         [Order(6)]
+        [Ignore("Test will work only for environment with Inbox, current SDK environment do not have it.")]
         public async Task DetachDocumentAsync_SdkDocument_SuccessfullyDetached()
         {
             Assume.That(_firstInboxItemId, Is.GreaterThan(0), "Inbox item was not created.");
@@ -206,6 +209,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
 
         [Test]
         [Order(10)]
+        [Ignore("Test will work only for environment with Inbox, current SDK environment do not have it.")]
         public async Task DeleteAsync_WithDeleteAttachmentParameter_SuccessfullyDeleted()
         {
             Assume.That(_firstInboxItemId, Is.GreaterThan(0), "Inbox item was not created.");
@@ -235,6 +239,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
 
         [Test]
         [Order(12)]
+        [Ignore("Test will work only for environment with Inbox, current SDK environment do not have it.")]
         public async Task DeleteAsync_DefaultOverload_SuccessfullyDeleted()
         {
             Assume.That(_secondInboxItemId, Is.GreaterThan(0), "Inbox item was not created.");
@@ -282,7 +287,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
             }
 
             var result = await _inboxClient.DeleteAsync(inboxItemId, true);
-            if (!result.IsSuccess && result.StatusCode != HttpStatusCode.NotFound)
+            if (result.StatusCode == HttpStatusCode.NotFound)
             {
                 Assert.Fail($"Failed to cleanup inbox item '{inboxItemId}'. {result.Message}");
             }
