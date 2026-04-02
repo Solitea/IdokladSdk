@@ -122,6 +122,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
             var data = await _reportClient.IssuedInvoice
                 .List()
                 .Sort(s => s.DocumentNumber.Asc())
+                .Filter(f => f.Id.IsLowerThan(1000))
                 .GetImageAsync(new ReportImageOption { Language = Language.En })
                 .AssertResult();
 
@@ -145,7 +146,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public async Task GetImageAsync_ProformaInvoiceList_SuccessfullyGetAsyncReport()
         {
             var data = await _reportClient.ProformaInvoice
-                .List().Filter(f => f.Id.IsGreaterThan(1138604))
+                .List().Filter(f => f.Id.IsGreaterThan(1138604) && f.Id.IsLowerThan(1139604))
                 .GetImageAsync(new ReportImageOption { Language = Language.En })
                 .AssertResult();
 

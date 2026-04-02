@@ -28,7 +28,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.IssuedInvoice
         private const int GermanPartnerId = 681606;
         private const int InvoiceId = 913242;
         private const int InvoiceId2 = 913318;
-        private const int ProformaInvoiceId = 913250;
+        private const int ProformaInvoiceId = 921853;
         private int _issuedInvoiceId;
         private IssuedInvoicePostModel _issuedInvoicePostModel;
         private IssuedInvoiceClient _issuedInvoiceClient;
