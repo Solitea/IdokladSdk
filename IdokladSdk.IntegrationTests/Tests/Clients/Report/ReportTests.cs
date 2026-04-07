@@ -27,8 +27,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         {
             var data = await _reportClient.IssuedInvoice.Detail(913255).GetAsync(new ExtendedReportOption
             {
-                Language = Language.En,
-                PaymentOption = PaymentOption.WithPayment,
+                Language = Language.En, PaymentOption = PaymentOption.WithPayment,
             }).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
@@ -64,10 +63,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_SalesReceiptDetail_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.SalesReceipt.Detail(224356).GetAsync(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+            var data = await _reportClient.SalesReceipt.Detail(224356)
+                .GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }
@@ -75,10 +72,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_ReceivedInvoiceDetail_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.ReceivedInvoice.Detail(165292).GetAsync(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+            var data = await _reportClient.ReceivedInvoice.Detail(165292)
+                .GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }
@@ -86,10 +81,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_CashVoucherDetail_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.CashVoucher.Detail(643249).GetAsync(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+            var data = await _reportClient.CashVoucher.Detail(643249)
+                .GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }
@@ -97,10 +90,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_CashVoucherDetail_ForInvoice_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.CashVoucher.DetailForInvoice(913318, InvoiceReportDocumentType.IssuedInvoice).GetAsync(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+            var data = await _reportClient.CashVoucher.DetailForInvoice(913318, InvoiceReportDocumentType.IssuedInvoice)
+                .GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }
@@ -108,10 +99,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_BankStatementDetail_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.BankStatement.Detail(990771).GetAsync(new ReportOption
-            {
-                Language = Language.Cz
-            }).AssertResult();
+            var data = await _reportClient.BankStatement.Detail(990771)
+                .GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }
@@ -119,7 +108,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_IssuedInvoiceList_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.IssuedInvoice.List().Sort(s => s.DocumentNumber.Asc()).GetAsync(Language.En).AssertResult();
+            var data = await _reportClient.IssuedInvoice.List().Filter(f => f.Id.IsLowerThan(1000))
+                .Sort(s => s.DocumentNumber.Asc()).GetAsync(Language.En).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }
@@ -128,7 +118,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public async Task Get_IssuedTaxDocumentDetail_SuccessfullyGetReport()
         {
             // Act
-            var data = await _reportClient.IssuedTaxDocument.Detail(8222).GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
+            var data = await _reportClient.IssuedTaxDocument.Detail(8222)
+                .GetAsync(new ReportOption { Language = Language.Cz }).AssertResult();
 
             // Assert
             Assert.That(data, Is.Not.Null.Or.Empty);
@@ -137,7 +128,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         [Test]
         public async Task GetAsync_ProformaInvoiceList_SuccessfullyGetAsyncReport()
         {
-            var data = await _reportClient.ProformaInvoice.List().Filter(f => f.Id.IsGreaterThan(1138604)).GetAsync(Language.En).AssertResult();
+            var data = await _reportClient.ProformaInvoice.List()
+                .Filter(f => f.Id.IsGreaterThan(1138604) && f.Id.IsLowerThan(1139604))
+                .GetAsync(Language.En).AssertResult();
 
             Assert.That(data, Is.Not.Null.Or.Empty);
         }
@@ -170,7 +163,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Report
         public async Task Get_SalesOrderDetail_SuccessfullyGetReport()
         {
             // Act
-            var data = await _reportClient.SalesOrder.Detail(1009).GetAsync(new ReportOption { Language = Language.Sk }).AssertResult();
+            var data = await _reportClient.SalesOrder.Detail(1009).GetAsync(new ReportOption { Language = Language.Sk })
+                .AssertResult();
 
             // Assert
             Assert.That(data, Is.Not.Null.Or.Empty);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
@@ -9,6 +10,7 @@ using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.ReceivedInvoice;
 using IdokladSdk.Requests.Core.Extensions;
+using IdokladSdk.Response;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
@@ -219,6 +221,26 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedInvoice
 
             // Assert
             Assert.That(data, Is.True);
+        }
+
+        [Test]
+        public async Task DefaultAsync_WithInboxId_SuccessfullyReturned()
+        {
+            // Act
+            var result = await _receivedInvoiceClient.DefaultAsync(1);
+
+            // Assert
+            Assert.That(result, Is.InstanceOf<ApiResult<ReceivedInvoiceDefaultGetModel>>());
+            if (result.IsSuccess)
+            {
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(result.Data, Is.Not.Null);
+                Assert.That(result.Data.DateOfIssue, Is.EqualTo(DateTime.Now.Date));
+            }
+            else
+            {
+                Assert.That(result.Message, Is.EqualTo("Basic mining of the attachment has not been completed yet."));
+            }
         }
 
         [Test]

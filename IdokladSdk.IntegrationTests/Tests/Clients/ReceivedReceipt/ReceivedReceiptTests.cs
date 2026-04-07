@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
+using IdokladSdk.IntegrationTests.Core.Helpers;
+using IdokladSdk.Models.Inbox.Post;
 using IdokladSdk.Models.ReceivedReceipt.Get;
 using IdokladSdk.Models.ReceivedReceipt.Patch;
 using IdokladSdk.Models.ReceivedReceipt.Post;
 using IdokladSdk.Models.ReceivedReceipt.Recount;
 using IdokladSdk.Requests.Core.Extensions;
+using IdokladSdk.Response;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedReceipt
@@ -19,6 +24,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedReceipt
     public class ReceivedReceiptTests : TestBase
     {
         private const int PartnerId = 323823;
+        private const string AttachmentPath = "Tests/Clients/Attachment/File/report.pdf";
         private ReceivedReceiptClient _receivedReceiptClient;
         private ReceivedReceiptPostModel _receivedReceiptPostModel;
         private int _receivedReceiptId;
@@ -38,6 +44,26 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedReceipt
 
             // Assert
             Assert.That(data.DateOfIssue, Is.EqualTo(DateTime.Now.Date));
+        }
+
+        [Test]
+        public async Task DefaultAsync_WithInboxId_SuccessfullyReturned()
+        {
+            // Act
+            var result = await _receivedReceiptClient.DefaultAsync(1);
+
+            // Assert
+            Assert.That(result, Is.InstanceOf<ApiResult<ReceivedReceiptDefaultGetModel>>());
+            if (result.IsSuccess)
+            {
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(result.Data, Is.Not.Null);
+                Assert.That(result.Data.DateOfIssue, Is.EqualTo(DateTime.Now.Date));
+            }
+            else
+            {
+                Assert.That(result.Message, Is.EqualTo("Basic mining of the attachment has not been completed yet."));
+            }
         }
 
         [Test]
@@ -256,6 +282,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.ReceivedReceipt
             Assert.That(result.CurrencyId, Is.EqualTo(2));
             Assert.That(recountedItem.Prices.TotalWithVat, Is.EqualTo(121));
             Assert.That(recountedItem.Prices.TotalWithVatHc, Is.EqualTo(2420));
+        }
+
+        private static InboxPostModel CreatePostModel()
+        {
+            return new InboxPostModel
+            {
+                Attachments =
+                [
+                    new InboxAttachmentPostModel
+                    {
+                        Data = Convert.ToBase64String(
+                            File.ReadAllBytes($"{TestContext.CurrentContext.TestDirectory}/{AttachmentPath}")),
+                        FileName = $"inbox-test-{Guid.NewGuid():N}.pdf"
+                    },
+                ]
+            };
         }
 
         private ReceivedReceiptPatchModel CreatePatchModelWithCustomVatRate(ReceivedReceiptGetModel receiptToUpdate, decimal? customVat)

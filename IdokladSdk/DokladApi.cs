@@ -24,6 +24,7 @@ namespace IdokladSdk
         private CurrencyClient _currencyClient;
         private DocumentPaymentClient _documentPaymentClient;
         private ExchangeRateClient _exchangeRateClient;
+        private InboxClient _inboxClient;
         private IssuedDocumentPaymentClient _issuedDocumentPaymentClient;
         private IssuedDocumentTemplateClient _issuedDocumentTemplateClient;
         private IssuedInvoiceClient _issuedInvoiceClient;
@@ -152,6 +153,11 @@ namespace IdokladSdk
         /// </summary>
         public ExchangeRateClient ExchangeRateClient =>
             _exchangeRateClient ?? (_exchangeRateClient = new ExchangeRateClient(ApiContext));
+
+        /// <summary>
+        /// Gets inbox.
+        /// </summary>
+        public InboxClient InboxClient => _inboxClient ?? (_inboxClient = new InboxClient(ApiContext));
 
         /// <summary>
         /// Gets issued invoices.
