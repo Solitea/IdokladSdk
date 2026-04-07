@@ -90,7 +90,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
         [Test]
         [Order(4)]
         [Ignore("Test will work only for environment with Inbox, current SDK environment do not have it.")]
-        public async Task DetailAsync_SuccessfullyReturned()
+        public void DetailAsync_SuccessfullyReturned()
         {
             Assume.That(_firstInboxItemId, Is.GreaterThan(0), "Inbox item was not created.");
             ApiResult<InboxDetailGetModel> detailResult = null;
@@ -123,7 +123,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
 
             // Arrange
             _receivedInvoiceId = await ResolveExistingReceivedInvoiceIdAsync();
-            await WaitForInboxItemReadyForAttachAsync(_firstInboxItemId);
+            WaitForInboxItemReadyForAttach(_firstInboxItemId);
             var model = new InboxAttachDocumentPostModel
             {
                 Id = _firstInboxItemId,
@@ -240,7 +240,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
         [Test]
         [Order(12)]
         [Ignore("Test will work only for environment with Inbox, current SDK environment do not have it.")]
-        public async Task DeleteAsync_DefaultOverload_SuccessfullyDeleted()
+        public void DeleteAsync_DefaultOverload_SuccessfullyDeleted()
         {
             Assume.That(_secondInboxItemId, Is.GreaterThan(0), "Inbox item was not created.");
             ApiResult<bool> deleteResult = null;
@@ -301,7 +301,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Inbox
             return list.Items.First().Id;
         }
 
-        private async Task WaitForInboxItemReadyForAttachAsync(int inboxItemId)
+        private void WaitForInboxItemReadyForAttach(int inboxItemId)
         {
             Assert.That(
                 async () =>
