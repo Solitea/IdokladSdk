@@ -1,3 +1,4 @@
+using IdokladSdk.Requests.Core.Modifiers.Sort.BasicSorts;
 using IdokladSdk.Requests.Core.Modifiers.Sort.Common;
 
 namespace IdokladSdk.Requests.Inbox.Sort
@@ -5,7 +6,7 @@ namespace IdokladSdk.Requests.Inbox.Sort
     /// <summary>
     /// Sortable properties of inbox list.
     /// </summary>
-    public class InboxSort
+    public class InboxSort : IdSort
     {
         /// <summary>
         /// Gets or sets attachment original file name sort item.
