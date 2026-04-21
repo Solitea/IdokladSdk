@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Models.Inbox.Post;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.Account
@@ -98,5 +99,10 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets VAT registration type.
         /// </summary>
         public VatRegistrationType? VatRegistrationType { get; set; }
-    }
+
+        /// <summary>
+        /// Gets or sets inbox
+        /// </summary>
+        public AgendaInboxPatchModel Inbox { get; set; }
+     }
 }

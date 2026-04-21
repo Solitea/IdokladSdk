@@ -4,6 +4,7 @@ using IdokladSdk.Enums;
 using IdokladSdk.Models.BankAccount;
 using IdokladSdk.Models.CashRegister;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.Inbox.Get;
 
 namespace IdokladSdk.Models.Account
 {
@@ -190,5 +191,10 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets vAT registration type.
         /// </summary>
         public VatRegistrationType VatRegistrationType { get; set; }
+
+        /// <summary>
+        /// Gets or sets inbox details.
+        /// </summary>
+        public AgendaInboxGetModel Inbox { get; set; }
     }
 }
