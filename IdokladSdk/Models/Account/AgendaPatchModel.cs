@@ -101,7 +101,7 @@ namespace IdokladSdk.Models.Account
         public VatRegistrationType? VatRegistrationType { get; set; }
 
         /// <summary>
-        /// Gets or sets inbox
+        /// Gets or sets inbox.
         /// </summary>
         public AgendaInboxPatchModel Inbox { get; set; }
      }
