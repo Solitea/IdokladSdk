@@ -242,31 +242,35 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             {
                 Contact = new AgendaContactPatchModel
                 {
-                    IdentificationNumber = string.Empty,
-                    HasNoIdentificationNumber = true
+                    IdentificationNumber = string.Empty, HasNoIdentificationNumber = true
                 }
             };
 
-            // Act
-            var hasIdentificationData = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
+            try
+            {
+                // Act
+                var hasIdentificationData = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
-            // Assert
-            var contact = hasIdentificationData.Contact;
-            Assert.That(contact.IdentificationNumber, Is.Empty);
-            Assert.That(contact.HasNoIdentificationNumber, Is.True);
+                // Assert
+                var contact = hasIdentificationData.Contact;
+                Assert.That(contact.IdentificationNumber, Is.Empty);
+                Assert.That(contact.HasNoIdentificationNumber, Is.True);
+            }
+            finally
+            {
+                var identificationNumber = "25568736";
+                model.Contact.IdentificationNumber = identificationNumber;
+                model.Contact.HasNoIdentificationNumber = false;
 
-            var identificationNumber = "25568736";
-            model.Contact.IdentificationNumber = identificationNumber;
-            model.Contact.HasNoIdentificationNumber = false;
+                // Act
+                var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
-            // Act
-            var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
-
-            // Assert
-            Assert.That(data, Is.Not.Null);
-            Assert.That(data.Contact, Is.Not.Null);
-            Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
-            Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+                // Assert
+                Assert.That(data, Is.Not.Null);
+                Assert.That(data.Contact, Is.Not.Null);
+                Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
+                Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+            }
         }
 
         [Test]
