@@ -8,6 +8,7 @@ using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Account;
+using IdokladSdk.Models.Inbox.Post;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
@@ -108,6 +109,22 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public async Task AgendaDetailAsync_Inbox_IsFilled()
+        {
+            // Act
+            var data = await _accountClient.Agendas.Detail(AgendaId).GetAsync().AssertResult();
+
+            // Assert
+            Assert.That(data.Inbox, Is.Not.Null);
+
+            if (data.Inbox.HasInbox && data.Inbox.HasActiveExternalEmails)
+            {
+                Assert.That(data.Inbox.InboxEmail, Is.Not.Null.And.Not.Empty);
+                Assert.That(data.Inbox.InboxEmail, Does.Contain("@"));
+            }
+        }
+
+        [Test]
         public async Task AgendaDeleteRequestAsync_DoesNotFail()
         {
             // Arrange
@@ -173,6 +190,51 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public async Task AgendaUpdateAsync_Inbox_DoesNotFail()
+        {
+            // Arrange
+            var original = await _accountClient.Agendas.Detail(AgendaId).GetAsync().AssertResult();
+            Assert.That(original.Inbox, Is.Not.Null);
+
+            var originalHasActiveExternalEmails = original.Inbox.HasActiveExternalEmails;
+            var hasValueChanged = original.Inbox.HasInbox;
+            var valueToSet = hasValueChanged ? !originalHasActiveExternalEmails : originalHasActiveExternalEmails;
+            var model = new AgendaPatchModel
+            {
+                Inbox = new AgendaInboxPatchModel
+                {
+                    HasActiveExternalEmails = valueToSet
+                }
+            };
+
+            try
+            {
+                // Act
+                var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
+
+                // Assert
+                Assert.That(data, Is.Not.Null);
+                Assert.That(data.Inbox, Is.Not.Null);
+                Assert.That(data.Inbox.HasActiveExternalEmails, Is.EqualTo(valueToSet));
+            }
+            finally
+            {
+                if (hasValueChanged)
+                {
+                    var restoreModel = new AgendaPatchModel
+                    {
+                        Inbox = new AgendaInboxPatchModel
+                        {
+                            HasActiveExternalEmails = originalHasActiveExternalEmails
+                        }
+                    };
+
+                    await _accountClient.Agendas.UpdateAsync(restoreModel).AssertResult();
+                }
+            }
+        }
+
+        [Test]
         public async Task AgendaUpdateAsync_ValidIdentification_DoesNotFail()
         {
             // Arrange
@@ -180,31 +242,35 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             {
                 Contact = new AgendaContactPatchModel
                 {
-                    IdentificationNumber = string.Empty,
-                    HasNoIdentificationNumber = true
+                    IdentificationNumber = string.Empty, HasNoIdentificationNumber = true
                 }
             };
 
-            // Act
-            var hasIdentificationData = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
+            try
+            {
+                // Act
+                var hasIdentificationData = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
-            // Assert
-            var contact = hasIdentificationData.Contact;
-            Assert.That(contact.IdentificationNumber, Is.Empty);
-            Assert.That(contact.HasNoIdentificationNumber, Is.True);
+                // Assert
+                var contact = hasIdentificationData.Contact;
+                Assert.That(contact.IdentificationNumber, Is.Empty);
+                Assert.That(contact.HasNoIdentificationNumber, Is.True);
+            }
+            finally
+            {
+                var identificationNumber = "25568736";
+                model.Contact.IdentificationNumber = identificationNumber;
+                model.Contact.HasNoIdentificationNumber = false;
 
-            var identificationNumber = "25568736";
-            model.Contact.IdentificationNumber = identificationNumber;
-            model.Contact.HasNoIdentificationNumber = false;
+                // Act
+                var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
-            // Act
-            var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
-
-            // Assert
-            Assert.That(data, Is.Not.Null);
-            Assert.That(data.Contact, Is.Not.Null);
-            Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
-            Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+                // Assert
+                Assert.That(data, Is.Not.Null);
+                Assert.That(data.Contact, Is.Not.Null);
+                Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
+                Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+            }
         }
 
         [Test]
