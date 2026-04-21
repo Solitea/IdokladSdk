@@ -29,11 +29,6 @@ namespace IdokladSdk.Requests.Inbox.Sort
         public SortItem DocumentNumber { get; set; } = new SortItem("DocumentNumber");
 
         /// <summary>
-        /// Gets or sets id sort item.
-        /// </summary>
-        public SortItem Id { get; set; } = new SortItem("Id");
-
-        /// <summary>
         /// Gets or sets sender email sort item.
         /// </summary>
         public SortItem SendEmail { get; set; } = new SortItem("SendEmail");
