@@ -83,6 +83,11 @@
         /// <summary>
         /// Document number length exceeded
         /// </summary>
-        DocumentNumberExceeded = 21
+        DocumentNumberExceeded = 21,
+
+        /// <summary>
+        /// New Inbox document received
+        /// </summary>
+        NewInboxDocument = 22
     }
 }
