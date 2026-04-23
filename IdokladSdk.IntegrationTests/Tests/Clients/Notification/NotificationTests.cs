@@ -184,6 +184,20 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
+        public async Task GetList_InboxMailAttachmentCreatedNotification_Success()
+        {
+            // Act
+            var result = await NotificationClient.List()
+                .Filter(n => n.Type.IsEqual(NotificationType.InboxMailAttachmentCreated))
+                .GetAsync()
+                .AssertResult();
+
+            // Assert
+            AssertNonEmptyListResult(result);
+            AssertInboxMailAttachmentCreatedNotification(result.Items.First());
+        }
+
+        [Test]
         public async Task GetList_ProformaPaymentNotAccountedMessage_Success()
         {
             // Act
@@ -415,6 +429,17 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             Assert.That(notification.NotificationType, Is.Not.Null.And.Not.Empty);
             Assert.That(notification.SeverityType, Is.Not.Zero);
             Assert.That(notification.Title, Is.Not.Null.And.Not.Empty);
+        }
+
+        private void AssertInboxMailAttachmentCreatedNotification(NotificationListGetModel notification)
+        {
+            AssertNotification(notification);
+            var notificationData = notification.NotificationData as InboxMailAttachmentCreatedMessageModelV1GetModel;
+            Assert.That(notificationData, Is.Not.Null);
+            Assert.That(notificationData.FileName, Is.Not.Null.And.Not.Empty);
+            Assert.That(notificationData.InboxAttachmentId, Is.Not.Zero);
+            Assert.That(notificationData.Sender, Is.Not.Null.And.Not.Empty);
+            Assert.That(notificationData.Subject, Is.Not.Null.And.Not.Empty);
         }
 
         private void AssertProformaPaymentNotAccountedNotification(NotificationListGetModel notification)
