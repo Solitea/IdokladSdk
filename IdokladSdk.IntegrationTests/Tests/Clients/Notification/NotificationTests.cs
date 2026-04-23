@@ -184,6 +184,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
+        [Ignore("Test will work only for environment with Inbox, current SDK environment do not have it.")]
         public async Task GetList_InboxMailAttachmentCreatedNotification_Success()
         {
             // Act
