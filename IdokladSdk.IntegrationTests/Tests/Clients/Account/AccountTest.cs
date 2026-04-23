@@ -106,6 +106,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.That(data.Name, Is.EqualTo("Solitea Česká republika, a.s."));
             Assert.That(data.Contact, Is.Not.Null);
             Assert.That(data.Contact.Street, Is.EqualTo(Street));
+            Assert.That(data.AiCredits, Is.Not.Null);
         }
 
         [Test]

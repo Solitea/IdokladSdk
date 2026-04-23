@@ -196,5 +196,10 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets inbox details.
         /// </summary>
         public AgendaInboxGetModel Inbox { get; set; }
+
+        /// <summary>
+        /// Gets or sets AI credit details.
+        /// </summary>
+        public AgendaAiCreditsGetModel AiCredits { get; set; }
     }
 }

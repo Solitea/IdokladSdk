@@ -3,7 +3,7 @@ namespace IdokladSdk.Models.Inbox.Get
     /// <summary>
     /// Inbox attachment list model.
     /// </summary>
-    public class InboxAttachmentListGetModel
+    public class InboxAttachmentListGetModel : IEntityId
     {
         /// <summary>
         /// Gets or sets original file name.
