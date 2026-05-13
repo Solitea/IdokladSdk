@@ -52,6 +52,11 @@ namespace IdokladSdk.Models.ReceivedReceipt.Post
         public string ExternalDocumentNumber { get; set; }
 
         /// <summary>
+        /// Gets or sets Inbox id
+        /// </summary>
+        public int? InboxId { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the document is subject to income tax.
         /// </summary>
         public bool IsIncomeTax { get; set; }
