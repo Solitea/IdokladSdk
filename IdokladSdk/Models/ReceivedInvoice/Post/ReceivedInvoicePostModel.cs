@@ -97,6 +97,11 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public string Iban { get; set; }
 
         /// <summary>
+        /// Gets or sets Inbox id.
+        /// </summary>
+        public int? InboxId { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether zahrnout doklad do daňového přiznání.
         /// </summary>
         /// <summary xml:lang='en'>
