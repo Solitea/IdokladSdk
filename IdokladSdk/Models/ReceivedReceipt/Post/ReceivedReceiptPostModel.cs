@@ -52,7 +52,7 @@ namespace IdokladSdk.Models.ReceivedReceipt.Post
         public string ExternalDocumentNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets Inbox id
+        /// Gets or sets Inbox id.
         /// </summary>
         public int? InboxId { get; set; }
 

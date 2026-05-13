@@ -97,7 +97,7 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public string Iban { get; set; }
 
         /// <summary>
-        /// Gets or sets Inbox id
+        /// Gets or sets Inbox id.
         /// </summary>
         public int? InboxId { get; set; }
 
