@@ -9,7 +9,7 @@ namespace IdokladSdk.Models.SalesOrder
     /// <summary>
     /// SalesOrder Model for Copy endpoint.
     /// </summary>
-    public class SalesOrderCopyGetModel : SalesOrderPostModel
+    public class SalesOrderCopyGetModel
     {
         /// <summary>
         /// Gets or sets account number.
