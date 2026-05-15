@@ -28,6 +28,11 @@
         /// <summary>
         /// Rejected.
         /// </summary>
-        Rejected = 4
+        Rejected = 4,
+
+        /// <summary>
+        /// Expired.
+        /// </summary>
+        Expired = 5
     }
 }

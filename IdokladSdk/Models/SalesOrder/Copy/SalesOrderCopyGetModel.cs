@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.SalesOrder
 {
     /// <summary>
-    /// SalesOrder Model for Post endpoints.
+    /// SalesOrder Model for Copy endpoint.
     /// </summary>
-    public class SalesOrderPostModel : ValidatableModel
+    public class SalesOrderCopyGetModel : SalesOrderPostModel
     {
         /// <summary>
         /// Gets or sets account number.
@@ -85,7 +84,7 @@ namespace IdokladSdk.Models.SalesOrder
         /// </summary>
         [MinCollectionLength(1)]
         [Required]
-        public List<SalesOrderItemPostModel> Items { get; set; }
+        public List<SalesOrderItemCopyModel> Items { get; set; }
 
         /// <summary>
         /// Gets or sets items text prefix.
@@ -121,11 +120,6 @@ namespace IdokladSdk.Models.SalesOrder
         public int PartnerId { get; set; }
 
         /// <summary>
-        /// Gets or sets status of sending the sales receipt to the purchaser.
-        /// </summary>
-        public MailSentType PurchaserSentStatus { get; set; }
-
-        /// <summary>
         /// Gets or sets swift code.
         /// </summary>
         [StringLength(11)]
@@ -140,5 +134,10 @@ namespace IdokladSdk.Models.SalesOrder
         /// Gets or sets tags.
         /// </summary>
         public List<int> Tags { get; set; }
+
+        /// <summary>
+        /// Gets or sets Vat regime.
+        /// </summary>
+        public VatRegime VatRegime { get; set; }
     }
 }
