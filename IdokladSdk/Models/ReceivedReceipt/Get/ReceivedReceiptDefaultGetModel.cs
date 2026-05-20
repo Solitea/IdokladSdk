@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Enums;
+using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.ReceivedReceipt.Post;
 
 namespace IdokladSdk.Models.ReceivedReceipt.Get
@@ -12,5 +13,10 @@ namespace IdokladSdk.Models.ReceivedReceipt.Get
         /// Gets or sets Vat regime.
         /// </summary>
         public VatRegime VatRegime { get; set; }
+
+        /// <summary>
+        /// Gets or sets Partner.
+        /// </summary>
+        public ContactGetModel Partner { get; set; }
     }
 }
