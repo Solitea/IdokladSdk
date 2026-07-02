@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -301,6 +300,52 @@ namespace IdokladSdk.Clients
             where TGetModel : new()
         {
             return PostAsync<TPostModel, TGetModel>(BatchUrl, models, cancellationToken);
+        }
+
+        /// <summary>
+        /// PostFilesAsync.
+        /// </summary>
+        /// <typeparam name="TPostModel">Post type.</typeparam>
+        /// <typeparam name="TGetModel">Return type.</typeparam>
+        /// <param name="resource">Resource url.</param>
+        /// <param name="model">Model.</param>
+        /// <param name="files">Files.</param>
+        /// <param name="queryParams">Query params.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Api result.</returns>
+        protected internal async Task<ApiResult<TGetModel>> PostFilesAsync<TPostModel, TGetModel>(
+            string resource,
+            TPostModel model,
+            IEnumerable<IFile> files,
+            Dictionary<string, string> queryParams,
+            CancellationToken cancellationToken)
+        {
+            const string contentTypeHeader = "Content-Type";
+            string boundary = "--" + DateTime.Now.Ticks.ToString("x");
+            var resourceUri = await GetQueryStringAsync(resource, queryParams).ConfigureAwait(false);
+            var request = await CreateRequestAsync(resourceUri, HttpMethod.Post, cancellationToken).ConfigureAwait(false);
+
+            using (var content = new MultipartFormDataContent(boundary))
+            {
+                content.Add(new StringContent(JsonConvert.SerializeObject(model, new CommonJsonSerializerSettings())), "model");
+
+                foreach (var file in files)
+                {
+                    var byteContent = new ByteArrayContent(file.FileBytes);
+
+                    byteContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "\"file\"",
+                        FileName = $"\"{file.FileName}\""
+                    };
+                    content.Add(byteContent, file.FileName);
+                }
+
+                content.Headers.Remove(contentTypeHeader);
+                content.Headers.TryAddWithoutValidation(contentTypeHeader, $"multipart/form-data; boundary={boundary}");
+                request.Content = content;
+                return await ExecuteAsync<TGetModel>(request, cancellationToken).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
