@@ -13,5 +13,8 @@
         "ClientSecret": "testClientSecret",
         "Pin": "testPin",
         "RefreshToken": "testRefreshToken"
+    },
+    "CurrentUser": {
+      "Password": "password"
     }
 }

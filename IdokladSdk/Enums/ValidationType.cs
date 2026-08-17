@@ -186,6 +186,11 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property must have a value indicating that the date and time are in Coordinated Universal Time (UTC).
         /// </summary>
-        DateTimeInUtc = 36
+        DateTimeInUtc = 36,
+
+        /// <summary>
+        /// Property value has to contain valid VAT identification number. <see cref="VatIdentificationNumberAttribute"/>
+        /// </summary>
+        VatIdentificationNumber = 37
     }
 }
