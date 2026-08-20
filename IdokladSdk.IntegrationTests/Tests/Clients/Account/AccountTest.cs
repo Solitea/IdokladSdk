@@ -448,6 +448,39 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.That(result.TotalItems, Is.GreaterThan(0));
         }
 
+        [Test]
+        public async Task RequestCompanyInfoChangeAsync_InvalidPassword_ErrorCodeIsPresent()
+        {
+            // Arrange
+            var currentAgenda = await _accountClient.Agendas.Current().GetAsync().AssertResult();
+            const string newStreet = "NS";
+            var model = CreateRequestCompanyInfoChangePostModel(currentAgenda, newStreet, "InvalidPassword");
+
+            // Act
+            var response = await _accountClient.Agendas.RequestCompanyInfoChangeAsync(model);
+
+            // Assert
+            Assert.That(!response.IsSuccess);
+            Assert.That(response.ErrorCode == DokladErrorCode.Invalid_Password);
+        }
+
+        [Test]
+        public async Task RequestCompanyInfoChangeAsync_ChangeStreet_ChangeIsImmediate()
+        {
+            // Arrange
+            var currentAgenda = await _accountClient.Agendas.Current().GetAsync().AssertResult();
+            const string newStreet = "NS";
+            var model = CreateRequestCompanyInfoChangePostModel(currentAgenda, newStreet, Configuration.CurrentUser.Password);
+
+            // Act
+            var response = await _accountClient.Agendas.RequestCompanyInfoChangeAsync(model).AssertResult();
+
+            // Assert
+            Assert.That(response.ChangeResult, Is.EqualTo(RequestCompanyInfoChangeResult.Changed));
+            var currentAgendaAfterChange = await _accountClient.Agendas.Current().GetAsync().AssertResult();
+            Assert.That(currentAgendaAfterChange.Contact.Street, Is.EqualTo(newStreet));
+        }
+
         private async Task ResetAgenda()
         {
             var defaultModel = new AgendaPatchModel
@@ -458,10 +491,36 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
                     ItemsTextSuffix = DefaultItemsTextSuffix,
                     ProformaItemsPrefixText = DefaultProformaItemsPrefixText,
                     ProformaItemsSuffixText = DefaultProformaItemsSuffixText,
+                },
+                Contact = new AgendaContactPatchModel
+                {
+                    Street = Street
                 }
             };
 
             await _accountClient.Agendas.UpdateAsync(defaultModel);
+        }
+
+        private RequestCompanyInfoChangePostModel CreateRequestCompanyInfoChangePostModel(
+            AgendaGetModel currentAgenda,
+            string newStreet,
+            string password)
+        {
+            var model = new RequestCompanyInfoChangePostModel
+            {
+                City = currentAgenda.Contact.City,
+                Street = newStreet,
+                VatIdentificationNumber = currentAgenda.Contact.VatIdentificationNumber,
+                HasNoIdentificationNumber = currentAgenda.Contact.VatIdentificationNumber == string.Empty,
+                IdentificationNumber = currentAgenda.Contact.IdentificationNumber,
+                Name = currentAgenda.Name,
+                Password = password,
+                PostalCode = currentAgenda.Contact.PostalCode,
+                RegisterRecord = currentAgenda.RegisterRecord,
+                VatIdentificationNumberSk = currentAgenda.Contact.VatIdentificationNumberSk,
+                VatRegistrationType = currentAgenda.VatRegistrationType
+            };
+            return model;
         }
     }
 }

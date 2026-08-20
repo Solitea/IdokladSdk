@@ -81,6 +81,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(LogoAndSignatureExtensionAttribute): return ValidationType.LogoAndSignatureExtension;
 
+                case nameof(VatIdentificationNumberAttribute): return ValidationType.VatIdentificationNumber;
+
                 case nameof(CannotEqualIfAttribute): return ValidationType.CannotEqualIf;
 
                 case nameof(NullOrEmptyStringIfAttribute): return ValidationType.NullOrEmptyStringIf;
