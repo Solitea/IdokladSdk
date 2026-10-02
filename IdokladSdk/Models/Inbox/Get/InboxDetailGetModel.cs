@@ -54,6 +54,11 @@ namespace IdokladSdk.Models.Inbox.Get
         public InboxProcessedDocumentGetModel ProcessedDocument { get; set; }
 
         /// <summary>
+        /// Gets or sets attachment type.
+        /// </summary>
+        public InboxAttachmentType Type { get; set; }
+
+        /// <summary>
         /// Gets or sets attachment status.
         /// </summary>
         public InboxAttachmentStatus Status { get; set; }
