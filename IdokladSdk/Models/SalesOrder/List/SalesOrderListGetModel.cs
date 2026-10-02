@@ -127,6 +127,11 @@ namespace IdokladSdk.Models.SalesOrder
         public Prices Prices { get; set; }
 
         /// <summary>
+        /// Gets or sets status of sending the sales receipt to the purchaser.
+        /// </summary>
+        public MailSentType PurchaserSentStatus { get; set; }
+
+        /// <summary>
         /// Gets or sets state.
         /// </summary>
         public SalesOrderState State { get; set; }

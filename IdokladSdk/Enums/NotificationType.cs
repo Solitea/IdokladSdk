@@ -83,6 +83,11 @@
         /// <summary>
         /// Document number length exceeded
         /// </summary>
-        DocumentNumberExceeded = 21
+        DocumentNumberExceeded = 21,
+
+        /// <summary>
+        /// Inbox attachment created from mail
+        /// </summary>
+        InboxMailAttachmentCreated = 22
     }
 }

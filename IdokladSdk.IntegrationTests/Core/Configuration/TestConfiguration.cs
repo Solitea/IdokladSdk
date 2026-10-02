@@ -7,5 +7,7 @@
         public ClientCredentials ClientCredentials { get; set; }
 
         public PinFlow PinFlow { get; set; }
+
+        public CurrentUser CurrentUser { get; set; }
     }
 }

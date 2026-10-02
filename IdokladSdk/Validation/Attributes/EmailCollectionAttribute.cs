@@ -15,7 +15,7 @@ namespace IdokladSdk.Validation.Attributes
         {
             var collection = value as ICollection<string>;
 
-            if (collection.All(x => Regex.IsMatch(x, EmailAttribute.RegExpression)))
+            if (collection.All(x => x != null && Regex.IsMatch(x, EmailAttribute.RegExpression)))
             {
                 return ValidationResult.Success;
             }

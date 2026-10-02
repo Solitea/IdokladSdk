@@ -36,6 +36,7 @@ namespace IdokladSdk
         private PaymentOptionClient _paymentOptionClient;
         private PriceListItemClient _priceListItemClient;
         private ProformaInvoiceClient _proformaInvoiceClient;
+        private ReceivedDocumentsClient _receivedDocumentsClient;
         private ReceivedDocumentPaymentsClient _receivedDocumentPaymentsClient;
         private ReceivedInvoiceClient _receivedInvoiceClient;
         private ReceivedReceiptClient _receivedReceiptClient;
@@ -224,6 +225,12 @@ namespace IdokladSdk
         /// </summary>
         public ProformaInvoiceClient ProformaInvoiceClient =>
             _proformaInvoiceClient ?? (_proformaInvoiceClient = new ProformaInvoiceClient(ApiContext));
+
+        /// <summary>
+        /// Gets received documents.
+        /// </summary>
+        public ReceivedDocumentsClient ReceivedDocumentsClient =>
+            _receivedDocumentsClient ?? (_receivedDocumentsClient = new ReceivedDocumentsClient(ApiContext));
 
         /// <summary>
         /// Gets received document payments.

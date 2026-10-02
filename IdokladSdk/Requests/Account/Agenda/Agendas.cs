@@ -38,6 +38,8 @@ namespace IdokladSdk.Requests.Account.Agenda
 
         private string SignatureUrl => $"{CurrentAgendaUrl}/Signature";
 
+        private string CompanyInfoChangeRequestUrl => $"{CurrentAgendaUrl}/CompanyInfoChangeRequest";
+
         /// <summary>
         /// Current agenda endpoint.
         /// </summary>
@@ -159,6 +161,26 @@ namespace IdokladSdk.Requests.Account.Agenda
             }
 
             return await _client.PutFileAsync<bool>(SignatureUrl, model, null, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Creates a request for company info change.
+        /// </summary>
+        /// <param name="model">Request company info changed model.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>RequestCompanyInfoResponseModel.</returns>
+        public async Task<ApiResult<RequestCompanyInfoResponseModel>> RequestCompanyInfoChangeAsync(
+            RequestCompanyInfoChangePostModel model, CancellationToken cancellationToken = default)
+        {
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            return await _client.PostAsync<RequestCompanyInfoChangePostModel, RequestCompanyInfoResponseModel>(
+                CompanyInfoChangeRequestUrl,
+                model,
+                cancellationToken).ConfigureAwait(false);
         }
     }
 }

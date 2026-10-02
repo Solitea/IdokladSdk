@@ -8,6 +8,7 @@ using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Account;
+using IdokladSdk.Models.Inbox.Post;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
@@ -105,6 +106,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.That(data.Name, Is.EqualTo("Solitea Česká republika, a.s."));
             Assert.That(data.Contact, Is.Not.Null);
             Assert.That(data.Contact.Street, Is.EqualTo(Street));
+            Assert.That(data.AiCredits, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task AgendaDetailAsync_Inbox_IsFilled()
+        {
+            // Act
+            var data = await _accountClient.Agendas.Detail(AgendaId).GetAsync().AssertResult();
+
+            // Assert
+            Assert.That(data.Inbox, Is.Not.Null);
+
+            if (data.Inbox.HasInbox && data.Inbox.HasActiveExternalEmails)
+            {
+                Assert.That(data.Inbox.InboxEmail, Is.Not.Null.And.Not.Empty);
+                Assert.That(data.Inbox.InboxEmail, Does.Contain("@"));
+            }
         }
 
         [Test]
@@ -173,6 +191,51 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
         }
 
         [Test]
+        public async Task AgendaUpdateAsync_Inbox_DoesNotFail()
+        {
+            // Arrange
+            var original = await _accountClient.Agendas.Detail(AgendaId).GetAsync().AssertResult();
+            Assert.That(original.Inbox, Is.Not.Null);
+
+            var originalHasActiveExternalEmails = original.Inbox.HasActiveExternalEmails;
+            var hasValueChanged = original.Inbox.HasInbox;
+            var valueToSet = hasValueChanged ? !originalHasActiveExternalEmails : originalHasActiveExternalEmails;
+            var model = new AgendaPatchModel
+            {
+                Inbox = new AgendaInboxPatchModel
+                {
+                    HasActiveExternalEmails = valueToSet
+                }
+            };
+
+            try
+            {
+                // Act
+                var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
+
+                // Assert
+                Assert.That(data, Is.Not.Null);
+                Assert.That(data.Inbox, Is.Not.Null);
+                Assert.That(data.Inbox.HasActiveExternalEmails, Is.EqualTo(valueToSet));
+            }
+            finally
+            {
+                if (hasValueChanged)
+                {
+                    var restoreModel = new AgendaPatchModel
+                    {
+                        Inbox = new AgendaInboxPatchModel
+                        {
+                            HasActiveExternalEmails = originalHasActiveExternalEmails
+                        }
+                    };
+
+                    await _accountClient.Agendas.UpdateAsync(restoreModel).AssertResult();
+                }
+            }
+        }
+
+        [Test]
         public async Task AgendaUpdateAsync_ValidIdentification_DoesNotFail()
         {
             // Arrange
@@ -180,31 +243,35 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             {
                 Contact = new AgendaContactPatchModel
                 {
-                    IdentificationNumber = string.Empty,
-                    HasNoIdentificationNumber = true
+                    IdentificationNumber = string.Empty, HasNoIdentificationNumber = true
                 }
             };
 
-            // Act
-            var hasIdentificationData = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
+            try
+            {
+                // Act
+                var hasIdentificationData = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
-            // Assert
-            var contact = hasIdentificationData.Contact;
-            Assert.That(contact.IdentificationNumber, Is.Empty);
-            Assert.That(contact.HasNoIdentificationNumber, Is.True);
+                // Assert
+                var contact = hasIdentificationData.Contact;
+                Assert.That(contact.IdentificationNumber, Is.Empty);
+                Assert.That(contact.HasNoIdentificationNumber, Is.True);
+            }
+            finally
+            {
+                var identificationNumber = "25568736";
+                model.Contact.IdentificationNumber = identificationNumber;
+                model.Contact.HasNoIdentificationNumber = false;
 
-            var identificationNumber = "25568736";
-            model.Contact.IdentificationNumber = identificationNumber;
-            model.Contact.HasNoIdentificationNumber = false;
+                // Act
+                var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
 
-            // Act
-            var data = await _accountClient.Agendas.UpdateAsync(model).AssertResult();
-
-            // Assert
-            Assert.That(data, Is.Not.Null);
-            Assert.That(data.Contact, Is.Not.Null);
-            Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
-            Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+                // Assert
+                Assert.That(data, Is.Not.Null);
+                Assert.That(data.Contact, Is.Not.Null);
+                Assert.That(data.Contact.IdentificationNumber, Is.EqualTo(identificationNumber));
+                Assert.That(data.Contact.HasNoIdentificationNumber, Is.False);
+            }
         }
 
         [Test]
@@ -381,6 +448,39 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
             Assert.That(result.TotalItems, Is.GreaterThan(0));
         }
 
+        [Test]
+        public async Task RequestCompanyInfoChangeAsync_InvalidPassword_ErrorCodeIsPresent()
+        {
+            // Arrange
+            var currentAgenda = await _accountClient.Agendas.Current().GetAsync().AssertResult();
+            const string newStreet = "NS";
+            var model = CreateRequestCompanyInfoChangePostModel(currentAgenda, newStreet, "InvalidPassword");
+
+            // Act
+            var response = await _accountClient.Agendas.RequestCompanyInfoChangeAsync(model);
+
+            // Assert
+            Assert.That(!response.IsSuccess);
+            Assert.That(response.ErrorCode == DokladErrorCode.Invalid_Password);
+        }
+
+        [Test]
+        public async Task RequestCompanyInfoChangeAsync_ChangeStreet_ChangeIsImmediate()
+        {
+            // Arrange
+            var currentAgenda = await _accountClient.Agendas.Current().GetAsync().AssertResult();
+            const string newStreet = "NS";
+            var model = CreateRequestCompanyInfoChangePostModel(currentAgenda, newStreet, Configuration.CurrentUser.Password);
+
+            // Act
+            var response = await _accountClient.Agendas.RequestCompanyInfoChangeAsync(model).AssertResult();
+
+            // Assert
+            Assert.That(response.ChangeResult, Is.EqualTo(RequestCompanyInfoChangeResult.Changed));
+            var currentAgendaAfterChange = await _accountClient.Agendas.Current().GetAsync().AssertResult();
+            Assert.That(currentAgendaAfterChange.Contact.Street, Is.EqualTo(newStreet));
+        }
+
         private async Task ResetAgenda()
         {
             var defaultModel = new AgendaPatchModel
@@ -391,10 +491,36 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Account
                     ItemsTextSuffix = DefaultItemsTextSuffix,
                     ProformaItemsPrefixText = DefaultProformaItemsPrefixText,
                     ProformaItemsSuffixText = DefaultProformaItemsSuffixText,
+                },
+                Contact = new AgendaContactPatchModel
+                {
+                    Street = Street
                 }
             };
 
             await _accountClient.Agendas.UpdateAsync(defaultModel);
+        }
+
+        private RequestCompanyInfoChangePostModel CreateRequestCompanyInfoChangePostModel(
+            AgendaGetModel currentAgenda,
+            string newStreet,
+            string password)
+        {
+            var model = new RequestCompanyInfoChangePostModel
+            {
+                City = currentAgenda.Contact.City,
+                Street = newStreet,
+                VatIdentificationNumber = currentAgenda.Contact.VatIdentificationNumber,
+                HasNoIdentificationNumber = currentAgenda.Contact.VatIdentificationNumber == string.Empty,
+                IdentificationNumber = currentAgenda.Contact.IdentificationNumber,
+                Name = currentAgenda.Name,
+                Password = password,
+                PostalCode = currentAgenda.Contact.PostalCode,
+                RegisterRecord = currentAgenda.RegisterRecord,
+                VatIdentificationNumberSk = currentAgenda.Contact.VatIdentificationNumberSk,
+                VatRegistrationType = currentAgenda.VatRegistrationType
+            };
+            return model;
         }
     }
 }

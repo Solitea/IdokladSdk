@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
-using IdokladSdk.Models.Base;
 using IdokladSdk.Validation.Attributes;
 
-namespace IdokladSdk.Models.ReceivedInvoice
+namespace IdokladSdk.Models.SalesOrder
 {
     /// <summary>
-    /// ReceivedInvoicePostModel.
-        /// </summary>
-    public class ReceivedInvoicePostModel : ValidatableModel
+    /// SalesOrder Model for Copy endpoint.
+    /// </summary>
+    public class SalesOrderCopyGetModel
     {
         /// <summary>
         /// Gets or sets account number.
@@ -34,8 +33,9 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// <summary>
         /// Gets or sets date of issue.
         /// </summary>
-        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
-        public DateTime? DateOfIssue { get; set; }
+        [Required]
+        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
+        public DateTime DateOfIssue { get; set; }
 
         /// <summary>
         /// Gets or sets date of maturity.
@@ -43,29 +43,13 @@ namespace IdokladSdk.Models.ReceivedInvoice
         [Required]
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
         [DateGreaterThanOrEqualThanAnotherDate(nameof(DateOfIssue))]
-        public DateTime DateOfMaturity { get; set; }
+        public DateTime DateOfExpiration { get; set; }
 
         /// <summary>
-        /// Gets or sets date of payment.
+        /// Gets or sets delivery address Id.
         /// </summary>
-        public DateTime? DateOfPayment { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of receiving.
-        /// </summary>
-        [DateGreaterOrEqualThan(Constants.DefaultDateTimeString)]
-        [Required]
-        public DateTime DateOfReceiving { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of taxing. Date of taxable supply for SK legislation.
-        /// </summary>
-        public DateTime? DateOfTaxing { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of VAT application.
-        /// </summary>
-        public DateTime? DateOfVatApplication { get; set; }
+        [NullableForeignKey]
+        public int? DeliveryAddressId { get; set; }
 
         /// <summary>
         /// Gets or sets description.
@@ -90,32 +74,27 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public decimal? ExchangeRateAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets iBAN.
+        /// Gets or sets IBAN.
         /// </summary>
         [StringLength(50)]
-        [Iban]
         public string Iban { get; set; }
 
         /// <summary>
-        /// Gets or sets Inbox id.
+        /// Gets or sets sales order items.
         /// </summary>
-        public int? InboxId { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether zahrnout doklad do daňového přiznání.
-        /// </summary>
-        /// <summary xml:lang='en'>
-        /// Include subject to income tax.
-        /// </summary>
-        [Required]
-        public bool IsIncomeTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets invoice items.
-        /// </summary>
-        [Required]
         [MinCollectionLength(1)]
-        public List<ReceivedInvoiceItemPostModel> Items { get; set; }
+        [Required]
+        public List<SalesOrderItemCopyModel> Items { get; set; }
+
+        /// <summary>
+        /// Gets or sets items text prefix.
+        /// </summary>
+        public string ItemsTextPrefix { get; set; }
+
+        /// <summary>
+        /// Gets or sets items text suffix.
+        /// </summary>
+        public string ItemsTextSuffix { get; set; }
 
         /// <summary>
         /// Gets or sets note.
@@ -129,22 +108,16 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public string OrderNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets partner contact id.
-        /// </summary>
-        [RequiredNonDefault]
-        public int PartnerId { get; set; }
-
-        /// <summary>
         /// Gets or sets payment option id.
         /// </summary>
         [RequiredNonDefault]
         public int PaymentOptionId { get; set; }
 
         /// <summary>
-        /// Gets or sets document number of the original document.
+        /// Gets or sets partner contact id.
         /// </summary>
-        [StringLength(30)]
-        public string ReceivedDocumentNumber { get; set; }
+        [RequiredNonDefault]
+        public int PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets swift code.
@@ -153,25 +126,18 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public string Swift { get; set; }
 
         /// <summary>
+        /// Gets or sets state.
+        /// </summary>
+        public SalesOrderState State { get; set; }
+
+        /// <summary>
         /// Gets or sets tags.
         /// </summary>
         public List<int> Tags { get; set; }
 
         /// <summary>
-        /// Gets or sets variable symbol.
+        /// Gets or sets Vat regime.
         /// </summary>
-        [StringLength(10)]
-        public string VariableSymbol { get; set; }
-
-        /// <summary>
-        /// Gets or sets attribute for application of VAT based on payments.
-        /// </summary>
-        public VatOnPayStatus VatOnPayStatus { get; set; }
-
-        /// <summary>
-        /// Gets or sets vat reverse charge code id.
-        /// </summary>
-        [NullableForeignKey]
-        public int? VatReverseChargeCodeId { get; set; }
+        public VatRegime VatRegime { get; set; }
     }
 }

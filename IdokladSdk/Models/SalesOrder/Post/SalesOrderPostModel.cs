@@ -121,6 +121,11 @@ namespace IdokladSdk.Models.SalesOrder
         public int PartnerId { get; set; }
 
         /// <summary>
+        /// Gets or sets status of sending the sales receipt to the purchaser.
+        /// </summary>
+        public MailSentType PurchaserSentStatus { get; set; }
+
+        /// <summary>
         /// Gets or sets swift code.
         /// </summary>
         [StringLength(11)]

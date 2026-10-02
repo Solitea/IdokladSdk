@@ -333,6 +333,11 @@
         /// <summary>
         /// Inbox AI review credit is not available.
         /// </summary>
-        Inbox_NoCredit = 164
+        Inbox_NoCredit = 164,
+
+        /// <summary>
+        /// Invalid password
+        /// </summary>
+        Invalid_Password = 169
     }
 }

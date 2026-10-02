@@ -18,7 +18,7 @@ namespace IdokladSdk.Clients
     /// </summary>
     public class SalesOrderClient :
         BaseClient,
-        ICopyRequest<SalesOrderDefaultGetModel>,
+        ICopyRequest<SalesOrderCopyGetModel>,
         IDeleteRequest,
         IEntityDetail<SalesOrderDetail>,
         IEntityList<SalesOrderList>,
@@ -41,10 +41,10 @@ namespace IdokladSdk.Clients
         public override string ResourceUrl { get; } = "/SalesOrders";
 
         /// <inheritdoc />
-        public Task<ApiResult<SalesOrderDefaultGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
+        public Task<ApiResult<SalesOrderCopyGetModel>> CopyAsync(int id, CancellationToken cancellationToken = default)
         {
             var resource = $"{ResourceUrl}/{id}/Copy";
-            return GetAsync<SalesOrderDefaultGetModel>(resource, null, cancellationToken);
+            return GetAsync<SalesOrderCopyGetModel>(resource, null, cancellationToken);
         }
 
         /// <inheritdoc/>

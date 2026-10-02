@@ -1,4 +1,5 @@
 ﻿using IdokladSdk.Enums;
+using IdokladSdk.Models.DocumentAddress;
 
 namespace IdokladSdk.Models.ReceivedInvoice
 {
@@ -11,5 +12,10 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// Gets or sets Vat regime.
         /// </summary>
         public VatRegime VatRegime { get; set; }
+
+        /// <summary>
+        /// Gets or sets Partner address.
+        /// </summary>
+        public DocumentAddressModel PartnerAddress { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace IdokladSdk.Models.Inbox.Get
     /// <summary>
     /// Inbox detail get model.
     /// </summary>
-    public class InboxDetailGetModel
+    public class InboxDetailGetModel : IEntityId
     {
         /// <summary>
         /// Gets or sets AI review status.
