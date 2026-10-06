@@ -64,6 +64,7 @@ namespace IdokladSdk.Models.PriceListItem
         /// Gets or sets unit price.
         /// </summary>
         [Required]
+        [DecimalRange]
         public decimal Price { get; set; }
 
         /// <summary>
