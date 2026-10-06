@@ -163,11 +163,14 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             // Act
             var result = await NotificationClient.List()
                 .Filter(n => n.SeverityType.IsEqual(NotificationSeverityType.Warning))
+                // Candidate cannot map legacy Support notifications; redesign excludes them server-side.
+                .Filter(n => n.Type.IsNotEqual(NotificationType.Support))
                 .GetAsync()
                 .AssertResult();
 
             // Assert
             AssertNonEmptyListResult(result);
+            Assert.That(result.Items, Is.All.Matches<NotificationListGetModel>(n => n.SeverityType == NotificationSeverityType.Warning));
         }
 
         [Test]
@@ -269,7 +272,8 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
         }
 
         [Test]
-        public async Task GetList_SupportNotification_Success()
+        [Ignore("Candidate cannot map legacy Support notifications. Re-enable when the redesign fix excluding Support notifications is deployed to candidate.")]
+        public async Task GetList_SupportNotification_ReturnsEmptyPage()
         {
             // Act
             var result = await NotificationClient.List()
@@ -278,8 +282,9 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
                 .AssertResult();
 
             // Assert
-            AssertNonEmptyListResult(result);
-            AssertSupportNotification(result.Items.First());
+            Assert.That(result.Items, Is.Empty);
+            Assert.That(result.TotalItems, Is.Zero);
+            Assert.That(result.TotalPages, Is.Zero);
         }
 
         [Test]
@@ -519,18 +524,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Notification
             var notificationData = notification.NotificationData as RemindersDisabledNotificationV1GetModel;
             Assert.That(notificationData, Is.Not.Null);
             Assert.That(notificationData.DateOfDisabled, Is.Not.EqualTo(DateTime.MinValue));
-        }
-
-        private void AssertSupportNotification(NotificationListGetModel notification)
-        {
-            AssertNotification(notification);
-            var notificationData = notification.NotificationData as SupportNotificationV1GetModel;
-            Assert.That(notificationData, Is.Not.Null);
-            Assert.That(notificationData.Author, Is.Not.Null.And.Not.Empty);
-            Assert.That(notificationData.DateOfAction, Is.Not.EqualTo(DateTime.MinValue));
-            Assert.That(notificationData.ThreadGuid, Is.Not.EqualTo(Guid.Empty));
-            Assert.That(notificationData.ThreadItemType, Is.EqualTo(ThreadItemType.Question));
-            Assert.That(notificationData.ThreadName, Is.Not.Null.And.Not.Empty);
         }
 
         private void AssertVatPayerLimitReachedV1Notification(NotificationListGetModel notification)

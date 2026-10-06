@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
@@ -7,6 +8,8 @@ using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using IdokladSdk.Models.Email;
+using IdokladSdk.Models.IssuedInvoice;
+using IdokladSdk.Models.ProformaInvoice;
 using NUnit.Framework;
 
 namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
@@ -106,11 +109,12 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             Assert.That(!result.NotSent.Any(), Is.True);
         }
 
-        [TestCase(RemindersDocumentType.ProformaInvoice, 922399)]
-        [TestCase(RemindersDocumentType.IssuedInvoice, 914456)]
-        public async Task Send_Reminders_SuccessfullySentAsync(RemindersDocumentType documentType, int id)
+        [TestCase(RemindersDocumentType.ProformaInvoice)]
+        [TestCase(RemindersDocumentType.IssuedInvoice)]
+        public async Task Send_Reminders_SuccessfullySentAsync(RemindersDocumentType documentType)
         {
             // Arrange
+            var id = await CreateUnpaidReminderDocumentAsync(documentType);
             var settings = new RemindersEmailSettings
             {
                 DocumentId = id,
@@ -123,12 +127,26 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
                 OtherRecipients = new List<string> { OtherEmail }
             };
 
-            // Act
-            var result = await MailClient.RemindersEmail.SendAsync(settings).AssertResult();
+            try
+            {
+                // Act
+                var result = await MailClient.RemindersEmail.SendAsync(settings).AssertResult();
 
-            // Assert
-            Assert.That(result.Sent.Contains(PartnerEmail), Is.True);
-            Assert.That(!result.NotSent.Any(), Is.True);
+                // Assert
+                Assert.That(result.Sent.Contains(PartnerEmail), Is.True);
+                Assert.That(!result.NotSent.Any(), Is.True);
+            }
+            finally
+            {
+                if (documentType == RemindersDocumentType.IssuedInvoice)
+                {
+                    await DokladApi.IssuedInvoiceClient.DeleteAsync(id).AssertResult();
+                }
+                else
+                {
+                    await DokladApi.ProformaInvoiceClient.DeleteAsync(id).AssertResult();
+                }
+            }
         }
 
         [Test]
@@ -301,6 +319,30 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.Emails
             new TSettings(),
             new TSettings { OtherRecipients = new List<string> { "qquc@furusato" }, DocumentId = 1 }
         };
+        }
+
+        private async Task<int> CreateUnpaidReminderDocumentAsync(RemindersDocumentType documentType)
+        {
+            if (documentType == RemindersDocumentType.IssuedInvoice)
+            {
+                var model = await DokladApi.IssuedInvoiceClient.DefaultAsync().AssertResult();
+                model.PartnerId = 323823;
+                model.Description = "Invoice for reminder test";
+                model.DateOfIssue = DateTime.UtcNow.Date.AddDays(-14);
+                model.DateOfMaturity = DateTime.UtcNow.Date.AddDays(-7);
+                model.Items.Clear();
+                model.Items.Add(new IssuedInvoiceItemPostModel { Name = "Reminder test", Amount = 1, UnitPrice = 150 });
+                return (await DokladApi.IssuedInvoiceClient.PostAsync(model).AssertResult()).Id;
+            }
+
+            var proforma = await DokladApi.ProformaInvoiceClient.DefaultAsync().AssertResult();
+            proforma.PartnerId = 323823;
+            proforma.Description = "Proforma invoice for reminder test";
+            proforma.DateOfIssue = DateTime.UtcNow.Date.AddDays(-14);
+            proforma.DateOfMaturity = DateTime.UtcNow.Date.AddDays(-7);
+            proforma.Items.Clear();
+            proforma.Items.Add(new ProformaInvoiceItemPostModel { Name = "Reminder test", Amount = 1, UnitPrice = 150 });
+            return (await DokladApi.ProformaInvoiceClient.PostAsync(proforma).AssertResult()).Id;
         }
 
         private void AssertEmailResult(EmailSendResult result)
