@@ -137,20 +137,32 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.BankStatement
         public async Task Post_SuccessfullyAsync()
         {
             // Arrange
-            var bankStatementName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
+            var invoice = await CreateInvoiceAsync();
+            var bankStatementName = $"Issued invoice for test: {invoice.Id}";
 
-            // Act
-            var bankStatement = await _bankStatementClient.DefaultAsync(PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice).AssertResult();
-            bankStatement.Description = bankStatementName;
-            var postedBankStatement = await _bankStatementClient.PostAsync(bankStatement).AssertResult();
-            _bankStatementId = postedBankStatement.Id;
-            var deletedResult = await _bankStatementClient.DeleteAsync(_bankStatementId).AssertResult();
+            var bankStatementId = 0;
+            try
+            {
+                // Act
+                var bankStatement = await _bankStatementClient.DefaultAsync(PairedDocumentType.IssuedInvoice, invoice.Id).AssertResult();
+                bankStatement.Description = bankStatementName;
+                var postedBankStatement = await _bankStatementClient.PostAsync(bankStatement).AssertResult();
+                bankStatementId = postedBankStatement.Id;
 
-            // Assert
-            Assert.That(bankStatement.PairedDocument.DocumentId, Is.EqualTo(UnpaidIssuedInvoice));
-            Assert.That(postedBankStatement.PairedDocument.DocumentId, Is.EqualTo(UnpaidIssuedInvoice));
-            Assert.That(postedBankStatement.Description, Is.EqualTo(bankStatementName));
-            Assert.That(deletedResult, Is.True);
+                // Assert
+                Assert.That(bankStatement.PairedDocument.DocumentId, Is.EqualTo(invoice.Id));
+                Assert.That(postedBankStatement.PairedDocument.DocumentId, Is.EqualTo(invoice.Id));
+                Assert.That(postedBankStatement.Description, Is.EqualTo(bankStatementName));
+            }
+            finally
+            {
+                if (bankStatementId != 0)
+                {
+                    await _bankStatementClient.DeleteAsync(bankStatementId).AssertResult();
+                }
+
+                await _issuedInvoiceClient.DeleteAsync(invoice.Id).AssertResult();
+            }
         }
 
         [Test]
