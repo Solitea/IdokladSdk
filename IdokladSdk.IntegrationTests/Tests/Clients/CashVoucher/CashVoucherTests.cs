@@ -109,27 +109,35 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.CashVoucher
         public async Task Post_SuccessfullyAsync()
         {
             // Arrange
-            var cashVoucherName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
+            var invoice = await CreateInvoice();
+            _invoiceIdsToDelete.Add(invoice.Id);
+            var cashVoucherName = $"Issued invoice for test: {invoice.Id}";
 
             // Act
-            var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice).AssertResult();
+            var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, invoice.Id).AssertResult();
             defaultCashVoucher.Name = cashVoucherName;
             var cashVoucher = await _client.PostAsync(defaultCashVoucher).AssertResult();
-            var deleteResult = await _client.DeleteAsync(cashVoucher.Id).AssertResult();
-
-            // Assert
-            Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(UnpaidIssuedInvoice));
-            Assert.That(cashVoucher.PairedDocument.DocumentType, Is.EqualTo(PairedDocumentType.IssuedInvoice));
-            Assert.That(cashVoucher.Name, Is.EqualTo(cashVoucherName));
-            Assert.That(deleteResult, Is.True);
+            try
+            {
+                // Assert
+                Assert.That(cashVoucher.PairedDocument.DocumentId, Is.EqualTo(invoice.Id));
+                Assert.That(cashVoucher.PairedDocument.DocumentType, Is.EqualTo(PairedDocumentType.IssuedInvoice));
+                Assert.That(cashVoucher.Name, Is.EqualTo(cashVoucherName));
+            }
+            finally
+            {
+                await _client.DeleteAsync(cashVoucher.Id).AssertResult();
+            }
         }
 
         [Test]
         public async Task Delete_CashVoucherDeletedSuccessfully()
         {
             // Arrange
-            var cashVoucherName = $"Issued invoice for test: {UnpaidIssuedInvoice}";
-            var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, UnpaidIssuedInvoice).AssertResult();
+            var invoice = await CreateInvoice();
+            _invoiceIdsToDelete.Add(invoice.Id);
+            var cashVoucherName = $"Issued invoice for test: {invoice.Id}";
+            var defaultCashVoucher = await _client.DefaultAsync(PairedDocumentType.IssuedInvoice, invoice.Id).AssertResult();
             defaultCashVoucher.Name = cashVoucherName;
             var cashVoucher = await _client.PostAsync(defaultCashVoucher).AssertResult();
 
