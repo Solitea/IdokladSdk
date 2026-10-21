@@ -7,7 +7,7 @@ namespace IdokladSdk
     /// </summary>
     public class DokladConfiguration
     {
-        private const string TokenEndpoint = "server/v2/connect/token";
+        private const string TokenEndpoint = "server/connect/token";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DokladConfiguration"/> class.
@@ -15,7 +15,7 @@ namespace IdokladSdk
         public DokladConfiguration()
         {
             ApiUrl = new Uri($"https://api.idoklad.cz/{Constants.ApiVersion}");
-            IdentityServerTokenUrl = new Uri("https://identity.idoklad.cz/server/v2/connect/token");
+            IdentityServerTokenUrl = new Uri("https://identity.idoklad.cz/server/connect/token");
         }
 
         /// <summary>

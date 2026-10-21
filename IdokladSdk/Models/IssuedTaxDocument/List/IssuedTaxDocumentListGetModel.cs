@@ -12,6 +12,18 @@ namespace IdokladSdk.Models.IssuedTaxDocument.List
     /// </summary>
     public class IssuedTaxDocumentListGetModel : IEntityId
     {
+        /// <summary>Gets or sets the electronic invoice delivery channel.</summary>
+        public EInvoiceChannel EInvoiceChannel { get; set; }
+
+        /// <summary>Gets or sets the electronic invoice delivery status.</summary>
+        public EInvoiceStatus EInvoiceStatus { get; set; }
+
+        /// <summary>Gets or sets the electronic invoice delivery state.</summary>
+        public EInvoiceState EInvoiceState { get; set; }
+
+        /// <summary>Gets or sets a value indicating whether this document is an electronic invoice. Available only for Slovak legislation.</summary>
+        public bool IsEInvoice { get; set; }
+
         /// <summary>
         /// Gets or sets AccountedByInvoiceId.
         /// </summary>

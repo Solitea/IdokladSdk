@@ -12,6 +12,9 @@ namespace IdokladSdk.Models.IssuedInvoice
     /// </summary>
     public class IssuedInvoicePostModel : ValidatableModel
     {
+        /// <summary>Gets or sets a value indicating whether to create an electronic invoice. Available only for Slovak legislation.</summary>
+        public bool IsEInvoice { get; set; }
+
         /// <summary>
         /// Gets or sets account number.
         /// </summary>

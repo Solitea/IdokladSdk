@@ -23,6 +23,7 @@ namespace IdokladSdk
         private CreditNoteClient _creditNoteClient;
         private CurrencyClient _currencyClient;
         private DocumentPaymentClient _documentPaymentClient;
+        private EInvoiceSettingsClient _eInvoiceSettingsClient;
         private ExchangeRateClient _exchangeRateClient;
         private InboxClient _inboxClient;
         private IssuedDocumentPaymentClient _issuedDocumentPaymentClient;
@@ -148,6 +149,12 @@ namespace IdokladSdk
         /// </summary>
         public DocumentPaymentClient DocumentPaymentClient =>
             _documentPaymentClient ?? (_documentPaymentClient = new DocumentPaymentClient(ApiContext));
+
+        /// <summary>
+        /// Gets electronic invoice settings for Slovak legislation only.
+        /// </summary>
+        public EInvoiceSettingsClient EInvoiceSettingsClient =>
+            _eInvoiceSettingsClient ?? (_eInvoiceSettingsClient = new EInvoiceSettingsClient(ApiContext));
 
         /// <summary>
         /// Gets exchange rates.

@@ -17,6 +17,9 @@ namespace IdokladSdk.Models.CreditNote
     /// </summary>
     public class CreditNoteListGetModel : IEntityId
     {
+        /// <summary>Gets or sets a value indicating whether this document is an electronic invoice. Available only for Slovak legislation.</summary>
+        public bool IsEInvoice { get; set; }
+
         /// <summary>
         /// Gets or sets list of attachments. Currently, you can attach a maximum of one attachment.
         /// </summary>
