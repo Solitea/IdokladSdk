@@ -24,5 +24,10 @@
         /// sales receipt.
         /// </summary>
         SalesReceipt = 6,
+
+        /// <summary>
+        /// Issued Debit Note
+        /// </summary>
+        IssuedDebitNote = 12,
     }
 }
