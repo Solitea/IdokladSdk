@@ -104,5 +104,10 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets inbox.
         /// </summary>
         public AgendaInboxPatchModel Inbox { get; set; }
+
+        /// <summary>
+        /// Gets or sets electronic invoice attachment settings.
+        /// </summary>
+        public AgendaEInvoicePatchModel EInvoiceSettings { get; set; }
      }
 }

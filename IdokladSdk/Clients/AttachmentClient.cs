@@ -46,6 +46,28 @@ namespace IdokladSdk.Clients
         }
 
         /// <summary>
+        /// Validates an existing XML attachment according to Peppol rules.
+        /// </summary>
+        /// <param name="attachmentId">Id of the attachment to validate.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Validation result and errors.</returns>
+        public Task<ApiResult<PeppolAttachmentValidationModel>> ValidatePeppolAsync(int attachmentId, CancellationToken cancellationToken = default)
+        {
+            return GetAsync<PeppolAttachmentValidationModel>($"{ResourceUrl}ValidatePeppol/{attachmentId}", null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the files embedded in a Peppol XML attachment as a ZIP archive. Available for Slovak legislation only.
+        /// </summary>
+        /// <param name="attachmentId">Id of the Peppol XML attachment.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Attachment containing the ZIP archive in <see cref="AttachmentGetModel.FileBytes"/>.</returns>
+        public Task<ApiResult<AttachmentGetModel>> GetPeppolAttachmentsAsync(int attachmentId, CancellationToken cancellationToken = default)
+        {
+            return GetAsync<AttachmentGetModel>($"{ResourceUrl}PeppolAttachments/{attachmentId}", null, cancellationToken);
+        }
+
+        /// <summary>
         /// Gets document's attachments.
         /// </summary>
         /// <param name="documentId">Id of a document.</param>

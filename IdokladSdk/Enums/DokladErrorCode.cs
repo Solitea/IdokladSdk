@@ -338,6 +338,48 @@
         /// <summary>
         /// Invalid password
         /// </summary>
-        Invalid_Password = 169
+        Invalid_Password = 169,
+
+        /// <summary>Electronic invoice document was sent to Peppol.</summary>
+        EInvoice_DocumentSentToPeppol = 170,
+
+        /// <summary>Electronic invoice is invalid.</summary>
+        EInvoice_Invalid = 171,
+
+        /// <summary>Receiving is already configured.</summary>
+        EInvoice_ReceivingAlreadyConfigured = 172,
+
+        /// <summary>Sending is already configured.</summary>
+        EInvoice_SendingAlreadyConfigured = 173,
+
+        /// <summary>Receiving is configured for another company.</summary>
+        EInvoice_ReceivingConfiguredForAnotherCompany = 174,
+
+        /// <summary>Connection to the access point failed.</summary>
+        EInvoice_ConnectionFailed = 175,
+
+        /// <summary>Access point authorization failed.</summary>
+        EInvoice_Unauthorized = 176,
+
+        /// <summary>Access point scope is invalid.</summary>
+        EInvoice_InvalidScope = 177,
+
+        /// <summary>Access point denied the request.</summary>
+        EInvoice_Forbidden = 178,
+
+        /// <summary>Access point account is locked.</summary>
+        EInvoice_AccountLocked = 179,
+
+        /// <summary>Receiving is configured with the same client ID.</summary>
+        EInvoice_ReceivingConfiguredWithSameClientId = 180,
+
+        /// <summary>Changing the Slovak VAT identification number is blocked.</summary>
+        EInvoice_VatIdentificationNumberSkChangeBlocked = 181,
+
+        /// <summary>Access point credentials do not match the VAT identification number.</summary>
+        EInvoice_CredentialsVatMismatch = 182,
+
+        /// <summary>Document received via Peppol is read only.</summary>
+        EInvoice_ReceivedViaPeppolReadOnly = 183
     }
 }

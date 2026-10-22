@@ -198,6 +198,11 @@ namespace IdokladSdk.Models.Account
         public AgendaInboxGetModel Inbox { get; set; }
 
         /// <summary>
+        /// Gets or sets electronic invoice attachment settings.
+        /// </summary>
+        public AgendaEInvoiceGetModel EInvoiceSettings { get; set; }
+
+        /// <summary>
         /// Gets or sets AI credit details.
         /// </summary>
         public AgendaAiCreditsGetModel AiCredits { get; set; }

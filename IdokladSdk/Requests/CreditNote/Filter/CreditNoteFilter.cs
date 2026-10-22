@@ -43,6 +43,9 @@ namespace IdokladSdk.Requests.CreditNote.Filter
         /// <inheritdoc cref="CreditNoteListGetModel.Exported"/>
         public FilterItem<ExportedState> Exported { get; set; } = new FilterItem<ExportedState>(nameof(CreditNoteListGetModel.Exported));
 
+        /// <inheritdoc cref="CreditNoteListGetModel.IsEInvoice"/>
+        public FilterItem<bool> IsEInvoice { get; set; } = new FilterItem<bool>(nameof(CreditNoteListGetModel.IsEInvoice));
+
         /// <summary>
         /// Gets or sets a value indicating whether invoice is paid.
         /// </summary>

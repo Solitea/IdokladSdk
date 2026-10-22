@@ -10,6 +10,9 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Patch
     /// </summary>
     public class IssuedTaxDocumentPatchModel : ValidatableModel, IEntityId
     {
+        /// <summary>Gets or sets a value indicating whether this document is an electronic invoice. Available only for Slovak legislation.</summary>
+        public bool? IsEInvoice { get; set; }
+
         /// <summary>
         /// Gets or sets Id.
         /// </summary>

@@ -43,6 +43,9 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
         /// <inheritdoc cref="IssuedInvoiceListGetModel.Exported"/>
         public FilterItem<ExportedState> Exported { get; set; } = new FilterItem<ExportedState>(nameof(IssuedInvoiceListGetModel.Exported));
 
+        /// <inheritdoc cref="IssuedInvoiceListGetModel.IsEInvoice"/>
+        public FilterItem<bool> IsEInvoice { get; set; } = new FilterItem<bool>(nameof(IssuedInvoiceListGetModel.IsEInvoice));
+
         /// <summary>
         /// Gets or sets a value indicating whether invoice is paid.
         /// </summary>
