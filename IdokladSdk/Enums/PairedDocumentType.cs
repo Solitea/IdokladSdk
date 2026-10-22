@@ -29,5 +29,10 @@
         /// Received Receipt
         /// </summary>
         ReceivedReceipt = DocumentType.ReceivedReceipt,
+
+        /// <summary>
+        /// Debit note
+        /// </summary>
+        IssuedDebitNote = DocumentType.IssuedDebitNote,
     }
 }

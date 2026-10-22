@@ -1,4 +1,4 @@
-namespace IdokladSdk.Enums
+﻿namespace IdokladSdk.Enums
 {
     /// <summary>
     /// Inbox attachment document type.

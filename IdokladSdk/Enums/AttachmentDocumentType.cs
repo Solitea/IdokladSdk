@@ -34,5 +34,30 @@
         /// Received receipt
         /// </summary>
         ReceivedReceipt = 11,
+
+        /// <summary>
+        /// Issued Debit Note
+        /// </summary>
+        IssuedDebitNote = 12,
+
+        /// <summary>
+        /// Received credit note
+        /// </summary>
+        ReceivedCreditNote = 13,
+
+        /// <summary>
+        /// Received Debit Note
+        /// </summary>
+        ReceivedDebitNote = 14,
+
+        /// <summary>
+        /// Received Tax Document
+        /// </summary>
+        ReceivedTaxDocument = 15,
+
+        /// <summary>
+        /// Received Proforma Invoice
+        /// </summary>
+        ReceivedProformaInvoice = 16,
     }
 }
