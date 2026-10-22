@@ -55,7 +55,7 @@ namespace IdokladSdk.UnitTests.Tests.Builder
             // Arrange
             var apiUrl = $"https://customapi.url/{Constants.ApiVersion}";
             var identityServerUrl = "https://customidentityserver.url/";
-            var identityServerTokenUrl = "https://customidentityserver.url/server/connect/token";
+            var identityServerTokenUrl = "https://customidentityserver.url/server/v2/connect/token";
             var defaultConfiguration = new DokladConfiguration();
             var api = new DokladApiBuilder(AppName, AppVersion)
                 .AddClientCredentialsAuthentication(ClientId, ClientSecret, ApplicationId)
