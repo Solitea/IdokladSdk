@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
+using IdokladSdk.Models.DocumentAddress;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.ReceivedInvoice
@@ -13,19 +14,6 @@ namespace IdokladSdk.Models.ReceivedInvoice
     /// </summary>
     public class ReceivedInvoicePatchModel : ValidatableModel, IEntityId
     {
-        /// <summary>
-        /// Gets or sets account number.
-        /// </summary>
-        [StringLength(50)]
-        [BankAccountNumber]
-        public string AccountNumber { get; set; }
-
-        /// <summary>
-        /// Gets or sets bank id.
-        /// </summary>
-        [NullableForeignKey]
-        public NullableProperty<int> BankId { get; set; }
-
         /// <summary>
         /// Gets or sets currency id.
         /// </summary>
@@ -81,13 +69,6 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// </summary>
         public decimal? ExchangeRateAmount { get; set; }
 
-        /// <summary>
-        /// Gets or sets iBAN.
-        /// </summary>
-        [StringLength(50)]
-        [Iban]
-        public string Iban { get; set; }
-
         /// <inheritdoc/>
         [RequiredNonDefault]
         public int Id { get; set; }
@@ -114,6 +95,11 @@ namespace IdokladSdk.Models.ReceivedInvoice
         public string OrderNumber { get; set; }
 
         /// <summary>
+        /// Gets or sets contact information of the partner.
+        /// </summary>
+        public DocumentAddressPatchModel PartnerAddress { get; set; }
+
+        /// <summary>
         /// Gets or sets partner contact id.
         /// </summary>
         [NullableForeignKey]
@@ -130,12 +116,6 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// </summary>
         [StringLength(30)]
         public string ReceivedDocumentNumber { get; set; }
-
-        /// <summary>
-        /// Gets or sets swift code.
-        /// </summary>
-        [StringLength(11)]
-        public string Swift { get; set; }
 
         /// <summary>
         /// Gets or sets tags.
