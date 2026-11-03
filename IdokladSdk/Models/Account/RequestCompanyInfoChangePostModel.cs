@@ -63,6 +63,7 @@ namespace IdokladSdk.Models.Account
         /// Gets or sets VAT ID.
         /// </summary>
         [StringLength(20)]
+        [VatIdentificationNumberSk]
         public string VatIdentificationNumberSk { get; set; }
 
         /// <summary>

@@ -83,6 +83,8 @@ namespace IdokladSdk.Validation.Detailed.Model
 
                 case nameof(VatIdentificationNumberAttribute): return ValidationType.VatIdentificationNumber;
 
+                case nameof(VatIdentificationNumberSkAttribute): return ValidationType.VatIdentificationNumberSk;
+
                 case nameof(CannotEqualIfAttribute): return ValidationType.CannotEqualIf;
 
                 case nameof(NullOrEmptyStringIfAttribute): return ValidationType.NullOrEmptyStringIf;

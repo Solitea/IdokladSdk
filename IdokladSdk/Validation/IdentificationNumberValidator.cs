@@ -7,6 +7,19 @@ namespace IdokladSdk.Validation
 {
     public static class IdentificationNumberValidator
     {
+        public static bool IsVatIdentificationNumberSkValid(string vatIdentificationNumberSk)
+        {
+            if (string.IsNullOrEmpty(vatIdentificationNumberSk))
+            {
+                return true;
+            }
+
+            return vatIdentificationNumberSk.Length == 10
+                && Regex.IsMatch(vatIdentificationNumberSk, @"^\d{10}$")
+                && long.TryParse(vatIdentificationNumberSk, out var value)
+                && value % 11 == 0;
+        }
+
         public static IdentificationValidationResult IdentificationNumberValidation(string input)
         {
             if (string.IsNullOrEmpty(input))
