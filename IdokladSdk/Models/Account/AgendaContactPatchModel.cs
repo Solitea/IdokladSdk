@@ -75,6 +75,7 @@ namespace IdokladSdk.Models.Account
         /// </summary>
         [StringLength(20)]
         [NotEmptyString]
+        [VatIdentificationNumberSk]
         public string VatIdentificationNumberSk { get; set; }
 
         /// <summary>

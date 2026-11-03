@@ -191,6 +191,11 @@ namespace IdokladSdk.Enums
         /// <summary>
         /// Property value has to contain valid VAT identification number. <see cref="VatIdentificationNumberAttribute"/>
         /// </summary>
-        VatIdentificationNumber = 37
+        VatIdentificationNumber = 37,
+
+        /// <summary>
+        /// Property value has to contain a valid Slovak VAT identification number. <see cref="VatIdentificationNumberSkAttribute"/>
+        /// </summary>
+        VatIdentificationNumberSk = 38
     }
 }
