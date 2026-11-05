@@ -44,8 +44,9 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
         {
             // Arrange
             var modifier = new FilterModifier<TestFilter>();
+            var now = DateTime.Now;
             Func<TestFilter, FilterExpression> filterExpression1 = (f) => f.Name.Contains("a");
-            Func<TestFilter, FilterExpression> filterExpression2 = (f) => f.Date.IsLowerThan(DateTime.Now);
+            Func<TestFilter, FilterExpression> filterExpression2 = (f) => f.Date.IsLowerThan(now);
             modifier.Filter((f) => filterExpression1(f) || filterExpression2(f));
 
             // Act
