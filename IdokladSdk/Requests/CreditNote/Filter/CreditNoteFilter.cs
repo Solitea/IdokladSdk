@@ -13,6 +13,15 @@ namespace IdokladSdk.Requests.CreditNote.Filter
     /// </summary>
     public class CreditNoteFilter : IdFilter
     {
+        /// <inheritdoc cref="CreditNoteListGetModel.DocumentType"/>
+        public FilterItem<CorrectedDocumentType> DocumentType { get; set; } = new FilterItem<CorrectedDocumentType>(nameof(CreditNoteListGetModel.DocumentType));
+
+        /// <inheritdoc cref="CreditNoteListGetModel.CreditedInvoiceId"/>
+        public FilterItem<int> CreditedInvoiceId { get; set; } = new FilterItem<int>(nameof(CreditNoteListGetModel.CreditedInvoiceId));
+
+        /// <inheritdoc cref="CreditNoteListGetModel.EInvoiceChannel"/>
+        public FilterItem<EInvoiceChannel> EInvoiceChannel { get; set; } = new FilterItem<EInvoiceChannel>(nameof(CreditNoteListGetModel.EInvoiceChannel));
+
         /// <inheritdoc cref="CreditNoteListGetModel.ConstantSymbolId"/>
         public FilterItem<int> ConstantSymbolId { get; set; } = new FilterItem<int>(nameof(CreditNoteListGetModel.ConstantSymbolId));
 

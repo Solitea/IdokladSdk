@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using IdokladSdk.Authentication;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
+using IdokladSdk.Models.EDocument;
 using IdokladSdk.Models.EInvoiceSettings;
 using Newtonsoft.Json.Linq;
 using NSubstitute;
@@ -20,6 +21,94 @@ namespace IdokladSdk.UnitTests.Tests.Clients
     [TestFixture]
     public class EInvoiceClientTests
     {
+        [TestCase(PeppolDocumentType.IssuedInvoice, 0)]
+        [TestCase(PeppolDocumentType.CreditNote, 3)]
+        [TestCase(PeppolDocumentType.IssuedDebitNote, 12)]
+        [TestCase(PeppolDocumentType.IssuedTaxDocument, 10)]
+        public async Task DownloadAsync_UsesDocumentTypeAndReturnsBase64(PeppolDocumentType documentType, int apiValue)
+        {
+            const string xml = "<Invoice>test</Invoice>";
+            var encoded = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(xml));
+            using var handler = new RecordingHandler(_ => $"{{\"IsSuccess\":true,\"Data\":\"{encoded}\"}}");
+            using var httpClient = new HttpClient(handler);
+            var client = new EDocumentClient(CreateContext(httpClient));
+
+            var result = await client.DownloadAsync(123, documentType);
+
+            Assert.That(handler.Requests[0].Method, Is.EqualTo("GET"));
+            Assert.That(handler.Requests[0].Path, Is.EqualTo("/v3/EDocuments/123/Download"));
+            Assert.That(handler.Requests[0].Query, Is.EqualTo($"?documentType={apiValue}"));
+            Assert.That(result.Data, Is.EqualTo(encoded));
+        }
+
+        [Test]
+        public void DownloadAsync_RejectsUnsupportedDocumentType()
+        {
+            using var handler = new RecordingHandler(_ => string.Empty);
+            using var httpClient = new HttpClient(handler);
+            var client = new EDocumentClient(CreateContext(httpClient));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => client.DownloadAsync(123, (PeppolDocumentType)5));
+            Assert.That(handler.Requests, Is.Empty);
+        }
+
+        [Test]
+        public async Task SendAsync_UsesAllDocumentRoutesAndPreservesDeliverySettings()
+        {
+            using var handler = new RecordingHandler(_ => "{\"IsSuccess\":true,\"Data\":{\"IsSuccess\":true,\"Message\":\"Recipient is not registered\"}}");
+            using var httpClient = new HttpClient(handler);
+            var client = new EDocumentClient(CreateContext(httpClient));
+            var model = new EInvoiceSendModel
+            {
+                DocumentId = 123,
+                DeliveryMode = EInvoiceDeliveryMode.Email,
+                Method = EInvoiceSendMethod.Attachment,
+                AttachmentIds = new[] { 42 },
+                OtherRecipients = new List<string> { "recipient@example.com" },
+                SendAttachments = false,
+                SendDocumentPdf = true
+            };
+
+            var result = await client.SendIssuedInvoiceAsync(model);
+            await client.SendCreditNoteAsync(model);
+            await client.SendIssuedTaxDocumentAsync(model);
+
+            Assert.That(handler.Requests, Has.Count.EqualTo(3));
+            var routes = new[] { "IssuedInvoice", "CreditNote", "IssuedTaxDocument" };
+            for (var index = 0; index < routes.Length; index++)
+            {
+                var request = handler.Requests[index];
+                Assert.That(request.Method, Is.EqualTo("POST"));
+                Assert.That(request.Path, Is.EqualTo($"/v3/EDocuments/{routes[index]}/Send"));
+                var body = JObject.Parse(request.Body);
+                Assert.That(body["DocumentId"].Value<int>(), Is.EqualTo(123));
+                Assert.That(body["DeliveryMode"].Value<int>(), Is.EqualTo(1));
+                Assert.That(body["Method"].Value<int>(), Is.Zero);
+                Assert.That(body["AttachmentIds"][0].Value<int>(), Is.EqualTo(42));
+                Assert.That(body["SendAttachments"].Value<bool>(), Is.False);
+                Assert.That(body["SendDocumentPdf"].Value<bool>(), Is.True);
+                Assert.That(body.Property("SendXmlAttachment"), Is.Null);
+            }
+
+            Assert.That(result.Data.IsSuccess, Is.True);
+            Assert.That(result.Data.Message, Is.EqualTo("Recipient is not registered"));
+        }
+
+        [Test]
+        public async Task DefaultFromIssuedTaxDocumentAsync_PreparesCorrection()
+        {
+            using var handler = new RecordingHandler(_ => "{\"IsSuccess\":true,\"Data\":{\"CorrectedDocumentId\":123,\"IsEInvoice\":true}}");
+            using var httpClient = new HttpClient(handler);
+            var client = new IssuedTaxDocumentClient(CreateContext(httpClient));
+
+            var result = await client.DefaultFromIssuedTaxDocumentAsync(123);
+
+            Assert.That(handler.Requests[0].Method, Is.EqualTo("GET"));
+            Assert.That(handler.Requests[0].Path, Is.EqualTo("/v3/IssuedTaxDocuments/DefaultFromIssuedTaxDocument/123"));
+            Assert.That(result.Data.CorrectedDocumentId, Is.EqualTo(123));
+            Assert.That(result.Data.IsEInvoice, Is.True);
+        }
+
         [Test]
         public async Task EInvoiceSettingsClient_UsesExpectedRoutesAndRequestBodies()
         {
@@ -134,6 +223,7 @@ namespace IdokladSdk.UnitTests.Tests.Clients
                 {
                     Method = request.Method.Method,
                     Path = request.RequestUri.AbsolutePath,
+                    Query = request.RequestUri.Query,
                     Body = request.Content == null ? null : await request.Content.ReadAsStringAsync()
                 });
 
@@ -149,6 +239,8 @@ namespace IdokladSdk.UnitTests.Tests.Clients
             public string Method { get; set; }
 
             public string Path { get; set; }
+
+            public string Query { get; set; }
 
             public string Body { get; set; }
         }

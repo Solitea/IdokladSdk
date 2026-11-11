@@ -39,6 +39,15 @@ namespace IdokladSdk.Clients
             return DefaultAsync<IssuedTaxDocumentGetModel>(id, cancellationToken);
         }
 
+        /// <summary>Prepares a corrective document from an existing issued tax document.</summary>
+        /// <param name="issuedTaxDocumentId">The tax document to correct.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The default corrective tax document.</returns>
+        public Task<ApiResult<IssuedTaxDocumentGetModel>> DefaultFromIssuedTaxDocumentAsync(int issuedTaxDocumentId, CancellationToken cancellationToken = default)
+        {
+            return GetAsync<IssuedTaxDocumentGetModel>($"{ResourceUrl}/DefaultFromIssuedTaxDocument/{issuedTaxDocumentId}", null, cancellationToken);
+        }
+
         /// <inheritdoc />
         public Task<ApiResult<bool>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {

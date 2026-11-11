@@ -15,6 +15,9 @@ namespace IdokladSdk.Models.IssuedInvoice
     /// </summary>
     public class IssuedInvoiceGetModel : IssuedInvoiceListGetModel
     {
+        /// <summary>Gets or sets the date and time the electronic document was sent through Peppol.</summary>
+        public DateTime? DateCreatedEDocument { get; set; }
+
         /// <summary>
         /// Gets or sets constantSymbol.
         /// </summary>

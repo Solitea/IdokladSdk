@@ -9,6 +9,9 @@ namespace IdokladSdk.Models.CreditNote.Post
     /// </summary>
     public class CreditNoteDefaultGetModel : CreditNotePostModel
     {
+        /// <summary>Gets or sets the correction document type determined by the resulting total.</summary>
+        public CorrectedDocumentType DocumentType { get; set; }
+
         /// <summary>
         /// Gets or sets date of taxing credited invoice.
         /// </summary>

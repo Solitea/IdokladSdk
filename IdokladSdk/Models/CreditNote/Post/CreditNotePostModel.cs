@@ -33,7 +33,7 @@ namespace IdokladSdk.Models.CreditNote
         public int? ConstantSymbolId { get; set; }
 
         /// <summary>
-        /// Gets or sets Id of the credited invoice.
+        /// Gets or sets Id of the corrected document.
         /// </summary>
         [Required]
         public int CreditedInvoiceId { get; set; }

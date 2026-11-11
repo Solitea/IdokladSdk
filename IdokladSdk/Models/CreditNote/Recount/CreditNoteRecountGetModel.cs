@@ -9,6 +9,9 @@ namespace IdokladSdk.Models.CreditNote
     /// </summary>
     public class CreditNoteRecountGetModel
     {
+        /// <summary>Gets or sets the correction document type determined by the resulting total.</summary>
+        public CorrectedDocumentType DocumentType { get; set; }
+
         /// <summary>
         /// Gets or sets currency id.
         /// </summary>
