@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdokladSdk.Models.Contact;
 using IdokladSdk.Models.IssuedDocumentPayment;
 using IdokladSdk.Models.IssuedInvoice;
@@ -12,6 +13,9 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Get
     /// </summary>
     public class IssuedTaxDocumentGetModel : IssuedTaxDocumentListGetModel
     {
+        /// <summary>Gets or sets the date and time the electronic document was sent through Peppol.</summary>
+        public DateTime? DateCreatedEDocument { get; set; }
+
         /// <summary>
         /// Gets or sets Invoice by which Issued Tax Document is accounted.
         /// </summary>

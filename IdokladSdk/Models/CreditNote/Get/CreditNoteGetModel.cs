@@ -15,6 +15,9 @@ namespace IdokladSdk.Models.CreditNote
     /// </summary>
     public class CreditNoteGetModel : CreditNoteListGetModel
     {
+        /// <summary>Gets or sets the date and time the electronic document was sent through Peppol.</summary>
+        public DateTime? DateCreatedEDocument { get; set; }
+
         /// <summary>
         /// Gets or sets constant symbol.
         /// </summary>

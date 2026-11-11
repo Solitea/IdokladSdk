@@ -34,5 +34,14 @@
         /// Debit note
         /// </summary>
         IssuedDebitNote = DocumentType.IssuedDebitNote,
+
+        /// <summary>Received credit note.</summary>
+        ReceivedCreditNote = DocumentType.ReceivedCreditNote,
+
+        /// <summary>Received debit note.</summary>
+        ReceivedDebitNote = DocumentType.ReceivedDebitNote,
+
+        /// <summary>Received proforma invoice.</summary>
+        ReceivedProformaInvoice = DocumentType.ReceivedProformaInvoice,
     }
 }

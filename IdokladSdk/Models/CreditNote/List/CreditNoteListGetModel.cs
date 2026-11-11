@@ -17,6 +17,21 @@ namespace IdokladSdk.Models.CreditNote
     /// </summary>
     public class CreditNoteListGetModel : IEntityId
     {
+        /// <summary>Gets or sets the correction document type determined by the resulting total.</summary>
+        public CorrectedDocumentType DocumentType { get; set; }
+
+        /// <summary>Gets or sets the type of the corrected document.</summary>
+        public CorrectedDocumentType CreditedDocumentType { get; set; }
+
+        /// <summary>Gets or sets the electronic invoice delivery channel.</summary>
+        public EInvoiceChannel EInvoiceChannel { get; set; }
+
+        /// <summary>Gets or sets the electronic invoice delivery status.</summary>
+        public EInvoiceStatus EInvoiceStatus { get; set; }
+
+        /// <summary>Gets or sets the electronic invoice delivery state.</summary>
+        public EInvoiceState EInvoiceState { get; set; }
+
         /// <summary>Gets or sets a value indicating whether this document is an electronic invoice. Available only for Slovak legislation.</summary>
         public bool IsEInvoice { get; set; }
 
@@ -31,7 +46,7 @@ namespace IdokladSdk.Models.CreditNote
         public int? ConstantSymbolId { get; set; }
 
         /// <summary>
-        /// Gets or sets Id of the credited invoice.
+        /// Gets or sets Id of the corrected document.
         /// </summary>
         public int CreditedInvoiceId { get; set; }
 

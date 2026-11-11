@@ -380,6 +380,18 @@
         EInvoice_CredentialsVatMismatch = 182,
 
         /// <summary>Document received via Peppol is read only.</summary>
-        EInvoice_ReceivedViaPeppolReadOnly = 183
+        EInvoice_ReceivedViaPeppolReadOnly = 183,
+
+        /// <summary>The source document is not an electronic invoice.</summary>
+        EInvoice_NotEInvoice = 184,
+
+        /// <summary>Electronic invoice sending is not configured.</summary>
+        EInvoice_SendingNotConfigured = 185,
+
+        /// <summary>The document has a dependent corrective document.</summary>
+        CorrectiveDocumentDependency = 186,
+
+        /// <summary>The electronic document attachment cannot be deleted.</summary>
+        AttachmentReadOnly = 187
     }
 }

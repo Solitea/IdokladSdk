@@ -23,6 +23,7 @@ namespace IdokladSdk
         private CreditNoteClient _creditNoteClient;
         private CurrencyClient _currencyClient;
         private DocumentPaymentClient _documentPaymentClient;
+        private EDocumentClient _eDocumentClient;
         private EInvoiceSettingsClient _eInvoiceSettingsClient;
         private ExchangeRateClient _exchangeRateClient;
         private InboxClient _inboxClient;
@@ -155,6 +156,9 @@ namespace IdokladSdk
         /// </summary>
         public EInvoiceSettingsClient EInvoiceSettingsClient =>
             _eInvoiceSettingsClient ?? (_eInvoiceSettingsClient = new EInvoiceSettingsClient(ApiContext));
+
+        /// <summary>Gets electronic documents.</summary>
+        public EDocumentClient EDocumentClient => _eDocumentClient ?? (_eDocumentClient = new EDocumentClient(ApiContext));
 
         /// <summary>
         /// Gets exchange rates.

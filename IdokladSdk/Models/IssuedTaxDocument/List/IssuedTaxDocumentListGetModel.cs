@@ -12,6 +12,9 @@ namespace IdokladSdk.Models.IssuedTaxDocument.List
     /// </summary>
     public class IssuedTaxDocumentListGetModel : IEntityId
     {
+        /// <summary>Gets or sets the ID of the corrected tax document.</summary>
+        public int? CorrectedDocumentId { get; set; }
+
         /// <summary>Gets or sets the electronic invoice delivery channel.</summary>
         public EInvoiceChannel EInvoiceChannel { get; set; }
 

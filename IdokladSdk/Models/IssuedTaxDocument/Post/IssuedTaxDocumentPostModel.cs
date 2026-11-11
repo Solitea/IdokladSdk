@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
+using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.IssuedTaxDocument.Post
 {
@@ -28,7 +29,12 @@ namespace IdokladSdk.Models.IssuedTaxDocument.Post
         /// <summary>
         /// Gets or sets Id of payment.
         /// </summary>
-        [Required]
-        public int PaymentId { get; set; }
+        [RequiredIf(nameof(CorrectedDocumentId), null)]
+        public int? PaymentId { get; set; }
+
+        /// <summary>Gets or sets the ID of the corrected tax document. Required when PaymentId is omitted.</summary>
+        [RequiredIf(nameof(PaymentId), null)]
+        [Range(1, int.MaxValue)]
+        public int? CorrectedDocumentId { get; set; }
     }
 }

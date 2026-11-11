@@ -13,6 +13,9 @@ namespace IdokladSdk.Requests.IssuedTaxDocument.Filter
     /// </summary>
     public class IssuedTaxDocumentFilter : IdFilter
     {
+        /// <inheritdoc cref="IssuedTaxDocumentListGetModel.CorrectedDocumentId"/>
+        public FilterItem<int?> CorrectedDocumentId { get; set; } = new FilterItem<int?>(nameof(IssuedTaxDocumentListGetModel.CorrectedDocumentId));
+
         /// <inheritdoc cref="IssuedTaxDocumentListGetModel.AccountedByInvoiceId"/>
         public FilterItem<int?> AccountedByInvoiceId { get; set; } = new FilterItem<int?>(nameof(IssuedTaxDocumentGetModel.AccountedByInvoiceId));
 
