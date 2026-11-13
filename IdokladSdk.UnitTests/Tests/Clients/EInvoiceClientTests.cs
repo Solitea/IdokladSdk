@@ -95,6 +95,24 @@ namespace IdokladSdk.UnitTests.Tests.Clients
         }
 
         [Test]
+        public async Task PreviewAsync_UsesAttachmentIdAndReturnsHtml()
+        {
+            const string html = "<html><body>Invoice preview</body></html>";
+            using var handler = new RecordingHandler(_ => $"{{\"IsSuccess\":true,\"Data\":{{\"Html\":\"{html}\"}}}}");
+            using var httpClient = new HttpClient(handler);
+            var client = new EDocumentClient(CreateContext(httpClient));
+
+            var result = await client.PreviewAsync(123);
+
+            Assert.That(handler.Requests, Has.Count.EqualTo(1));
+            Assert.That(handler.Requests[0].Method, Is.EqualTo("GET"));
+            Assert.That(handler.Requests[0].Path, Is.EqualTo("/v3/EDocuments/123/Preview"));
+            Assert.That(handler.Requests[0].Query, Is.Empty);
+            Assert.That(result.IsSuccess, Is.True);
+            Assert.That(result.Data.Html, Is.EqualTo(html));
+        }
+
+        [Test]
         public async Task DefaultFromIssuedTaxDocumentAsync_PreparesCorrection()
         {
             using var handler = new RecordingHandler(_ => "{\"IsSuccess\":true,\"Data\":{\"CorrectedDocumentId\":123,\"IsEInvoice\":true}}");
