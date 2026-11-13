@@ -51,17 +51,17 @@
         public int ReceivedInvoices { get; set; }
 
         /// <summary>
-        /// Gets or sets Number of received credit or debit notes
+        /// Gets or sets Number of received credit or debit notes.
         /// </summary>
         public int ReceivedCreditNotes { get; set; }
 
         /// <summary>
-        /// Gets or sets Number of received proforma invoices
+        /// Gets or sets Number of received proforma invoices.
         /// </summary>
         public int ReceivedProformaInvoices { get; set; }
 
         /// <summary>
-        /// Gets or sets  Number of received tax documents
+        /// Gets or sets  Number of received tax documents.
         /// </summary>
         public int ReceivedTaxDocuments { get; set; }
 

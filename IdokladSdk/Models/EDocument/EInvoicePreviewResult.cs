@@ -1,7 +1,7 @@
 ﻿namespace IdokladSdk.Models.EDocument
 {
     /// <summary>
-    /// EInvoice preview result
+    /// EInvoice preview result.
     /// </summary>
     public class EInvoicePreviewResult
     {
