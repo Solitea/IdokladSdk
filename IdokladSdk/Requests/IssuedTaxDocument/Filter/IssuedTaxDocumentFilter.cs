@@ -37,6 +37,12 @@ namespace IdokladSdk.Requests.IssuedTaxDocument.Filter
         /// <inheritdoc cref="IssuedTaxDocumentListGetModel.IsEInvoice"/>
         public FilterItem<bool> IsEInvoice { get; set; } = new FilterItem<bool>(nameof(IssuedTaxDocumentListGetModel.IsEInvoice));
 
+        /// <inheritdoc cref="IssuedTaxDocumentListGetModel.EInvoiceChannel"/>
+        public FilterItem<EInvoiceChannel> EInvoiceChannel { get; set; } = new FilterItem<EInvoiceChannel>(nameof(IssuedTaxDocumentListGetModel.EInvoiceChannel));
+
+        /// <inheritdoc cref="IssuedTaxDocumentListGetModel.EInvoiceStatus"/>
+        public FilterItem<EInvoiceStatus> EInvoiceStatus { get; set; } = new FilterItem<EInvoiceStatus>(nameof(IssuedTaxDocumentListGetModel.EInvoiceStatus));
+
         /// <inheritdoc cref="DocumentAddressModel.NickName"/>
         public ContainFilterItem<string> NickName { get; set; } = new ContainFilterItem<string>(nameof(DocumentAddressModel.NickName));
 

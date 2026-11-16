@@ -22,6 +22,9 @@ namespace IdokladSdk.Requests.CreditNote.Filter
         /// <inheritdoc cref="CreditNoteListGetModel.EInvoiceChannel"/>
         public FilterItem<EInvoiceChannel> EInvoiceChannel { get; set; } = new FilterItem<EInvoiceChannel>(nameof(CreditNoteListGetModel.EInvoiceChannel));
 
+        /// <inheritdoc cref="CreditNoteListGetModel.EInvoiceStatus"/>
+        public FilterItem<EInvoiceStatus> EInvoiceStatus { get; set; } = new FilterItem<EInvoiceStatus>(nameof(CreditNoteListGetModel.EInvoiceStatus));
+
         /// <inheritdoc cref="CreditNoteListGetModel.ConstantSymbolId"/>
         public FilterItem<int> ConstantSymbolId { get; set; } = new FilterItem<int>(nameof(CreditNoteListGetModel.ConstantSymbolId));
 
