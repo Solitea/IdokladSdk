@@ -33,6 +33,7 @@ namespace IdokladSdk
         private IssuedTaxDocumentClient _issuedTaxDocumentClient;
         private LogClient _logClient;
         private MailClient _mailClient;
+        private MeasureCodeClient _measureCodeClient;
         private NotificationClient _notificationClient;
         private NumericSequenceClient _numericSequenceClient;
         private PaymentOptionClient _paymentOptionClient;
@@ -206,6 +207,9 @@ namespace IdokladSdk
         /// Gets mail.
         /// </summary>
         public MailClient MailClient => _mailClient ?? (_mailClient = new MailClient(ApiContext));
+
+        /// <summary>Gets the units of measure codebook.</summary>
+        public MeasureCodeClient MeasureCodeClient => _measureCodeClient ?? (_measureCodeClient = new MeasureCodeClient(ApiContext));
 
         /// <summary>
         /// Gets Notifications.

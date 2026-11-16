@@ -16,6 +16,9 @@ namespace IdokladSdk.Requests.IssuedInvoice.Filter
         /// <inheritdoc cref="IssuedInvoiceListGetModel.EInvoiceChannel"/>
         public FilterItem<EInvoiceChannel> EInvoiceChannel { get; set; } = new FilterItem<EInvoiceChannel>(nameof(IssuedInvoiceListGetModel.EInvoiceChannel));
 
+        /// <inheritdoc cref="IssuedInvoiceListGetModel.EInvoiceStatus"/>
+        public FilterItem<EInvoiceStatus> EInvoiceStatus { get; set; } = new FilterItem<EInvoiceStatus>(nameof(IssuedInvoiceListGetModel.EInvoiceStatus));
+
         /// <inheritdoc cref="IssuedInvoiceListGetModel.ConstantSymbolId"/>
         public FilterItem<int> ConstantSymbolId { get; set; } = new FilterItem<int>(nameof(IssuedInvoiceListGetModel.ConstantSymbolId));
 

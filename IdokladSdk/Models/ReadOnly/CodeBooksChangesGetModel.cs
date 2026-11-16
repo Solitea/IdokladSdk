@@ -30,6 +30,9 @@
         /// </summary>
         public bool ExchangeRates { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the units of measure codebook has changed.</summary>
+        public bool MeasureCodes { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether payment options code book has changed.
         /// </summary>

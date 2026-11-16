@@ -3,6 +3,7 @@ using IdokladSdk.Models.ReadOnly.Bank;
 using IdokladSdk.Models.ReadOnly.ConstantSymbol;
 using IdokladSdk.Models.ReadOnly.Country;
 using IdokladSdk.Models.ReadOnly.Currency;
+using IdokladSdk.Models.ReadOnly.MeasureCode;
 using IdokladSdk.Models.ReadOnly.PaymentOption;
 using IdokladSdk.Models.ReadOnly.VatCode;
 using IdokladSdk.Models.ReadOnly.VatRate;
@@ -15,6 +16,9 @@ namespace IdokladSdk.Models.ReadOnly
     /// </summary>
     public class CodeBooksGetModel
     {
+        /// <summary>Gets or sets the units of measure.</summary>
+        public List<MeasureCodeListGetModel> MeasureCodes { get; set; }
+
         /// <summary>
         /// Gets or sets banks.
         /// </summary>
