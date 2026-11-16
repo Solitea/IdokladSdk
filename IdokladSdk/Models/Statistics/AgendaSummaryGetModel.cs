@@ -21,7 +21,7 @@
         public int Contacts { get; set; }
 
         /// <summary>
-        /// Gets or sets Number of credit notes.
+        /// Gets or sets Number of credit notes or debit notes.
         /// </summary>
         public int CreditNotes { get; set; }
 
@@ -49,6 +49,21 @@
         /// Gets or sets Number of received invoices.
         /// </summary>
         public int ReceivedInvoices { get; set; }
+
+        /// <summary>
+        /// Gets or sets Number of received credit or debit notes.
+        /// </summary>
+        public int ReceivedCreditNotes { get; set; }
+
+        /// <summary>
+        /// Gets or sets Number of received proforma invoices.
+        /// </summary>
+        public int ReceivedProformaInvoices { get; set; }
+
+        /// <summary>
+        /// Gets or sets  Number of received tax documents.
+        /// </summary>
+        public int ReceivedTaxDocuments { get; set; }
 
         /// <summary>
         /// Gets or sets Number of recurring invoices.

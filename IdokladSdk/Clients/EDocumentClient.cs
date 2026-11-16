@@ -69,5 +69,14 @@ namespace IdokladSdk.Clients
         {
             return PostAsync<EInvoiceSendModel, EInvoiceSendResult>($"{ResourceUrl}/IssuedTaxDocument/Send", model, cancellationToken);
         }
+
+        /// <summary>Returns an HTML preview of an e-invoice XML attachment by attachment ID.</summary>
+        /// <param name="attachmentId">Attachment Id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Html result.</returns>
+        public Task<ApiResult<EInvoicePreviewResult>> PreviewAsync(int attachmentId, CancellationToken cancellationToken = default)
+        {
+            return GetAsync<EInvoicePreviewResult>($"{ResourceUrl}/{attachmentId}/Preview", null, cancellationToken);
+        }
     }
 }
