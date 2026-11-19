@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using IdokladSdk.Clients.Interfaces;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.ReceivedInvoice;
 using IdokladSdk.Requests.ReceivedInvoice;
 using IdokladSdk.Response;
@@ -46,6 +47,34 @@ namespace IdokladSdk.Clients
         public Task<ApiResult<ReceivedInvoiceDefaultGetModel>> DefaultAsync(CancellationToken cancellationToken = default)
         {
             return DefaultAsync<ReceivedInvoiceDefaultGetModel>(cancellationToken);
+        }
+
+        /// <summary>Returns a default model for the requested received document type.</summary>
+        /// <param name="documentType">Received document type.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The default received document model.</returns>
+        public Task<ApiResult<ReceivedInvoiceDefaultGetModel>> DefaultAsync(ReceivedDocumentType documentType, CancellationToken cancellationToken = default)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                { "documentType", ((int)documentType).ToString(CultureInfo.InvariantCulture) }
+            };
+            return DefaultAsync<ReceivedInvoiceDefaultGetModel>(queryParams, cancellationToken);
+        }
+
+        /// <summary>Returns a default model of the requested type based on an inbox record.</summary>
+        /// <param name="inboxId">Inbox record ID.</param>
+        /// <param name="documentType">Received document type.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The default received document model.</returns>
+        public Task<ApiResult<ReceivedInvoiceDefaultGetModel>> DefaultAsync(int inboxId, ReceivedDocumentType documentType, CancellationToken cancellationToken = default)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                { "inboxId", inboxId.ToString(CultureInfo.InvariantCulture) },
+                { "documentType", ((int)documentType).ToString(CultureInfo.InvariantCulture) }
+            };
+            return DefaultAsync<ReceivedInvoiceDefaultGetModel>(queryParams, cancellationToken);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Enums;
@@ -15,6 +15,18 @@ namespace IdokladSdk.Models.ReceivedInvoice
     /// </summary>
     public class ReceivedInvoiceListGetModel : IEntityId
     {
+        /// <summary>Gets or sets the received document type.</summary>
+        public ReceivedDocumentType DocumentType { get; set; }
+
+        /// <summary>Gets or sets the number of the document corrected by a received credit or debit note.</summary>
+        public string CorrectedDocumentNumber { get; set; }
+
+        /// <summary>Gets or sets a value indicating whether the document is an electronic invoice. Available for Slovak legislation.</summary>
+        public bool IsEInvoice { get; set; }
+
+        /// <summary>Gets or sets the electronic invoice channel. Available for Slovak legislation.</summary>
+        public EInvoiceChannel EInvoiceChannel { get; set; }
+
         /// <summary>
         /// Gets or sets list of attachments. Currently, you can attach a maximum of one attachment.
         /// </summary>

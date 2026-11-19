@@ -10,6 +10,15 @@ namespace IdokladSdk.Requests.ReceivedInvoice.Filter
     /// <inheritdoc cref="ReceivedInvoiceGetModel"/>
     public class ReceivedInvoiceFilter : IdFilter
     {
+        /// <inheritdoc cref="ReceivedInvoiceListGetModel.DocumentType"/>
+        public FilterItem<ReceivedDocumentType> DocumentType { get; set; } = new FilterItem<ReceivedDocumentType>(nameof(ReceivedInvoiceListGetModel.DocumentType));
+
+        /// <inheritdoc cref="ReceivedInvoiceListGetModel.IsEInvoice"/>
+        public FilterItem<bool> IsEInvoice { get; set; } = new FilterItem<bool>(nameof(ReceivedInvoiceListGetModel.IsEInvoice));
+
+        /// <inheritdoc cref="ReceivedInvoiceListGetModel.EInvoiceChannel"/>
+        public FilterItem<EInvoiceChannel> EInvoiceChannel { get; set; } = new FilterItem<EInvoiceChannel>(nameof(ReceivedInvoiceListGetModel.EInvoiceChannel));
+
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.CurrencyId"/>
         public FilterItem<int> CurrencyId { get; set; } = new FilterItem<int>(nameof(ReceivedInvoiceGetModel.CurrencyId));
 
