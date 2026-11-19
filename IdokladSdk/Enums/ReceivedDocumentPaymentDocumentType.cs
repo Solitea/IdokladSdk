@@ -1,7 +1,7 @@
 ﻿namespace IdokladSdk.Enums
 {
     /// <summary>
-    /// ReceivedDocumentPaymentDocumentType
+    /// ReceivedDocumentPaymentDocumentType.
     /// </summary>
     public enum ReceivedDocumentPaymentDocumentType
     {
