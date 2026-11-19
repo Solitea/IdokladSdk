@@ -397,6 +397,6 @@
         /// <summary>
         /// The document has unsupported document type
         /// </summary>
-        UnsupportedDocumentType
+        UnsupportedDocumentType = 188,
     }
 }
