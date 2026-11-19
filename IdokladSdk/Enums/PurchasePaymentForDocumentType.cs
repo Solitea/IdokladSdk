@@ -8,11 +8,26 @@
         /// <summary>
         /// Received invoice
         /// </summary>
-        ReceivedInvoice = 5,
+        ReceivedInvoice = DocumentType.ReceivedInvoice,
 
         /// <summary>
         /// Received Receipt
         /// </summary>
-        ReceivedReceipt = 11,
+        ReceivedReceipt = DocumentType.ReceivedReceipt,
+
+        /// <summary>
+        /// Received credit note
+        /// </summary>
+        ReceivedCreditNote = DocumentType.ReceivedCreditNote,
+
+        /// <summary>
+        /// Received debit note
+        /// </summary>
+        ReceivedDebitNote = DocumentType.ReceivedDebitNote,
+
+        /// <summary>
+        /// Received proforma invoice
+        /// </summary>
+        ReceivedProformaInvoice = DocumentType.ReceivedProformaInvoice,
     }
 }
