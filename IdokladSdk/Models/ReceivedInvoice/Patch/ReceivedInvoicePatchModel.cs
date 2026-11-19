@@ -14,6 +14,10 @@ namespace IdokladSdk.Models.ReceivedInvoice
     /// </summary>
     public class ReceivedInvoicePatchModel : ValidatableModel, IEntityId
     {
+        /// <summary>Gets or sets the number of the document corrected by a received credit or debit note.</summary>
+        [StringLength(20)]
+        public string CorrectedDocumentNumber { get; set; }
+
         /// <summary>
         /// Gets or sets currency id.
         /// </summary>

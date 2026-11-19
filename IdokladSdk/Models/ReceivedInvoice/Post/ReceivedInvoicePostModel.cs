@@ -12,6 +12,13 @@ namespace IdokladSdk.Models.ReceivedInvoice
         /// </summary>
     public class ReceivedInvoicePostModel : ValidatableModel
     {
+        /// <summary>Gets or sets the received document type. When omitted, the API creates a received invoice.</summary>
+        public ReceivedDocumentType? DocumentType { get; set; }
+
+        /// <summary>Gets or sets the number of the document corrected by a received credit or debit note.</summary>
+        [StringLength(20)]
+        public string CorrectedDocumentNumber { get; set; }
+
         /// <summary>
         /// Gets or sets account number.
         /// </summary>
