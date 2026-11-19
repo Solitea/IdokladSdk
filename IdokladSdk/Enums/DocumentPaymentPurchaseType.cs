@@ -19,5 +19,15 @@
         /// Only received receipt
         /// </summary>
         ReceivedReceipt = 2,
+
+        /// <summary>
+        /// Received credit and debit note
+        /// </summary>
+        ReceivedCreditNote = 3,
+
+        /// <summary>
+        /// Received proforma invoice
+        /// </summary>
+        ReceivedProformaInvoice = 4,
     }
 }
