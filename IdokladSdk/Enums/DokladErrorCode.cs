@@ -392,6 +392,11 @@
         CorrectiveDocumentDependency = 186,
 
         /// <summary>The electronic document attachment cannot be deleted.</summary>
-        AttachmentReadOnly = 187
+        AttachmentReadOnly = 187,
+
+        /// <summary>
+        /// The document has unsupported document type
+        /// </summary>
+        UnsupportedDocumentType = 188,
     }
 }
