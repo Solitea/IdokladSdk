@@ -1,4 +1,5 @@
 ﻿using System;
+using IdokladSdk.Enums;
 using IdokladSdk.Models.ReceivedDocumentPayments;
 using IdokladSdk.Models.ReceivedInvoice;
 using IdokladSdk.Requests.Core.Modifiers.Filters;
@@ -19,6 +20,9 @@ namespace IdokladSdk.Requests.ReceivedDocumentPayments.Filter
 
         /// <inheritdoc cref="ReceivedInvoiceListGetModel.PartnerId"/>
         public FilterItem<int> PartnerId { get; set; } = new FilterItem<int>(nameof(ReceivedInvoiceListGetModel.PartnerId));
+
+        /// <inheritdoc cref="Enums.ReceivedDocumentPaymentDocumentType"/>
+        public FilterItem<ReceivedDocumentPaymentDocumentType> DocumentType { get; set; } = new FilterItem<ReceivedDocumentPaymentDocumentType>("DocumentType");
 
         /// <inheritdoc cref="ReceivedDocumentPaymentListGetModel.PaymentOptionId"/>
         public FilterItem<int> PaymentOptionId { get; set; } = new FilterItem<int>(nameof(ReceivedDocumentPaymentListGetModel.PaymentOptionId));
