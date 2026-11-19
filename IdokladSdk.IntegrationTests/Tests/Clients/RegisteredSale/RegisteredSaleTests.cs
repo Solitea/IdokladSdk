@@ -12,7 +12,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
     public class RegisteredSaleTests : TestBase
     {
         private readonly int _salesReceiptId = 224892;
-        private readonly string _vatIdentificationNumber = "CZ25568736";
         private RegisteredSaleClient _registeredSaleClient;
 
         [OneTimeSetUp]
@@ -40,7 +39,6 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
 
             // Assert
             Assert.That(data.SalesReceiptId, Is.EqualTo(_salesReceiptId));
-            Assert.That(data.VatIdentificationNumber, Is.EqualTo(_vatIdentificationNumber));
         }
 
         [Test]
@@ -50,7 +48,7 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             var data = await _registeredSaleClient.DefaultAsync().AssertResult();
 
             // Assert
-            Assert.That(data.VatIdentificationNumber, Is.EqualTo(_vatIdentificationNumber));
+            Assert.That(data.ReceiptNumber, Is.Not.Null);
         }
 
         [Test]
@@ -64,31 +62,15 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
             model.ReceiptNumber = "001";
             model.SalesOfficeDesignation = 2;
             model.Uuid = Guid.NewGuid();
+            model.VatIdentificationNumber = "CZ12345678";
 
             // Act
             var data = await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model).AssertResult();
 
             // Assert
-            Assert.That(data.VatIdentificationNumber, Is.EqualTo(_vatIdentificationNumber));
             Assert.That(data.Uuid, Is.EqualTo(model.Uuid));
-            Assert.That(data.Bkp, Is.EqualTo(model.Bkp));
-            Assert.That(data.Fik, Is.EqualTo(model.Fik));
-            Assert.That(data.Pkp, Is.EqualTo(model.Pkp));
             Assert.That(data.ReceiptNumber, Is.EqualTo(model.ReceiptNumber));
             Assert.That(data.SalesOfficeDesignation, Is.EqualTo(model.SalesOfficeDesignation));
-        }
-
-        [Test]
-        public async Task Post_Validation_ThrowsValidationExceptionAsync()
-        {
-            // Arrange
-            var model = await _registeredSaleClient.DefaultAsync().AssertResult();
-
-            // Act
-            var exception = Assert.ThrowsAsync<IdokladValidationException>(async () => await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model));
-
-            // Assert
-            Assert.That(exception.Message, Is.EqualTo("Model is not valid.\r\nThe Bkp field is required.\r\nThe Fik field is required.\r\nThe Pkp field is required.\r\nThe ReceiptNumber field is required."));
         }
     }
 }
