@@ -11,13 +11,6 @@ namespace IdokladSdk.Models.RegisteredSale
     public class RegisteredSaleInformationPostModel : ValidatableModel
     {
         /// <summary>
-        /// Gets or sets taxpayers security code.
-        /// </summary>
-        [Required]
-        [RegularExpression(@"^([0-9a-fA-F]{8}-){4}[0-9a-fA-F]{8}$")]
-        public string Bkp { get; set; }
-
-        /// <summary>
         /// Gets or sets Date of answer.
         /// </summary>
         [DataType(DataType.DateTime)]
@@ -39,24 +32,26 @@ namespace IdokladSdk.Models.RegisteredSale
         public DateTime DateOfSend { get; set; }
 
         /// <summary>
-        /// Gets or sets Fiscal identification code.
+        /// Gets or sets the confirmation code.
         /// </summary>
         [Required]
         [RegularExpression(@"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fAF]{3}-[0-9a-fA-F]{12}-[0-9a-fA-F]{2}$")]
-        public string Fik { get; set; }
+        public string Pok { get; set; }
 
         /// <summary>
-        /// Gets or sets Taxpayers signature code.
+        /// Gets or sets the total price including VAT in home currency.
         /// </summary>
-        [Required(AllowEmptyStrings = true)]
-        [StringLength(344, MinimumLength = 344)]
-        public string Pkp { get; set; }
+        public decimal TotalWithVat { get; set; }
 
         /// <summary>
-        /// Gets or sets Prices and calculations.
+        /// Gets or sets the amount in CZK received for later use or settlement.
         /// </summary>
-        [Required]
-        public RegisteredSalePrices Prices { get; set; }
+        public decimal TotalAdvancePayment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount in CZK used or settled from a previously received payment.
+        /// </summary>
+        public decimal TotalFromAdvancePayment { get; set; }
 
         /// <summary>
         /// Gets or sets Receipt number.
@@ -83,12 +78,5 @@ namespace IdokladSdk.Models.RegisteredSale
         /// </summary>
         [Required]
         public Guid Uuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets VAT of taxpayer.
-        /// </summary>
-        [Required]
-        [RegularExpression(@"^CZ[0-9]{8,10}$")]
-        public string VatIdentificationNumber { get; set; }
     }
 }

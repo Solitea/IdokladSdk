@@ -14,11 +14,6 @@ namespace IdokladSdk.Models.RegisteredSale
     public class RegisteredSaleListGetModel : IEntityId
     {
         /// <summary>
-        /// Gets or sets Taxpayers security code.
-        /// </summary>
-        public string Bkp { get; set; }
-
-        /// <summary>
         /// Gets or sets Canceled registered sale id.
         /// </summary>
         public int? CancelledRegisteredSaleId { get; set; }
@@ -54,24 +49,9 @@ namespace IdokladSdk.Models.RegisteredSale
         public DocumentType DocumentType { get; set; }
 
         /// <summary>
-        /// Gets or sets Eet regime.
+        /// Gets or sets the confirmation code.
         /// </summary>
-        public EetRegime EetRegime { get; set; }
-
-        /// <summary>
-        /// Gets or sets Error code.
-        /// </summary>
-        public int ErrorCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets Error text.
-        /// </summary>
-        public string ErrorText { get; set; }
-
-        /// <summary>
-        /// Gets or sets Fiscal identification code.
-        /// </summary>
-        public string Fik { get; set; }
+        public string Pok { get; set; }
 
         /// <inheritdoc/>
         public int Id { get; set; }
@@ -102,14 +82,19 @@ namespace IdokladSdk.Models.RegisteredSale
         public Metadata Metadata { get; set; }
 
         /// <summary>
-        /// Gets or sets Taxpayers signature code.
+        /// Gets or sets the total price including VAT in home currency.
         /// </summary>
-        public string Pkp { get; set; }
+        public decimal TotalWithVat { get; set; }
 
         /// <summary>
-        /// Gets or sets Prices and calculations.
+        /// Gets or sets the amount in CZK received for later use or settlement.
         /// </summary>
-        public RegisteredSalePrices Prices { get; set; }
+        public decimal TotalAdvancePayment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount in CZK used or settled from a previously received payment.
+        /// </summary>
+        public decimal TotalFromAdvancePayment { get; set; }
 
         /// <summary>
         /// Gets or sets Receipt number.
@@ -145,10 +130,5 @@ namespace IdokladSdk.Models.RegisteredSale
         /// Gets or sets Universally unique identifier.
         /// </summary>
         public Guid Uuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets VAT of taxpayer.
-        /// </summary>
-        public string VatIdentificationNumber { get; set; }
     }
 }

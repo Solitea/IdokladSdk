@@ -31,5 +31,10 @@ namespace IdokladSdk.Requests.Core.Modifiers.Expand.Structure
         /// Gets Payment Option.
         /// </summary>
         public PaymentOptionExpand PaymentOption { get; }
+
+        /// <summary>
+        /// Gets the registered sale.
+        /// </summary>
+        public RegisteredSaleExpand RegisteredSale { get; }
     }
 }

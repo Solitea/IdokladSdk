@@ -11,12 +11,6 @@ namespace IdokladSdk.Models.RegisteredSale
     public class RegisteredSalePostModel : ValidatableModel
     {
         /// <summary>
-        /// Gets or sets Taxpayers security code.
-        /// </summary>
-        [Required]
-        public string Bkp { get; set; }
-
-        /// <summary>
         /// Gets or sets Canceled registered sale id.
         /// </summary>
         [NullableForeignKey]
@@ -25,23 +19,26 @@ namespace IdokladSdk.Models.RegisteredSale
         /// <summary>
         /// Gets or sets Date of answer.
         /// </summary>
+        [Required]
         public DateTime DateOfAnswer { get; set; }
 
         /// <summary>
         /// Gets or sets Date of sale.
         /// </summary>
+        [Required]
         public DateTime DateOfSale { get; set; }
 
         /// <summary>
         /// Gets or sets Date of send.
         /// </summary>
+        [Required]
         public DateTime DateOfSend { get; set; }
 
         /// <summary>
-        /// Gets or sets Fiscal identification code.
+        /// Gets or sets the confirmation code.
         /// </summary>
         [Required]
-        public string Fik { get; set; }
+        public string Pok { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether sale is canceled.
@@ -49,15 +46,20 @@ namespace IdokladSdk.Models.RegisteredSale
         public bool IsCanceled { get; set; }
 
         /// <summary>
-        /// Gets or sets Taxpayers signature code.
+        /// Gets or sets the total price including VAT in home currency.
         /// </summary>
         [Required]
-        public string Pkp { get; set; }
+        public decimal TotalWithVat { get; set; }
 
         /// <summary>
-        /// Gets or sets Registered sale prices.
+        /// Gets or sets the amount in CZK received for later use or settlement.
         /// </summary>
-        public RegisteredSalePrices Prices { get; set; }
+        public decimal TotalAdvancePayment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount in CZK used or settled from a previously received payment.
+        /// </summary>
+        public decimal TotalFromAdvancePayment { get; set; }
 
         /// <summary>
         /// Gets or sets Receipt number.
@@ -82,11 +84,5 @@ namespace IdokladSdk.Models.RegisteredSale
         /// </summary>
         [Required]
         public Guid Uuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets VAT of taxpayer.
-        /// </summary>
-        [Required]
-        public string VatIdentificationNumber { get; set; }
     }
 }

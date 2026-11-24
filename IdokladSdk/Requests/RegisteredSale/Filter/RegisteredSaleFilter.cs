@@ -7,21 +7,24 @@ using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
 namespace IdokladSdk.Requests.RegisteredSale.Filter
 {
     /// <summary>
-    /// Filterable properties of <see cref=" RegisteredSaleListGetModel"/>.
+    /// Filterable properties of <see cref="RegisteredSaleListGetModel"/>.
     /// </summary>
     public class RegisteredSaleFilter : IdFilter
     {
         /// <inheritdoc cref="RegisteredSaleListGetModel.SalesReceiptId"/>
-        public FilterItem<int> SalesReceiptId { get; set; } = new FilterItem<int>(nameof(RegisteredSaleListGetModel.SalesReceiptId));
+        public NullableContainIdFilterItem SalesReceiptId { get; set; } = new NullableContainIdFilterItem(nameof(RegisteredSaleListGetModel.SalesReceiptId));
 
         /// <inheritdoc cref="RegisteredSaleListGetModel.CashVoucherId"/>
-        public FilterItem<int> CashVoucherId { get; set; } = new FilterItem<int>(nameof(RegisteredSaleListGetModel.CashVoucherId));
+        public NullableContainIdFilterItem CashVoucherId { get; set; } = new NullableContainIdFilterItem(nameof(RegisteredSaleListGetModel.CashVoucherId));
+
+        /// <inheritdoc cref="RegisteredSaleListGetModel.IssuedInvoiceId"/>
+        public NullableContainIdFilterItem IssuedInvoiceId { get; set; } = new NullableContainIdFilterItem(nameof(RegisteredSaleListGetModel.IssuedInvoiceId));
 
         /// <inheritdoc cref="RegisteredSaleListGetModel.IssuedInvoicePaymentId"/>
-        public FilterItem<int> IssuedInvoicePaymentId { get; set; } = new FilterItem<int>(nameof(RegisteredSaleListGetModel.IssuedInvoicePaymentId));
+        public NullableContainIdFilterItem IssuedInvoicePaymentId { get; set; } = new NullableContainIdFilterItem(nameof(RegisteredSaleListGetModel.IssuedInvoicePaymentId));
 
         /// <inheritdoc cref="RegisteredSaleListGetModel.SalesPosEquipmentId"/>
-        public FilterItem<int> SalesPosEquipmentId { get; set; } = new FilterItem<int>(nameof(RegisteredSaleListGetModel.SalesPosEquipmentId));
+        public NullableContainIdFilterItem SalesPosEquipmentId { get; set; } = new NullableContainIdFilterItem(nameof(RegisteredSaleListGetModel.SalesPosEquipmentId));
 
         /// <inheritdoc cref="RegisteredSaleListGetModel.DocumentType"/>
         public FilterItem<DocumentType> DocumentType { get; set; } = new FilterItem<DocumentType>(nameof(RegisteredSaleListGetModel.DocumentType));

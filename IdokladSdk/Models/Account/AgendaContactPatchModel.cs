@@ -74,7 +74,6 @@ namespace IdokladSdk.Models.Account
         /// Only for SK legislation.
         /// </summary>
         [StringLength(20)]
-        [NotEmptyString]
         [VatIdentificationNumberSk]
         public string VatIdentificationNumberSk { get; set; }
 
