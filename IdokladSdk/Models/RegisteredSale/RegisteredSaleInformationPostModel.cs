@@ -35,7 +35,6 @@ namespace IdokladSdk.Models.RegisteredSale
         /// Gets or sets the confirmation code.
         /// </summary>
         [Required]
-        [RegularExpression(@"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fAF]{3}-[0-9a-fA-F]{12}-[0-9a-fA-F]{2}$")]
         public string Pok { get; set; }
 
         /// <summary>
