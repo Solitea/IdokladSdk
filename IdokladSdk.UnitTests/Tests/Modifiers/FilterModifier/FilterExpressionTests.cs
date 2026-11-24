@@ -1,5 +1,8 @@
 ﻿using System;
+using IdokladSdk.Enums;
 using IdokladSdk.Requests.Core.Modifiers.Filters.Common;
+using IdokladSdk.Requests.RegisteredSale.Filter;
+using IdokladSdk.Requests.SalesReceipt.Filter;
 using NUnit.Framework;
 
 namespace IdokladSdk.UnitTests.Tests.Modifiers
@@ -31,6 +34,25 @@ namespace IdokladSdk.UnitTests.Tests.Modifiers
 
             // Assert
             Assert.That(expressionString, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void RegisteredSaleIdFilters_HandleListsAndNullableValues()
+        {
+            var filter = new RegisteredSaleFilter();
+
+            Assert.That(filter.CashVoucherId.Contains(new[] { 1, 2 }).ToString(), Is.EqualTo("(CashVoucherId~ct~1,2)"));
+            Assert.That(filter.CashVoucherId.IsEqual(null).ToString(), Is.EqualTo("(CashVoucherId~eq~null)"));
+            Assert.That(filter.IssuedInvoiceId.IsEqual(1).ToString(), Is.EqualTo("(IssuedInvoiceId~eq~1)"));
+        }
+
+        [Test]
+        public void SalesReceiptEetFilters_UseApiFieldNames()
+        {
+            var filter = new SalesReceiptFilter();
+
+            Assert.That(filter.IsEet.IsEqual(true).ToString(), Is.EqualTo("(IsEet~eq~true)"));
+            Assert.That(filter.EetStatus.IsEqual(EetStatus.Registered).ToString(), Is.EqualTo("(EetStatus~eq~Registered)"));
         }
     }
 }

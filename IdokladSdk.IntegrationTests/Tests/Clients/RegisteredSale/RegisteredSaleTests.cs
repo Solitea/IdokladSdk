@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using IdokladSdk.Clients;
 using IdokladSdk.Enums;
-using IdokladSdk.Exceptions;
 using IdokladSdk.IntegrationTests.Core;
 using IdokladSdk.IntegrationTests.Core.Extensions;
 using NUnit.Framework;
@@ -56,19 +55,23 @@ namespace IdokladSdk.IntegrationTests.Tests.Clients.RegisteredSale
         {
             // Arrange
             var model = await _registeredSaleClient.DefaultAsync().AssertResult();
-            model.Bkp = "TEST_BKP";
-            model.Fik = "TEST_FIK";
-            model.Pkp = "TEST_PKP";
+            model.Pok = "1688efca-7a53-4aaf-88b3-a3fbacd98c42-ff";
             model.ReceiptNumber = "001";
             model.SalesOfficeDesignation = 2;
             model.Uuid = Guid.NewGuid();
-            model.VatIdentificationNumber = "CZ12345678";
+            model.TotalWithVat = 123.45m;
+            model.TotalAdvancePayment = 20m;
+            model.TotalFromAdvancePayment = 10m;
 
             // Act
             var data = await _registeredSaleClient.PostAsync(RegisteredSaleType.SalesReceipt, _salesReceiptId, model).AssertResult();
 
             // Assert
             Assert.That(data.Uuid, Is.EqualTo(model.Uuid));
+            Assert.That(data.Pok, Is.EqualTo(model.Pok));
+            Assert.That(data.TotalWithVat, Is.EqualTo(model.TotalWithVat));
+            Assert.That(data.TotalAdvancePayment, Is.EqualTo(model.TotalAdvancePayment));
+            Assert.That(data.TotalFromAdvancePayment, Is.EqualTo(model.TotalFromAdvancePayment));
             Assert.That(data.ReceiptNumber, Is.EqualTo(model.ReceiptNumber));
             Assert.That(data.SalesOfficeDesignation, Is.EqualTo(model.SalesOfficeDesignation));
         }

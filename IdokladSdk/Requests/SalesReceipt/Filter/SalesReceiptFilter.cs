@@ -18,8 +18,14 @@ namespace IdokladSdk.Requests.SalesReceipt.Filter
         /// <inheritdoc cref="SalesReceiptListGetModel.DocumentNumber"/>
         public ContainFilterItem<string> DocumentNumber { get; set; } = new ContainFilterItem<string>(nameof(SalesReceiptListGetModel.DocumentNumber));
 
+        /// <inheritdoc cref="SalesReceiptListGetModel.EetStatus"/>
+        public FilterItem<EetStatus> EetStatus { get; set; } = new FilterItem<EetStatus>(nameof(SalesReceiptListGetModel.EetStatus));
+
         /// <inheritdoc cref="SalesReceiptListGetModel.Exported"/>
         public FilterItem<ExportedState> Exported { get; set; } = new FilterItem<ExportedState>(nameof(SalesReceiptListGetModel.Exported));
+
+        /// <inheritdoc cref="SalesReceiptListGetModel.IsEet"/>
+        public FilterItem<bool> IsEet { get; set; } = new FilterItem<bool>(nameof(SalesReceiptListGetModel.IsEet));
 
         /// <inheritdoc cref="SalesReceiptListGetModel.Name"/>
         public ContainFilterItem<string> Name { get; set; } = new ContainFilterItem<string>(nameof(SalesReceiptListGetModel.Name));
