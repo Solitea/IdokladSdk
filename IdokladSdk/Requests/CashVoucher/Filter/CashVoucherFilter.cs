@@ -19,8 +19,14 @@ namespace IdokladSdk.Requests.CashVoucher.Filter
         /// <inheritdoc cref="CashVoucherListGetModel.CurrencyId"/>
         public FilterItem<int> CurrencyId { get; set; } = new FilterItem<int>(nameof(CashVoucherListGetModel.CurrencyId));
 
+        /// <inheritdoc cref="CashVoucherListGetModel.EetStatus"/>
+        public FilterItem<EetStatus> EetStatus { get; set; } = new FilterItem<EetStatus>(nameof(CashVoucherListGetModel.EetStatus));
+
         /// <inheritdoc cref="CashVoucherListGetModel.Exported"/>
         public CompareFilterItem<ExportedState> Exported { get; set; } = new CompareFilterItem<ExportedState>(nameof(CashVoucherListGetModel.Exported));
+
+        /// <inheritdoc cref="CashVoucherListGetModel.IsEet"/>
+        public FilterItem<bool> IsEet { get; set; } = new FilterItem<bool>(nameof(CashVoucherListGetModel.IsEet));
 
         /// <inheritdoc cref="CashVoucherListGetModel.IsSummarySalesReceipt"/>
         public CompareFilterItem<bool> IsSummarySalesReceipt { get; set; } = new CompareFilterItem<bool>("IsSummarySalesReceipt");

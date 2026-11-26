@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using IdokladSdk.Models.Base;
 using IdokladSdk.Models.Common;
 using IdokladSdk.Models.Common.PairedDocument;
+using IdokladSdk.Models.RegisteredSale;
 using IdokladSdk.Validation.Attributes;
 
 namespace IdokladSdk.Models.CashVoucher
@@ -24,6 +25,11 @@ namespace IdokladSdk.Models.CashVoucher
         /// </summary>
         [DateGreaterOrEqualThan(Constants.DefaultDateTimeString, true)]
         public DateTime? DateOfTransaction { get; set; }
+
+        /// <summary>
+        /// Gets or sets electronic records of sales information for Czech legislation.
+        /// </summary>
+        public ElectronicRecordsOfSalesPostModel ElectronicRecordsOfSales { get; set; }
 
         /// <summary>
         /// Gets or sets exchange rate.
